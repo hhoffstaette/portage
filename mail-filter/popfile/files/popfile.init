@@ -1,0 +1,31 @@
+#!/sbin/runscript
+
+depend() {
+	need net
+	use dns
+	before fetchmail
+}
+
+_getpid() {
+	POPPID=`/bin/ps aux | grep popfile | grep perl | awk '{print $2}'`
+}
+
+start() {
+	ebegin "Starting POPFile"
+	(cd /usr/share/popfile; ./popfile.pl >/dev/null 2>&1 &)
+	sleep 2
+	_getpid
+	if [ -z $POPPID ]
+	then
+		eend 1
+	else
+		eend 0
+	fi
+}
+
+stop() {
+	ebegin "Stopping POPFile"
+	_getpid
+	/bin/kill -TERM $POPPID >/dev/null
+	eend $?
+}

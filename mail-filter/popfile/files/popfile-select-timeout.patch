@@ -1,0 +1,15 @@
+--- POPFile/Loader.pm~	2013-11-02 19:26:30.000000000 +0100
++++ POPFile/Loader.pm	2013-11-02 19:26:46.141161949 +0100
+@@ -794,10 +794,10 @@
+             }
+         }
+ 
+-        # Sleep for 0.05 of a second to ensure that POPFile does not
++        # Sleep for 0.25 of a second to ensure that POPFile does not
+         # hog the machine's CPU
+ 
+-        select(undef, undef, undef, 0.05) if !$nowait;
++        select(undef, undef, undef, 0.25) if !$nowait;
+ 
+         # If we are on Windows then reap children here
+ 
