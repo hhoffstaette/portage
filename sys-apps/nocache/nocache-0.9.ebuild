@@ -1,6 +1,3 @@
-# Copyright 1999-2013 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI=4
 
@@ -22,4 +19,5 @@ src_compile() {
 src_install() {
 	# wat: the .so must be colocated with the nocache script..
 	dobin ${PN} ${PN}.so cachestats cachedel || die
+	doman man/${PN}.1 man/cachestats.1 man/cachedel.1 || die
 }
