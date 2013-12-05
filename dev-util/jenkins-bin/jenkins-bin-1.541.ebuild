@@ -1,3 +1,4 @@
+
 inherit java-pkg-2 rpm
 
 DESCRIPTION="Extensible continuous integration server"

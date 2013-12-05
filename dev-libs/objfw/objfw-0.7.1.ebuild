@@ -1,5 +1,6 @@
 
 EAPI=5
+
 inherit eutils flag-o-matic
 
 DESCRIPTION="ObjFW is a portable, lightweight framework for the Objective-C language."

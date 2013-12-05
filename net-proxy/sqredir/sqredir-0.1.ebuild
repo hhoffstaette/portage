@@ -1,5 +1,5 @@
 
-EAPI=4
+EAPI=5
 
 inherit eutils flag-o-matic
 
