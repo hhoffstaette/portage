@@ -1,0 +1,30 @@
+#!/sbin/runscript
+# Copyright 1999-2013 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command="/usr/sbin/swapspace"
+extra_commands="cleanup"
+
+depend() {
+	need localmount
+	after swapfiles
+}
+
+start() {
+	ebegin "Starting ${SVCNAME}"
+	start-stop-daemon --start --quiet --exec ${command} -- ${SWAPSPACE_OPTS}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping ${SVCNAME}"
+	start-stop-daemon --stop --quiet --exec ${command}
+	eend $?
+}
+
+cleanup() {
+	ebegin "Cleaning up allocated swap files"
+	${command} -e
+	eend $?
+}
+
