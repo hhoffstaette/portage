@@ -13,7 +13,7 @@ KEYWORDS="~x86 ~amd64"
 RDEPEND="${DEPEND}"
 
 src_configure() {
-	CFLAGS=${CFLAGS} cmake CMakeLists.txt
+	CFLAGS=${CFLAGS} CXXFLAGS=${CXXFLAGS} cmake CMakeLists.txt
 }
 
 src_compile() {
