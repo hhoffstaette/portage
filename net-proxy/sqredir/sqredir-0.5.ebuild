@@ -10,6 +10,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
+DEPEND=">=dev-libs/libpcre-8.33"
 RDEPEND="${DEPEND}"
 
 src_configure() {
@@ -25,3 +26,4 @@ src_install() {
 	insinto /etc
 	doins sqredir.conf || die
 }
+
