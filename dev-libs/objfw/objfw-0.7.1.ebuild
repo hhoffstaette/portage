@@ -8,9 +8,9 @@ HOMEPAGE="https://webkeks.org/objfw/"
 SRC_URI="https://webkeks.org/objfw/downloads/${P}.tar.xz"
 LICENSE="|| ( GPL-2 GPL-3 QPL )"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="amd64 x86"
 IUSE="clang"
-DEPEND="clang? ( >=sys-devel/clang-3.2 )"
+DEPEND="clang? ( >=sys-devel/clang-3.3 )"
         
 src_unpack() {
 	unpack ${A}
