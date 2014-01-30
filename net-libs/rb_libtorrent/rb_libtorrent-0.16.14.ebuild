@@ -15,7 +15,7 @@ S=${WORKDIR}/${MY_P}
 
 DESCRIPTION="C++ BitTorrent implementation focusing on efficiency and scalability"
 HOMEPAGE="http://www.rasterbar.com/products/libtorrent/"
-SRC_URI="http://libtorrent.googlecode.com/files/${MY_P}.tar.gz"
+SRC_URI="mirror://sourceforge/libtorrent/${MY_P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
