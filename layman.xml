@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<repositories version="1.0">
+	<repo priority="50" quality="experimental" status="unofficial">
+		<name>hhoffstaette</name>
+		<description>Holgers portage overlay</description>
+		<homepage>https://github.com/hhoffstaette/portage</homepage>
+		<owner>
+			<email>holger.hoffstaette@googlemail.com</email>
+		</owner>
+		<source type="git">git://github.com/hhoffstaette/portage.git</source>
+	</repo>
+</repositories>
