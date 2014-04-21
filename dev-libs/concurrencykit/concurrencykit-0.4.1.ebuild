@@ -5,7 +5,7 @@ inherit eutils flag-o-matic
 
 DESCRIPTION="Concurrency primitives for high performance concurrent systems"
 HOMEPAGE="http://concurrencykit.org/"
-SRC_URI="http://concurrencykit.org/releases/ck-${PV}.tar.gz"
+SRC_URI="https://github.com/concurrencykit/ck/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
