@@ -14,7 +14,7 @@ DEPEND=">=dev-libs/libpcre-8.33"
 RDEPEND="${DEPEND}"
 
 src_configure() {
-	CFLAGS=${CFLAGS} CXXFLAGS=${CXXFLAGS} cmake CMakeLists.txt
+	CFLAGS=${CFLAGS} CXXFLAGS="-std=c++11 ${CXXFLAGS}" cmake CMakeLists.txt
 }
 
 src_compile() {
