@@ -16,7 +16,7 @@ src_unpack() {
 	S="${WORKDIR}/ck-${PV}"
 }
 
-src_configure() {	
+src_configure() {
 	CFLAGS="${CFLAGS}" ./configure --prefix=/usr || die "configure failed"
 }
 
