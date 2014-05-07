@@ -21,7 +21,7 @@ RDEPEND=$DEPEND
 
 ARCH="x86"
 BUNDLED_DEPS="-DUSE_BUNDLED_JSONCPP=OFF -DUSE_BUNDLED_LUAJIT=OFF -DUSE_BUNDLED_ZLIB=OFF"
-PREFIX="-DCMAKE_INSTALL_PREFIX=${D}"
+PREFIX="-DCMAKE_INSTALL_PREFIX=/usr"
 
 pkg_setup() {
 	CONFIG_CHECK="MODULES"
@@ -43,6 +43,8 @@ src_install() {
 	cd build
 	# sysdig
 	dobin userspace/sysdig/sysdig
+	# man page
+	doman ../userspace/sysdig/man/sysdig.8
 	# chisels
 	dodir /usr/share/sysdig/chisels
 	cp userspace/sysdig/chisels/*.lua ${D}/usr/share/sysdig/chisels
