@@ -30,6 +30,10 @@ pkg_setup() {
 	BUILD_PARAMS="KERNEL_BUILD=${KERNEL_DIR}"
 }
 
+src_prepare() {
+	epatch_user
+}
+
 src_configure() {
 	mkdir build && cd build
 	CFLAGS=${CFLAGS} CXXFLAGS=${CXXFLAGS} cmake ${PREFIX} ${BUNDLED_DEPS}  ..
