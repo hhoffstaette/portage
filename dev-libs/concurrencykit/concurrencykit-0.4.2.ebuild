@@ -9,7 +9,7 @@ SRC_URI="https://github.com/concurrencykit/ck/archive/${PV}.tar.gz -> ${P}.tar.g
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+pointer-packing -rtm"
+IUSE="pointer-packing rtm"
 
 src_unpack() {
 	unpack ${A}
