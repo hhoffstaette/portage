@@ -9,7 +9,7 @@ SRC_URI="https://github.com/concurrencykit/ck/archive/${PV}.tar.gz -> ${P}.tar.g
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="+pointer-packing -rtm"
 
 src_unpack() {
 	unpack ${A}
@@ -17,7 +17,15 @@ src_unpack() {
 }
 
 src_configure() {
-	CFLAGS="${CFLAGS}" ./configure --prefix=/usr || die "configure failed"
+	if use pointer-packing ; then
+		O_PP="--enable-pointer-packing"
+	fi
+
+	if use rtm ; then
+		O_RTM="--enable-rtm"
+	fi
+	
+	CFLAGS="${CFLAGS}" econf --prefix=/usr ${O_PP} ${O_RTM} || die "configure failed"
 }
 
 src_compile() {
