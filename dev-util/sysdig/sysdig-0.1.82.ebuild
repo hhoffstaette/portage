@@ -12,6 +12,7 @@ SRC_URI="http://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="-bundled-libs"
 
 DEPEND="dev-libs/jsoncpp
 	dev-lang/luajit
@@ -19,9 +20,14 @@ DEPEND="dev-libs/jsoncpp
 
 RDEPEND=$DEPEND
 
+# needed for the kernel module
 ARCH="x86"
-BUNDLED_DEPS="-DUSE_BUNDLED_JSONCPP=OFF -DUSE_BUNDLED_LUAJIT=OFF -DUSE_BUNDLED_ZLIB=OFF"
-PREFIX="-DCMAKE_INSTALL_PREFIX=/usr"
+
+# needed for cmake
+PREFIX="/usr"
+
+# prefer system dependencies by default
+BUNDLED_LIBS="-DUSE_BUNDLED_JSONCPP=OFF -DUSE_BUNDLED_LUAJIT=OFF -DUSE_BUNDLED_ZLIB=OFF"
 
 pkg_setup() {
 	CONFIG_CHECK="MODULES"
@@ -36,7 +42,8 @@ src_prepare() {
 
 src_configure() {
 	mkdir build && cd build
-	CFLAGS=${CFLAGS} CXXFLAGS=${CXXFLAGS} cmake ${PREFIX} ${BUNDLED_DEPS}  ..
+	use bundled-libs && BUNDLED_LIBS=""
+	CFLAGS=${CFLAGS} CXXFLAGS=${CXXFLAGS} cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} ${BUNDLED_LIBS}  ..
 }
 
 src_compile() {
