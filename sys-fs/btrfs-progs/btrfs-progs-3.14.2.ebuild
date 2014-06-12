@@ -27,6 +27,7 @@ SLOT="0/${libbtrfs_soname}"
 IUSE=""
 
 DEPEND="
+	app-text/asciidoc
 	dev-libs/lzo
 	sys-libs/zlib
 	sys-apps/acl
