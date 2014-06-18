@@ -28,6 +28,7 @@ IUSE=""
 
 DEPEND="
 	app-text/asciidoc
+	app-text/xmlto
 	dev-libs/lzo
 	sys-libs/zlib
 	sys-apps/acl
