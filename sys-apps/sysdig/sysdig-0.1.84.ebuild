@@ -5,7 +5,7 @@
 EAPI=5
 inherit eutils linux-mod
 
-DESCRIPTION="An system-level exploration and troubleshooting tool. "
+DESCRIPTION="A system-level exploration and troubleshooting tool. "
 HOMEPAGE="http://github.com/draios/sysdig http://www.sysdig.org/"
 SRC_URI="http://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
