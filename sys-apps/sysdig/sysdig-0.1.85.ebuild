@@ -12,7 +12,7 @@ SRC_URI="http://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="-bundled-libs"
+IUSE="bash-completion -bundled-libs zsh-completion"
 
 DEPEND="dev-libs/jsoncpp
 	dev-lang/luajit
@@ -52,13 +52,27 @@ src_compile() {
 
 src_install() {
 	cd build
+
 	# sysdig
 	dobin userspace/sysdig/sysdig
+
 	# man page
 	doman ../userspace/sysdig/man/sysdig.8
+
 	# chisels
 	dodir /usr/share/sysdig/chisels
 	cp userspace/sysdig/chisels/*.lua ${D}/usr/share/sysdig/chisels
+
+	# bash/zsh completions
+	if use bash-completion; then
+		dodir /usr/share/bash-completion
+		cp ../scripts/completions/bash/sysdig ${D}/usr/share/bash-completion
+	fi
+	if use zsh-completion; then
+		dodir /usr/share/zsh/site-functions
+		cp ../scripts/completions/zsh/_sysdig ${D}/usr/share/zsh/site-functions
+	fi
+
 	# kernel module
 	MODULE_NAMES="sysdig-probe(misc:${WORKDIR}/${PF}/driver)"
 	linux-mod_src_install
