@@ -1,7 +1,7 @@
 
-EAPI=2
+EAPI=5
 
-inherit eutils java-pkg-2 versionator
+inherit eutils java-pkg-2 versionator user
 
 DESCRIPTION="Nexus Maven Repository Server"
 KEYWORDS="amd64 x86"
@@ -24,7 +24,7 @@ NEXUS_DATA=/var/lib/nexus
 pkg_setup() {
 	java-pkg-2_pkg_setup
 	enewgroup nexus
-	enewuser nexus -1 /bin/sh -1 nexus
+	enewuser nexus -1 /bin/sh /var/lib/nexus nexus
 }
 
 src_install() {
