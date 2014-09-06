@@ -1,3 +1,0 @@
-# /etc/conf.d/swapspace: config file for /etc/init.d/swapspace
-
-SWAPSPACE_OPTS="-d -p /run/swapspace.pid"
