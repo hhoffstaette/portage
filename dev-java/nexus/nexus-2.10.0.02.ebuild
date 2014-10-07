@@ -9,7 +9,7 @@ SLOT="0"
 
 MY_PN=${PN/nexus-bin/nexus}
 MY_PV=$(replace_version_separator 3 '-' ) 
-SRC_URI="http://www.sonatype.org/downloads/${MY_PN}-${MY_PV}-bundle.tar.gz"
+SRC_URI="http://download.sonatype.com/nexus/oss/${MY_PN}-${MY_PV}-bundle.tar.gz"
 
 IUSE=""
 
