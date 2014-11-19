@@ -4,7 +4,7 @@ EAPI=5
 inherit versionator java-utils-2
 
 MY_PV=$(replace_all_version_separators '_')
-S="${WORKDIR}/${PN}-${MY_PV}"
+S="${WORKDIR}/${PN}"
 
 DESCRIPTION="SmartGit/Hg is a client for Git and Mercurial"
 HOMEPAGE="http://www.syntevo.com/smartgithg/"
@@ -16,16 +16,17 @@ KEYWORDS="x86 amd64"
 IUSE=""
 
 DEPEND=""
-RDEPEND="${DEPEND} >=virtual/jre-1.6.0"
+RDEPEND="${DEPEND} >=virtual/jre-1.7.0"
 
 src_install()
 {
 	local rdir="/opt/${PN}"
-	insinto "$rdir"
+	insinto $rdir
 	doins -r lib licenses
-	java-pkg_regjar "${D}/${rdir}"/lib/*.jar
-	java-pkg_dolauncher "${PN}" --java_args "-Xmx256m -Dsun.io.useCanonCaches=false -Xverify:none -Dsmartgit.vm-xmx=256m" --jar bootloader.jar
-
+	insinto $rdir/bin
+	insopts -m755
+	doins bin/smartgit.sh
+	dosym $rdir/bin/smartgit.sh /usr/bin/smartgit
 	dodoc changelog.txt known-issues.txt
 	for i in 32 48 64 128 256
 	do
