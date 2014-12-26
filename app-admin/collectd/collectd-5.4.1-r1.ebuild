@@ -1,12 +1,14 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Header: /var/cvsroot/gentoo-x86/app-admin/collectd/collectd-5.4.1-r1.ebuild,v 1.1 2014/12/26 13:43:04 mgorny Exp $
 
 EAPI="5"
 
 GENTOO_DEPEND_ON_PERL="no"
+# XXX: 5.4.1-r0 stated 2* but it builds fine against 3.4
+PYTHON_COMPAT=( python2_7 )
 
-inherit autotools base eutils linux-info multilib perl-app systemd user
+inherit autotools base eutils linux-info multilib perl-app python-single-r1 systemd user
 
 DESCRIPTION="A a daemon which collects system statistic and provides mechanisms to store the values"
 
@@ -16,7 +18,7 @@ SRC_URI="${HOMEPAGE}/files/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="contrib debug kernel_linux kernel_FreeBSD kernel_Darwin perl static-libs"
+IUSE="contrib debug kernel_linux kernel_FreeBSD kernel_Darwin perl selinux static-libs"
 
 # The plugin lists have to follow here since they extend IUSE
 
@@ -55,7 +57,7 @@ unset plugin
 COMMON_DEPEND="
 	dev-libs/libgcrypt:0
 	sys-devel/libtool
-	perl?					( dev-lang/perl[ithreads] ( || ( sys-devel/libperl[ithreads] >=sys-devel/libperl-5.10 ) ) )
+	perl?					( dev-lang/perl:=[ithreads] )
 	collectd_plugins_apache?		( net-misc/curl )
 	collectd_plugins_ascent?		( net-misc/curl dev-libs/libxml2 )
 	collectd_plugins_bind?			( dev-libs/libxml2 )
@@ -79,10 +81,10 @@ COMMON_DEPEND="
 	collectd_plugins_nut?			( sys-power/nut )
 	collectd_plugins_onewire?		( sys-fs/owfs )
 	collectd_plugins_oracle?		( dev-db/oracle-instantclient-basic )
-	collectd_plugins_perl?			( dev-lang/perl[ithreads] ( || ( sys-devel/libperl[ithreads] >=sys-devel/libperl-5.10 ) ) )
+	collectd_plugins_perl?			( dev-lang/perl:=[ithreads] )
 	collectd_plugins_ping?			( net-libs/liboping )
-	collectd_plugins_postgresql?		( dev-db/postgresql-base )
-	collectd_plugins_python?		( =dev-lang/python-2* )
+	collectd_plugins_postgresql?		( virtual/postgresql )
+	collectd_plugins_python?		( ${PYTHON_DEPS} )
 	collectd_plugins_routeros?		( net-libs/librouteros )
 	collectd_plugins_rrdcached?		( net-analyzer/rrdtool )
 	collectd_plugins_rrdtool?		( net-analyzer/rrdtool )
@@ -109,11 +111,15 @@ DEPEND="${COMMON_DEPEND}
 	)"
 
 RDEPEND="${COMMON_DEPEND}
-	collectd_plugins_syslog?		( virtual/logger )"
+	collectd_plugins_syslog?		( virtual/logger )
+	selinux?						( sec-policy/selinux-collectd )"
+
+REQUIRED_USE="
+	collectd_plugins_python?		( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-4.10.3"-werror.patch
 	"${FILESDIR}/${PN}-5.4.1"-{nohal,libocci,libperl,lt}.patch
+	"${FILESDIR}/${PN}-4.10.3"-werror.patch
 	"${FILESDIR}/${PN}-5.4.1"-apcups-socket.patch
 )
 
@@ -198,6 +204,8 @@ pkg_setup() {
 			elog "Cannot find a linux kernel configuration. Continuing anyway."
 		fi
 	fi
+
+	use collectd_plugins_python && python-single-r1_pkg_setup
 
 	enewgroup collectd
 	enewuser collectd -1 -1 /var/lib/collectd collectd
@@ -309,7 +317,7 @@ src_configure() {
 src_install() {
 	emake DESTDIR="${D}" install
 
-	fixlocalpod
+	perl_delete_localpod
 
 	find "${D}/usr/" -name "*.la" -exec rm -f {} +
 
