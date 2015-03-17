@@ -18,7 +18,7 @@ KEYWORDS="amd64 x86"
 
 DEPEND="|| ( app-admin/eselect-java app-admin/eselect-maven )"
 
-RDEPEND=">=virtual/jdk-1.5
+RDEPEND=">=virtual/jdk-1.7
 	${DEPEND}"
 
 S="${WORKDIR}/${MY_P}"
