@@ -8,7 +8,7 @@ inherit linux-mod bash-completion-r1 cmake-utils
 
 DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="http://www.sysdig.org/"
-SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz"
+SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
