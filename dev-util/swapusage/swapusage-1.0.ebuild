@@ -6,7 +6,7 @@ HOMEPAGE="https://github.com/hhoffstaette/swapusage"
 SRC_URI="https://github.com/hhoffstaette/swapusage/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 SLOT="0"
-LICENSE="Apache-2"
+LICENSE="Apache-2.0"
 KEYWORDS="amd64 x86"
 
 src_compile() {
