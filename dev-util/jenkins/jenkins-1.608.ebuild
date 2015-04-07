@@ -1,11 +1,14 @@
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
-inherit java-pkg-2 rpm
+EAPI=5
+
+inherit user
 
 DESCRIPTION="Extensible continuous integration server"
 HOMEPAGE="http://jenkins-ci.org/"
 LICENSE="MIT"
-# We are using rpm package here, because we want file with version.
-SRC_URI="http://pkg.jenkins-ci.org/redhat/jenkins-${PV}-1.1.noarch.rpm"
+SRC_URI="http://mirrors.jenkins-ci.org/war/${PV}/${PN}.war -> ${P}.war"
 RESTRICT="mirror"
 SLOT="0"
 KEYWORDS="amd64 x86"
@@ -13,11 +16,11 @@ IUSE=""
 
 DEPEND="media-fonts/dejavu"
 RDEPEND="${DEPEND}
-        >=virtual/jdk-1.7"
+	media-libs/freetype
+	!dev-util/jenkins-bin:lts
+	>=virtual/jdk-1.7"
 
-src_unpack() {
-    rpm_src_unpack ${A}
-}
+S=${WORKDIR}
 
 pkg_setup() {
     enewgroup jenkins
@@ -32,7 +35,7 @@ src_install() {
     keepdir /var/tmp/jenkins
 
     insinto /usr/lib/jenkins
-    doins usr/lib/jenkins/jenkins.war
+	newins "${DISTDIR}"/${P}.war ${PN}.war
 
     newinitd "${FILESDIR}/init.sh" jenkins
     newconfd "${FILESDIR}/conf" jenkins
