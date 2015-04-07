@@ -7,12 +7,11 @@ inherit eutils systemd toolchain-funcs
 
 DESCRIPTION="NTP client and server programs"
 HOMEPAGE="http://chrony.tuxfamily.org/"
-SRC_SUFFIX="-pre1"
-SRC_URI="http://download.tuxfamily.org/${PN}/${P/_/-}${SRC_SUFFIX}.tar.gz"
+SRC_URI="http://download.tuxfamily.org/${PN}/${P/_/-}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 
-KEYWORDS="amd64 ~arm hppa ~mips ppc sparc x86"
+KEYWORDS="~amd64 ~arm ~hppa ~mips ~ppc ~sparc ~x86"
 IUSE="caps ipv6 +readline +rtc selinux"
 
 CDEPEND="
@@ -30,7 +29,7 @@ RDEPEND="
 
 RESTRICT=test
 
-S="${WORKDIR}/${P/_/-}${SRC_SUFFIX}"
+S="${WORKDIR}/${P/_/-}"
 
 src_prepare() {
 	sed -i \
