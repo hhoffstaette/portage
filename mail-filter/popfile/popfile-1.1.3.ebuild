@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-filter/popfile/popfile-1.1.1.ebuild,v 1.5 2010/05/19 05:26:14 tove Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-filter/popfile/popfile-1.1.3.ebuild,v 1.7 2014/07/23 02:29:13 patrick Exp $
 
-EAPI=2
+EAPI=5
 inherit eutils
 
 DESCRIPTION="Anti-spam bayesian filter"
@@ -21,8 +21,7 @@ RDEPEND="virtual/perl-Digest-MD5
 	dev-perl/HTML-Template
 	dev-perl/TimeDate
 	dev-perl/DBI
-	perl-core/digest-base
-	perl-core/Digest-MD5
+	virtual/perl-Digest
 	cjk? ( dev-perl/Encode-compat
 		dev-perl/Text-Kakasi )
 	mysql? ( dev-perl/DBD-mysql	)
@@ -33,6 +32,8 @@ RDEPEND="virtual/perl-Digest-MD5
 	xmlrpc? ( dev-perl/PlRPC )"
 
 DEPEND="app-arch/unzip"
+
+S="${WORKDIR}"
 
 src_prepare() {
     # patch templates for relative URLs
