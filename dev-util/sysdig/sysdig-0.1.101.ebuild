@@ -35,8 +35,8 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/${P}-bfs-scheduler-fix.patch"
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
-
 	cmake-utils_src_prepare
 }
 
