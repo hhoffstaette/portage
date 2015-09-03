@@ -50,7 +50,6 @@ if [[ ${PV} == 9999 ]]; then
 fi
 
 src_prepare() {
-	epatch "$FILESDIR/${PV}-mkfs-cleanup-temporary-chunk-to-avoid-strange-balance-behavior.patch"
 	epatch_user
 	if [[ ${PV} == 9999 ]]; then
 		eautoreconf
