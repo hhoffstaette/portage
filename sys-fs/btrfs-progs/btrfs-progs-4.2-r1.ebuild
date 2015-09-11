@@ -51,6 +51,7 @@ fi
 
 src_prepare() {
 	epatch_user
+	epatch "${FILESDIR}/${PV}-fix-cross-stripe-boundary-check.patch"
 	if [[ ${PV} == 9999 ]]; then
 		eautoreconf
 		mkdir config || die
