@@ -1,0 +1,55 @@
+From:	Omar Sandoval <osandov@osandov.com>
+To:	linux-btrfs@vger.kernel.org
+Cc:	Omar Sandoval <osandov@osandov.com>
+Subject: [PATCH v3 1/3] btrfs-progs: use calloc instead of malloc+memset for tree roots
+Date:	Sun, 13 Sep 2015 23:08:22 -0700
+
+From: Omar Sandoval <osandov@fb.com>
+
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+---
+ disk-io.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
+
+diff --git a/disk-io.c b/disk-io.c
+index 1d4889322411..8496aded31c4 100644
+--- a/disk-io.c
++++ b/disk-io.c
+@@ -833,13 +833,13 @@ struct btrfs_fs_info *btrfs_new_fs_info(int writable, u64 sb_bytenr)
+ 
+ 	memset(fs_info, 0, sizeof(struct btrfs_fs_info));
+ 
+-	fs_info->tree_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->extent_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->chunk_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->dev_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->csum_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->quota_root = malloc(sizeof(struct btrfs_root));
+-	fs_info->super_copy = malloc(BTRFS_SUPER_INFO_SIZE);
++	fs_info->tree_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->extent_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->chunk_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->dev_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->csum_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->quota_root = calloc(1, sizeof(struct btrfs_root));
++	fs_info->super_copy = calloc(1, BTRFS_SUPER_INFO_SIZE);
+ 
+ 	if (!fs_info->tree_root || !fs_info->extent_root ||
+ 	    !fs_info->chunk_root || !fs_info->dev_root ||
+@@ -847,14 +847,6 @@ struct btrfs_fs_info *btrfs_new_fs_info(int writable, u64 sb_bytenr)
+ 	    !fs_info->super_copy)
+ 		goto free_all;
+ 
+-	memset(fs_info->super_copy, 0, BTRFS_SUPER_INFO_SIZE);
+-	memset(fs_info->tree_root, 0, sizeof(struct btrfs_root));
+-	memset(fs_info->extent_root, 0, sizeof(struct btrfs_root));
+-	memset(fs_info->chunk_root, 0, sizeof(struct btrfs_root));
+-	memset(fs_info->dev_root, 0, sizeof(struct btrfs_root));
+-	memset(fs_info->csum_root, 0, sizeof(struct btrfs_root));
+-	memset(fs_info->quota_root, 0, sizeof(struct btrfs_root));
+-
+ 	extent_io_tree_init(&fs_info->extent_cache);
+ 	extent_io_tree_init(&fs_info->free_space_cache);
+ 	extent_io_tree_init(&fs_info->block_group_cache);
+-- 
+2.5.2
