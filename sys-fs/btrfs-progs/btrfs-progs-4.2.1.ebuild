@@ -52,16 +52,11 @@ fi
 src_prepare() {
 	epatch_user
 
-	# fix for false positives from btrfsck:
-	# http://www.spinics.net/lists/linux-btrfs/msg47059.html
-	epatch "${FILESDIR}/${PV}-fix-cross-stripe-boundary-check.patch"
-
 	# experimental support for the new free-space-tree:
 	# http://www.spinics.net/lists/linux-btrfs/msg47095.html
 	if use experimental ; then
-		epatch "${FILESDIR}/${PV}-fst-001-use-calloc-instead-of-malloc+memset-for-tree-roots.patch"
-		epatch "${FILESDIR}/${PV}-fst-002-add-basic-awareness-of-the-free-space-tree.patch"
-		epatch "${FILESDIR}/${PV}-fst-003-check-the-free-space-tree-in-btrfsck.patch"
+		epatch "${FILESDIR}/fst-001-add-basic-awareness-of-the-free-space-tree.patch"
+		epatch "${FILESDIR}/fst-002-check-the-free-space-tree-in-btrfsck.patch"
 	fi
 
 	if [[ ${PV} == 9999 ]]; then
