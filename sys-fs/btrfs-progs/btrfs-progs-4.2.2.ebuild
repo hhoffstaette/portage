@@ -26,7 +26,7 @@ HOMEPAGE="https://btrfs.wiki.kernel.org"
 
 LICENSE="GPL-2"
 SLOT="0/${libbtrfs_soname}"
-IUSE="+convert experimental"
+IUSE="+convert"
 
 RESTRICT=test # tries to mount repared filesystems
 
@@ -51,14 +51,6 @@ fi
 
 src_prepare() {
 	epatch_user
-
-	# experimental support for the new free-space-tree:
-	# http://www.spinics.net/lists/linux-btrfs/msg47095.html
-	if use experimental ; then
-		epatch "${FILESDIR}/fst-001-add-basic-awareness-of-the-free-space-tree.patch"
-		epatch "${FILESDIR}/fst-002-check-the-free-space-tree-in-btrfsck.patch"
-	fi
-
 	if [[ ${PV} == 9999 ]]; then
 		eautoreconf
 		mkdir config || die
