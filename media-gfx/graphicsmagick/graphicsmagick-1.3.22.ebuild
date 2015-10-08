@@ -47,7 +47,6 @@ DEPEND="${RDEPEND}"
 S=${WORKDIR}/${MY_P}
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-1.3.19-freetype.patch
 	epatch "${FILESDIR}"/${PN}-1.3.19-flags.patch
 	epatch "${FILESDIR}"/${PN}-1.3.19-perl.patch
 	epatch "${FILESDIR}"/${PN}-1.3.20-powerpc.patch
