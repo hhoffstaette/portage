@@ -15,9 +15,11 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+modules"
 
-RDEPEND="dev-lang/luajit:2=
+RDEPEND="net-misc/curl
 	dev-libs/jsoncpp:0=
+	dev-lang/luajit:2=
 	sys-libs/ncurses
+	dev-libs/openssl
 	sys-libs/zlib:0="
 DEPEND="${RDEPEND}
 	app-arch/xz-utils
@@ -47,13 +49,15 @@ src_configure() {
 		-DBUILD_LIBSCAP_EXAMPLES=OFF
 
 		# unbundle the deps
-		-DUSE_BUNDLED_LUAJIT=OFF
-		-DLUAJIT_PREFIX="${EPREFIX}"/usr
-		-DLUAJIT_INCLUDE="${EPREFIX}"/usr/include/luajit-2.0
+		-DUSE_BUNDLED_CURL=OFF
 		-DUSE_BUNDLED_JSONCPP=OFF
 		-DJSONCPP_PREFIX="${EPREFIX}"/usr
 		-DJSONCPP_INCLUDE="${EPREFIX}"/usr/include/jsoncpp
+		-DUSE_BUNDLED_LUAJIT=OFF
+		-DLUAJIT_PREFIX="${EPREFIX}"/usr
+		-DLUAJIT_INCLUDE="${EPREFIX}"/usr/include/luajit-2.0
 		-DUSE_BUNDLED_NCURSES=OFF
+		-DUSE_BUNDLED_OPENSSL=OFF
 		-DUSE_BUNDLED_ZLIB=OFF
 		-DZLIB_PREFIX="${EPREFIX}"/usr
 	)
