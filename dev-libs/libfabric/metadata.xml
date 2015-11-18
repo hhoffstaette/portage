@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer>
+		<email>holger.hoffstaette@googlemail.com</email>
+		<name>Holger Hoffstätte</name>
+	</maintainer>
+	<use>
+		<flag name='sockets'>Provider for TCP sockets.</flag>
+		<flag name='psm'>Provider for Intel PSM.</flag>
+		<flag name='verbs'>Provider for OFI Verbs.</flag>
+	</use>
+</pkgmetadata>
