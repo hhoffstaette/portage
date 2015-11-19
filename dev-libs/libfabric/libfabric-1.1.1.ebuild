@@ -9,6 +9,12 @@ LICENSE="|| ( BSD GPL-2 )"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+sockets -psm -verbs"
+
+DEPEND="psm? ( sys-infiniband/infinipath-psm )
+	verbs? ( sys-infiniband/libibverbs )"
+
+RDEPEND="${DEPEND}"
+
 S="${WORKDIR}/libfabric-${PV}"
 
 src_unpack() {
