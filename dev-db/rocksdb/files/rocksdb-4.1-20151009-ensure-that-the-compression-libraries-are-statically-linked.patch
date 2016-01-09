@@ -1,0 +1,85 @@
+From 5a7222782ad57755b4cadb4f574efe3a9888ccbe Mon Sep 17 00:00:00 2001
+From: James Lent <jlent@nc.rr.com>
+Date: Fri, 9 Oct 2015 14:41:40 -0400
+Subject: [PATCH] Ensure that the compression libraries are statically linked..
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+..into dynamic libraries included in the Java jar. Also build the linux libraries
+using the portable flag to fix a problem with the linux32 build and improve the
+general portability of the RocksDB dynamic libraries.
+==> linux32: util/crc32c.cc:318:39: error: ‘_mm_crc32_u64’ was not declared in
+this scope
+
+---
+ Makefile                              | 2 +-
+ build_tools/build_detect_platform     | 3 +++
+ java/crossbuild/build-linux-centos.sh | 6 +++---
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 11ec015..13c063f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1048,7 +1048,7 @@ rocksdbjavastatic: $(java_libobjects) libz.a libbz2.a libsnappy.a liblz4.a
+ 	$(CXX) $(CXXFLAGS) -I./java/. $(JAVA_INCLUDE) -shared -fPIC \
+ 	  -o ./java/target/$(ROCKSDBJNILIB) $(JNI_NATIVE_SOURCES) \
+ 	  $(java_libobjects) $(COVERAGEFLAGS) \
+-	  libz.a libbz2.a libsnappy.a liblz4.a $(LDFLAGS)
++	  libz.a libbz2.a libsnappy.a liblz4.a $(JAVA_STATIC_LDFLAGS)
+ 	cd java/target;strip -S -x $(ROCKSDBJNILIB)
+ 	cd java;jar -cf target/$(ROCKSDB_JAR) HISTORY*.md
+ 	cd java/target;jar -uf $(ROCKSDB_JAR) $(ROCKSDBJNILIB)
+diff --git a/build_tools/build_detect_platform b/build_tools/build_detect_platform
+index 0e40ac5..f81c96c 100755
+--- a/build_tools/build_detect_platform
++++ b/build_tools/build_detect_platform
+@@ -8,6 +8,7 @@
+ #   CXX                         C++ Compiler path
+ #   PLATFORM_LDFLAGS            Linker flags
+ #   JAVA_LDFLAGS                Linker flags for RocksDBJava
++#   JAVA_STATIC_LDFLAGS         Linker flags for RocksDBJava static build
+ #   PLATFORM_SHARED_EXT         Extension for shared libraries
+ #   PLATFORM_SHARED_LDFLAGS     Flags for building shared library
+ #   PLATFORM_SHARED_CFLAGS      Flags for compiling objects for shared library
+@@ -181,6 +182,7 @@ esac
+ 
+ PLATFORM_CXXFLAGS="$PLATFORM_CXXFLAGS ${CXXFLAGS}"
+ JAVA_LDFLAGS="$PLATFORM_LDFLAGS"
++JAVA_STATIC_LDFLAGS="$PLATFORM_LDFLAGS"
+ 
+ if [ "$CROSS_COMPILE" = "true" -o "$FBCODE_BUILD" = "true" ]; then
+     # Cross-compiling; do not try any compilation tests.
+@@ -374,6 +376,7 @@ echo "CXX=$CXX" >> "$OUTPUT"
+ echo "PLATFORM=$PLATFORM" >> "$OUTPUT"
+ echo "PLATFORM_LDFLAGS=$PLATFORM_LDFLAGS" >> "$OUTPUT"
+ echo "JAVA_LDFLAGS=$JAVA_LDFLAGS" >> "$OUTPUT"
++echo "JAVA_STATIC_LDFLAGS=$JAVA_STATIC_LDFLAGS" >> "$OUTPUT"
+ echo "VALGRIND_VER=$VALGRIND_VER" >> "$OUTPUT"
+ echo "PLATFORM_CCFLAGS=$PLATFORM_CCFLAGS" >> "$OUTPUT"
+ echo "PLATFORM_CXXFLAGS=$PLATFORM_CXXFLAGS" >> "$OUTPUT"
+diff --git a/java/crossbuild/build-linux-centos.sh b/java/crossbuild/build-linux-centos.sh
+index d3d5b01..7fd8cfe 100755
+--- a/java/crossbuild/build-linux-centos.sh
++++ b/java/crossbuild/build-linux-centos.sh
+@@ -10,8 +10,8 @@ sudo wget -O /etc/yum.repos.d/slc5-devtoolset.repo http://linuxsoft.cern.ch/cern
+ sudo wget -O /etc/pki/rpm-gpg/RPM-GPG-KEY-cern http://ftp.mirrorservice.org/sites/ftp.scientificlinux.org/linux/scientific/51/i386/RPM-GPG-KEYs/RPM-GPG-KEY-cern
+ sudo yum -y install devtoolset-2
+ 
+-wget http://gflags.googlecode.com/files/gflags-1.6.tar.gz
+-tar xvfz gflags-1.6.tar.gz; cd gflags-1.6; scl enable devtoolset-2 ./configure; scl enable devtoolset-2 make; sudo make install
++wget http://gflags.googlecode.com/files/gflags-2.0-no-svn-files.tar.gz
++tar xvfz gflags-2.0-no-svn-files.tar.gz; cd gflags-2.0; scl enable devtoolset-2 ./configure; scl enable devtoolset-2 make; sudo make install
+ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+ 
+ # set java home so we can build rocksdb jars
+@@ -20,7 +20,7 @@ export JAVA_HOME=/usr/lib/jvm/java-1.7.0
+ # build rocksdb
+ cd /rocksdb
+ scl enable devtoolset-2 'make jclean clean'
+-scl enable devtoolset-2 'make rocksdbjavastatic'
++scl enable devtoolset-2 'PORTABLE=1 make rocksdbjavastatic'
+ cp /rocksdb/java/target/librocksdbjni-* /rocksdb-build
+ cp /rocksdb/java/target/rocksdbjni-* /rocksdb-build
+ 

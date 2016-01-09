@@ -1,0 +1,92 @@
+From 831101b5fa8ed1a1bb96d8736bab9fb98b5abdd9 Mon Sep 17 00:00:00 2001
+From: Igor Canadi <icanadi@fb.com>
+Date: Thu, 8 Oct 2015 14:11:32 -0700
+Subject: [PATCH] Make it harder for users to run debug builds in production
+
+Summary:
+I see a lot of users compiling RocksDB with `make` or `make all` and then using those binaries in production. They end up running debug builds :(
+
+This diff makes it harder for them:
+1. I added an explicit warning to INSTALL.md
+2. When you compile with `make all`, your resulting library will be librocksdb_debug.a
+3. I also print out a warning when you compile in debug mode.
+
+Hopefully should be enough :)
+
+Test Plan: none
+
+Reviewers: rven, yhchiang, kradhakrishnan, anthony, sdong, dhruba, IslamAbdelRahman
+
+Reviewed By: IslamAbdelRahman
+
+Subscribers: dhruba, leveldb
+
+Differential Revision: https://reviews.facebook.net/D48093
+---
+ INSTALL.md | 13 +++++++++----
+ Makefile   | 10 ++++++++--
+ 2 files changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/INSTALL.md b/INSTALL.md
+index 50b27c8..72865e2 100644
+--- a/INSTALL.md
++++ b/INSTALL.md
+@@ -1,19 +1,24 @@
+ ## Compilation
+ 
++**Important**: If you plan to run RocksDB in production, don't compile using default 
++`make` or `make all`. That will compile RocksDB in debug mode, which is much slower
++than release mode.
++
+ RocksDB's library should be able to compile without any dependency installed,
+ although we recommend installing some compression libraries (see below).
+ We do depend on newer gcc/clang with C++11 support.
+ 
+ There are few options when compiling RocksDB:
+ 
+-* [recommended] `make static_lib` will compile librocksdb.a, RocksDB static library.
++* [recommended] `make static_lib` will compile librocksdb.a, RocksDB static library. Compiles static library in release mode.
+ 
+-* `make shared_lib` will compile librocksdb.so, RocksDB shared library.
++* `make shared_lib` will compile librocksdb.so, RocksDB shared library. Compiles shared library in release mode.
+ 
+-* `make check` will compile and run all the unit tests
++* `make check` will compile and run all the unit tests. `make check` will compile RocksDB in debug mode.
+ 
+ * `make all` will compile our static library, and all our tools and unit tests. Our tools
+-depend on gflags. You will need to have gflags installed to run `make all`.
++depend on gflags. You will need to have gflags installed to run `make all`. This will compile RocksDB in debug mode. Don't
++use binaries compiled by `make all` in production.
+ 
+ * By default the binary we produce is optimized for the platform you're compiling on
+ (-march=native). If you want to build a portable binary, add 'PORTABLE=1' before
+diff --git a/Makefile b/Makefile
+index 009f467..11ec015 100644
+--- a/Makefile
++++ b/Makefile
+@@ -76,6 +76,8 @@ endif
+ ifeq ($(DEBUG_LEVEL),0)
+ OPT += -DNDEBUG
+ DISABLE_WARNING_AS_ERROR=1
++else
++$(warning Warning: Compiling in debug mode. Don't use the resulting binary in production)
+ endif
+ 
+ #-----------------------------------------------
+@@ -322,10 +324,14 @@ TOOLS = \
+ 
+ BENCHMARKS = db_bench table_reader_bench cache_bench memtablerep_bench
+ 
+-# The library name is configurable since we are maintaining libraries of both
+-# debug/release mode.
++# if user didn't config LIBNAME, set the default
+ ifeq ($(LIBNAME),)
++# we should only run rocksdb in production with DEBUG_LEVEL 0
++ifeq ($(DEBUG_LEVEL),0)
+         LIBNAME=librocksdb
++else
++        LIBNAME=librocksdb_debug
++endif
+ endif
+ LIBRARY = ${LIBNAME}.a
+ 
