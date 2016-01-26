@@ -16,7 +16,7 @@ LICENSE="Apache-2.0"
 SLOT="3.3"
 KEYWORDS="amd64 x86"
 
-DEPEND="|| ( app-eselect/eselect-java app-eselect/eselect-maven )"
+DEPEND="app-eselect/eselect-java"
 
 RDEPEND=">=virtual/jdk-1.7
 	${DEPEND}"
