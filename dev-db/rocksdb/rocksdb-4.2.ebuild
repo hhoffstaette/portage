@@ -38,11 +38,13 @@ ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
 # so help it along
 EXTRA_FLAGS="DEBUG_LEVEL=0 EXTRA_CXXFLAGS=-Wno-error=unused-variable"
 
-S="${WORKDIR}/${PN}-${PV}"
+# yes, the directory is called rocksdb-rocksdb-x.y
+S="${WORKDIR}/${PN}-${PN}-${PV}"
 
 src_prepare() {
-	# apply a few patches from git to fix the worst of it
-	epatch "${FILESDIR}"/*.patch
+	# apply patches
+	epatch "${FILESDIR}"/${PN}-${PV}-*.patch
+	epatch_user
 }
 
 src_compile() {
