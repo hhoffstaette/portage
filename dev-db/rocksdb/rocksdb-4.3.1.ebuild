@@ -9,7 +9,6 @@ inherit eutils
 DESCRIPTION="A library that provides an embeddable, persistent key-value store for fast storage"
 HOMEPAGE="http://rocksdb.org"
 SRC_URI="https://github.com/facebook/${PN}/archive/${P}.tar.gz"
-PATCH_VERSION=0
 
 LICENSE="BSD"
 SLOT="0"
@@ -29,7 +28,7 @@ DEPEND="${RDEPEND}"
 
 # we need to build some of the jars ourselves, so we define
 # their names from shared prefixes
-ROCKSDB_JNI=rocksdbjni-${PV}.${PATCH_VERSION}
+ROCKSDB_JNI=rocksdbjni-${PV}
 ROCKSDB_JAR=${ROCKSDB_JNI}-linux$(getconf LONG_BIT).jar
 ROCKSDB_JAVADOCS_JAR=${ROCKSDB_JNI}-javadocs.jar
 ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
