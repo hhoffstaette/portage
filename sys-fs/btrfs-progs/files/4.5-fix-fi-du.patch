@@ -1,0 +1,108 @@
+                                                                                                                                                                                                                                                               
+Delivered-To: holger.hoffstaette@gmail.com
+Received: by 10.157.43.245 with SMTP id u108csp1153773ota;
+        Mon, 21 Mar 2016 05:23:24 -0700 (PDT)
+X-Received: by 10.98.74.6 with SMTP id x6mr44454030pfa.80.1458563004046;
+        Mon, 21 Mar 2016 05:23:24 -0700 (PDT)
+Return-Path: <linux-btrfs-owner@vger.kernel.org>
+Received: from vger.kernel.org (vger.kernel.org. [209.132.180.67])
+        by mx.google.com with ESMTP id 78si18854544pft.93.2016.03.21.05.23.20;
+        Mon, 21 Mar 2016 05:23:24 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of linux-btrfs-owner@vger.kernel.org designates 209.132.180.67 as permitted sender) client-ip=209.132.180.67;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of linux-btrfs-owner@vger.kernel.org designates 209.132.180.67 as permitted sender) smtp.mailfrom=linux-btrfs-owner@vger.kernel.org;
+       dkim=neutral (body hash did not verify) header.i=@gmail.com;
+       dmarc=fail (p=NONE dis=NONE) header.from=gmail.com
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+	id S1755094AbcCUMXS (ORCPT <rfc822;ptschack@googlemail.com>
+	+ 19 others); Mon, 21 Mar 2016 08:23:18 -0400
+Received: from mail-qg0-f50.google.com ([209.85.192.50]:36249 "EHLO
+	mail-qg0-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+	with ESMTP id S1754920AbcCUMXR (ORCPT
+	<rfc822;linux-btrfs@vger.kernel.org>);
+	Mon, 21 Mar 2016 08:23:17 -0400
+Received: by mail-qg0-f50.google.com with SMTP id u110so150197977qge.3
+        for <linux-btrfs@vger.kernel.org>; Mon, 21 Mar 2016 05:23:17 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=qe/LWvm/2WGnDpNYt8fd5bQBbuvaWp4VmG+kOQGaCPc=;
+        b=uX2sn4g/Otv+wqb0mDeIouioZNisBZhrxfz0OHi5+w8VSFiffBxavsT/QrO8KouERA
+         02nsuS2Wa+d3pNqeoPD5oJW+hqahZh0210V6MCr/Oj4oQUxYjbPZSlRbxK+iI8CcxE91
+         XqNl90QAMAElV7Nff2LKTZ878ddMVtDD6OLDgCo2teGbhv5vmD+CkmWVj4LdHSUSJBOi
+         6PZiHTMRac0KNtfr/RZhATCPm7ePrgEwAQJutPFPia7HOfsx6h8lQow4mvoI/wSe/grM
+         HG9fM7Gr9omt5KrmPIgtMh7YZe2XDfYUKqC6WmXBQ4TtSfm9nCIuDq6iNaFptMAHtSI/
+         zTkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=qe/LWvm/2WGnDpNYt8fd5bQBbuvaWp4VmG+kOQGaCPc=;
+        b=TD2fZQ8vJ+TBRUukk+ZEcbYoxaVGtEQTkf0ygZr5wrYsLedC8HPdYanF+fPoinBjjl
+         2jSP0m1jKJe8rfbawbYSudl7UkCbjn3xtHbF7yYd7LMk+c4KE/XbyJ4c5Af7h/8qNDFV
+         ksXMmMfRDVvUJgHr8xBTvebWLNnuZv+31fmCASHi3gx3PuEZFHODjYAaN/zqO/BAkVo/
+         3ID7vckAfbgO6kMzoBAX17PkqDHvhLHEJi6MfS6NkeRQpzjFc3XwcRIMGRNo5+EcuECc
+         1xyGWek/eg30xpMiIIpQkBnBsuOpEdNbH1fUUayKAlrMnyC9ZRr17sWG2xlYipGy/H9x
+         PVfg==
+X-Gm-Message-State: AD7BkJITFN89lh8n2mpXmMDVCbxCUCnLz9ie7lOsqC4F7tTZ0arHnczGG1upvmf4sDXCGA==
+X-Received: by 10.140.240.3 with SMTP id l3mr42338225qhc.93.1458562996444;
+        Mon, 21 Mar 2016 05:23:16 -0700 (PDT)
+Received: from wild-karde.localdomain (rrcs-70-62-41-24.central.biz.rr.com. [70.62.41.24])
+        by smtp.googlemail.com with ESMTPSA id p129sm11982095qhp.44.2016.03.21.05.23.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 21 Mar 2016 05:23:15 -0700 (PDT)
+Received: by wild-karde.localdomain (Postfix, from userid 1000)
+	id 12B9E1A51449; Mon, 21 Mar 2016 08:23:13 -0400 (EDT)
+From:	"Austin S. Hemmelgarn" <ahferroin7@gmail.com>
+To:	linux-btrfs@vger.kernel.org, dsterba@suse.com
+Cc:	"Austin S. Hemmelgarn" <ahferroin7@gmail.com>
+Subject: [PATCH] btrfs-progs: fix fi du so it works in more cases
+Date:	Mon, 21 Mar 2016 08:23:11 -0400
+Message-Id: <1458562991-6882-1-git-send-email-ahferroin7@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Sender:	linux-btrfs-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List:	linux-btrfs@vger.kernel.org
+
+Currently, btrfs fi du uses open_file_or_dir(), which tries to open
+it's argument with o_RDWR.  Because of POSIX semantics, this fails for
+non-root users when the file is read-only or is an executable that
+is being run currently, or for all users (including root) when the
+filesystem is read-only.  THis results in a somewhat confusing 'Unknown
+error -1' message when trying to check such files.  Switch to using
+open_file_or_dir3() with O_RDONLY passed in the flags, as this avoids
+the limitations listed above, and we have no need to write to the files
+anyway (and thus shouldn't be opening them writable).
+
+Signed-off-by: Austin S. Hemmelgarn <ahferroin7@gmail.com>
+---
+Build and runtime tested on x86-64 with glibc.
+
+I intend to take the time at some point this week to audit all users of
+open_file_or_dir() and similarly change any that don't need to write
+to what they're opening, possibly adding a helper function to do a
+read-only open.
+
+ cmds-fi-du.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmds-fi-du.c b/cmds-fi-du.c
+index 2ffd917..168fc72 100644
+--- a/cmds-fi-du.c
++++ b/cmds-fi-du.c
+@@ -438,7 +438,7 @@ static int du_add_file(const char *filename, int dirfd,
+ 		ret = sprintf(pathp, "/%s", filename);
+ 	pathp += ret;
+ 
+-	fd = open_file_or_dir(path, &dirstream);
++	fd = open_file_or_dir3(path, &dirstream, O_RDONLY);
+ 	if (fd < 0) {
+ 		ret = fd;
+ 		goto out;
+-- 
+2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-btrfs" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
