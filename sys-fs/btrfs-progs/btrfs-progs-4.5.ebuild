@@ -60,6 +60,7 @@ fi
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PV}-fix-fi-du.patch
+	epatch "${FILESDIR}"/${PV}-fix-a-false-metadata-extent-warning.patch
 	epatch_user
 	if [[ ${PV} == 9999 ]]; then
 		eautoreconf
