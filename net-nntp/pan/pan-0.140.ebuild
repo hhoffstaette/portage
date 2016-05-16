@@ -45,6 +45,5 @@ src_configure() {
 		$(use_enable gnome-keyring gkr) \
 		$(use_with spell gtkspell) \
 		$(use_enable libnotify) \
-		$(use_with ssl gnutls) \
-		CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0"
+		$(use_with ssl gnutls)
 }
