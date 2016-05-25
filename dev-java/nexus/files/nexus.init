@@ -1,4 +1,4 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
 
 DEF_APP_NAME="nexus"
 DEF_APP_LONG_NAME="Nexus Wrapper Sample Application"
