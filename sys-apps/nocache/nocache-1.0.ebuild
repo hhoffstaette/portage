@@ -8,9 +8,13 @@ HOMEPAGE="https://github.com/Feh/nocache"
 SRC_URI="https://github.com/Feh/nocache/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="x86 amd64"
 
 RDEPEND="${DEPEND}"
+
+src_prepare() {
+	epatch_user
+}
 
 src_compile() {
 	emake CFLAGS="${CFLAGS}" || die "Make failed!"
