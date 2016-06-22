@@ -1,5 +1,5 @@
---- deluge/core/alertmanager.py~	2013-02-25 18:01:07.000000000 +0100
-+++ deluge/core/alertmanager.py	2013-03-01 14:34:51.356633948 +0100
+--- a/deluge/core/alertmanager.py	2013-02-25 18:01:07.000000000 +0100
++++ b/deluge/core/alertmanager.py	2013-03-01 14:34:51.356633948 +0100
 @@ -51,7 +51,7 @@
  class AlertManager(component.Component):
      def __init__(self):
