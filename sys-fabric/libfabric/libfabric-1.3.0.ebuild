@@ -16,8 +16,8 @@ IUSE=""
 
 # TODO: need to actually test building with IB providers
 # IUSE="-psm -verbs"
-# DEPEND="psm? ( sys-infiniband/infinipath-psm )
-#	verbs? ( sys-infiniband/libibverbs )"
+# DEPEND="psm? ( sys-fabric/infinipath-psm )
+#	verbs? ( sys-fabric/libibverbs )"
 
 RDEPEND="${DEPEND}"
 
