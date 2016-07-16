@@ -51,17 +51,18 @@ src_configure() {
 		# libscap examples are not installed or really useful
 		-DBUILD_LIBSCAP_EXAMPLES=OFF
 
-		# unbundle the deps
-		-DUSE_BUNDLED_DEPS=OFF
-#		-DUSE_BUNDLED_LUAJIT=OFF
+		# unbundle the deps selectively
+		# MUST use the bundled jq because $CPP_BULLSHIT_REASONS
+#		-DUSE_BUNDLED_DEPS=OFF
+		-DUSE_BUNDLED_LUAJIT=OFF
 #		-DLUAJIT_PREFIX="${EPREFIX}"/usr
 #		-DLUAJIT_INCLUDE="${EPREFIX}"/usr/include/luajit-2.0
-#		-DUSE_BUNDLED_JSONCPP=OFF
+		-DUSE_BUNDLED_JSONCPP=OFF
 #		-DJSONCPP_PREFIX="${EPREFIX}"/usr
 #		-DJSONCPP_INCLUDE="${EPREFIX}"/usr/include/jsoncpp
-#		-DUSE_BUNDLED_NCURSES=OFF
-#		-DUSE_BUNDLED_OPENSSL=OFF
-#		-DUSE_BUNDLED_CURL=OFF
+		-DUSE_BUNDLED_NCURSES=OFF
+		-DUSE_BUNDLED_OPENSSL=OFF
+		-DUSE_BUNDLED_CURL=OFF
 #		-DZLIB_PREFIX="${EPREFIX}"/usr
 	)
 
