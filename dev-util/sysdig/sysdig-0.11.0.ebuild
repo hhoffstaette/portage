@@ -16,6 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="+modules"
 
 RDEPEND="
+	app-misc/jq:0=
 	dev-lang/luajit:2=
 	>=dev-libs/jsoncpp-0.6_pre:0=
 	dev-libs/libb64:0=
@@ -40,7 +41,7 @@ pkg_setup() {
 
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
-
+	epatch "${FILESDIR}/${PV}-do-not-use-private-jq-api.patch"
 	cmake-utils_src_prepare
 }
 
@@ -51,21 +52,20 @@ src_configure() {
 		# libscap examples are not installed or really useful
 		-DBUILD_LIBSCAP_EXAMPLES=OFF
 
-		# unbundle the deps selectively
-#		-DUSE_BUNDLED_DEPS=OFF
-		# MUST use the bundled jq because $CPP_BULLSHIT_REASONS
-		-DUSE_BUNDLED_JQ=ON
-		-DUSE_BUNDLED_LUAJIT=OFF
+		# unbundle the deps
+		-DUSE_BUNDLED_DEPS=OFF
+#		-DUSE_BUNDLED_JQ=OFF
+#		-DUSE_BUNDLED_LUAJIT=OFF
 #		-DLUAJIT_PREFIX="${EPREFIX}"/usr
 #		-DLUAJIT_INCLUDE="${EPREFIX}"/usr/include/luajit-2.0
-		-DUSE_BUNDLED_JSONCPP=OFF
+#		-DUSE_BUNDLED_JSONCPP=OFF
 #		-DJSONCPP_PREFIX="${EPREFIX}"/usr
 #		-DJSONCPP_INCLUDE="${EPREFIX}"/usr/include/jsoncpp
-		-DUSE_BUNDLED_B64=OFF
-		-DUSE_BUNDLED_NCURSES=OFF
-		-DUSE_BUNDLED_OPENSSL=OFF
-		-DUSE_BUNDLED_CURL=OFF
-		-DUSE_BUNDLED_ZLIB=OFF
+#		-DUSE_BUNDLED_B64=OFF
+#		-DUSE_BUNDLED_NCURSES=OFF
+#		-DUSE_BUNDLED_OPENSSL=OFF
+#		-DUSE_BUNDLED_CURL=OFF
+#		-DUSE_BUNDLED_ZLIB=OFF
 #		-DZLIB_PREFIX="${EPREFIX}"/usr
 	)
 
