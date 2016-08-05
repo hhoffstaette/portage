@@ -1,9 +1,9 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-inherit autotools eutils toolchain-funcs
+EAPI=6
+inherit autotools toolchain-funcs
 
 MY_P=${P/graphicsm/GraphicsM}
 
@@ -13,11 +13,11 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.xz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE="bzip2 cxx debug fpx imagemagick jbig jpeg jpeg2k lcms lzma modules openmp
 	perl png postscript q16 q32 static-libs svg threads tiff truetype webp wmf X zlib"
 
-RDEPEND=">=sys-devel/libtool-2.2.6b
+RDEPEND="dev-libs/libltdl:0
 	bzip2? ( app-arch/bzip2 )
 	fpx? ( media-libs/libfpx )
 	imagemagick? ( !media-gfx/imagemagick )
@@ -46,13 +46,14 @@ DEPEND="${RDEPEND}"
 
 S=${WORKDIR}/${MY_P}
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.3.19-flags.patch
+	"${FILESDIR}"/${PN}-1.3.19-perl.patch
+	"${FILESDIR}"/${PN}-1.3.20-powerpc.patch
+)
+
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-1.3.19-flags.patch
-	epatch "${FILESDIR}"/${PN}-1.3.19-perl.patch
-	epatch "${FILESDIR}"/${PN}-1.3.20-powerpc.patch
-
-	epatch_user #498942
-
+	default
 	eautoreconf
 }
 
@@ -91,7 +92,6 @@ src_configure() {
 		$(use_with webp) \
 		$(use_with jpeg) \
 		$(use_with jpeg2k jp2) \
-		--without-lcms \
 		$(use_with lcms lcms2) \
 		$(use_with lzma) \
 		$(use_with png) \
