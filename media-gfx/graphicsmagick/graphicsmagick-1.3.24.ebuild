@@ -50,6 +50,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.3.19-flags.patch
 	"${FILESDIR}"/${PN}-1.3.19-perl.patch
 	"${FILESDIR}"/${PN}-1.3.20-powerpc.patch
+	"${FILESDIR}"/${PN}-1.3.24-libomp.patch
 )
 
 src_prepare() {
