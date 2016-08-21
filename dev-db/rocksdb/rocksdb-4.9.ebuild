@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils
+inherit eutils versionator
 
 DESCRIPTION="A library that provides an embeddable, persistent key-value store for fast storage"
 HOMEPAGE="http://rocksdb.org"
@@ -20,15 +20,19 @@ RDEPEND="
 	app-arch/lz4
 	app-arch/snappy
 	dev-cpp/gflags
+	dev-libs/jemalloc
 	java? ( virtual/jdk )
 	sys-libs/zlib
 "
 
 DEPEND="${RDEPEND}"
 
+# versioning is hard
+[[ $(get_version_component_count) == 2 ]] && MICROVERSION=".0"
+
 # we need to build some of the jars ourselves, so we define
 # their names from shared prefixes
-ROCKSDB_JNI=rocksdbjni-${PV}
+ROCKSDB_JNI=rocksdbjni-${PV}${MICROVERSION}
 ROCKSDB_JAR=${ROCKSDB_JNI}-linux$(getconf LONG_BIT).jar
 ROCKSDB_JAVADOCS_JAR=${ROCKSDB_JNI}-javadocs.jar
 ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
