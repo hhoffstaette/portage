@@ -12,10 +12,11 @@ HOMEPAGE="http://www.graphicsmagick.org/"
 SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.xz"
 
 LICENSE="MIT"
-SLOT="0"
-KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos"
+SLOT="0/${PV%.*}"
+KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE="bzip2 cxx debug fpx imagemagick jbig jpeg jpeg2k lcms lzma modules openmp
-	perl png postscript q16 q32 static-libs svg threads tiff truetype webp wmf X zlib"
+	perl png postscript q16 q32 static-libs svg test threads tiff truetype
+	webp wmf X zlib"
 
 RDEPEND="dev-libs/libltdl:0
 	bzip2? ( app-arch/bzip2 )
@@ -42,15 +43,15 @@ RDEPEND="dev-libs/libltdl:0
 		x11-libs/libXext
 		)
 	zlib? ( sys-libs/zlib )"
-DEPEND="${RDEPEND}"
+# corefonts are required because needed arial font (bug #588398).
+DEPEND="${RDEPEND}
+	test? ( media-fonts/corefonts )"
 
 S=${WORKDIR}/${MY_P}
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.3.19-flags.patch
 	"${FILESDIR}"/${PN}-1.3.19-perl.patch
-	"${FILESDIR}"/${PN}-1.3.20-powerpc.patch
-	"${FILESDIR}"/${PN}-1.3.24-libomp.patch
 )
 
 src_prepare() {
@@ -69,8 +70,6 @@ src_configure() {
 	fi
 
 	econf \
-		--docdir="${EPREFIX}"/usr/share/doc/${PF} \
-		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html \
 		--${openmp}-openmp \
 		--enable-largefile \
 		--enable-shared \
@@ -122,9 +121,9 @@ src_install() {
 
 	if use perl; then
 		emake -C PerlMagick DESTDIR="${D}" install
-		find "${ED}" -type f -name perllocal.pod -exec rm -f {} +
-		find "${ED}" -depth -mindepth 1 -type d -empty -exec rm -rf {} +
+		find "${ED}" -type f -name perllocal.pod -exec rm -f {} + || die
+		find "${ED}" -depth -mindepth 1 -type d -empty -exec rm -rf {} + || die
 	fi
 
-	find "${ED}" -name '*.la' -exec sed -i -e "/^dependency_libs/s:=.*:='':" {} +
+	find "${ED}" -name '*.la' -exec sed -i -e "/^dependency_libs/s:=.*:='':" {} + || die
 }
