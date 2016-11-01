@@ -41,7 +41,7 @@ pkg_setup() {
 
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
-	epatch "${FILESDIR}/${PV}-do-not-use-private-jq-api.patch"
+	epatch "${FILESDIR}/${PV}-properly-link-to-unbundled-openssl.patch"
 	cmake-utils_src_prepare
 }
 

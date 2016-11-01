@@ -1,0 +1,86 @@
+From 8763adc136a169b750c3bb404fc0dddf91eda6e0 Mon Sep 17 00:00:00 2001
+From: Raghavendra D Prabhu <me@rdprabhu.com>
+Date: Mon, 31 Oct 2016 21:18:08 +0000
+Subject: [PATCH] build: Fix openssl build when not using the bundled library.
+ (#672)
+
+Otherwise, with
+cmake -DCMAKE_BUILD_TYPE=Debug  -DUSE_BUNDLED_OPENSSL=OFF ..
+one gets
+
+```
+[ 96%] Linking CXX executable csysdig
+[ 97%] Linking CXX executable sysdig
+/usr/bin/ld: ../libsinsp/libsinsp.a(k8s_handler.cpp.o): undefined reference to symbol 'SSL_CTX_use_PrivateKey_file'
+/usr/lib/libssl.so.1.0.0: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status
+make[2]: *** [userspace/sysdig/CMakeFiles/csysdig.dir/build.make:131: userspace/sysdig/csysdig] Error 1
+make[1]: *** [CMakeFiles/Makefile2:275: userspace/sysdig/CMakeFiles/csysdig.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+/usr/bin/ld: ../libsinsp/libsinsp.a(k8s_handler.cpp.o): undefined reference to symbol 'SSL_CTX_use_PrivateKey_file'
+/usr/lib/libssl.so.1.0.0: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status
+make[2]: *** [userspace/sysdig/CMakeFiles/sysdig.dir/build.make:129: userspace/sysdig/sysdig] Error 1
+make[1]: *** [CMakeFiles/Makefile2:323: userspace/sysdig/CMakeFiles/sysdig.dir/all] Error 2
+make: *** [Makefile:139: all] Error 2
+```
+
+This is because linking to libssl and libcrypto is not done (after
+find_package in CMakeLists.txt) when using
+the system libraries.
+
+Also, fix the curl ssl dependency.
+
+sysdig-CLA-1.0-signed-off-by: Raghavendra Prabhu <me@rdprabhu.com>
+---
+ CMakeLists.txt                    |  6 +++---
+ userspace/libsinsp/CMakeLists.txt | 11 +++++++++--
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e2df948..798ecbd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -324,13 +324,13 @@ if(NOT WIN32 AND NOT APPLE)
+ 		set(CURL_LIBRARIES "${CURL_BUNDLE_DIR}/lib/.libs/libcurl.a")
+ 
+ 		if(NOT USE_BUNDLED_OPENSSL)
+-			set(CURL_SSL_OPTION "")
++			set(CURL_SSL_OPTION "--with-ssl")
+ 		else()
+ 			set(CURL_SSL_OPTION "--with-ssl=${OPENSSL_INSTALL_DIR}")
++                        message(STATUS "Using bundled curl in '${CURL_BUNDLE_DIR}'")
++                        message(STATUS "Using SSL for curl in '${CURL_SSL_OPTION}'")
+ 		endif()
+ 
+-		message(STATUS "Using bundled curl in '${CURL_BUNDLE_DIR}'")
+-		message(STATUS "Using SSL for curl in '${CURL_SSL_OPTION}'")
+ 
+ 		ExternalProject_Add(curl
+ 			DEPENDS openssl
+diff --git a/userspace/libsinsp/CMakeLists.txt b/userspace/libsinsp/CMakeLists.txt
+index 9530922..7595b47 100644
+--- a/userspace/libsinsp/CMakeLists.txt
++++ b/userspace/libsinsp/CMakeLists.txt
+@@ -94,12 +94,19 @@ if(NOT WIN32)
+ 			"${JQ_LIB}"
+ 			"${B64_LIB}"
+ 			"${CURL_LIBRARIES}"
+-			"${OPENSSL_LIBRARY_SSL}"
+-			"${OPENSSL_LIBRARY_CRYPTO}"
+ 			rt
+ 			anl)
+ 	endif()
+ 
++        if(USE_BUNDLED_OPENSSL)
++		target_link_libraries(sinsp
++			"${OPENSSL_LIBRARY_SSL}"
++			"${OPENSSL_LIBRARY_CRYPTO}")
++        else()
++		target_link_libraries(sinsp
++                    "${OPENSSL_LIBRARIES}")
++        endif()
++
+ 	target_link_libraries(sinsp
+ 		"${LUAJIT_LIB}"
+ 		dl
