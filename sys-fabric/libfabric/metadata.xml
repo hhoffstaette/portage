@@ -2,10 +2,11 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer>
-		<email>holger.hoffstaette@googlemail.com</email>
+		<email>holger@applied-asynchrony.com</email>
 		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<use>
+		<!-- USE flags are not yet supported thanks to the rdma-core reorg -->
 		<!-- flag name='psm'>Provider for Intel PSM.</flag -->
 		<!-- flag name='verbs'>Provider for OFI Verbs.</flag -->
 	</use>
