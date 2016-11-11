@@ -1,9 +1,11 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
+# cmake generates make-specific code
+#: ${CMAKE_MAKEFILE_GENERATOR:=ninja}
 inherit linux-mod bash-completion-r1 cmake-utils
 
 DESCRIPTION="A system exploration and troubleshooting tool"
@@ -41,7 +43,7 @@ pkg_setup() {
 
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
-	epatch "${FILESDIR}/${PV}-properly-link-to-unbundled-openssl.patch"
+
 	cmake-utils_src_prepare
 }
 
@@ -54,19 +56,6 @@ src_configure() {
 
 		# unbundle the deps
 		-DUSE_BUNDLED_DEPS=OFF
-#		-DUSE_BUNDLED_JQ=OFF
-#		-DUSE_BUNDLED_LUAJIT=OFF
-#		-DLUAJIT_PREFIX="${EPREFIX}"/usr
-#		-DLUAJIT_INCLUDE="${EPREFIX}"/usr/include/luajit-2.0
-#		-DUSE_BUNDLED_JSONCPP=OFF
-#		-DJSONCPP_PREFIX="${EPREFIX}"/usr
-#		-DJSONCPP_INCLUDE="${EPREFIX}"/usr/include/jsoncpp
-#		-DUSE_BUNDLED_B64=OFF
-#		-DUSE_BUNDLED_NCURSES=OFF
-#		-DUSE_BUNDLED_OPENSSL=OFF
-#		-DUSE_BUNDLED_CURL=OFF
-#		-DUSE_BUNDLED_ZLIB=OFF
-#		-DZLIB_PREFIX="${EPREFIX}"/usr
 	)
 
 	cmake-utils_src_configure
