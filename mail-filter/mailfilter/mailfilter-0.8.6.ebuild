@@ -21,7 +21,6 @@ RDEPEND=""
 
 src_prepare() {
 	default
-	epatch "${FILESDIR}/${PV}-fix-std-namespace.patch"
 }
 
 src_configure() {
