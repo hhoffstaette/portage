@@ -1,0 +1,96 @@
+From 39ac268f9d0dd43cf5efebac354670d44548c5bd Mon Sep 17 00:00:00 2001
+From: Luca Marturana <lucamarturana@gmail.com>
+Date: Tue, 29 Nov 2016 10:38:32 +0100
+Subject: [PATCH] Fix compilation issues with kernel 4.9 (#684)
+
+* Fix compilation issues with kernel 4.9
+
+related commits:
+https://github.com/torvalds/linux/commit/4c737b41de7f4eef2a593803bad1b918dd718b10
+https://github.com/torvalds/linux/commit/b9d989c7218ac922185d82ad46f3e58b27a4bea9
+
+* map io cgroup to blkio, fix for kernels >= 4.8
+---
+ driver/main.c                     |  8 ++++++++
+ driver/ppm_fillers.c              | 14 ++++++++++++--
+ userspace/libsinsp/threadinfo.cpp |  7 +++++++
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/driver/main.c b/driver/main.c
+index a9229ac..c274b8f 100644
+--- a/driver/main.c
++++ b/driver/main.c
+@@ -1627,7 +1627,11 @@ TRACEPOINT_PROBE(syscall_enter_probe, struct pt_regs *regs, long id)
+ 	 * If this is a 32bit process running on a 64bit kernel (see the CONFIG_IA32_EMULATION
+ 	 * kernel flag), we switch to the ia32 syscall table.
+ 	 */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
++	if(in_ia32_syscall()) {
++#else
+ 	if (unlikely(task_thread_info(current)->status & TS_COMPAT)) {
++#endif
+ 		cur_g_syscall_table = g_syscall_ia32_table;
+ 		cur_g_syscall_code_routing_table = g_syscall_ia32_code_routing_table;
+ 		socketcall_syscall = __NR_ia32_socketcall;
+@@ -1689,7 +1693,11 @@ TRACEPOINT_PROBE(syscall_exit_probe, struct pt_regs *regs, long ret)
+ 	 * use 64bit syscall table. On 32bit __NR_execve is equal to __NR_ia32_oldolduname
+ 	 * which is a very old syscall, not used anymore by most applications
+ 	 */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
++	if(in_ia32_syscall() && id != __NR_execve) {
++#else
+ 	if (unlikely((task_thread_info(current)->status & TS_COMPAT) && id != __NR_execve)) {
++#endif
+ 		cur_g_syscall_table = g_syscall_ia32_table;
+ 		cur_g_syscall_code_routing_table = g_syscall_ia32_code_routing_table;
+ 		socketcall_syscall = __NR_ia32_socketcall;
+diff --git a/driver/ppm_fillers.c b/driver/ppm_fillers.c
+index 8e818e3..5bf28db 100644
+--- a/driver/ppm_fillers.c
++++ b/driver/ppm_fillers.c
+@@ -812,7 +812,7 @@ static int append_cgroup(const char *subsys_name, int subsys_id, char *buf, int
+ 	int subsys_len;
+ 	char *path;
+ 
+-#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 15, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 15, 0) || LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
+ 	int res;
+ #endif
+ 
+@@ -832,7 +832,17 @@ static int append_cgroup(const char *subsys_name, int subsys_id, char *buf, int
+ 		return 1;
+ 	}
+ 
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
++	// According to https://github.com/torvalds/linux/commit/4c737b41de7f4eef2a593803bad1b918dd718b10
++	// cgroup_path now returns an int again
++	res = cgroup_path(css->cgroup, buf, *available);
++	if (res < 0) {
++		ASSERT(false);
++		path = "NA";
++	} else {
++		path = buf;
++	}
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)
+ 	path = cgroup_path(css->cgroup, buf, *available);
+ 	if (!path) {
+ 		ASSERT(false);
+diff --git a/userspace/libsinsp/threadinfo.cpp b/userspace/libsinsp/threadinfo.cpp
+index 1aeb988..0bb9463 100644
+--- a/userspace/libsinsp/threadinfo.cpp
++++ b/userspace/libsinsp/threadinfo.cpp
+@@ -535,6 +535,13 @@ void sinsp_threadinfo::set_cgroups(const char* cgroups, size_t len)
+ 		{
+ 			subsys = "memory";
+ 		}
++		else if(subsys == "io")
++		{
++			// blkio has been renamed just `io`
++			// in kernel space:
++			// https://github.com/torvalds/linux/commit/c165b3e3c7bb68c2ed55a5ac2623f030d01d9567
++			subsys = "blkio";
++		}
+ 
+ 		m_cgroups.push_back(std::make_pair(subsys, cgroup));
+ 		offset += subsys_length + 1 + cgroup.length() + 1;

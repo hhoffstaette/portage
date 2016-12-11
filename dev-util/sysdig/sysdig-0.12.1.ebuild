@@ -42,6 +42,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/0.12.1-fix-compilation-with-kernel-4.9.patch"
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
 
 	cmake-utils_src_prepare
