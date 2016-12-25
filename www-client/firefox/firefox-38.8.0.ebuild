@@ -143,6 +143,9 @@ src_prepare() {
 			8010_bug114311-freetype26.patch" \
 	epatch "${WORKDIR}/firefox"
 
+	# for nss-3.28+
+	epatch "${FILESDIR}/nss-3.28-Http2Session.patch"
+
 	# Allow user to apply any additional patches without modifing ebuild
 	epatch_user
 
