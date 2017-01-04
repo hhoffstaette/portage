@@ -44,6 +44,8 @@ pkg_setup() {
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
 
+	epatch "${FILESDIR}/${PV}-fix-build-for-4.9.1+.patch"
+
 	cmake-utils_src_prepare
 }
 
