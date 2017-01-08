@@ -144,7 +144,9 @@ src_prepare() {
 	epatch "${WORKDIR}/firefox"
 
 	# for nss-3.28+
-	epatch "${FILESDIR}/nss-3.28-Http2Session.patch"
+	epatch "${FILESDIR}/update_h2_curve.patch"
+	# for sed-4.3+
+	epatch "${FILESDIR}/mozilla_configure_regexp_esr.patch"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	epatch_user
