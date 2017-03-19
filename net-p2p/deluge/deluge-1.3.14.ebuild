@@ -36,7 +36,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-alertmanager_interval.patch"
 )
 
-CDEPEND=">=net-libs/rb_libtorrent-0.16.17[python,${PYTHON_USEDEP}]"
+CDEPEND=">=net-libs/libtorrent-rasterbar-0.16.17[python,${PYTHON_USEDEP}]"
 DEPEND="${CDEPEND}
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	dev-util/intltool"
