@@ -1,0 +1,48 @@
+From cdb4f5881c3d53f85a98124fb8894da9775a1062 Mon Sep 17 00:00:00 2001
+From: David Sterba <dsterba@suse.com>
+Date: Mon, 27 Mar 2017 14:19:47 +0200
+Subject: [PATCH] btrfs-progs: library: add messages.o to library objects
+
+The library test used messages.o directly to provide defintion of
+__error, but this is wrong and did not catch build problems like
+
+https://bugs.gentoo.org/show_bug.cgi?id=613890
+
+All objects must be listed among libbtrfs_objects.
+
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index d1af431..653df87 100644
+--- a/Makefile
++++ b/Makefile
+@@ -104,7 +104,7 @@ cmds_objects = cmds-subvolume.o cmds-filesystem.o cmds-device.o cmds-scrub.o \
+ 	       cmds-inspect-dump-super.o cmds-inspect-tree-stats.o cmds-fi-du.o \
+ 	       mkfs/common.o
+ libbtrfs_objects = send-stream.o send-utils.o kernel-lib/rbtree.o btrfs-list.o \
+-		   kernel-lib/crc32c.o \
++		   kernel-lib/crc32c.o messages.o \
+ 		   uuid-tree.o utils-lib.o rbtree-utils.o
+ libbtrfs_headers = send-stream.h send-utils.h send.h kernel-lib/rbtree.h btrfs-list.h \
+ 	       kernel-lib/crc32c.h kernel-lib/list.h kerncompat.h \
+@@ -446,7 +446,7 @@ test-ioctl: ioctl-test ioctl-test-32 ioctl-test-64
+ 	$(Q)./ioctl-test-32 > ioctl-test-32.log
+ 	$(Q)./ioctl-test-64 > ioctl-test-64.log
+ 
+-library-test: library-test.c messages.o $(libs_shared)
++library-test: library-test.c $(libs_shared)
+ 	@echo "    [TEST PREP]  $@"$(eval TMPD=$(shell mktemp -d))
+ 	$(Q)mkdir -p $(TMPD)/include/btrfs && \
+ 	cp $(libbtrfs_headers) $(TMPD)/include/btrfs && \
+@@ -456,7 +456,7 @@ library-test: library-test.c messages.o $(libs_shared)
+ 	@echo "    [TEST CLEAN] $@"
+ 	$(Q)$(RM) -rf -- $(TMPD)
+ 
+-library-test.static: library-test.c messages.static.o $(libs_static)
++library-test.static: library-test.c $(libs_static)
+ 	@echo "    [TEST PREP]  $@"$(eval TMPD=$(shell mktemp -d))
+ 	$(Q)mkdir -p $(TMPD)/include/btrfs && \
+ 	cp $(libbtrfs_headers) $(TMPD)/include/btrfs && \
