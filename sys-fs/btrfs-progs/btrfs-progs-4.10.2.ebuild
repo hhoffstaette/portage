@@ -54,7 +54,6 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PV}-add-messages-to-library-objects.patch
 )
 
 if [[ ${PV} == 9999 ]]; then
