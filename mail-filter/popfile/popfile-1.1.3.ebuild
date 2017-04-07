@@ -38,11 +38,12 @@ S="${WORKDIR}"
 src_prepare() {
     # patch templates for relative URLs
 	local f
-	for f in `find skins/default -name "*.thtml"`
+	for f in `find skins -name "*.thtml"`
 	do
-	    sed s/'action\=\"\/'/'action\=\"'/g $f > $f.tmp
-	    sed s/'href\=\"\/'/'href\=\"'/g $f.tmp > $f
-		rm -f $f.tmp
+		sed s/'action\=\"\/'/'action\=\"'/g $f > $f.tmp1
+		sed s/'href\=\"\/'/'href\=\"'/g $f.tmp1 > $f.tmp2
+		sed s/'src\=\"\/'/'src\=\"'/g $f.tmp2 > $f
+		rm -f $f.tmp1 $f.tmp2
 	done
 	
 	# increase select timeout
