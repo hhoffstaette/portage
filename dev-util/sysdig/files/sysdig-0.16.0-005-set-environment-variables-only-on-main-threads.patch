@@ -1,0 +1,295 @@
+From 41bb370e85d509fc387ffc886f4ea49f78fb0a32 Mon Sep 17 00:00:00 2001
+From: Luca Marturana <lucamarturana@gmail.com>
+Date: Tue, 6 Jun 2017 00:45:37 +0200
+Subject: [PATCH] Set environment variables only on main threads (#848)
+
+* Set environment variables only on main threads
+
+* Set cwd only on main thread, it causes extra thread lookups during startup
+
+* Add few sanity checks for the presence of tinfo
+
+* more of the previous
+
+* more of the previous
+
+* Replace all access to m_env with a call to the getter get_env()
+
+* Other nullptr tinfo checks
+
+* Add other nullptr checks
+---
+ userspace/libsinsp/chisel_api.cpp   |  6 ++---
+ userspace/libsinsp/container.cpp    |  2 +-
+ userspace/libsinsp/filterchecks.cpp |  5 +++--
+ userspace/libsinsp/parsers.cpp      | 45 ++++++++++++++++++++++++++++++++-----
+ userspace/libsinsp/threadinfo.cpp   | 33 +++++++++++++++++++++++----
+ userspace/libsinsp/threadinfo.h     |  9 +++-----
+ 6 files changed, 79 insertions(+), 21 deletions(-)
+
+diff --git a/userspace/libsinsp/chisel_api.cpp b/userspace/libsinsp/chisel_api.cpp
+index 9b15c597e..b9fdf6675 100644
+--- a/userspace/libsinsp/chisel_api.cpp
++++ b/userspace/libsinsp/chisel_api.cpp
+@@ -832,12 +832,12 @@ int lua_cbacks::get_thread_table(lua_State *ls)
+ 		//
+ 		lua_pushstring(ls, "env");
+ 
+-		vector<string>* env = &(it->second.m_env);
++		const auto& env = it->second.get_env();
+ 		lua_newtable(ls);
+-		for(j = 0; j < env->size(); j++)
++		for(j = 0; j < env.size(); j++)
+ 		{
+ 			lua_pushinteger(ls, j + 1);
+-			lua_pushstring(ls, env->at(j).c_str());
++			lua_pushstring(ls, env.at(j).c_str());
+ 			lua_settable(ls, -3);
+ 		}
+ 		lua_settable(ls,-3);
+diff --git a/userspace/libsinsp/container.cpp b/userspace/libsinsp/container.cpp
+index 0d517a1eb..29a561b4c 100644
+--- a/userspace/libsinsp/container.cpp
++++ b/userspace/libsinsp/container.cpp
+@@ -425,7 +425,7 @@ bool sinsp_container_manager::resolve_container(sinsp_threadinfo* tinfo, bool qu
+ 
+ 				sinsp_threadinfo::visitor_func_t visitor = [&rkt_podid, &container_info, &rkt_appname, &valid_id] (sinsp_threadinfo *ptinfo)
+ 				{
+-					for(const auto& env_var : ptinfo->m_env)
++					for(const auto& env_var : ptinfo->get_env())
+ 					{
+ 						auto container_uuid_pos = env_var.find(COREOS_PODID_VAR);
+ 						if(container_uuid_pos == 0)
+diff --git a/userspace/libsinsp/filterchecks.cpp b/userspace/libsinsp/filterchecks.cpp
+index e77c1485a..84376b721 100644
+--- a/userspace/libsinsp/filterchecks.cpp
++++ b/userspace/libsinsp/filterchecks.cpp
+@@ -1696,11 +1696,12 @@ uint8_t* sinsp_filter_check_thread::extract(sinsp_evt *evt, OUT uint32_t* len, b
+ 			m_tstr.clear();
+ 
+ 			uint32_t j;
+-			uint32_t nargs = (uint32_t)tinfo->m_env.size();
++			const auto& env = tinfo->get_env();
++			uint32_t nargs = (uint32_t)env.size();
+ 
+ 			for(j = 0; j < nargs; j++)
+ 			{
+-				m_tstr += tinfo->m_env[j];
++				m_tstr += env[j];
+ 				if(j < nargs -1)
+ 				{
+ 					m_tstr += ' ';
+diff --git a/userspace/libsinsp/parsers.cpp b/userspace/libsinsp/parsers.cpp
+index 14559a323..02d05da2a 100644
+--- a/userspace/libsinsp/parsers.cpp
++++ b/userspace/libsinsp/parsers.cpp
+@@ -201,7 +201,7 @@ void sinsp_parser::process_event(sinsp_evt *evt)
+ 			//
+ 			sinsp_fdinfo_t* fdinfo = evt->m_fdinfo;
+ 
+-			if(fdinfo == NULL)
++			if(fdinfo == NULL && evt->m_tinfo != nullptr)
+ 			{
+ 				fdinfo = evt->m_tinfo->get_fd(evt->m_tinfo->m_lastevent_fd);
+ 				evt->m_fdinfo = fdinfo;
+@@ -275,7 +275,7 @@ void sinsp_parser::process_event(sinsp_evt *evt)
+ 		store_event(evt);
+ 		break;
+ 	case PPME_SYSCALL_WRITE_E:
+-		if(!m_inspector->m_is_dumping)
++		if(!m_inspector->m_is_dumping && evt->m_tinfo != nullptr)
+ 		{
+ 			evt->m_fdinfo = evt->m_tinfo->get_fd(evt->m_tinfo->m_lastevent_fd);
+ 			if(evt->m_fdinfo)
+@@ -1832,6 +1832,10 @@ void sinsp_parser::parse_open_openat_creat_exit(sinsp_evt *evt)
+ 	string sdir;
+ 
+ 	ASSERT(evt->m_tinfo);
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
+ 
+ 	//
+ 	// Load the enter event so we can access its arguments
+@@ -2075,6 +2079,11 @@ void sinsp_parser::parse_socket_exit(sinsp_evt *evt)
+ 		return;
+ 	}
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
++
+ 	//
+ 	// Load the enter event so we can access its arguments
+ 	//
+@@ -2510,7 +2519,7 @@ void sinsp_parser::parse_close_exit(sinsp_evt *evt)
+ 	//
+ 	if(retval >= 0)
+ 	{
+-		if(evt->m_fdinfo == NULL)
++		if(evt->m_fdinfo == NULL || evt->m_tinfo == nullptr)
+ 		{
+ 			return;
+ 		}
+@@ -2611,6 +2620,12 @@ void sinsp_parser::parse_socketpair_exit(sinsp_evt *evt)
+ 		return;
+ 	}
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		// There is nothing we can do here if tinfo is missing
++		return;
++	}
++
+ 	parinfo = evt->get_param(1);
+ 	ASSERT(parinfo->m_len == sizeof(int64_t));
+ 	fd1 = *(int64_t *)parinfo->m_val;
+@@ -3406,7 +3421,7 @@ void sinsp_parser::parse_fchdir_exit(sinsp_evt *evt)
+ 		//
+ 		// Find the fd name
+ 		//
+-		if(evt->m_fdinfo == NULL)
++		if(evt->m_fdinfo == NULL || evt->m_tinfo == nullptr)
+ 		{
+ 			return;
+ 		}
+@@ -3520,6 +3535,11 @@ void sinsp_parser::parse_dup_exit(sinsp_evt *evt)
+ 	sinsp_evt_param *parinfo;
+ 	int64_t retval;
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
++
+ 	//
+ 	// Extract the return value
+ 	//
+@@ -3587,6 +3607,11 @@ void sinsp_parser::parse_signalfd_exit(sinsp_evt *evt)
+ 	retval = *(int64_t *)parinfo->m_val;
+ 	ASSERT(parinfo->m_len == sizeof(int64_t));
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
++
+ 	//
+ 	// Check if the syscall was successful
+ 	//
+@@ -3651,6 +3676,11 @@ void sinsp_parser::parse_inotify_init_exit(sinsp_evt *evt)
+ 	retval = *(int64_t *)parinfo->m_val;
+ 	ASSERT(parinfo->m_len == sizeof(int64_t));
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
++
+ 	//
+ 	// Check if the syscall was successful
+ 	//
+@@ -3679,6 +3709,11 @@ void sinsp_parser::parse_getrlimit_setrlimit_exit(sinsp_evt *evt)
+ 	uint8_t resource;
+ 	int64_t curval;
+ 
++	if(evt->m_tinfo == nullptr)
++	{
++		return;
++	}
++	
+ 	//
+ 	// Extract the return value
+ 	//
+@@ -4226,7 +4261,7 @@ void sinsp_parser::parse_chroot_exit(sinsp_evt *evt)
+ {
+ 	auto parinfo = evt->get_param(0);
+ 	auto retval = *(int64_t *)parinfo->m_val;
+-	if(retval == 0)
++	if(retval == 0 && evt->m_tinfo != nullptr)
+ 	{
+ 		const char* resolved_path;
+ 		auto path = evt->get_param_as_str(1, &resolved_path);
+diff --git a/userspace/libsinsp/threadinfo.cpp b/userspace/libsinsp/threadinfo.cpp
+index 2d1a937d2..68f4de1ea 100644
+--- a/userspace/libsinsp/threadinfo.cpp
++++ b/userspace/libsinsp/threadinfo.cpp
+@@ -361,8 +361,11 @@ void sinsp_threadinfo::init(scap_threadinfo* pi)
+ 	m_comm = pi->comm;
+ 	m_exe = pi->exe;
+ 	set_args(pi->args, pi->args_len);
+-	set_env(pi->env, pi->env_len);
+-	set_cwd(pi->cwd, (uint32_t)strlen(pi->cwd));
++	if(is_main_thread())
++	{
++		set_env(pi->env, pi->env_len);
++		set_cwd(pi->cwd, (uint32_t)strlen(pi->cwd));
++	}
+ 	m_flags |= pi->flags;
+ 	m_flags |= PPM_CL_ACTIVE; // Assume that all the threads coming from /proc are real, active threads
+ 	m_fdtable.clear();
+@@ -494,9 +497,31 @@ void sinsp_threadinfo::set_env(const char* env, size_t len)
+ 	}
+ }
+ 
+-string sinsp_threadinfo::get_env(const string& name) const
++const vector<string>& sinsp_threadinfo::get_env()
++{
++	if(is_main_thread())
++	{
++		return m_env;
++	}
++	else
++	{
++		auto mtinfo = get_main_thread();
++		if(mtinfo != nullptr)
++		{
++			return mtinfo->get_env();
++		}
++		else
++		{
++			// it should never happen but provide a safe fallback just in case
++			ASSERT(false);
++			return m_env;
++		}
++	}
++}
++
++string sinsp_threadinfo::get_env(const string& name)
+ {
+-	for(const auto& env_var : m_env)
++	for(const auto& env_var : get_env())
+ 	{
+ 		if((env_var.length() > name.length()) && (env_var.substr(0, name.length()) == name))
+ 		{
+diff --git a/userspace/libsinsp/threadinfo.h b/userspace/libsinsp/threadinfo.h
+index 7da85822d..cecc52db0 100644
+--- a/userspace/libsinsp/threadinfo.h
++++ b/userspace/libsinsp/threadinfo.h
+@@ -81,21 +81,18 @@ class SINSP_PUBLIC sinsp_threadinfo
+ 	  \brief Return the values of all environment variables for the process
+ 	  containing this thread.
+ 	*/
+-	const vector<string>& get_env() const
+-	{
+-		return m_env;
+-	}
++	const vector<string>& get_env();
+ 
+ 	/*!
+ 	  \brief Return the value of the specified environment variable for the process
+ 	  containing this thread. Returns empty string if variable is not found.
+ 	*/
+-	string get_env(const string& name) const;
++	string get_env(const string& name);
+ 
+ 	/*!
+ 	  \brief Return true if this is a process' main thread.
+ 	*/
+-	inline bool is_main_thread()
++	inline bool is_main_thread() const
+ 	{
+ 		return m_tid == m_pid;
+ 	}
