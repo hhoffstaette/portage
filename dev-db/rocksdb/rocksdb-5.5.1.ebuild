@@ -8,7 +8,7 @@ inherit eutils versionator
 
 DESCRIPTION="A library that provides an embeddable, persistent key-value store for fast storage"
 HOMEPAGE="http://rocksdb.org"
-SRC_URI="https://github.com/facebook/${PN}/archive/${P}.tar.gz"
+SRC_URI="https://github.com/facebook/${PN}/archive/v${PV}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
@@ -40,9 +40,6 @@ ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
 # this trainwreck doesn't even build with its own default flags,
 # so help it along
 EXTRA_FLAGS="DEBUG_LEVEL=0 EXTRA_CXXFLAGS=-Wno-error=unused-variable"
-
-# yes, the directory is called rocksdb-rocksdb-x.y
-S="${WORKDIR}/${PN}-${PN}-${PV}"
 
 src_prepare() {
 	# apply patches
