@@ -13,16 +13,18 @@ SRC_URI="https://github.com/facebook/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="-java"
+IUSE="-bzip2 -java lz4 -numa -snappy zlib zstd"
 
 RDEPEND="
-	app-arch/bzip2
-	app-arch/lz4
-	app-arch/snappy
+	bzip2? ( app-arch/bzip2 )
 	dev-cpp/gflags
 	dev-libs/jemalloc
 	java? ( virtual/jdk )
-	sys-libs/zlib
+	lz4? ( app-arch/lz4 )
+	numa? ( sys-process/numactl )
+	snappy? ( app-arch/snappy )
+	zlib? ( sys-libs/zlib )
+	zstd? ( app-arch/zstd )
 "
 
 DEPEND="${RDEPEND}"
