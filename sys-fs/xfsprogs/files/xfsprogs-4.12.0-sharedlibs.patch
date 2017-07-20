@@ -71,9 +71,9 @@
 --- xfsprogs-4.7.0/Makefile
 +++ xfsprogs-4.7.0/Makefile
 @@ -83,6 +83,8 @@
- repair: libxlog libxcmd
  copy: libxlog
  mkfs: libxcmd
+ spaceman: libxcmd
 +libxlog: libxfs
 +libxlog-install-dev: libxfs-install-dev
  
