@@ -1,0 +1,17 @@
+
+http://mail.openjdk.java.net/pipermail/shenandoah-dev/2017-July/003036.html
+
+--- openjdk/hotspot/src/share/vm/gc_implementation/shenandoah/shenandoahTaskqueue.hpp	2017-07-19 14:08:37.718898245 -0400
++++ openjdk/hotspot/src/share/vm/gc_implementation/shenandoah/shenandoahTaskqueue.hpp	2017-07-19 14:08:37.609897983 -0400
+@@ -114,6 +114,11 @@
+     _blocker = new Monitor(Mutex::leaf, "ShenandoahTaskTerminator", false);
+   }
+ 
++  ~ShenandoahTaskTerminator() {
++    assert(_blocker != NULL, "Can not be NULL");
++    delete _blocker;
++  }
++
+   bool offer_termination(TerminatorTerminator* terminator);
+ 
+ private:
