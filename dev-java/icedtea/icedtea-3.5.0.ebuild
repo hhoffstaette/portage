@@ -193,10 +193,14 @@ pkg_setup() {
 
 src_unpack() {
 	unpack ${SRC_PKG}
-	# add our patches to the openjdk patch directory..because $REASONS
-	cp -a "${FILESDIR}"/${P}-shenandoah*.patch ${S}/patches/hotspot/shenandoah || die
-	# add our patches to Makefile.in
-	epatch "${FILESDIR}"/${P}-Makefile.in.patch
+
+	# Shenandoah patches
+	if use shenandoah; then
+		# copy our patches to the openjdk patch directory..because $REASONS
+		cp -a "${FILESDIR}"/${P}-shenandoah*.patch ${S}/patches/hotspot/shenandoah || die
+		# add our patches to Makefile.in
+		epatch "${FILESDIR}"/${P}-Makefile.in.patch
+	fi
 }
 
 src_configure() {
