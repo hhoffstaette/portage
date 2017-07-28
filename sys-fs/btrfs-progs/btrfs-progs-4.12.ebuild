@@ -39,9 +39,6 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}
 	convert? ( sys-apps/acl )
-	>=app-text/asciidoc-8.6.0
-	app-text/docbook-xml-dtd:4.5
-	app-text/xmlto
 	static? (
 		dev-libs/lzo:2[static-libs(+)]
 		sys-apps/util-linux:0[static-libs(+)]
@@ -76,6 +73,7 @@ src_prepare() {
 src_configure() {
 	local myeconfargs=(
 		--bindir="${EPREFIX}"/sbin
+		--disable-documentation
 		$(use_enable convert)
 		$(use_enable elibc_glibc backtrace)
 	)
@@ -92,5 +90,6 @@ src_install() {
 		$(usex static install-static '')
 	)
 	emake V=1 DESTDIR="${D}" install "${makeargs[@]}"
+	doman Documentation/*.[58].gz
 	newbashcomp btrfs-completion btrfs
 }
