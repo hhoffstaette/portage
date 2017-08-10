@@ -42,7 +42,7 @@ pkg_setup() {
 
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
-
+	epatch "${FILESDIR}/${P}-curl-7.55.patch"
 	cmake-utils_src_prepare
 }
 
