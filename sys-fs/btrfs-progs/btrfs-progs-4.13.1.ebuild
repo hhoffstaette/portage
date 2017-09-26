@@ -32,6 +32,7 @@ RDEPEND="
 	dev-libs/lzo:2=
 	sys-apps/util-linux:0=[static-libs(+)?]
 	sys-libs/zlib:0=
+	app-arch/zstd:0=
 	convert? (
 		sys-fs/e2fsprogs:0=
 		sys-libs/e2fsprogs-libs:0=
@@ -43,6 +44,7 @@ DEPEND="${RDEPEND}
 		dev-libs/lzo:2[static-libs(+)]
 		sys-apps/util-linux:0[static-libs(+)]
 		sys-libs/zlib:0[static-libs(+)]
+		app-arch/zstd:0[static-libs(+)]
 		convert? (
 			sys-fs/e2fsprogs:0[static-libs(+)]
 			sys-libs/e2fsprogs-libs:0[static-libs(+)]
