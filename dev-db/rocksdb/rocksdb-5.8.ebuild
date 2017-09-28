@@ -32,21 +32,22 @@ DEPEND="${RDEPEND}"
 # versioning is hard
 [[ $(get_version_component_count) == 2 ]] && MICROVERSION=".0"
 
-# we need to build some of the jars ourselves, so we define
-# their names from shared prefixes
-ROCKSDB_JNI=rocksdbjni-${PV}${MICROVERSION}
-ROCKSDB_JAR=${ROCKSDB_JNI}-linux$(getconf LONG_BIT).jar
-ROCKSDB_JAVADOCS_JAR=${ROCKSDB_JNI}-javadocs.jar
-ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
-
 # this trainwreck doesn't even build with its own default flags,
 # so help it along
 EXTRA_FLAGS="DEBUG_LEVEL=0 EXTRA_CXXFLAGS=-Wno-error=unused-variable"
+
 
 src_prepare() {
 	# apply patches
 	epatch "${FILESDIR}"/${PN}-${PV}-*.patch
 	epatch_user
+
+	# we need to build some of the jars ourselves, so we define
+	# their names from shared prefixes
+	ROCKSDB_JNI=rocksdbjni-${PV}${MICROVERSION}
+	ROCKSDB_JAR=${ROCKSDB_JNI}-linux$(getconf LONG_BIT).jar
+	ROCKSDB_JAVADOCS_JAR=${ROCKSDB_JNI}-javadocs.jar
+	ROCKSDB_SOURCES_JAR=${ROCKSDB_JNI}-sources.jar
 }
 
 src_compile() {
@@ -55,6 +56,7 @@ src_compile() {
 
 	# building Java support is optional
 	if use java ; then
+
 		# this builds the JNI jar where the embedded JNI library
 		# has dependencies to externally installed bzip/lz4/snappy.
 		emake ${EXTRA_FLAGS} rocksdbjava
