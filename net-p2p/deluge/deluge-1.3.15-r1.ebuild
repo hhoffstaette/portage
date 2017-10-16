@@ -52,7 +52,7 @@ RDEPEND="${CDEPEND}
 		>=dev-python/twisted-web-13.0[${PYTHON_USEDEP}]
 		)
 	)
-	geoip? ( dev-libs/geoip )
+	geoip? ( dev-python/geoip-python )
 	gtk? (
 		sound? ( dev-python/pygame[${PYTHON_USEDEP}] )
 		dev-python/pygobject:2[${PYTHON_USEDEP}]
