@@ -9,7 +9,7 @@ libbtrfs_soname=0
 
 if [[ ${PV} != 9999 ]]; then
 	MY_PV=v${PV}
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~mips ~ppc ~ppc64 ~sparc ~x86"
 	SRC_URI="https://www.kernel.org/pub/linux/kernel/people/kdave/${PN}/${PN}-${MY_PV}.tar.xz"
 	S="${WORKDIR}"/${PN}-${MY_PV}
 else
@@ -24,7 +24,7 @@ HOMEPAGE="https://btrfs.wiki.kernel.org"
 
 LICENSE="GPL-2"
 SLOT="0/${libbtrfs_soname}"
-IUSE="+convert reiserfs static static-libs"
+IUSE="+convert reiserfs static static-libs +zstd"
 
 RESTRICT=test # tries to mount repared filesystems
 
@@ -32,7 +32,6 @@ RDEPEND="
 	dev-libs/lzo:2=
 	sys-apps/util-linux:0=[static-libs(+)?]
 	sys-libs/zlib:0=
-	app-arch/zstd:0=
 	convert? (
 		sys-fs/e2fsprogs:0=
 		sys-libs/e2fsprogs-libs:0=
@@ -40,6 +39,7 @@ RDEPEND="
 			>=sys-fs/reiserfsprogs-3.6.27
 		)
 	)
+	zstd? ( app-arch/zstd:0= )
 "
 DEPEND="${RDEPEND}
 	convert? ( sys-apps/acl )
@@ -47,7 +47,6 @@ DEPEND="${RDEPEND}
 		dev-libs/lzo:2[static-libs(+)]
 		sys-apps/util-linux:0[static-libs(+)]
 		sys-libs/zlib:0[static-libs(+)]
-		app-arch/zstd:0[static-libs(+)]
 		convert? (
 			sys-fs/e2fsprogs:0[static-libs(+)]
 			sys-libs/e2fsprogs-libs:0[static-libs(+)]
@@ -55,11 +54,9 @@ DEPEND="${RDEPEND}
 				>=sys-fs/reiserfsprogs-3.6.27[static-libs(+)]
 			)
 		)
+		zstd? ( app-arch/zstd:0[static-libs(+)] )
 	)
 "
-
-PATCHES=(
-)
 
 if [[ ${PV} == 9999 ]]; then
 	DEPEND+=" sys-devel/gnuconfig"
