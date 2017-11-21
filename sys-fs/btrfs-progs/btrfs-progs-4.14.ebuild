@@ -24,7 +24,7 @@ HOMEPAGE="https://btrfs.wiki.kernel.org"
 
 LICENSE="GPL-2"
 SLOT="0/${libbtrfs_soname}"
-IUSE="+convert reiserfs static static-libs +zstd"
+IUSE="+convert reiserfs static static-libs"
 
 RESTRICT=test # tries to mount repared filesystems
 
@@ -39,7 +39,7 @@ RDEPEND="
 			>=sys-fs/reiserfsprogs-3.6.27
 		)
 	)
-	zstd? ( app-arch/zstd:0= )
+	app-arch/zstd:0=
 "
 DEPEND="${RDEPEND}
 	convert? ( sys-apps/acl )
@@ -54,7 +54,7 @@ DEPEND="${RDEPEND}
 				>=sys-fs/reiserfsprogs-3.6.27[static-libs(+)]
 			)
 		)
-		zstd? ( app-arch/zstd:0[static-libs(+)] )
+		app-arch/zstd:0[static-libs(+)]
 	)
 "
 
