@@ -37,7 +37,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-alertmanager_interval.patch"
 )
 
-CDEPEND=">=net-libs/libtorrent-rasterbar-0.16.17[python,${PYTHON_USEDEP}]"
+CDEPEND="net-libs/libtorrent-rasterbar[python,${PYTHON_USEDEP}]"
 DEPEND="${CDEPEND}
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	dev-util/intltool"
@@ -52,7 +52,7 @@ RDEPEND="${CDEPEND}
 		>=dev-python/twisted-web-13.0[${PYTHON_USEDEP}]
 		)
 	)
-	geoip? ( dev-python/geoip-python )
+	geoip? ( dev-python/geoip-python[${PYTHON_USEDEP}] )
 	gtk? (
 		sound? ( dev-python/pygame[${PYTHON_USEDEP}] )
 		dev-python/pygobject:2[${PYTHON_USEDEP}]
