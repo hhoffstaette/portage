@@ -157,7 +157,7 @@ src_test() {
 
 src_install() {
 	perf_make -f Makefile.perf install DESTDIR="${D}"
-
+	use python && perf_make -f Makefile.perf install-python_ext DESTDIR="${D}"
 	dodoc CREDITS
 
 	dodoc *txt Documentation/*.txt
