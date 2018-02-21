@@ -8,7 +8,7 @@ S="${WORKDIR}/${PN}"
 
 DESCRIPTION="SmartGit/Hg is a client for Git and Mercurial"
 HOMEPAGE="http://www.syntevo.com/smartgithg/"
-SRC_URI="http://www.syntevo.com/static/smart/download/smartgit/${PN}-linux-${MY_PV}.tar.gz"
+SRC_URI="http://www.syntevo.com/downloads/smartgit/${PN}-linux-${MY_PV}.tar.gz"
 
 LICENSE="smartgithg"
 SLOT="0"
