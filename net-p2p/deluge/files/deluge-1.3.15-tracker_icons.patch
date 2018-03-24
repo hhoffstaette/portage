@@ -1,0 +1,107 @@
+--- a/deluge/ui/tracker_icons.py
++++ b/deluge/ui/tracker_icons.py
+@@ -198,10 +198,14 @@
+         else:
+             # We need to fetch it
+             self.pending[host] = []
++            # Create filehanlde here as errorbacks can have path visibilty without stack walking
++            fd, filename = mkstemp(prefix='deluge_ticon.')
++            os.close(fd)
++
+             # Start callback chain
+-            d = self.download_page(host)
++            d = self.download_page(host, filename)
+             d.addCallbacks(self.on_download_page_complete, self.on_download_page_fail,
+-                           errbackArgs=(host,))
++                           errbackArgs=(host,filename,))
+             d.addCallback(self.parse_html_page)
+             d.addCallbacks(self.on_parse_complete, self.on_parse_fail,
+                            callbackArgs=(host,))
+@@ -213,13 +217,15 @@
+             d.addCallback(self.store_icon, host)
+         return d
+ 
+-    def download_page(self, host, url=None):
++    def download_page(self, host, filename, url=None):
+         """
+         Downloads a tracker host's page
+         If no url is provided, it bases the url on the host
+ 
+         :param host: the tracker host
+         :type host: string
++        :param filename: path to download location on disk
++        :type filename: string
+         :param url: the (optional) url of the host
+         :type url: string
+         :returns: the filename of the tracker host's page
+@@ -228,8 +234,6 @@
+         if not url:
+             url = self.host_to_url(host)
+         log.debug("Downloading %s %s", host, url)
+-        fd, filename = mkstemp(prefix='deluge_ticon.')
+-        os.close(fd)
+         return download_file(url, filename, force_filename=True)
+ 
+     def on_download_page_complete(self, page):
+@@ -244,28 +248,45 @@
+         log.debug("Finished downloading %s", page)
+         return page
+ 
+-    def on_download_page_fail(self, f, host):
+-        """
+-        Recovers from download error
++    def on_download_page_fail(self, f, host, filename, url=None):
++        """
++        Recovers from download error and cleans up if failed hard
+ 
+         :param f: the failure that occurred
+         :type f: Failure
+         :param host: the name of the host whose page failed to download
+         :type host: string
++        :param filename: path to download location on disk
++        :type filename: string
++        :param url: the (optional) url of the host
++        :type url: string
+         :returns: a Deferred if recovery was possible
+                   else the original failure
+         :rtype: Deferred or Failure
+         """
+         error_msg = f.getErrorMessage()
+-        log.debug("Error downloading page: %s", error_msg)
++        log.debug("Error downloading page as %s: %s", filename, error_msg)
+         d = f
+         if f.check(PageRedirect):
+             # Handle redirect errors
+             location = urljoin(self.host_to_url(host), error_msg.split(" to ")[1])
+             self.redirects[host] = url_to_host(location)
+-            d = self.download_page(host, url=location)
+-            d.addCallbacks(self.on_download_page_complete, self.on_download_page_fail,
+-                           errbackArgs=(host,))
++            # Cull infinite loops caused by redirects-to-self
++            if location == url:
++              try:
++                  os.remove(filename)
++              except Exception, e:
++                  log.warning("Couldn't remove temp file: %s", e)
++            else:
++              d = self.download_page(host, filename, url=location)
++              d.addCallbacks(self.on_download_page_complete, self.on_download_page_fail,
++                           errbackArgs=(host,filename,location,))
++        else:
++          # Remove unused temp file
++          try:
++              os.remove(filename)
++          except Exception, e:
++              log.warning("Couldn't remove temp file: %s", e)
+ 
+         return d
+ 
+@@ -417,6 +438,7 @@
+         else:
+             # No icons :(
+             # Return the None Icon
++            log.debug("No icons can be obtained, filename is %s", filename)
+             d = self.icons[None]
+ 
+         return d
+

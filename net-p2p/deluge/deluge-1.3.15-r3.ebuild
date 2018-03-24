@@ -34,6 +34,7 @@ REQUIRED_USE="
 PATCHES=(
 	"${FILESDIR}/${PN}-1.3.5-disable_libtorrent_internal_copy.patch"
 	"${FILESDIR}/${PN}-1.3.15-fix-keyerror-showing-prefs.patch"
+	"${FILESDIR}/${PN}-1.3.15-tracker_icons.patch"
 	"${FILESDIR}/${PN}-alertmanager_interval.patch"
 )
 
