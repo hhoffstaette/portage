@@ -3,7 +3,9 @@
 
 EAPI=6
 
-inherit bash-completion-r1
+PYTHON_COMPAT=( python3_{4,5,6} )
+
+inherit bash-completion-r1 python-single-r1
 
 libbtrfs_soname=0
 
@@ -24,7 +26,7 @@ HOMEPAGE="https://btrfs.wiki.kernel.org"
 
 LICENSE="GPL-2"
 SLOT="0/${libbtrfs_soname}"
-IUSE="+convert reiserfs static static-libs"
+IUSE="+convert python reiserfs static static-libs"
 
 RESTRICT=test # tries to mount repared filesystems
 
@@ -39,6 +41,7 @@ RDEPEND="
 			>=sys-fs/reiserfsprogs-3.6.27
 		)
 	)
+	python? ( ${PYTHON_DEPS} )
 	app-arch/zstd:0=
 "
 DEPEND="${RDEPEND}
@@ -47,6 +50,7 @@ DEPEND="${RDEPEND}
 		dev-libs/lzo:2[static-libs(+)]
 		sys-apps/util-linux:0[static-libs(+)]
 		sys-libs/zlib:0[static-libs(+)]
+		python? ( dev-python/setuptools[${PYTHON_USEDEP}] )
 		convert? (
 			sys-fs/e2fsprogs:0[static-libs(+)]
 			sys-libs/e2fsprogs-libs:0[static-libs(+)]
@@ -64,6 +68,12 @@ fi
 
 PATCHES=(
 )
+
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+
+pkg_setup() {
+	use python && python-single-r1_pkg_setup
+}
 
 src_prepare() {
 	default
@@ -84,6 +94,7 @@ src_configure() {
 		--disable-documentation
 		$(use_enable convert)
 		$(use_enable elibc_glibc backtrace)
+		$(use_enable python)
 		--with-convert=ext2$(usex reiserfs ',reiserfs' '')
 	)
 	econf "${myeconfargs[@]}"
@@ -95,10 +106,12 @@ src_compile() {
 
 src_install() {
 	local makeargs=(
+		$(usex python install_python '')
 		$(usex static-libs '' 'libs_static=')
 		$(usex static install-static '')
 	)
 	emake V=1 DESTDIR="${D}" install "${makeargs[@]}"
 	doman Documentation/*.[58].gz
 	newbashcomp btrfs-completion btrfs
+	use python && python_optimize
 }
