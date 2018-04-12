@@ -67,6 +67,7 @@ if [[ ${PV} == 9999 ]]; then
 fi
 
 PATCHES=(
+	"${FILESDIR}"/${P}-static-linkage.patch
 )
 
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
