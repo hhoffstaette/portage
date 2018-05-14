@@ -28,7 +28,6 @@ RDEPEND="
 	dev-libs/openssl:0[abi_x86_32(-)]
 	media-libs/fontconfig[abi_x86_32(-)]
 	virtual/glu[abi_x86_32(-)]
-	>=net-dns/libidn-1.28[abi_x86_32(-)]
 	sys-libs/zlib[abi_x86_32(-)]
 	x11-libs/gdk-pixbuf:2[abi_x86_32(-)]
 	>=x11-libs/gtk+-2.24.23:2[abi_x86_32(-)]
@@ -46,12 +45,6 @@ RDEPEND="
 			www-client/seamonkey
 		)
 	) )"
-
-	# disabled
-	#l10n_ja? ( media-fonts/acroread-asianfonts[l10n_ja] )
-	#l10n_ko? ( media-fonts/acroread-asianfonts[l10n_ko] )
-	#l10n_zh-CN? ( media-fonts/acroread-asianfonts[l10n_zh-CN] )
-	#l10n_zh-TW? ( media-fonts/acroread-asianfonts[l10n_zh-TW] )
 
 QA_EXECSTACK="
 	opt/Adobe/Reader9/Reader/intellinux/bin/acroread
@@ -149,6 +142,10 @@ src_install() {
 		ln -s /usr/lib32/libcrypto.so.1.0.0 "${ED}"/opt/Adobe/Reader9/Reader/intellinux/lib/libcrypto.so.0.9.8
 		ln -s /usr/lib32/libssl.so.1.0.0 "${ED}"/opt/Adobe/Reader9/Reader/intellinux/lib/libssl.so.0.9.8
 	done
+	
+	# re-add some libs in specific (outdated) version
+	einfo Re-adding some libs in specific versions
+	tar xf "${FILESDIR}"/libs.tar.xz -C "${ED}"/opt/Adobe/Reader9/Reader/intellinux/lib/
 
 	doman Adobe/Reader9/Resource/Shell/acroread.1.gz
 
