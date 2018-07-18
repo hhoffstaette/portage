@@ -16,11 +16,11 @@ SRC_URI="${ARCHIVE_URI}"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE="hardened -kvm +virtualbox"
+IUSE="hardened libvirt +virtualbox"
 
 DEPEND="dev-go/go-bindata
-	kvm? ( app-emulation/libvirt[qemu] )
-	${PYTHON_DEPS}"
+	${PYTHON_DEPS}
+	libvirt? ( app-emulation/libvirt[qemu] )"
 RDEPEND=">=sys-cluster/kubectl-1.9.4
 	virtualbox? ( || ( app-emulation/virtualbox app-emulation/virtualbox-bin ) )"
 
@@ -34,15 +34,13 @@ src_prepare() {
 
 src_compile() {
 	export CGO_LDFLAGS="$(usex hardened '-fno-PIC ' '')"
-	LDFLAGS="" GOPATH="${WORKDIR}/${P}" emake -C src/${EGO_PN} out/localkube out/minikube-linux-amd64
-	use kvm && LDFLAGS="" GOPATH="${WORKDIR}/${P}" emake -C src/${EGO_PN} out/docker-machine-driver-kvm2
+	LDFLAGS="" GOPATH="${WORKDIR}/${P}" emake -C src/${EGO_PN}  $(usex libvirt "out/docker-machine-driver-kvm2" "") out/localkube out/minikube-linux-amd64
 }
 
 src_install() {
 	pushd src/${EGO_PN} || die
 	newbin out/minikube-linux-amd64 minikube
-	dobin out/localkube
-	use kvm && dobin out/docker-machine-driver-kvm2
+	dobin $(usex libvirt "out/docker-machine-driver-kvm2" "") out/localkube
 	dodoc -r docs CHANGELOG.md README.md
 	popd || die
 }
