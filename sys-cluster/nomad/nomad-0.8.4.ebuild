@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit golang-vcs-snapshot user toolchain-funcs
+inherit golang-vcs-snapshot user
 
 KEYWORDS="~amd64"
 EGO_PN="github.com/hashicorp/${PN}"
@@ -15,7 +15,7 @@ SLOT="0"
 LICENSE="MPL-2.0"
 IUSE="lxc"
 
-RESTRICT="strip test"
+RESTRICT="test"
 
 DEPEND="
 	lxc? ( app-emulation/lxc )
@@ -45,11 +45,9 @@ src_compile() {
 }
 
 src_install() {
-	local dir, exe
+	local dir
 
-	exe="${S}/src/${EGO_PN}/pkg/linux_amd64$(use lxc && echo '-lxc')/${PN}"
-	$(tc-getSTRIP) ${exe}
-	dobin ${exe}
+	dobin "${S}/src/${EGO_PN}/pkg/linux_amd64$(use lxc && echo '-lxc')/${PN}"
 
 	for dir in /var/{lib,log}/${PN}; do
 		keepdir "${dir}"
