@@ -5,7 +5,7 @@ EAPI=6
 
 inherit golang-vcs-snapshot user
 
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 EGO_PN="github.com/hashicorp/${PN}"
 DESCRIPTION="The cluster manager from Hashicorp"
 HOMEPAGE="http://www.nomadproject.io"
