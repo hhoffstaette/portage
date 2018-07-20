@@ -45,7 +45,7 @@ src_compile() {
 	# and XC_ARCH, and skips generation of an unused zip file,
 	# avoiding a dependency on app-arch/zip.
 	GOPATH="${S}" \
-		emake -C "${S}/src/${EGO_PN}" pkg/linux_amd64$(use lxc && echo '-lxc')/${PN}
+		emake -C "${S}/src/${EGO_PN}" pkg/linux_amd64$(use lxc && echo '-lxc')/${PN} GO_TAGS=ui
 }
 
 src_install() {
