@@ -58,7 +58,7 @@ src_install() {
 
 	keepdir /etc/nomad.d
 	insinto /etc/nomad.d
-	doins "${FILESDIR}/"*.json.example
+	doins "${FILESDIR}/"*.json
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
