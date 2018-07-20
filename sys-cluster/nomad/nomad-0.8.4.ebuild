@@ -13,7 +13,7 @@ SRC_URI="https://github.com/hashicorp/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 
 SLOT="0"
 LICENSE="MPL-2.0"
-IUSE="lxc"
+IUSE="+client +server lxc"
 
 RESTRICT="test"
 
@@ -23,6 +23,13 @@ DEPEND="
 	>=dev-lang/go-1.7.5:=
 	>=dev-go/go-tools-0_pre20160121"
 RDEPEND=""
+
+pkg_pretend()
+{
+	if ( ! use client && ! use server ) ; then
+		die "At least one of USE=client or USE=server is required."
+	fi
+}
 
 pkg_setup() {
 	enewgroup ${PN}
@@ -56,7 +63,9 @@ src_install() {
 
 	keepdir /etc/nomad.d
 	insinto /etc/nomad.d
-	doins "${FILESDIR}/"*.json
+	doins "${FILESDIR}/"data-dir.json
+	use client && doins "${FILESDIR}/"client.json
+	use server && doins "${FILESDIR}/"server.json
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
