@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit golang-vcs-snapshot user
+inherit golang-vcs-snapshot user toolchain-funcs
 
 KEYWORDS="~amd64"
 EGO_PN="github.com/hashicorp/${PN}"
@@ -41,21 +41,19 @@ src_prepare() {
 }
 
 src_compile() {
-	# The dev target sets causes build.sh to set appropriate XC_OS
-	# and XC_ARCH, and skips generation of an unused zip file,
-	# avoiding a dependency on app-arch/zip.
-	GOPATH="${S}" \
-		emake -C "${S}/src/${EGO_PN}" pkg/linux_amd64$(use lxc && echo '-lxc')/${PN} GO_TAGS=ui
+	GOPATH="${S}" emake -C "${S}/src/${EGO_PN}" pkg/linux_amd64$(use lxc && echo '-lxc')/${PN} GO_TAGS=ui
 }
 
 src_install() {
-	local x
+	local dir, exe
 
-	dobin "${S}/src/${EGO_PN}/pkg/linux_amd64$(use lxc && echo '-lxc')/${PN}"
+	exe="${S}/src/${EGO_PN}/pkg/linux_amd64$(use lxc && echo '-lxc')/${PN}"
+	$(tc-getSTRIP) ${exe}
+	dobin ${exe}
 
-	for x in /var/{lib,log}/${PN}; do
-		keepdir "${x}"
-		fowners ${PN}:${PN} "${x}"
+	for dir in /var/{lib,log}/${PN}; do
+		keepdir "${dir}"
+		fowners ${PN}:${PN} "${dir}"
 	done
 
 	keepdir /etc/nomad.d
