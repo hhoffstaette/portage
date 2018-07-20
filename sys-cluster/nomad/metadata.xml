@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>dan@d3fy.net</email>
-		<name>Dan Molik</name>
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffst&auml;tte</name>
 	</maintainer>
 	<longdescription lang="en">
 		Nomad is a cluster manager, designed for both long lived services and short
