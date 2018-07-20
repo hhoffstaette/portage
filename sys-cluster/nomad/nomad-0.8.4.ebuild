@@ -58,6 +58,10 @@ src_install() {
 		fowners ${PN}:${PN} "${x}"
 	done
 
+	keepdir /etc/nomad.d
+	insinto /etc/nomad.d
+	doins "${FILESDIR}/"*.json.example
+
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 }
