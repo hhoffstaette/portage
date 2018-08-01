@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command=/usr/libexec/jitterentropy-rngd
+
+depend() {
+	need localmount
+	before net
+
+	provide entropy
+}
+
+stop() {
+    ebegin "Stopping jitterentropy-rngd"
+	kill $(pidof jitterentropy-rngd) 2>/dev/null
+	eend $? "Failed to stop jitterentropy-rngd"
+}
+
