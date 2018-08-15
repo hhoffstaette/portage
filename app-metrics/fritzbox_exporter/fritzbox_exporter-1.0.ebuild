@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit user golang-build golang-vcs-snapshot
+inherit eutils user golang-build golang-vcs-snapshot
 
 KEYWORDS="amd64"
 EGIT_COMMIT="v${PV}"
@@ -21,8 +21,13 @@ pkg_setup() {
 	enewuser ${PN} -1 -1 -1 ${PN}
 }
 
+src_prepare() {
+	cd ${S}/src/${EGO_PN}
+	default
+	epatch "${FILESDIR}"/add-send-receive-rates.patch
+}
+
 src_install() {
-	echo "pwd now: " $(pwd)
 	dobin fritzbox_exporter
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
