@@ -1,0 +1,200 @@
+From 3d45373d3b192d7342d49524193497598818d36d Mon Sep 17 00:00:00 2001
+From: Adam Borowski <kilobyte@angband.pl>
+Date: Sun, 18 Mar 2018 10:24:13 +0200
+Subject: Add support for zstd compression
+
+* configure.ac (zstd): Register compression program.
+* doc/tar.1: Mention --zstd.
+* doc/tar.texi: Document zstd support.
+* src/buffer.c: Register zstd compression.
+* src/suffix.c: Add suffixes zst and tzst.
+* src/tar.c: New compression option --zstd.
+
+[HH: removed .gitignore hunk]
+---
+ configure.ac   |  1 +
+ doc/tar.1      |  4 ++++
+ doc/tar.texi   | 29 +++++++++++++++++++++--------
+ src/buffer.c   |  5 ++++-
+ src/suffix.c   |  2 ++
+ src/tar.c      | 12 +++++++++++-
+ 6 files changed, 43 insertions(+), 10 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0bddbeb..354e787 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -250,6 +250,7 @@ TAR_COMPR_PROGRAM(lzip)
+ TAR_COMPR_PROGRAM(lzma)
+ TAR_COMPR_PROGRAM(lzop)
+ TAR_COMPR_PROGRAM(xz)
++TAR_COMPR_PROGRAM(zstd)
+ 
+ AC_MSG_CHECKING(for default archive format)
+ 
+diff --git a/doc/tar.1 b/doc/tar.1
+index ddf4fdc..0663525 100644
+--- a/doc/tar.1
++++ b/doc/tar.1
+@@ -831,6 +831,10 @@ Filter the archive through
+ \fB\-Z\fR, \fB\-\-compress\fR, \fB\-\-uncompress\fR
+ Filter the archive through
+ .BR compress (1).
++.TP
++\fB\-\-zstd\fR
++Filter the archive through
++.BR zstd (1).
+ .SS Local file selection
+ .TP
+ \fB\-\-add\-file\fR=\fIFILE\fR
+diff --git a/doc/tar.texi b/doc/tar.texi
+index a56b9fb..1362216 100644
+--- a/doc/tar.texi
++++ b/doc/tar.texi
+@@ -3713,6 +3713,9 @@ only attributes from the user namespace.
+ @itemx -J
+ Use @command{xz} for compressing or decompressing the archives.  @xref{gzip}.
+ 
++@item --zstd
++Use @command{zstd} for compressing or decompressing the archives.  @xref{gzip}.
++
+ @end table
+ 
+ @node Short Option Summary
+@@ -9520,6 +9523,7 @@ switch to @samp{posix}.
+ @cindex lzma
+ @cindex lzop
+ @cindex compress
++@cindex zstd
+ @GNUTAR{} is able to create and read compressed archives.  It supports
+ a wide variety of compression programs, namely: @command{gzip},
+ @command{bzip2}, @command{lzip}, @command{lzma}, @command{lzop},
+@@ -9530,14 +9534,21 @@ compression programs@footnote{It also had patent problems in the past.}.
+ 
+ Creating a compressed archive is simple: you just specify a
+ @dfn{compression option} along with the usual archive creation
+-commands.  The compression option is @option{-z} (@option{--gzip}) to
+-create a @command{gzip} compressed archive, @option{-j}
+-(@option{--bzip2}) to create a @command{bzip2} compressed archive,
+-@option{--lzip} to create an @asis{lzip} compressed archive,
+-@option{-J} (@option{--xz}) to create an @asis{XZ} archive,
+-@option{--lzma} to create an @asis{LZMA} compressed
+-archive, @option{--lzop} to create an @asis{LZOP} archive, and
+-@option{-Z} (@option{--compress}) to use @command{compress} program.
++commands.  Available compression options are summarized in the
++table below:
++
++@multitable @columnfractions 0.4 0.2 0.4
++@headitem Long            @tab Short       @tab Archive format
++@item @option{--gzip}     @tab @option{-z} @tab @command{gzip}
++@item @option{--bzip2}    @tab @option{-j} @tab @command{bzip2}
++@item @option{--xz}       @tab @option{-J} @tab @command{xz}
++@item @option{--lzip}     @tab             @tab @command{lzip}
++@item @option{--lzma}     @tab             @tab @command{lzma}
++@item @option{--lzop}     @tab             @tab @command{lzop}
++@item @option{--zstd}     @tab             @tab @command{zstd}
++@item @option{--compress} @tab @option{-Z} @tab @command{compress}
++@end multitable
++
+ For example:
+ 
+ @smallexample
+@@ -9730,6 +9741,8 @@ suffix.  The following suffixes are recognized:
+ @item @samp{.tlz} @tab @command{lzma}
+ @item @samp{.lzo} @tab @command{lzop}
+ @item @samp{.xz} @tab @command{xz}
++@item @samp{.zst} @tab @command{zstd}
++@item @samp{.tzst} @tab @command{zstd}
+ @end multitable
+ 
+ @anchor{use-compress-program}
+diff --git a/src/buffer.c b/src/buffer.c
+index 51f299f..063e1be 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -281,7 +281,8 @@ enum compress_type {
+   ct_lzip,
+   ct_lzma,
+   ct_lzop,
+-  ct_xz
++  ct_xz,
++  ct_zstd
+ };
+ 
+ static enum compress_type archive_compression_type = ct_none;
+@@ -310,6 +311,7 @@ static struct zip_magic const magic[] = {
+   { ct_lzma,     6, "\xFFLZMA" },
+   { ct_lzop,     4, "\211LZO" },
+   { ct_xz,       6, "\xFD" "7zXZ" },
++  { ct_zstd,     4, "\x28\xB5\x2F\xFD" },
+ };
+ 
+ #define NMAGIC (sizeof(magic)/sizeof(magic[0]))
+@@ -325,6 +327,7 @@ static struct zip_program zip_program[] = {
+   { ct_lzma,     XZ_PROGRAM,       "-J" },
+   { ct_lzop,     LZOP_PROGRAM,     "--lzop" },
+   { ct_xz,       XZ_PROGRAM,       "-J" },
++  { ct_zstd,     ZSTD_PROGRAM,     "--zstd" },
+   { ct_none }
+ };
+ 
+diff --git a/src/suffix.c b/src/suffix.c
+index 47027e7..66b5694 100644
+--- a/src/suffix.c
++++ b/src/suffix.c
+@@ -46,6 +46,8 @@ static struct compression_suffix compression_suffixes[] = {
+   { S(lzo,  LZOP) },
+   { S(xz,   XZ) },
+   { S(txz,  XZ) }, /* Slackware */
++  { S(zst,  ZSTD) },
++  { S(tzst, ZSTD) },
+   { NULL }
+ #undef S
+ #undef __CAT2__
+diff --git a/src/tar.c b/src/tar.c
+index 3f844a8..02fa561 100644
+--- a/src/tar.c
++++ b/src/tar.c
+@@ -348,7 +348,8 @@ enum
+   WARNING_OPTION,
+   XATTR_OPTION,
+   XATTR_EXCLUDE,
+-  XATTR_INCLUDE
++  XATTR_INCLUDE,
++  ZSTD_OPTION,
+ };
+ 
+ static char const doc[] = N_("\
+@@ -682,6 +683,7 @@ static struct argp_option options[] = {
+   {"lzma", LZMA_OPTION, 0, 0, NULL, GRID+1 },
+   {"lzop", LZOP_OPTION, 0, 0, NULL, GRID+1 },
+   {"xz", 'J', 0, 0, NULL, GRID+1 },
++  {"zstd", ZSTD_OPTION, 0, 0, NULL, GRID+1 },
+ #undef GRID
+ 
+ #define GRID 100
+@@ -1129,6 +1131,10 @@ tar_help_filter (int key, const char *text, void *input)
+       s = xasprintf (_("filter the archive through %s"), XZ_PROGRAM);
+       break;
+ 
++    case ZSTD_OPTION:
++      s = xasprintf (_("filter the archive through %s"), ZSTD_PROGRAM);
++      break;
++
+     case ARGP_KEY_HELP_EXTRA:
+       {
+ 	const char *tstr;
+@@ -1650,6 +1656,10 @@ parse_opt (int key, char *arg, struct argp_state *state)
+       set_use_compress_program_option (COMPRESS_PROGRAM, args->loc);
+       break;
+ 
++    case ZSTD_OPTION:
++      set_use_compress_program_option (ZSTD_PROGRAM, args->loc);
++      break;
++
+     case ATIME_PRESERVE_OPTION:
+       atime_preserve_option =
+ 	(arg
+-- 
+cgit v1.0-41-gc330
+
