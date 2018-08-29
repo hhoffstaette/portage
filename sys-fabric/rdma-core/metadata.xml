@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffst&auml;tte</name>
+	</maintainer>
+	<longdescription lang="en">
+		RDMA core userspace libraries and daemons.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">linux-rdma/rdma-core</remote-id>
+	</upstream>
+</pkgmetadata>
