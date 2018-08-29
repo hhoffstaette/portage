@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer>
+	<maintainer type="person">
 		<email>holger@applied-asynchrony.com</email>
 		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<use>
-		<!-- USE flags are not yet supported thanks to the rdma-core reorg -->
-		<!-- flag name='psm'>Provider for Intel PSM.</flag -->
-		<!-- flag name='verbs'>Provider for OFI Verbs.</flag -->
+		<flag name='usnic'>Provider for Cisco usNIC</flag>
+		<flag name='verbs'>Provider for IB Verbs.</flag>
 	</use>
 </pkgmetadata>

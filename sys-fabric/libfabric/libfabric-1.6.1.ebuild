@@ -1,8 +1,7 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
-EAPI=5
+EAPI=6
 
 inherit eutils flag-o-matic
 
@@ -12,13 +11,9 @@ SRC_URI="https://github.com/ofiwg/libfabric/archive/v${PV}.tar.gz -> ${P}.tar.gz
 LICENSE="|| ( BSD GPL-2 )"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE=""
+IUSE="usnic verbs"
 
-# TODO: need to actually test building with IB providers
-# IUSE="-psm -verbs"
-# DEPEND="psm? ( sys-fabric/infinipath-psm )
-#	verbs? ( sys-fabric/libibverbs )"
-
+DEPEND="verbs? ( sys-fabric/rdma-core )"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/libfabric-${PV}"
@@ -28,14 +23,15 @@ src_unpack() {
 }
 
 src_prepare() {
+	default
 	./autogen.sh
 }
 
 src_configure() {
-	CFLAGS="${CFLAGS}" econf \
-		--prefix=/usr
-		# $(use_enable psm) \
-		# $(use_enable verbs)
+	CFLAGS="${CFLAGS}" econf --prefix=/usr \
+		--disable-dependency-tracking \
+		$(use_enable usnic) \
+		$(use_enable verbs)
 }
 
 src_compile() {
@@ -45,3 +41,4 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install
 }
+
