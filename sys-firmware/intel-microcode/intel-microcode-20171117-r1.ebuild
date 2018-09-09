@@ -20,7 +20,6 @@ IUSE="initramfs +split-ucode"
 REQUIRED_USE="|| ( initramfs split-ucode )"
 
 DEPEND="sys-apps/iucode_tool"
-RDEPEND="!<sys-apps/microcode-ctl-1.17-r2" #268586
 
 S=${WORKDIR}
 
