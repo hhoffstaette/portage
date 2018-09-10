@@ -1,0 +1,11 @@
+[Unit]
+Description=Consul Exporter service
+After=network.target
+
+[Service]
+User=consul_exporter
+ExecStart=/usr/bin/consul_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
