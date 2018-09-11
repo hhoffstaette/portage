@@ -1,0 +1,11 @@
+[Unit]
+Description=Nomad Exporter service
+After=network.target
+
+[Service]
+User=nomad-exporter
+ExecStart=/usr/bin/nomad-exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
