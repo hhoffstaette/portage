@@ -44,14 +44,14 @@ src_install() {
 	popd || die
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-    insinto /etc
-    doins "${FILESDIR}"/${PN}.conf
+	insinto /etc
+	doins "${FILESDIR}"/${PN}.conf
 }
 
 pkg_postinst() {
 	elog
 	elog A minimal configuration to act as caching forwarding server
-	elog has been installed as /etc/{PN}.conf - please review it
+	elog has been installed as /etc/coredns.conf - please review it
 	elog before starting CoreDNS.
 	elog
 	elog For more information see https://coredns.io/manual/toc/
