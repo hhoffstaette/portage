@@ -14,7 +14,10 @@ depend() {
 
 start() {
 	ebegin "Starting CoreDNS"
-	start-stop-daemon --background ${command} -- ${command_args}
+	start-stop-daemon \
+		--background ${command} \
+		--stdout /var/log/coredns.log \
+		-- ${command_args}
 	eend $?
 }
 
