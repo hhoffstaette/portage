@@ -21,7 +21,7 @@ IUSE="hardened libvirt +virtualbox"
 DEPEND="dev-go/go-bindata
 	${PYTHON_DEPS}
 	libvirt? ( app-emulation/libvirt[qemu] )"
-RDEPEND=">=sys-cluster/kubectl-1.9.4
+RDEPEND=">=sys-cluster/kubectl-1.10.0
 	virtualbox? ( || ( app-emulation/virtualbox app-emulation/virtualbox-bin ) )"
 
 RESTRICT="test"
