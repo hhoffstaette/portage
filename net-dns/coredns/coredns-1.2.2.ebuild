@@ -31,6 +31,11 @@ IUSE=""
 
 RESTRICT="test"
 
+src_prepare() {
+	pushd src/${EGO_PN} || die
+	default
+}
+
 src_compile() {
 	pushd src/${EGO_PN} || die
 	GOPATH="${S}" go build -v -ldflags="-X github.com/coredns/coredns/coremain.GitCommit=${GITCOMMIT}" || die
