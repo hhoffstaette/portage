@@ -14,7 +14,7 @@ EGO_VENDOR=( "github.com/mholt/caddy b33b24fc9e9d50ce73ec386e44c316d70c47642c"
 
 EGO_PN="github.com/${PN}/${PN}"
 
-inherit golang-build golang-vcs-snapshot
+inherit eutils golang-build golang-vcs-snapshot
 
 GITCOMMIT="eb51e8bac90fac86d34c9e1cb89b04ea0936b034"
 ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -33,6 +33,7 @@ RESTRICT="test"
 
 src_prepare() {
 	pushd src/${EGO_PN} || die
+	epatch "${FILESDIR}"/${PV}-*.patch
 	default
 }
 
