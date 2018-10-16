@@ -1,23 +1,23 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-EGO_VENDOR=( "github.com/mholt/caddy b33b24fc9e9d50ce73ec386e44c316d70c47642c"
-	"github.com/miekg/dns 5a2b9fab83ff0f8bfc99684bd5f43a37abe560f1"
-	"github.com/prometheus/client_golang f504d69affe11ec1ccb2e5948127f86878c9fd57"
+EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d992973f24aa725d07868b467d1ddfceafb"
-	"github.com/prometheus/procfs 780932d4fbbe0e69b84c34c20f5c8d0981e109ea"
-	"golang.org/x/net b68f30494add4df6bd8ef5e82803f308e7f7c59c github.com/golang/net"
-	"golang.org/x/text ece95c760240037f89ebcbdd7155ac8cb52e38fa github.com/golang/text"
+	"github.com/mholt/caddy 1f7b5abc80679fb71ee0e04ed98cbe284b1fc181"
+	"github.com/miekg/dns 17c1bc6792fdf1918200e9a675cdf2e3c9d585cd"
+	"github.com/prometheus/client_golang c5b7fccd204277076155f10851dad72b76a49317"
+	"github.com/prometheus/procfs 185b4288413d2a0dd0806f78c90dde719829e5ae"
 )
 
 EGO_PN="github.com/${PN}/${PN}"
 
 inherit eutils golang-build golang-vcs-snapshot
 
-GITCOMMIT="eb51e8bac90fac86d34c9e1cb89b04ea0936b034"
 ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+# keep this in sync with the version
+GITCOMMIT="8cc8afa"
 KEYWORDS="amd64"
 
 DESCRIPTION="A DNS server that chains middleware"
@@ -33,7 +33,6 @@ RESTRICT="test"
 
 src_prepare() {
 	pushd src/${EGO_PN} || die
-	epatch "${FILESDIR}"/${PV}-*.patch
 	default
 }
 
