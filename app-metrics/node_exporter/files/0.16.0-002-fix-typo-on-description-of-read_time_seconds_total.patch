@@ -1,0 +1,53 @@
+From 05e55bddad50d79e6e5e28c7bfa7adc524135f41 Mon Sep 17 00:00:00 2001
+From: Marco Tulio R Braga <marco.tulio@mtulio.eng.br>
+Date: Sun, 2 Sep 2018 03:46:45 -0400
+Subject: [PATCH] Fix typo on description of read_time_seconds_total (#1057)
+
+Fix typo on unit description of metric `*read_time_seconds_total` from milliseconds to seconds.
+
+Signed-off-by: Marco Tulio R Braga <marco.tulio@mtulio.eng.br>
+---
+ collector/diskstats_linux.go               | 2 +-
+ collector/fixtures/e2e-64k-page-output.txt | 2 +-
+ collector/fixtures/e2e-output.txt          | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/collector/diskstats_linux.go b/collector/diskstats_linux.go
+index c80db4c9..9b86eab6 100644
+--- a/collector/diskstats_linux.go
++++ b/collector/diskstats_linux.go
+@@ -96,7 +96,7 @@ func NewDiskstatsCollector() (Collector, error) {
+ 			{
+ 				desc: prometheus.NewDesc(
+ 					prometheus.BuildFQName(namespace, diskSubsystem, "read_time_seconds_total"),
+-					"The total number of milliseconds spent by all reads.",
++					"The total number of seconds spent by all reads.",
+ 					diskLabelNames,
+ 					nil,
+ 				), valueType: prometheus.CounterValue,
+diff --git a/collector/fixtures/e2e-64k-page-output.txt b/collector/fixtures/e2e-64k-page-output.txt
+index f1fa240a..3e7f67a7 100644
+--- a/collector/fixtures/e2e-64k-page-output.txt
++++ b/collector/fixtures/e2e-64k-page-output.txt
+@@ -350,7 +350,7 @@ node_disk_read_bytes_total{device="nvme0n1"} 2.377714176e+09
+ node_disk_read_bytes_total{device="sda"} 5.13713216512e+11
+ node_disk_read_bytes_total{device="sr0"} 0
+ node_disk_read_bytes_total{device="vda"} 1.6727491584e+10
+-# HELP node_disk_read_time_seconds_total The total number of milliseconds spent by all reads.
++# HELP node_disk_read_time_seconds_total The total number of seconds spent by all reads.
+ # TYPE node_disk_read_time_seconds_total counter
+ node_disk_read_time_seconds_total{device="dm-0"} 46229.572
+ node_disk_read_time_seconds_total{device="dm-1"} 0.084
+diff --git a/collector/fixtures/e2e-output.txt b/collector/fixtures/e2e-output.txt
+index bf103204..b3a236b7 100644
+--- a/collector/fixtures/e2e-output.txt
++++ b/collector/fixtures/e2e-output.txt
+@@ -350,7 +350,7 @@ node_disk_read_bytes_total{device="nvme0n1"} 2.377714176e+09
+ node_disk_read_bytes_total{device="sda"} 5.13713216512e+11
+ node_disk_read_bytes_total{device="sr0"} 0
+ node_disk_read_bytes_total{device="vda"} 1.6727491584e+10
+-# HELP node_disk_read_time_seconds_total The total number of milliseconds spent by all reads.
++# HELP node_disk_read_time_seconds_total The total number of seconds spent by all reads.
+ # TYPE node_disk_read_time_seconds_total counter
+ node_disk_read_time_seconds_total{device="dm-0"} 46229.572
+ node_disk_read_time_seconds_total{device="dm-1"} 0.084

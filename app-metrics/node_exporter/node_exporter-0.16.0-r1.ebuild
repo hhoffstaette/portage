@@ -28,7 +28,7 @@ src_prepare() {
 	default
 	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" src/${EGO_PN}/.promu.yml || die
 	pushd src/${EGO_PN} || die
-	epatch "${FILESDIR}"/diskstats-4.19.patch
+	epatch "${FILESDIR}"/${PV}-*.patch
 	popd || die
 }
 
