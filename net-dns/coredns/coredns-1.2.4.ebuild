@@ -17,7 +17,7 @@ inherit eutils golang-build golang-vcs-snapshot
 
 ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 # keep this in sync with the version
-GITCOMMIT="8cc8afa"
+GITCOMMIT="7343c70"
 KEYWORDS="amd64"
 
 DESCRIPTION="A DNS server that chains middleware"
