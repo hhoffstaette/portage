@@ -6,7 +6,7 @@ EAPI=6
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d992973f24aa725d07868b467d1ddfceafb"
 	"github.com/mholt/caddy 1f7b5abc80679fb71ee0e04ed98cbe284b1fc181"
-	"github.com/miekg/dns 17c1bc6792fdf1918200e9a675cdf2e3c9d585cd"
+	"github.com/miekg/dns 915ca3d5ffd945235828a097c917311a9d86ebb4"
 	"github.com/prometheus/client_golang c5b7fccd204277076155f10851dad72b76a49317"
 	"github.com/prometheus/procfs 185b4288413d2a0dd0806f78c90dde719829e5ae"
 )
@@ -17,7 +17,7 @@ inherit eutils golang-build golang-vcs-snapshot
 
 ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 # keep this in sync with the version
-GITCOMMIT="7343c70"
+GITCOMMIT="204537b"
 KEYWORDS="amd64"
 
 DESCRIPTION="A DNS server that chains middleware"
