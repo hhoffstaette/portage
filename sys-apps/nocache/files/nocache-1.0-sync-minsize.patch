@@ -1,0 +1,30 @@
+diff -rup nocache-1.0/fcntl_helpers.c nocache-1.0.minsize/fcntl_helpers.c
+--- nocache-1.0/fcntl_helpers.c	2016-05-17 14:55:10.000000000 +0200
++++ nocache-1.0.minsize/fcntl_helpers.c	2016-06-10 21:40:31.445328019 +0200
+@@ -1,6 +1,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <errno.h>
++#include <sys/stat.h>
+ 
+ /* Since open() and close() are re-defined in nocache.c, it's not
+  * possible to include <fcntl.h> there. So we do it here. */
+@@ -26,11 +27,16 @@ int valid_fd(int fd)
+ 
+ void sync_if_writable(int fd)
+ {
++    struct stat st;
+     int r;
++
+     if((r = fcntl(fd, F_GETFL)) == -1)
+         return;
+-    if((r & O_ACCMODE) != O_RDONLY)
+-        fdatasync(fd);
++
++    if((r & O_ACCMODE) != O_RDONLY) {
++        if ((fstat(fd, &st) == 0) && (st.st_size >= (8*1024*1024)))
++            fdatasync(fd);
++    }
+ }
+ 
+ int fcntl_dupfd(int fd, int arg)

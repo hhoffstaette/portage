@@ -1,5 +1,5 @@
 
-EAPI=5
+EAPI=6
 
 inherit eutils flag-o-matic
 
@@ -13,7 +13,8 @@ KEYWORDS="x86 amd64"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	epatch_user
+	default
+	epatch "${FILESDIR}"/${P}-*.patch
 }
 
 src_compile() {
