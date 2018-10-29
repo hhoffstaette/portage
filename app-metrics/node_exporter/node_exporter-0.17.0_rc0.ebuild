@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,7 +6,7 @@ inherit eutils user golang-build golang-vcs-snapshot
 
 EGO_PN="github.com/prometheus/node_exporter"
 EGIT_COMMIT="v${PV/_rc/-rc.}"
-NODE_EXPORTER_COMMIT="d42bd70"
+NODE_EXPORTER_COMMIT="7519967"
 ARCHIVE_URI="https://${EGO_PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 KEYWORDS="amd64"
 
