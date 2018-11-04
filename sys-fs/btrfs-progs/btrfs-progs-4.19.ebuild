@@ -111,7 +111,7 @@ src_install() {
 		$(usex static install-static '')
 	)
 	emake V=1 DESTDIR="${D}" install "${makeargs[@]}"
-	doman Documentation/*.[58].gz
+	doman Documentation/*.[58]
 	newbashcomp btrfs-completion btrfs
 	use python && python_optimize
 }
