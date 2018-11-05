@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-RDEPEND="www-servers/civetweb[cpp]"
+RDEPEND="www-servers/civetweb[cxx]"
 DEPEND="${RDEPEND}"
 
 src_prepare() {
