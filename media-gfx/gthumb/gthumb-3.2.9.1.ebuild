@@ -6,7 +6,7 @@ EAPI="5"
 GCONF_DEBUG="yes"
 GNOME2_LA_PUNT="yes"
 
-inherit gnome2
+inherit eutils gnome2
 
 DESCRIPTION="Image viewer and browser for Gnome"
 HOMEPAGE="https://wiki.gnome.org/Apps/gthumb"
@@ -60,6 +60,8 @@ DEPEND="${COMMON_DEPEND}
 #	gnome-base/gnome-common
 
 src_prepare() {
+	epatch "${FILESDIR}"/${P}-exiv2-0.27.patch
+
 	# Remove unwanted CFLAGS added with USE=debug
 	sed -e 's/CFLAGS="$CFLAGS -g -O0 -DDEBUG"//' \
 		-i configure.ac -i configure || die
