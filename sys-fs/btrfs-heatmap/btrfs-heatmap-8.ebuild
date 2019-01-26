@@ -11,10 +11,10 @@ HOMEPAGE="https://github.com/knorrie/btrfs-heatmap"
 SRC_URI="https://github.com/knorrie/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 RDEPEND="dev-lang/python-exec:2
-         sys-fs/python-btrfs[${PYTHON_USEDEP}]"
+         >=sys-fs/python-btrfs-10[${PYTHON_USEDEP}]"
 
 SLOT="0"
-LICENSE="GPL-2"
+LICENSE="MIT"
 KEYWORDS="amd64 x86"
 IUSE="doc"
 
