@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,7 +9,7 @@ DESCRIPTION="RDMA core userspace libraries and daemons"
 HOMEPAGE="https://github.com/linux-rdma/rdma-core"
 # MUST use the correct artifact or installation will fail due to missing prebuilt manpages.
 SRC_URI="https://github.com/linux-rdma/${PN}/releases/download/v${PV}/${P}.tar.gz"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64"
 
 LICENSE="|| ( GPL-2 BSD-2 )"
 SLOT="0"
