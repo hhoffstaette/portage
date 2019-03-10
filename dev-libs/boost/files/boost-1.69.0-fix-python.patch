@@ -1,0 +1,41 @@
+Python module needs to be built without these extra renames.
+
+--- boost_1_67_0.orig/libs/python/Jamfile
++++ boost_1_67_0/libs/python/Jamfile
+@@ -36,9 +36,10 @@ local rule split-version ( version )
+ # For example, Boost.Python built for Python 2.7 uses the suffix "27"
+ rule version-suffix ( version )
+ {
+-    local major-minor = [ split-version $(version) ] ;
+-    local suffix = $(major-minor:J="") ;
+-    return $(suffix) ;
++    # local major-minor = [ split-version $(version) ] ;
++    # local suffix = $(major-minor:J="") ;
++    # return $(suffix) ;
++    return "" ;
+ }
+
+
+diff -ur boost_1_67_0.orig/boostcpp.jam boost_1_67_0/boostcpp.jam
+--- boost_1_67_0.orig/boostcpp.jam	2018-07-30 16:26:03.346187542 -0700
++++ boost_1_67_0/boostcpp.jam	2018-07-30 16:26:18.839081472 -0700
+@@ -105,7 +105,7 @@
+ python-id = [ option.get "python-buildid" ] ;
+ if $(python-id)
+ {
+-    PYTHON_ID = [ regex.replace $(python-id) "[*\\/:.\"\']" _ ] ;
++    PYTHON_ID = [ regex.replace $(python-id) "[*\\/:\"\']" _ ] ;
+ }
+
+
+diff -ur boost_1_67_0.orig/libs/python/Jamfile boost_1_67_0/libs/python/Jamfile
+--- boost_1_67_0.orig/libs/python/Jamfile	2018-07-30 14:56:15.591366992 -0700
++++ boost_1_67_0/libs/python/Jamfile	2018-07-30 16:26:31.662993677 -0700
+@@ -47,7 +47,7 @@
+ python-id = [ option.get "python-buildid" ] ;
+ if $(python-id)
+ {
+-    PYTHON_ID = [ regex.replace $(python-id) "[*\\/:.\"\']" _ ] ;
++    PYTHON_ID = [ regex.replace $(python-id) "[*\\/:\"\']" _ ] ;
+ }
+
