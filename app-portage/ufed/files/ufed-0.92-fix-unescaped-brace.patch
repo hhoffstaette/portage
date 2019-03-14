@@ -1,0 +1,11 @@
+--- a/Portage.pm	2019-02-02 18:01:02.707953493 +0100
++++ b/Portage.pm	2019-02-02 18:01:15.738050992 +0100
+@@ -1055,7 +1055,7 @@ sub _read_sh {
+ 						$addvalue =~ s[
+ 							\\\n       | # backslash-newline
+ 							\\(.)      | # other escaped characters
+-							\$({)?       # $
++							\$(\{)?      # $
+ 							$IDENT       # followed by an identifier
+ 							(?(2)})      # optionally enclosed in braces
+ 						][
