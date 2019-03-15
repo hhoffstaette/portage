@@ -26,7 +26,7 @@ HOMEPAGE="https://btrfs.wiki.kernel.org"
 
 LICENSE="GPL-2"
 SLOT="0/${libbtrfs_soname}"
-IUSE="+convert python reiserfs static static-libs"
+IUSE="+convert debugfs python reiserfs static static-libs"
 
 RESTRICT=test # tries to mount repared filesystems
 
@@ -113,5 +113,6 @@ src_install() {
 	emake V=1 DESTDIR="${D}" install "${makeargs[@]}"
 	doman Documentation/*.[58]
 	newbashcomp btrfs-completion btrfs
+	use debugfs && dobin btrfs-debugfs
 	use python && python_optimize
 }
