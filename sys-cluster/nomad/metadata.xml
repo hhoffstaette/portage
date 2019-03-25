@@ -13,7 +13,4 @@
 		supports all major operating systems and virtualized, containerized, or
 		standalone applications.
 	</longdescription>
-	<use>
-		<flag name="lxc">Use LXC as a container manager</flag>
-	</use>
 </pkgmetadata>
