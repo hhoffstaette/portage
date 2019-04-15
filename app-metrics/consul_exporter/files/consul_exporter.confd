@@ -1,8 +1,0 @@
-# config file for /etc/init.d/consul_exporter
-# run /usr/bin/consul_exporter -h to see available options
-
-CONSUL_EXPORTER_OPTS=""
-
-# Logging
-#output_log="/var/log/consul_exporter/consul_exporter.log"
-#error_log="/var/log/consul_exporter/error.log"
