@@ -44,7 +44,7 @@ RDEPEND="
 PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 	nsplugin? ( >=dev-java/icedtea-web-1.6.1:0[nsplugin] )"
 
-RESTRICT="preserve-libs splitdebug"
+RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
 S="${WORKDIR}/jdk-${MY_PV}"
