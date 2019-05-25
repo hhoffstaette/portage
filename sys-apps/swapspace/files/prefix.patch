@@ -1,0 +1,24 @@
+--- swapspace-1.14/src/env.h	2017-01-29 04:10:23.000000000 +0100
++++ swapspace-1.14-gentoo/src/env.h	2019-05-25 21:55:18.696960112 +0200
+@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fi
+ #ifndef SWAPSPACE_ENV_H
+ #define SWAPSPACE_ENV_H
+ 
+-#define ETCPREFIX "/usr/local"
+-#define VARPREFIX "/usr/local"
++#define ETCPREFIX ""
++#define VARPREFIX ""
+ 
+ #ifdef _LARGE_FILES
+ # define _LARGEFILE64_SOURCE
+--- swapspace-1.14/swapspace.conf	2018-07-04 00:00:28.000000000 +0200
++++ swapspace-1.14-gentoo/swapspace.conf	2019-05-25 22:04:39.868661236 +0200
+@@ -17,7 +17,7 @@
+ 
+ # Swap path: location where swapspace may create and delete swapfiles.  For
+ # security reasons this directory must be accessible to root and to root only.
+-#swappath="/usr/local/var/lib/swapspace"
++#swappath="/var/lib/swapspace"
+ 
+ # Lower free-space threshold: if the percentage of free space drops below this
+ # number, additional swapspace is allocated

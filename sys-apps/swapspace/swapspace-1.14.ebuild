@@ -14,6 +14,8 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 RDEPEND="${DEPEND}"
 
+PATCHES=("${FILESDIR}/prefix.patch")
+
 src_compile() {
 	emake CFLAGS="${CFLAGS}" || die "Make failed!"
 }
