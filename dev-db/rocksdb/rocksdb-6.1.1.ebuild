@@ -32,10 +32,9 @@ DEPEND="${RDEPEND}"
 # versioning is hard
 [[ $(get_version_component_count) == 2 ]] && MICROVERSION=".0"
 
-# this trainwreck doesn't even build with its own default flags,
-# so help it along
-EXTRA_FLAGS="DEBUG_LEVEL=0 EXTRA_CXXFLAGS=-Wno-error=unused-variable"
-
+# this trainwreck doesn't even build with its own default flags, so help it along
+EXTRA_FLAGS="DEBUG_LEVEL=0 DISABLE_WARNING_AS_ERROR=1"
+EXTRA_CXXFLAGS="-Wno-error=unused-variable -Wno-error=deprecated-copy -Wno-error=pessimizing-move"
 
 src_prepare() {
 	# apply patches
@@ -52,14 +51,14 @@ src_prepare() {
 
 src_compile() {
 	# by default we build only the shared lib
-	emake ${EXTRA_FLAGS} shared_lib
+	emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} shared_lib
 
 	# building Java support is optional
 	if use java ; then
 
 		# this builds the JNI jar where the embedded JNI library
 		# has dependencies to externally installed bzip/lz4/snappy.
-		emake ${EXTRA_FLAGS} rocksdbjava
+		emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} rocksdbjava
 
 		# WTF: we need to manually create IDE-attachable support jars
 		# because those are built by the wrong Makefile target.
@@ -77,7 +76,7 @@ src_compile() {
 }
 
 src_install() {
-	emake ${EXTRA_FLAGS} INSTALL_PATH="${D}/usr" install-shared
+	emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} INSTALL_PATH="${D}/usr" install-shared
 
 	dodoc README.md
 
