@@ -6,7 +6,7 @@ inherit autotools toolchain-funcs
 
 DESCRIPTION="An easy to use text-based based mail and news client"
 HOMEPAGE="http://www.washington.edu/alpine/ http://repo.or.cz/alpine.git/"
-GIT_COMMIT="19cde66486e27063a9af8cfd79c6eb7f106b9111"
+GIT_COMMIT="1d09ae170f006bcb2eecd3476899018fdb99189b"
 MY_P="${PN}-${GIT_COMMIT::7}"
 SRC_URI="http://repo.or.cz/alpine.git/snapshot/${GIT_COMMIT}.tar.gz -> ${MY_P}.tar.gz"
 S="${WORKDIR}/${MY_P}"
@@ -14,7 +14,7 @@ S="${WORKDIR}/${MY_P}"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="alpha amd64 ia64 ppc sparc x86"
-IUSE="doc ipv6 kerberos ldap libressl nls onlyalpine passfile smime spell ssl threads"
+IUSE="doc ipv6 kerberos ldap libressl nls +passfile +smime spell ssl threads"
 
 DEPEND="virtual/pam
 	>=sys-libs/ncurses-5.1:0=
@@ -28,7 +28,6 @@ DEPEND="virtual/pam
 "
 RDEPEND="${DEPEND}
 	app-misc/mime-types
-	!onlyalpine? ( !mail-client/pine )
 	!<=net-mail/uw-imap-2004g
 "
 
@@ -69,13 +68,8 @@ src_compile() {
 }
 
 src_install() {
-	if use onlyalpine ; then
-		dobin alpine/alpine
-		doman doc/man1/alpine.1
-	else
-		emake DESTDIR="${D}" install
-		doman doc/man1/*.1
-	fi
+	dobin alpine/alpine
+	doman doc/man1/alpine.1
 
 	dodoc NOTICE README*
 
