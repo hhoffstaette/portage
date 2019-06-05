@@ -3,18 +3,12 @@
 
 EAPI=6
 
-inherit cmake-utils
+inherit cmake-utils git-r3
 
 HOMEPAGE="https://github.com/jupp0r/prometheus-cpp"
 DESCRIPTION="Prometheus Client Library for Modern C++"
-
-if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/jupp0r/prometheus-cpp.git"
-	inherit git-r3
-else
-	SRC_URI="https://github.com/jupp0r/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
+EGIT_REPO_URI="https://github.com/jupp0r/prometheus-cpp.git"
+KEYWORDS=""
 
 LICENSE="MIT"
 SLOT="0"

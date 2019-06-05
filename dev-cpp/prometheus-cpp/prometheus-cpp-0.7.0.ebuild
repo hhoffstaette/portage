@@ -7,14 +7,8 @@ inherit cmake-utils
 
 HOMEPAGE="https://github.com/jupp0r/prometheus-cpp"
 DESCRIPTION="Prometheus Client Library for Modern C++"
-
-if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/jupp0r/prometheus-cpp.git"
-	inherit git-r3
-else
-	SRC_URI="https://github.com/jupp0r/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
+SRC_URI="https://github.com/jupp0r/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+KEYWORDS="~amd64 ~x86"
 
 LICENSE="MIT"
 SLOT="0"
@@ -22,6 +16,11 @@ IUSE=""
 
 RDEPEND="www-servers/civetweb[cxx]"
 DEPEND="${RDEPEND}"
+
+PATCHES=(
+	"${FILESDIR}/${PV}-add-shared-library-versioning.patch"
+	"${FILESDIR}/${PV}-hide-non-public-symbols.patch"
+)
 
 src_prepare() {
 	cmake-utils_src_prepare
