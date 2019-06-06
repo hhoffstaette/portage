@@ -11,7 +11,7 @@ depend() {
 start() {
 	ebegin "Starting cyrus imapd"
 	start-stop-daemon --start --quiet --background \
-		--exec /usr/lib/cyrus/master -- ${CYRUS_OPTS}
+		--exec /usr/lib64/cyrus/master -- ${CYRUS_OPTS}
 	eend $?
 }
 
