@@ -8,7 +8,7 @@ MY_P=${P/_/}
 
 DESCRIPTION="The Cyrus IMAP Server"
 HOMEPAGE="http://www.cyrusimap.org/"
-SRC_URI="ftp://ftp.cyrusimap.org/cyrus-imapd/${MY_P}.tar.gz"
+SRC_URI="https://www.cyrusimap.org/releases/${MY_P}.tar.gz"
 
 LICENSE="BSD-with-attribution"
 SLOT="0"
