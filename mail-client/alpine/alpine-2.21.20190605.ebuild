@@ -5,7 +5,7 @@ EAPI=6
 inherit autotools toolchain-funcs
 
 DESCRIPTION="An easy to use text-based based mail and news client"
-HOMEPAGE="http://www.washington.edu/alpine/ http://repo.or.cz/alpine.git/"
+HOMEPAGE="http://alpine.x10host.com/alpine/ http://repo.or.cz/alpine.git/"
 GIT_COMMIT="1d09ae170f006bcb2eecd3476899018fdb99189b"
 MY_P="${PN}-${GIT_COMMIT::7}"
 SRC_URI="http://repo.or.cz/alpine.git/snapshot/${GIT_COMMIT}.tar.gz -> ${MY_P}.tar.gz"
