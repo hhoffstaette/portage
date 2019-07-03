@@ -34,7 +34,7 @@ SRC_URI+=" mirror://kernel/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 x86 amd64-linux x86-linux"
+KEYWORDS="amd64 arm arm64 x86 amd64-linux x86-linux"
 IUSE="audit clang crypt debug +demangle +doc gtk java lzma numa perl python slang systemtap unwind zlib"
 # TODO babeltrace
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
@@ -107,13 +107,27 @@ src_unpack() {
 		[[ ${a} == ${LINUX_PATCH} ]] && continue
 		unpack ${a}
 	done
+
+	# support clang8
+	echo $(clang-major-version)
+	if use clang; then
+		local old_CC=${CC}
+		CC=${CHOST}-clang
+		if [[ $(clang-major-version) -ge 8 ]]; then
+			pushd "${S_K}" >/dev/null || die
+			eapply "${FILESDIR}/perf-5.1.15-fix-clang8.patch"
+			popd || die
+		fi
+		CC=${old_CC}
+	fi
 }
 
 src_prepare() {
 	default
 	if [[ -n ${LINUX_PATCH} ]] ; then
-		cd "${S_K}"
+		pushd "${S_K}" >/dev/null || die
 		eapply "${WORKDIR}"/${P}.patch
+		popd || die
 	fi
 
 	# Drop some upstream too-developer-oriented flags and fix the
