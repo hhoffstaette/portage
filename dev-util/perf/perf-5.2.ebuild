@@ -115,7 +115,7 @@ src_unpack() {
 		CC=${CHOST}-clang
 		if [[ $(clang-major-version) -ge 8 ]]; then
 			pushd "${S_K}" >/dev/null || die
-			eapply "${FILESDIR}/perf-5.1.15-fix-clang8.patch"
+			eapply "${FILESDIR}/${P}-fix-clang8.patch"
 			popd || die
 		fi
 		CC=${old_CC}
