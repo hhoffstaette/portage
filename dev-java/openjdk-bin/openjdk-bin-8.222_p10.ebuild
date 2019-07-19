@@ -7,7 +7,7 @@ inherit eapi7-ver java-vm-2
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-upstream-binaries/releases/download/jdk${MY_PV}/OpenJDK8U-${1}_linux_${MY_PV/-/}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk${MY_PV}/OpenJDK8U-jdk_${1}_linux_hotspot_${MY_PV/-/}.tar.gz
 		)"
 }
 
@@ -18,16 +18,18 @@ DESCRIPTION="Prebuilt Java JDK binaries provided by AdoptOpenJDK"
 HOMEPAGE="https://adoptopenjdk.net"
 SRC_URI="
 	$(abi_uri x64 amd64)
+	$(abi_uri ppc64le ppc64)
 "
 
 LICENSE="GPL-2-with-classpath-exception"
-KEYWORDS="amd64"
+KEYWORDS="amd64 ppc64"
 
 IUSE="alsa cups doc examples +gentoo-vm headless-awt nsplugin selinux source +webstart"
 
 RDEPEND="
 	media-libs/fontconfig:1.0
 	media-libs/freetype:2
+	>=sys-apps/baselayout-java-0.1.0-r1
 	>=sys-libs/glibc-2.2.5:*
 	sys-libs/zlib
 	alsa? ( media-libs/alsa-lib )
@@ -48,11 +50,11 @@ PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
-S="${WORKDIR}/openjdk-${MY_PV}"
+S="${WORKDIR}/jdk${MY_PV}"
 
 src_install() {
 	local dest="/opt/${P}"
-	local ddest="${ED}${dest#/}"
+	local ddest="${ED%/}/${dest#/}"
 
 	rm ASSEMBLY_EXCEPTION LICENSE THIRD_PARTY_README || die
 
@@ -64,11 +66,11 @@ src_install() {
 	fi
 
 	if ! use examples ; then
-		rm -vr sample || die
+		rm -vr demo sample || die
 	fi
 
 	if use headless-awt ; then
-		rm -fvr */jre/lib/*/lib*{[jx]awt,splashscreen}* \
+		rm -fvr jre/lib/*/lib*{[jx]awt,splashscreen}* \
 			{,jre/}bin/policytool bin/appletviewer || die
 	fi
 
@@ -76,8 +78,12 @@ src_install() {
 		rm -v src.zip || die
 	fi
 
+	mv jre/lib/security/cacerts jre/lib/security/cacerts.orig || die
+
 	dodir "${dest}"
 	cp -pPR * "${ddest}" || die
+
+	dosym "${EPREFIX}"/etc/ssl/certs/java/cacerts "${dest}"/jre/lib/security/cacerts
 
 	use gentoo-vm && java-vm_install-env "${FILESDIR}"/${PN}-${SLOT}.env.sh
 	java-vm_set-pax-markings "${ddest}"

@@ -5,24 +5,24 @@ EAPI=6
 
 inherit java-vm-2
 
+# update snapshot & tag when bumping
+SNAPSHOT="2019-07-17-05-32"
+TAG="26"
+SLOT="13"
+
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${MY_PV}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${MY_PV//+/_}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk${SLOT}-${SNAPSHOT}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SNAPSHOT}.tar.gz
 		)"
 }
 
-MY_PV=${PV/_p/+}
-SLOT=${MY_PV%%[.+]*}
-
-SRC_URI="
-	$(abi_uri x64 amd64)
-"
+SRC_URI="$(abi_uri x64 amd64)"
 
 DESCRIPTION="Prebuilt Java JDK binaries provided by AdoptOpenJDK"
 HOMEPAGE="https://adoptopenjdk.net"
 LICENSE="GPL-2-with-classpath-exception"
 KEYWORDS="amd64"
-IUSE="alsa cups doc examples +gentoo-vm headless-awt nsplugin selinux source +webstart"
+IUSE="alsa cups examples +gentoo-vm headless-awt nsplugin selinux source +webstart"
 
 RDEPEND="
 	media-libs/fontconfig:1.0
@@ -31,7 +31,6 @@ RDEPEND="
 	sys-libs/zlib
 	alsa? ( media-libs/alsa-lib )
 	cups? ( net-print/cups )
-	doc? ( dev-java/java-sdk-docs:${SLOT} )
 	selinux? ( sec-policy/selinux-java )
 	!headless-awt? (
 		x11-libs/libX11
@@ -47,7 +46,7 @@ PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
-S="${WORKDIR}/jdk-${MY_PV}"
+S="${WORKDIR}/jdk-${SLOT}+${TAG}_adopt"
 
 src_install() {
 	local dest="/opt/${P}"
