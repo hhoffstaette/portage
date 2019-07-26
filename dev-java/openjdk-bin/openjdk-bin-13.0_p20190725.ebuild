@@ -6,13 +6,13 @@ EAPI=6
 inherit java-vm-2
 
 # update snapshot & tag when bumping
-SNAPSHOT="2019-07-17-05-32"
+SNAPSHOT="2019-07-25-23-58"
 TAG="26"
 SLOT="13"
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk${SLOT}-${SNAPSHOT}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SNAPSHOT}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk${SLOT}u-${SNAPSHOT}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SNAPSHOT}.tar.gz
 		)"
 }
 
@@ -46,7 +46,7 @@ PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
-S="${WORKDIR}/jdk-${SLOT}+${TAG}_adopt"
+S="${WORKDIR}/jdk-${SLOT}+${TAG}"
 
 src_install() {
 	local dest="/opt/${P}"
