@@ -8,7 +8,7 @@ inherit eutils
 DESCRIPTION="A DNS server that chains middleware"
 HOMEPAGE="https://github.com/coredns/coredns"
 SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${PN}_${PV}_linux_amd64.tgz"
-KEYWORDS=""
+KEYWORDS="amd64"
 LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="logrotate"
