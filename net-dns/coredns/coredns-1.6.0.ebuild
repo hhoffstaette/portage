@@ -11,7 +11,7 @@ SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${PN}_${PV}_lin
 KEYWORDS="amd64"
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE=""
+IUSE="logrotate"
 RESTRICT="test"
 
 S=${WORKDIR}
@@ -20,8 +20,14 @@ src_install() {
 	dobin ${S}/${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
+
 	insinto /etc
 	doins "${FILESDIR}"/${PN}.conf
+
+	if use logrotate ; then
+		insinto /etc/logrotate.d
+		newins "${FILESDIR}/${PN}.logrotated" ${PN}
+	fi
 }
 
 pkg_postinst() {
