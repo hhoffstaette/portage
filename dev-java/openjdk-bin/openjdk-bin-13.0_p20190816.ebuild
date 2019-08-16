@@ -6,8 +6,8 @@ EAPI=6
 inherit java-vm-2
 
 # update snapshot & tag when bumping
-SNAPSHOT="2019-08-10-12-43"
-TAG="32"
+SNAPSHOT="2019-08-16-11-22"
+TAG="33"
 SLOT="13"
 
 abi_uri() {
