@@ -6,7 +6,7 @@ EAPI=6
 inherit java-vm-2
 
 # update snapshot & tag when bumping
-SNAPSHOT="2019-09-03-11-49"
+SNAPSHOT="2019-09-05-20-19"
 TAG="33"
 SLOT="13"
 
