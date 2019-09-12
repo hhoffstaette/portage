@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="usnic verbs"
 
-DEPEND="verbs? ( sys-fabric/rdma-core )"
+DEPEND="verbs? ( sys-cluster/rdma-core )"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/libfabric-${PV}"
