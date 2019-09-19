@@ -5,14 +5,12 @@ EAPI=6
 
 inherit java-vm-2
 
-# update snapshot & tag when bumping
-SNAPSHOT="2019-09-13-14-09"
-TAG="33"
 SLOT="13"
+TAG="33"
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk${SLOT}u-${SNAPSHOT}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SNAPSHOT}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${SLOT}+${TAG}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SLOT}_${TAG}.tar.gz
 		)"
 }
 
