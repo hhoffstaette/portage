@@ -17,6 +17,6 @@ start() {
 
 stop() {
 	ebegin "Stopping cyrus imapd"
-	start-stop-daemon --stop --quiet --pidfile /var/run/cyrus-master.pid
+	start-stop-daemon --stop --quiet --pidfile /run/cyrus-master.pid
 	eend $?
 }
