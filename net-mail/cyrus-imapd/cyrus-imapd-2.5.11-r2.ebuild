@@ -29,7 +29,7 @@ DEPEND="sys-libs/zlib
 	mysql? ( >=virtual/mysql-5.5 )
 	nntp? ( !net-nntp/leafnode )
 	pam? (
-			virtual/pam
+			sys-libs/pam
 			>=net-mail/mailbase-1
 		)
 	perl? ( dev-lang/perl:= )
