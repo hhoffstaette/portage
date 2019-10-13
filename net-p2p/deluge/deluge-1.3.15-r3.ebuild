@@ -35,7 +35,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-1.3.5-disable_libtorrent_internal_copy.patch"
 	"${FILESDIR}/${PN}-1.3.15-fix-keyerror-showing-prefs.patch"
 	"${FILESDIR}/${PN}-1.3.15-tracker_icons.patch"
-	"${FILESDIR}/${PN}-alertmanager_interval.patch"
+	"${FILESDIR}/${PN}-1.3.15-alertmanager_interval.patch"
 )
 
 CDEPEND="<net-libs/libtorrent-rasterbar-1.2.0[python,${PYTHON_USEDEP}]"
