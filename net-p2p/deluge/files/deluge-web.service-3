@@ -4,8 +4,7 @@ Documentation=man:deluge-web
 After=deluged.service
 
 [Service]
-ExecStart=/usr/bin/deluge-web -c ${DELUGED_HOME} ${DELUGED_OPTS}
+ExecStart=/usr/bin/deluge-web -d -c ${DELUGED_HOME} ${DELUGED_OPTS}
 
 [Install]
 WantedBy=multi-user.target
-
