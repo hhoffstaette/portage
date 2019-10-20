@@ -49,7 +49,6 @@ RDEPEND="${COMMON_DEPEND}
 "
 DEPEND="${COMMON_DEPEND}
 	app-text/yelp-tools
-	app-text/scrollkeeper
 	>=dev-util/intltool-0.35
 	sys-devel/bison
 	sys-devel/flex
