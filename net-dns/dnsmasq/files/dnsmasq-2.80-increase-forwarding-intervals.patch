@@ -1,0 +1,14 @@
+diff -rup dnsmasq-2.79/src/config.h dnsmasq-2.79-mod/src/config.h
+--- dnsmasq-2.79/src/config.h	2018-03-17 19:39:23.000000000 +0100
++++ dnsmasq-2.79-mod/src/config.h	2018-05-15 18:56:44.704515211 +0200
+@@ -24,8 +24,8 @@
+ #define KEYBLOCK_LEN 40 /* choose to minimise fragmentation when storing DNSSEC keys */
+ #define DNSSEC_WORK 50 /* Max number of queries to validate one question */
+ #define TIMEOUT 10 /* drop UDP queries after TIMEOUT seconds */
+-#define FORWARD_TEST 50 /* try all servers every 50 queries */
+-#define FORWARD_TIME 20 /* or 20 seconds */
++#define FORWARD_TEST 100 /* try all servers every 100 queries */
++#define FORWARD_TIME 600 /* or 10 minutes */
+ #define UDP_TEST_TIME 60 /* How often to reset our idea of max packet size. */
+ #define SERVERS_LOGGED 30 /* Only log this many servers when logging state */
+ #define LOCALS_LOGGED 8 /* Only log this many local addresses when logging state */
