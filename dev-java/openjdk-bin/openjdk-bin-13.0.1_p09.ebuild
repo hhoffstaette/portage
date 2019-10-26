@@ -6,11 +6,12 @@ EAPI=6
 inherit java-vm-2
 
 SLOT="13"
-TAG="33"
+MINOR="0.1"
+TAG="9"
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${SLOT}+${TAG}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SLOT}_${TAG}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${SLOT}.${MINOR}+${TAG}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SLOT}.${MINOR}_${TAG}.tar.gz
 		)"
 }
 
@@ -44,7 +45,7 @@ PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
-S="${WORKDIR}/jdk-${SLOT}+${TAG}"
+S="${WORKDIR}/jdk-${SLOT}.${MINOR}+${TAG}"
 
 src_install() {
 	local dest="/opt/${P}"
