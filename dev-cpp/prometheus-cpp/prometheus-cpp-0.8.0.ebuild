@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -18,8 +18,6 @@ RDEPEND="www-servers/civetweb[cxx]"
 DEPEND="${RDEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/${PV}-add-shared-library-versioning.patch"
-	"${FILESDIR}/${PV}-hide-non-public-symbols.patch"
 )
 
 src_prepare() {
