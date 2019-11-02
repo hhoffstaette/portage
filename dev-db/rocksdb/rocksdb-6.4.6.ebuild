@@ -34,7 +34,7 @@ DEPEND="${RDEPEND}"
 
 # this trainwreck doesn't even build with its own default flags, so help it along
 EXTRA_FLAGS="DEBUG_LEVEL=0 DISABLE_WARNING_AS_ERROR=1"
-EXTRA_CXXFLAGS="-Wno-error=unused-variable -Wno-error=deprecated-copy -Wno-error=pessimizing-move"
+EXTRA_CXXFLAGS=""
 
 src_prepare() {
 	# apply patches
