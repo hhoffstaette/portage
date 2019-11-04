@@ -11,5 +11,8 @@ LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="amd64 x86"
 
-DEPEND="sys-libs/ncurses:*"
+DEPEND="
+	dev-db/postgresql:*
+	sys-libs/ncurses:*
+"
 RDEPEND="${DEPEND}"
