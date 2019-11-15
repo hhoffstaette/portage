@@ -4,8 +4,8 @@
 EAPI=7
 inherit go-module
 
-DESCRIPTION="prometheus exporter for dnsmasq"
-HOMEPAGE="https://github.com/google/prometheus_exporter"
+DESCRIPTION="Prometheus exporter for dnsmasq"
+HOMEPAGE="https://github.com/hhoffstaette/dnsmasq_exporter"
 
 EGO_VENDOR=(
 	"github.com/alecthomas/template a0175ee3bccc"
@@ -14,7 +14,7 @@ EGO_VENDOR=(
 	"github.com/golang/protobuf v1.3.1"
 	"github.com/konsorten/go-windows-terminal-sequences v1.0.1"
 	"github.com/matttproud/golang_protobuf_extensions v1.0.1"
-	"github.com/miekg/dns v1.1.14"
+	"github.com/miekg/dns v1.1.22"
 	"github.com/prometheus/client_golang v0.9.4"
 	"github.com/prometheus/client_model fd36f4220a90"
 	"github.com/prometheus/common v0.4.1"
@@ -26,29 +26,24 @@ EGO_VENDOR=(
 	"golang.org/x/sys 5ac8a444bdc5 github.com/golang/sys"
 	"gopkg.in/alecthomas/kingpin.v2 v2.2.6 github.com/alecthomas/kingpin"
 )
-SRC_URI="https://github.com/google/dnsmasq_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/hhoffstaette/dnsmasq_exporter/archive/${PV}.tar.gz -> ${P}.tar.gz
 	$(go-module_vendor_uris)"
 
 LICENSE="BSD MIT Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 DEPEND="
 	acct-group/dnsmasq_exporter
 	acct-user/dnsmasq_exporter"
 	RDEPEND="${DEPEND}"
 
-src_prepare() {
-	eapply "${FILESDIR}/${PV}-server.bind-parsing-and-metrics.patch"
-	default
-}
-
 src_compile() {
-	pwd
 	go build || die
 }
 
 src_install() {
+	strip dnsmasq_exporter
 	dobin dnsmasq_exporter
 	keepdir /var/log/dnsmasq_exporter
 	fowners ${PN}:${PN} /var/log/dnsmasq_exporter
