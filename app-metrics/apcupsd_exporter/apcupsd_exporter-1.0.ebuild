@@ -37,6 +37,7 @@ src_compile() {
 }
 
 src_install() {
+	strip ${S}/src/${EGO_PN}/cmd/${PN}/${PN}
 	dobin ${S}/src/${EGO_PN}/cmd/${PN}/${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
