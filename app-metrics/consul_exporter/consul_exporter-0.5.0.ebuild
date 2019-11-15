@@ -42,6 +42,7 @@ src_compile() {
 
 src_install() {
 	pushd src/${EGO_PN} || die
+	strip consul_exporter
 	dobin consul_exporter
 	dodoc {README,CONTRIBUTING}.md
 	popd || die
