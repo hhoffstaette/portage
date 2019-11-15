@@ -28,6 +28,7 @@ src_prepare() {
 }
 
 src_install() {
+	strip fritzbox_exporter
 	dobin fritzbox_exporter
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
