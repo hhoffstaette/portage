@@ -6,15 +6,14 @@ inherit user golang-build golang-vcs-snapshot
 
 EGO_PN="github.com/prometheus/consul_exporter"
 EGIT_COMMIT="v${PV/_rc/-rc.}"
-CONSUL_EXPORTER_COMMIT=75f02d8
+CONSUL_EXPORTER_COMMIT=a5d31c1
 
 DESCRIPTION="Prometheus exporter for consul metrics"
 HOMEPAGE="https://github.com/prometheus/consul_exporter"
 SRC_URI="https://${EGO_PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
-
-LICENSE="Apache-2.0"
+LICENSE="Apache-2.0 BSD BSD-3 MIT MPL-2.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 DEPEND=">=dev-lang/go-1.11
 	dev-util/promu"
