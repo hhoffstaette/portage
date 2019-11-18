@@ -19,11 +19,11 @@ SLOT="${PV}"
 KEYWORDS="amd64 x86"
 
 RDEPEND="
-	>=virtual/jdk-1.6"
+	>=virtual/jdk-1.8"
 
 DEPEND="
 	app-arch/zip
-	>=virtual/jre-1.6"
+	>=virtual/jre-1.8"
 
 S="${WORKDIR}/${MY_P}"
 
