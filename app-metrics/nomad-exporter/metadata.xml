@@ -9,7 +9,7 @@
 		A Prometheus metrics collector for Nomad.
 	</longdescription>
 	<upstream>
-		<remote-id type="github">pcarranza/nomad-exporter</remote-id>
-		<bugs-to>https://github.com/pcarranza/nomad-exporter/issues</bugs-to>
+		<remote-id type="gitlab">yakshaving.art/nomad-exporter</remote-id>
+		<bugs-to>https://gitlab.com/yakshaving.art/nomad-exporter/issues</bugs-to>
 	</upstream>
 </pkgmetadata>
