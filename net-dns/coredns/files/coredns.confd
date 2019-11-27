@@ -1,2 +1,0 @@
-# /etc/conf.d/coredns: options for CoreDNS
-COREDNS_OPTS="-conf /etc/coredns.conf -quiet"
