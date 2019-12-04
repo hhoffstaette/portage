@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<maintainer type="person">
-<email>chutzpah@gentoo.org</email>
-<name>Patrick McLean</name>
-</maintainer>
+	<maintainer type="person">
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffst&auml;tte</name>
+	</maintainer>
 <use>
 	<flag name="auth-dns">Add support for acting as an authorative DNS server.</flag>
 	<flag name="conntrack">Add support for Linux conntrack connection marking.</flag>
@@ -18,6 +18,6 @@
 	<flag name="tftp">Enables built in TFTP server for netbooting.</flag>
 </use>
 <upstream>
-	<remote-id type="cpe">cpe:/a:thekelleys:dnsmasq</remote-id>
+	<remote-id type="github">hhoffstaette/dnsmasq</remote-id>
 </upstream>
 </pkgmetadata>

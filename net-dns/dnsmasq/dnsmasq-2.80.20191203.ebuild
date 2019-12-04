@@ -7,8 +7,7 @@ inherit toolchain-funcs flag-o-matic user systemd
 
 DESCRIPTION="Small forwarding DNS server"
 HOMEPAGE="http://www.thekelleys.org.uk/dnsmasq/doc.html"
-COMMIT="6ebdc95"
-SRC_URI="http://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=snapshot;h=${COMMIT};sf=tgz -> ${P}-${COMMIT}.tar.gz"
+SRC_URI="https://github.com/hhoffstaette/dnsmasq/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="|| ( GPL-2 GPL-3 )"
 SLOT="0"
@@ -95,7 +94,7 @@ pkg_setup() {
 	enewuser dnsmasq -1 -1 /dev/null dnsmasq
 }
 
-S=${WORKDIR}/${PN}-${COMMIT}
+S=${WORKDIR}/${P}
 
 src_prepare() {
 	default
