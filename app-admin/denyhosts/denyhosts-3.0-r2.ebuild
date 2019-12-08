@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-PYTHON_COMPAT=( python2_7 python3_{5,6,7,8} )
+PYTHON_COMPAT=( python3_{5,6,7,8} )
 
 inherit distutils-r1 eutils readme.gentoo-r1 systemd
 
@@ -37,8 +37,7 @@ to /etc/crontab
 
 More information can be found at ${HOMEPAGE}faq.html"
 
-#bring back python-2.7 support  bug #577502
-PATCHES=( "${FILESDIR}"/"${P}"-python2.7.patch )
+PATCHES=()
 
 src_prepare() {
 	sed -e '/^DENY_THRESHOLD_VALID =/s/=.*/= 5/' \
