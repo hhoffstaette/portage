@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python3_{7,8} )
 inherit bash-completion-r1 estack eutils toolchain-funcs python-single-r1 linux-info
 
 MY_PV="${PV/_/-}"
@@ -30,7 +30,7 @@ else
 fi
 
 LINUX_SOURCES="linux-${LINUX_VER}.tar.xz"
-SRC_URI+=" mirror://kernel/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
+SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
 LICENSE="GPL-2"
 SLOT="0"
