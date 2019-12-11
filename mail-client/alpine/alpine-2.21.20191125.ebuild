@@ -6,7 +6,7 @@ inherit autotools toolchain-funcs
 
 DESCRIPTION="An easy to use text-based based mail and news client"
 HOMEPAGE="http://alpine.x10host.com/alpine/ http://repo.or.cz/alpine.git/"
-GIT_COMMIT="c4a59b4ff006e55f42780340f1fdcdbffad5821c"
+GIT_COMMIT="46e208ffa9fffc3057df7a698f2124b3998a24ac"
 MY_P="${PN}-${GIT_COMMIT::7}"
 SRC_URI="http://repo.or.cz/alpine.git/snapshot/${GIT_COMMIT}.tar.gz -> ${MY_P}.tar.gz"
 S="${WORKDIR}/${MY_P}"
@@ -33,6 +33,7 @@ RDEPEND="${DEPEND}
 
 src_prepare() {
 	default
+	echo ${PV} > VERSION
 	eautoreconf
 }
 
