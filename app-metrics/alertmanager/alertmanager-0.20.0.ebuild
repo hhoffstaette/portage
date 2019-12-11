@@ -42,7 +42,7 @@ src_compile() {
 src_install() {
 	pushd src/${EGO_PN} || die
 	dobin bin/*
-	dodoc {README,CHANGELOG,CONTRIBUTING}.md
+	dodoc {README,CHANGELOG,MAINTAINERS}.md
 	insinto /etc/alertmanager/
 	newins doc/examples/simple.yml config.yml.example
 	popd || die
