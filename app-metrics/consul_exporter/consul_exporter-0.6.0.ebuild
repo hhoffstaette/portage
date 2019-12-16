@@ -6,7 +6,7 @@ inherit user golang-build golang-vcs-snapshot
 
 EGO_PN="github.com/prometheus/consul_exporter"
 EGIT_COMMIT="v${PV/_rc/-rc.}"
-CONSUL_EXPORTER_COMMIT=a5d31c1
+CONSUL_EXPORTER_COMMIT=79bc2cc
 
 DESCRIPTION="Prometheus exporter for consul metrics"
 HOMEPAGE="https://github.com/prometheus/consul_exporter"
