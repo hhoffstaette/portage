@@ -3,8 +3,8 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7,8} )
-inherit bash-completion-r1 estack eutils toolchain-funcs python-single-r1 linux-info
+PYTHON_COMPAT=( python3_{5,6,7,8} )
+inherit bash-completion-r1 estack eutils toolchain-funcs python-r1 linux-info
 
 MY_PV="${PV/_/-}"
 MY_PV="${MY_PV/-pre/-git}"
@@ -34,7 +34,7 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 x86 amd64-linux x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~mips ~ppc ~ppc64 ~x86 ~amd64-linux ~x86-linux"
 IUSE="audit clang crypt debug +demangle +doc gtk java lzma numa perl python slang systemtap unwind zlib"
 # TODO babeltrace
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
@@ -50,7 +50,7 @@ RDEPEND="audit? ( sys-process/audit )
 	java? ( virtual/jre:* )
 	lzma? ( app-arch/xz-utils )
 	numa? ( sys-process/numactl )
-	perl? ( dev-lang/perl )
+	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
 	slang? ( sys-libs/slang )
 	systemtap? ( dev-util/systemtap )
@@ -77,7 +77,7 @@ CONFIG_CHECK="~PERF_EVENTS ~KALLSYMS"
 
 pkg_setup() {
 	linux-info_pkg_setup
-	use python && python-single-r1_pkg_setup
+	use python && python-r1_pkg_setup
 }
 
 src_unpack() {
@@ -115,8 +115,9 @@ src_unpack() {
 		CC=${CHOST}-clang
 		if [[ $(clang-major-version) -ge 8 ]]; then
 			pushd "${S_K}" >/dev/null || die
-			eapply "${FILESDIR}/${PN}-fix-clang8.patch"
-			eapply "${FILESDIR}/${PN}-fix-clang9.patch"
+			eapply \
+				"${FILESDIR}/perf-5.1.15-fix-clang8.patch" \
+				"${FILESDIR}/perf-5.4.6-fix-clang9.patch"
 			popd || die
 		fi
 		CC=${old_CC}
@@ -211,17 +212,20 @@ src_test() {
 }
 
 src_install() {
-	perf_make -f Makefile.perf install DESTDIR="${D}"
-
-	if use python; then
+	_install_python_ext() {
 		perf_make -f Makefile.perf install-python_ext DESTDIR="${D}"
+	}
+
+	perf_make -f Makefile.perf install DESTDIR="${D}"
+	if use python; then
+		python_foreach_impl _install_python_ext
 	fi
 
-	rm -rv "${D}"/usr/share/doc/perf-tip || die
+	rm -rv "${ED}"/usr/share/doc/perf-tip || die
 
 	if use gtk; then
-		mv "${D}"/usr/$(get_libdir)/libperf-gtk.so \
-			"${D}"/usr/libexec/perf-core || die
+		mv "${ED}"/usr/$(get_libdir)/libperf-gtk.so \
+			"${ED}"/usr/libexec/perf-core || die
 	fi
 
 	dodoc CREDITS
