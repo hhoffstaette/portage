@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{5,6,7,8} )
+PYTHON_COMPAT=( python3_{6,7,8} )
 inherit bash-completion-r1 estack eutils toolchain-funcs python-r1 linux-info
 
 MY_PV="${PV/_/-}"
