@@ -29,7 +29,7 @@ src_install() {
 	insinto /etc
 	doins swapspace.conf
 
-	doman "${S}"/doc/doc/swapspace.8
+	doman "${S}"/doc/swapspace.8
 
 	dodoc COPYING README
 }
