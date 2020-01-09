@@ -21,7 +21,7 @@ DESCRIPTION="Prebuilt Java JDK binaries provided by AdoptOpenJDK"
 HOMEPAGE="https://adoptopenjdk.net"
 LICENSE="GPL-2-with-classpath-exception"
 KEYWORDS="amd64"
-IUSE="alsa cups examples +gentoo-vm headless-awt nsplugin selinux source +webstart"
+IUSE="alsa cups examples +gentoo-vm headless-awt nsplugin selinux source webstart"
 
 RDEPEND="
 	media-libs/fontconfig:1.0
