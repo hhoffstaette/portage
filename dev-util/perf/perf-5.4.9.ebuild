@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -75,11 +75,6 @@ S="${S_K}/tools/perf"
 
 CONFIG_CHECK="~PERF_EVENTS ~KALLSYMS"
 
-pkg_setup() {
-	linux-info_pkg_setup
-	use python && python-r1_pkg_setup
-}
-
 src_unpack() {
 	local paths=(
 		tools/arch tools/build tools/include tools/lib tools/perf tools/scripts
@@ -122,6 +117,10 @@ src_unpack() {
 		fi
 		CC=${old_CC}
 	fi
+
+	pushd "${S_K}" >/dev/null || die
+	eapply "${FILESDIR}/perf-5.4.7-propagate-cflags.patch"
+	popd || die
 }
 
 src_prepare() {
