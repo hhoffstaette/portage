@@ -38,7 +38,7 @@ EXTRA_CXXFLAGS=""
 
 src_prepare() {
 	# apply patches
-	epatch "${FILESDIR}"/${PN}-${PV}-*.patch
+	epatch "${FILESDIR}"/*.patch
 	epatch_user
 
 	# we need to build some of the jars ourselves, so we define
