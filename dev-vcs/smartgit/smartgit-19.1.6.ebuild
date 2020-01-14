@@ -16,7 +16,7 @@ KEYWORDS="x86 amd64"
 IUSE=""
 
 DEPEND=""
-RDEPEND="${DEPEND} >=virtual/jre-1.7.0"
+RDEPEND="${DEPEND} >=virtual/jre-1.8.0"
 
 src_install()
 {
