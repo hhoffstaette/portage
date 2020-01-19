@@ -54,6 +54,7 @@ REQUIRED_USE="dhcp-tools? ( dhcp )
 	libidn2? ( idn )"
 
 PATCHES=(
+	"${FILESDIR}"/20180317-increase-forwarding-intervals.patch
 )
 
 use_have() {
