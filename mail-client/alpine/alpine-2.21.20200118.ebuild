@@ -6,7 +6,7 @@ inherit autotools toolchain-funcs
 
 DESCRIPTION="An easy to use text-based based mail and news client"
 HOMEPAGE="http://alpine.x10host.com/alpine/ http://repo.or.cz/alpine.git/"
-GIT_COMMIT="04e4d8f8fdb471c06636e72996757d32cf0d7fcb"
+GIT_COMMIT="e328ab4a9dd90b53a4ae71cd97b699b1dd13e9a2"
 MY_P="${PN}-${GIT_COMMIT::7}"
 SRC_URI="http://repo.or.cz/alpine.git/snapshot/${GIT_COMMIT}.tar.gz -> ${MY_P}.tar.gz"
 S="${WORKDIR}/${MY_P}"
