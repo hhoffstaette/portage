@@ -27,7 +27,10 @@ pkg_setup() {
 
 src_prepare() {
 	default
-	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" src/${EGO_PN}/.promu.yml || die
+	pushd src/${EGO_PN} || die
+	eapply "${FILESDIR}"/*.patch
+	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" .promu.yml || die
+	popd || die
 }
 
 src_compile() {
