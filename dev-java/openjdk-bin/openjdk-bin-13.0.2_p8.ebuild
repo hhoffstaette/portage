@@ -1,17 +1,16 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit java-vm-2
 
-SLOT="13"
-MINOR="0.1"
-TAG="9"
+MY_PV=${PV/_p/+}
+SLOT=${MY_PV%%[.+]*}
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${SLOT}.${MINOR}+${TAG}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${SLOT}.${MINOR}_${TAG}.tar.gz
+			https://github.com/AdoptOpenJDK/openjdk${SLOT}-binaries/releases/download/jdk-${MY_PV}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${MY_PV//+/_}.tar.gz
 		)"
 }
 
@@ -21,7 +20,7 @@ DESCRIPTION="Prebuilt Java JDK binaries provided by AdoptOpenJDK"
 HOMEPAGE="https://adoptopenjdk.net"
 LICENSE="GPL-2-with-classpath-exception"
 KEYWORDS="amd64"
-IUSE="alsa cups examples +gentoo-vm headless-awt nsplugin selinux source webstart"
+IUSE="alsa cups examples gentoo-vm headless-awt nsplugin selinux source webstart"
 
 RDEPEND="
 	media-libs/fontconfig:1.0
@@ -45,7 +44,7 @@ PDEPEND="webstart? ( >=dev-java/icedtea-web-1.6.1:0 )
 RESTRICT="preserve-libs strip"
 QA_PREBUILT="*"
 
-S="${WORKDIR}/jdk-${SLOT}.${MINOR}+${TAG}"
+S="${WORKDIR}/jdk-${MY_PV}"
 
 src_install() {
 	local dest="/opt/${P}"
