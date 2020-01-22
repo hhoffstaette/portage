@@ -7,11 +7,8 @@ inherit java-pkg-2
 
 IUSE="source doc examples"
 
-MY_PN=${PN%%-bin}
-MY_P="${MY_PN}-${PV/_rc/-rc-}"
-
 DESCRIPTION="A project automation and build tool with a Groovy based DSL"
-SRC_URI="http://services.gradle.org/distributions/${MY_P}-all.zip -> ${P}.zip"
+SRC_URI="https://downloads.gradle-dn.com/distributions/${P}-all.zip -> ${P}.zip"
 HOMEPAGE="http://www.gradle.org/"
 
 LICENSE="Apache-2.0"
@@ -25,12 +22,10 @@ DEPEND="
 	app-arch/zip
 	>=virtual/jre-1.8"
 
-S="${WORKDIR}/${MY_P}"
-
 src_install() {
 	local gradle_dir="${EPREFIX}/usr/share/${PN}-${SLOT}"
 
-	dodoc docs/release-notes.html getting-started.html
+	dodoc docs/release-notes.html
 
 	insinto "${gradle_dir}"
 
