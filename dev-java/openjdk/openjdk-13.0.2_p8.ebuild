@@ -259,7 +259,7 @@ pkg_postinst() {
 	if use gentoo-vm ; then
 		ewarn "WARNING! You have enabled the gentoo-vm USE flag, making this JDK"
 		ewarn "recognised by the system. This will almost certainly break"
-		ewarn "many java ebuilds as they are not ready for openjdk-11"
+		ewarn "many java ebuilds as they are not ready for openjdk-${SLOT}"
 	else
 		ewarn "The experimental gentoo-vm USE flag has not been enabled so this JDK"
 		ewarn "will not be recognised by the system. For example, simply calling"
