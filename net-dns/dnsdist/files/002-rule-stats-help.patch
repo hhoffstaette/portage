@@ -1,0 +1,50 @@
+From 807f8c751bf53f989b157f8bfd026eba980f4ca8 Mon Sep 17 00:00:00 2001
+From: phonedph1 <phoned@gmail.com>
+Date: Mon, 18 Nov 2019 19:12:57 +0000
+Subject: [PATCH] Add HELP/TYPE
+
+---
+ dnsdist-web.cc | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/dnsdist-web.cc b/dnsdist-web.cc
+index c6e5a98fd5..9f2a6d56e1 100644
+--- a/dnsdist-web.cc
++++ b/dnsdist-web.cc
+@@ -260,7 +260,6 @@ static string someResponseRulesToPrometheus(const string basename, GlobalStateHo
+   return output.str();
+ }
+ 
+-
+ static void connectionThread(int sock, ComboAddress remote)
+ {
+   setThreadName("dnsdist/webConn");
+@@ -548,18 +547,26 @@ static void connectionThread(int sock, ComboAddress remote)
+         }
+ 
+         const string rule_action = "dnsdist_rule_action";
++        output << "# HELP " << rule_action << " Number of queries matching the specified action rule" << "\n";
++        output << "# TYPE " << rule_action << " counter" << "\n";
+         auto actionRules = someResponseRulesToPrometheus(rule_action, &g_rulactions);
+         output << actionRules;
+ 
+         const string rule_response = "dnsdist_rule_response";
++        output << "# HELP " << rule_response << " Number of queries matching the specified response rule" << "\n";
++        output << "# TYPE " << rule_response << " counter" << "\n";
+         auto responseRules = someResponseRulesToPrometheus(rule_response, &g_resprulactions);
+         output << responseRules;
+ 
+-        const string rule_cacheHit = "dnsdist_rule_cacheHit";
++        const string rule_cacheHit = "dnsdist_rule_cachehit";
++        output << "# HELP " << rule_cacheHit << " Number of queries matching the specified cache hit rule" << "\n";
++        output << "# TYPE " << rule_cacheHit << " counter" << "\n";
+         auto cacheHitResponseRules = someResponseRulesToPrometheus(rule_cacheHit, &g_cachehitresprulactions);
+         output << cacheHitResponseRules;
+ 
+-        const string rule_selfAnsweredResponse = "dnsdist_rule_selfAnsweredResponse";
++        const string rule_selfAnsweredResponse = "dnsdist_rule_selfansweredresponse";
++        output << "# HELP " << rule_selfAnsweredResponse << " Number of queries matching the specified self answered response rule" << "\n";
++        output << "# TYPE " << rule_selfAnsweredResponse << " counter" << "\n";
+         auto selfAnsweredResponseRules = someResponseRulesToPrometheus(rule_selfAnsweredResponse, &g_selfansweredresprulactions);
+         output << selfAnsweredResponseRules;
+ 
