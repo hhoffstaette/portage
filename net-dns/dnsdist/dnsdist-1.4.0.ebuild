@@ -43,8 +43,6 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=(
-    "${FILESDIR}/001-rule-stats.patch"
-    "${FILESDIR}/002-rule-stats-help.patch"
 )
 
 src_prepare() {
