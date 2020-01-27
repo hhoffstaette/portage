@@ -8,7 +8,7 @@ HOMEPAGE="https://riot.im"
 
 inherit eutils gnome2-utils
 
-SRC_URI="https://packages.riot.im/debian/pool/main/r/riot-web/riot-web_1.5.7_amd64.deb"
+SRC_URI="https://packages.riot.im/debian/pool/main/r/riot-web/riot-web_${PV}_amd64.deb"
 KEYWORDS="amd64"
 
 LICENSE="Apache-2.0"
