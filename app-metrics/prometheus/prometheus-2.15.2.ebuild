@@ -1,41 +1,33 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit user
 
-EGO_PN="github.com/prometheus/prometheus"
-KEYWORDS="amd64"
-PLATFORM="linux-amd64"
+DESCRIPTION="prometheus monitoring system and time series database"
+HOMEPAGE="http://prometheus.io"
+MY_PN=${PN%%-bin}
+MY_P=${MY_PN}-${PV}
+SRC_URI="https://github.com/prometheus/prometheus/releases/download/v${PV}/${MY_P}.linux-amd64.tar.gz"
 
-DESCRIPTION="Prometheus monitoring system and time series database"
-HOMEPAGE="https://github.com/prometheus/prometheus"
-
-SRC_URI="https://github.com/prometheus/prometheus/releases/download/v${PV}/${P}.${PLATFORM}.tar.gz"
-LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
+LICENSE="Apache-2.0"
 SLOT="0"
-IUSE=""
+KEYWORDS="amd64"
 
-DEPEND=""
+QA_PREBUILT=".*"
+RESTRICT="strip"
+
+DEPEND="acct-group/prometheus
+	acct-user/prometheus"
 RDEPEND="${DEPEND}"
-RESTRICT="test"
 
-PROMETHEUS_HOME="/var/lib/prometheus"
-
-pkg_setup() {
-	enewgroup prometheus
-	enewuser prometheus -1 -1 "${PROMETHEUS_HOME}" prometheus
-}
-
-S=${WORKDIR}/${P}.${PLATFORM}
+S="${WORKDIR}/${MY_P}.linux-amd64"
 
 src_install() {
 	dobin prometheus promtool tsdb
-	dodoc -r LICENSE NOTICE
-	insinto /etc/prometheus
-	doins prometheus.yml
 	insinto /usr/share/prometheus
 	doins -r console_libraries consoles
+	insinto /etc/prometheus
+	doins prometheus.yml
 	dosym ../../usr/share/prometheus/console_libraries /etc/prometheus/console_libraries
 	dosym ../../usr/share/prometheus/consoles /etc/prometheus/consoles
 
@@ -45,3 +37,11 @@ src_install() {
 	fowners prometheus:prometheus /var/log/prometheus /var/lib/prometheus
 }
 
+pkg_postinst() {
+	if has_version '<net-analyzer/prometheus-2.0.0_rc0'; then
+		ewarn "Old prometheus 1.x TSDB won't be converted to the new prometheus 2.0 format"
+		ewarn "Be aware that the old data currently cannot be accessed with prometheus 2.0"
+		ewarn "This release requires a clean storage directory and is not compatible with"
+		ewarn "files created by previous beta releases"
+	fi
+}
