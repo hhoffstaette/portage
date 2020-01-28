@@ -1,13 +1,13 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit eutils flag-o-matic
+inherit autotools eutils flag-o-matic
 
 DESCRIPTION="A dynamic swap space manager"
 HOMEPAGE="https://github.com/Tookmund/Swapspace"
-SRC_URI="https://github.com/Tookmund/Swapspace/releases/download/v${PV}/${P}.tar.gz"
+SRC_URI="https://github.com/Tookmund/Swapspace/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL"
 SLOT="0"
@@ -16,20 +16,28 @@ RDEPEND="${DEPEND}"
 
 PATCHES=("${FILESDIR}/prefix.patch")
 
+S="$WORKDIR"/Swapspace-${PV}
+
+src_prepare() {
+	default
+	eautoreconf && econf
+}
+
 src_compile() {
 	emake CFLAGS="${CFLAGS}" || die "Make failed!"
 }
 
 src_install() {
-	newconfd "${FILESDIR}/swapspace.confd" ${PN}
-	newinitd "${FILESDIR}/swapspace.initd" ${PN}
+	newconfd "${FILESDIR}/${PN}.confd" ${PN}
+	newinitd "${FILESDIR}/${PN}.initd" ${PN}
 
-	dosbin "${S}"/src/swapspace
+	dosbin "${S}"/src/${PN}
 
 	insinto /etc
-	doins swapspace.conf
+	doins ${PN}.conf
 
-	doman "${S}"/doc/swapspace.8
-
+	doman "${S}"/doc/${PN}.8
 	dodoc COPYING README
+
+	keepdir /var/lib/${PN}
 }
