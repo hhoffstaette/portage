@@ -73,6 +73,9 @@ src_install() {
 		rm -v lib/src.zip || die
 	fi
 
+	rm -v lib/security/cacerts || die
+	dosym ../../../../etc/ssl/certs/java/cacerts "${dest}"/lib/security/cacerts
+
 	dodir "${dest}"
 	cp -pPR * "${ddest}" || die
 
