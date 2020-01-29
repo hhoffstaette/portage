@@ -202,7 +202,7 @@ src_configure() {
 	cp -a "${FILESDIR}"/8237007-assert-failure-during-C2-compilation.patch patches/hotspot/shenandoah
 
 	# For bootstrap builds as the sandbox control file might not yet exist.
-	addpredict /proc/self/coredump_filter
+	addpredict /proc/self/coredump_filter #nowarn
 
 	# icedtea doesn't like some locales. #330433 #389717
 	export LANG="C" LC_ALL="C"
@@ -359,12 +359,12 @@ src_install() {
 		rm -v "${ddest}"/src.zip || die
 	fi
 
-	dosym "${EPREFIX}"/usr/share/doc/"${PF}" usr/share/doc/"${PN}${SLOT}"
+	dosym ../../../usr/share/doc/"${PF}" usr/share/doc/"${PN}${SLOT}"
 
 	# Fix the permissions.
 	find "${ddest}" \! -type l \( -perm /111 -exec chmod 755 {} \; -o -exec chmod 644 {} \; \) || die
 
-	dosym "${EPREFIX}"/etc/ssl/certs/java/cacerts "${dest}"/jre/lib/security/cacerts
+	dosym ../../../../../../etc/ssl/certs/java/cacerts "${dest}"/jre/lib/security/cacerts
 
 	java-vm_install-env "${FILESDIR}/icedtea.env.sh"
 	java-vm_sandbox-predict /proc/self/coredump_filter
