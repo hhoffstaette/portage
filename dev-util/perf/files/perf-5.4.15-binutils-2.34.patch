@@ -1,0 +1,15 @@
+--- a/tools/perf/util/srcline.c	2019-11-25 01:32:01.000000000 +0100
++++ b/tools/perf/util/srcline.c	2020-02-02 01:04:54.874962899 +0100
+@@ -127,6 +127,12 @@ static struct symbol *new_inline_sym(str
+ #define PACKAGE "perf"
+ #include <bfd.h>
+ 
++#ifndef bfd_get_section_flags
++#define bfd_get_section_flags(bfd, ptr) ((void) bfd, (ptr)->flags)
++#define bfd_get_section_size(ptr) ((ptr)->size)
++#define bfd_get_section_vma(bfd, ptr) ((void) bfd, (ptr)->vma)
++#endif
++
+ struct a2l_data {
+ 	const char 	*input;
+ 	u64	 	addr;
