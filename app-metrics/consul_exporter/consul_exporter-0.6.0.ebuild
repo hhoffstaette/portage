@@ -18,7 +18,7 @@ KEYWORDS="amd64"
 DEPEND=">=dev-lang/go-1.11
 	dev-util/promu"
 
-RESTRICT="strip test"
+RESTRICT="test"
 
 pkg_setup() {
 	enewgroup ${PN}
