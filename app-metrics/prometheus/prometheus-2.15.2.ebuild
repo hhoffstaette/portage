@@ -14,7 +14,6 @@ SLOT="0"
 KEYWORDS="amd64"
 
 QA_PREBUILT=".*"
-RESTRICT="strip"
 
 DEPEND="acct-group/prometheus
 	acct-user/prometheus"
@@ -23,6 +22,7 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/${MY_P}.linux-amd64"
 
 src_install() {
+	strip prometheus promtool tsdb
 	dobin prometheus promtool tsdb
 	insinto /usr/share/prometheus
 	doins -r console_libraries consoles
