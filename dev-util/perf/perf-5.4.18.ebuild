@@ -111,16 +111,17 @@ src_unpack() {
 		if [[ $(clang-major-version) -ge 8 ]]; then
 			pushd "${S_K}" >/dev/null || die
 			eapply \
-				"${FILESDIR}/perf-5.1.15-fix-clang8.patch" \
-				"${FILESDIR}/perf-5.4.6-fix-clang9.patch"
+				"${FILESDIR}/perf-5.1.18-fix-clang8.patch" \
+				"${FILESDIR}/perf-5.4.18-fix-clang9.patch"
 			popd || die
 		fi
 		CC=${old_CC}
 	fi
 
 	pushd "${S_K}" >/dev/null || die
-	eapply "${FILESDIR}/perf-5.4.7-propagate-cflags.patch"
-	eapply "${FILESDIR}/perf-5.4.15-binutils-2.34.patch"
+	eapply "${FILESDIR}/perf-5.4.18-propagate-cflags.patch"
+	eapply "${FILESDIR}/perf-5.4.18-binutils-2.34.patch"
+	eapply "${FILESDIR}/perf-5.4.18-python-3.8+.patch"
 	popd || die
 }
 
