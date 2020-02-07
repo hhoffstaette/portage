@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 2016-2018 Gentoo Foundation
+# Copyright 2016-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 description="Prometheus blackbox exporter"
@@ -10,10 +10,17 @@ group=${group:-${RC_SVCNAME}}
 command="/usr/bin/blackbox_exporter"
 command_args="${command_args:---config.file=/etc/blackbox_exporter/blackbox.yml}"
 command_background="true"
+extra_started_commands="reload"
 start_stop_daemon_args="--user ${user} --group ${group} \
 	--stdout /var/log/blackbox_exporter/${RC_SVCNAME}.log \
 	--stderr /var/log/blackbox_exporter/${RC_SVCNAME}.log"
 
 depend() {
 	after net
+}
+
+reload() {
+	ebegin "Reloading configuration"
+	start-stop-daemon --signal HUP --pidfile ${pidfile}
+	eend $?
 }
