@@ -43,6 +43,7 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=(
+    "${FILESDIR}/${PN}-20200131-add-backend-status-to-prometheus-metrics.patch"
 )
 
 src_prepare() {
