@@ -102,7 +102,7 @@ src_prepare() {
 
 	sed -i -r 's:lua5.[0-9]+:lua:' Makefile
 	sed -i "s:%%PREFIX%%:${EPREFIX}/usr:" dnsmasq.conf.example
-	echo "${PV}-${COMMIT}" > VERSION
+	echo "${PV}" > VERSION
 }
 
 src_configure() {
