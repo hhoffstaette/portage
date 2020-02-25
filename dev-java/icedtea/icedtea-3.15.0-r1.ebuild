@@ -198,7 +198,9 @@ src_configure() {
 	# add patch to Makefile.in
 	epatch "${FILESDIR}"/Makefile.in.patch
 
-	# add the actual patch to IcedTea's patch directory
+	# add the actual patches to IcedTea's patch directory
+	cp -a "${FILESDIR}"/8235636-TestUnsafeOffheapSwap-failure.patch patches/hotspot/shenandoah
+	cp -a "${FILESDIR}"/8235636-fix-LRB-use-in-LIRGenerator-do_UnsafeGetAndSetObject.patch patches/hotspot/shenandoah
 	cp -a "${FILESDIR}"/8237007-assert-failure-during-C2-compilation.patch patches/hotspot/shenandoah
 
 	# For bootstrap builds as the sandbox control file might not yet exist.
