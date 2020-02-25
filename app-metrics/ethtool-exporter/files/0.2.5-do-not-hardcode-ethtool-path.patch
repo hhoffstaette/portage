@@ -1,0 +1,157 @@
+From dee0eb5c3efd520f1051c312dea29adba667a9b4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Tue, 10 Dec 2019 22:11:45 +0100
+Subject: [PATCH 1/3] Don't hardcore ethtool path
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch adds logic to dynamically find the ethtool executable.
+We first try $PATH and then also in /usr/sbin and /sbin.
+If no executable can be found we bail out early.
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ ethtool-exporter.py | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/ethtool-exporter.py b/ethtool-exporter.py
+index 217e0e3..0741619 100755
+--- a/ethtool-exporter.py
++++ b/ethtool-exporter.py
+@@ -17,6 +17,7 @@ class EthtoolCollector(object):
+     def __init__(self, args=None):
+         """Construct the object and parse the arguments."""
+         self.args = None
++        self.ethtool = None
+         if not args:
+             args = sys.argv[1:]
+         self._parse_args(args)
+@@ -115,15 +116,15 @@ def whitelist_blacklist_check(self, stat_name):
+ 
+     def update_ethtool_stats(self, iface, gauge):
+         """Update gauge with statistics from ethtool for interface iface."""
+-        command = ['/sbin/ethtool', '-S', iface]
++        command = [self.ethtool, '-S', iface]
+         try:
+             proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+         except FileNotFoundError:
+-            logging.critical('/sbin/ethtool not found. Giving up')
++            logging.critical(self.ethtool + ' not found. Giving up')
+             sys.exit(1)
+         except PermissionError as e:
+-            logging.critical('Permission error trying to '
+-                             'run /sbin/ethtool: {}'.format(e))
++            logging.critical('Permission error trying to run '
++                             + self.ethtool + ' : {}'.format(e))
+             sys.exit(1)
+         data, err = proc.communicate()
+         if proc.returncode != 0:
+@@ -178,9 +179,27 @@ def find_physical_interfaces(self):
+                 if re.match(self.args['interface_regex'], file):
+                     yield file
+ 
+-
+ if __name__ == '__main__':
++    directories = []
++    ethtool = None
++
++    path = os.getenv("PATH")
++    if path is not None:
++        directories = path.split(os.pathsep)
++
++    directories.extend(["/usr/sbin", "/sbin"])
++
++    for d in directories:
++        candidate = os.path.join(d, "ethtool")
++        if os.path.exists(candidate):
++            ethtool = candidate
++            break
++
++    if ethtool is None:
++        sys.exit("Error: cannot find ethtool.")
++
+     collector = EthtoolCollector()
++    collector.ethtool = ethtool
+     registry = prometheus_client.CollectorRegistry()
+     registry.register(collector)
+     args = collector.args
+
+From c45a65cfb70deab8cce1fee1c860a0cf170a6866 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Fri, 13 Dec 2019 12:57:59 +0100
+Subject: [PATCH 2/3] Use distutils.spawn.find_executable and simplify path
+ construction.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ ethtool-exporter.py | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
+
+diff --git a/ethtool-exporter.py b/ethtool-exporter.py
+index 0741619..74b37fb 100755
+--- a/ethtool-exporter.py
++++ b/ethtool-exporter.py
+@@ -8,6 +8,8 @@
+ import sys
+ import time
+ 
++from distutils.spawn import find_executable
++
+ import prometheus_client
+ from prometheus_client.core import GaugeMetricFamily
+ 
+@@ -180,21 +182,10 @@ def find_physical_interfaces(self):
+                     yield file
+ 
+ if __name__ == '__main__':
+-    directories = []
+-    ethtool = None
+-
+-    path = os.getenv("PATH")
+-    if path is not None:
+-        directories = path.split(os.pathsep)
+-
+-    directories.extend(["/usr/sbin", "/sbin"])
+-
+-    for d in directories:
+-        candidate = os.path.join(d, "ethtool")
+-        if os.path.exists(candidate):
+-            ethtool = candidate
+-            break
+ 
++    path = os.getenv("PATH", "")
++    path = os.pathsep.join([path, "/usr/sbin", "/sbin"])
++    ethtool = find_executable("ethtool", path)
+     if ethtool is None:
+         sys.exit("Error: cannot find ethtool.")
+ 
+
+From 3580a6647bcbf92271ba975377bdb1c1e1eb8a4d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Fri, 13 Dec 2019 14:30:17 +0100
+Subject: [PATCH 3/3] Clean up stray empty line.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ ethtool-exporter.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/ethtool-exporter.py b/ethtool-exporter.py
+index 74b37fb..b6ea926 100755
+--- a/ethtool-exporter.py
++++ b/ethtool-exporter.py
+@@ -182,7 +182,6 @@ def find_physical_interfaces(self):
+                     yield file
+ 
+ if __name__ == '__main__':
+-
+     path = os.getenv("PATH", "")
+     path = os.pathsep.join([path, "/usr/sbin", "/sbin"])
+     ethtool = find_executable("ethtool", path)

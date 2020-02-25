@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+# Copyright 2016-2020 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+description="Ethtool Exporter for Prometheus"
+command="/usr/bin/ethtool-exporter"
+command_args="${ETHTOOL_EXPORTER_OPTS}"
+command_background=true
+pidfile=/run/${RC_SVCNAME}.pid
+
+depend() {
+	after net
+}
+
