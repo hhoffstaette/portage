@@ -7,7 +7,7 @@ inherit cmake-utils
 
 HOMEPAGE="https://github.com/abseil/abseil-cpp"
 DESCRIPTION="Abseil Common Libraries for C++"
-GIT_COMMIT="c44657f55692eddf5504156645d1f4ec7b3acabd"
+GIT_COMMIT="b832dce8489ef7b6231384909fd9b68d5a5ff2b7"
 SRC_URI="https://github.com/abseil/abseil-cpp/archive/${GIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 
 KEYWORDS="amd64"
