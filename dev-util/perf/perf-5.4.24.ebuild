@@ -122,6 +122,7 @@ src_unpack() {
 	eapply "${FILESDIR}/perf-5.4.18-propagate-cflags.patch"
 	eapply "${FILESDIR}/perf-5.4.18-binutils-2.34.patch"
 	eapply "${FILESDIR}/perf-5.4.18-python-3.8+.patch"
+	eapply "${FILESDIR}/perf-5.4.24-add-missing-zalloc-object.patch"
 	popd || die
 }
 
@@ -167,6 +168,7 @@ perf_make() {
 	emake V=1 VF=1 \
 		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="$(tc-getLD)" \
 		prefix="${EPREFIX}/usr" bindir_relative="bin" \
+		LDFLAGS="-Wl,-E,-z,noexecstack" \
 		EXTRA_CFLAGS="${CFLAGS} -Wno-deprecated-declarations" \
 		ARCH="${arch}" \
 		JDIR="${java_dir}" \
