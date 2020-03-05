@@ -35,7 +35,7 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 mips ppc ppc64 x86 amd64-linux x86-linux"
-IUSE="audit clang crypt debug +demangle +doc gtk java lzma numa perl python slang systemtap unwind zlib"
+IUSE="audit clang crypt debug +demangle +doc java lzma numa perl python slang systemtap unwind zlib"
 # TODO babeltrace
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -46,7 +46,6 @@ RDEPEND="audit? ( sys-process/audit )
 		sys-devel/llvm:*
 	)
 	demangle? ( sys-libs/binutils-libs:= )
-	gtk? ( x11-libs/gtk+:2 )
 	java? ( virtual/jre:* )
 	lzma? ( app-arch/xz-utils )
 	numa? ( sys-process/numactl )
@@ -175,7 +174,7 @@ perf_make() {
 		NO_BACKTRACE="" \
 		NO_CORESIGHT=1 \
 		NO_DEMANGLE=$(puse demangle) \
-		NO_GTK2=$(puse gtk) \
+		NO_GTK2=1 \
 		NO_JVMTI=$(puse java) \
 		NO_LIBAUDIT=$(puse audit) \
 		NO_LIBBABELTRACE=1 \
@@ -224,10 +223,10 @@ src_install() {
 
 	rm -rv "${ED}"/usr/share/doc/perf-tip || die
 
-	if use gtk; then
-		mv "${ED}"/usr/$(get_libdir)/libperf-gtk.so \
-			"${ED}"/usr/libexec/perf-core || die
-	fi
+	#if use gtk; then
+	#	mv "${ED}"/usr/$(get_libdir)/libperf-gtk.so \
+	#		"${ED}"/usr/libexec/perf-core || die
+	#fi
 
 	dodoc CREDITS
 
