@@ -10,7 +10,7 @@ HOMEPAGE="http://ofiwg.github.io/libfabric/"
 SRC_URI="https://github.com/ofiwg/libfabric/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="|| ( BSD GPL-2 )"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64"
 IUSE="usnic verbs"
 
 DEPEND="verbs? ( sys-cluster/rdma-core )"
