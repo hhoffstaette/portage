@@ -12,7 +12,7 @@ MY_EXE="${PN}-Linux-x86_64"
 MY_PV="${PV/_/-}"
 
 SRC_URI="https://github.com/docker/compose/archive/${MY_PV}.tar.gz -> ${P}.tar.gz \
-	https://github.com/docker/compose/releases/download/${MY_PV}/${MY_EXE}"
+	https://github.com/docker/compose/releases/download/${MY_PV}/${MY_EXE} -> ${MY_EXE}-${PV}"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -38,6 +38,6 @@ src_install() {
 	insinto /usr/share/zsh/site-functions
 	doins contrib/completion/zsh/*
 
-	newbin ${DISTDIR}/${MY_EXE} ${PN}
+	newbin ${DISTDIR}/${MY_EXE}-${PV} ${PN}
 }
 
