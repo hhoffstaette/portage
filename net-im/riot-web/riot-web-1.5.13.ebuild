@@ -40,13 +40,12 @@ src_install() {
 	tar xf data.tar.xz
 	mv usr/share/doc/${PN} usr/share/doc/${PF}
 	gunzip usr/share/doc/${PF}/changelog.gz
-	rm -f opt/Riot/lib{EGL,GLESv2}.so opt/Riot/swiftshader/lib{EGL,GLESv2}.so
+	rm -f opt/Riot/chrome-sandbox opt/Riot/lib{EGL,GLESv2}.so opt/Riot/swiftshader/lib{EGL,GLESv2}.so
 
 	insinto ${DESTINATION}
 	doins -r usr
 	doins -r opt
 	fperms +x /opt/Riot/${PN} \
-		/opt/Riot/chrome-sandbox \
 		/opt/Riot/libffmpeg.so \
 		/opt/Riot/swiftshader/libvk_swiftshader.so 
 
