@@ -139,12 +139,15 @@ src_prepare() {
 	sed -i \
 		-e "s:\$(sysconfdir_SQ)/bash_completion.d:$(get_bashcompdir):" \
 		"${S}"/Makefile.perf || die
+
 	# A few places still use -Werror w/out $(WERROR) protection.
 	sed -i -e 's:-Werror::' \
 		"${S}"/Makefile.perf "${S_K}"/tools/lib/bpf/Makefile || die
 
-	# Avoid the call to make kernelversion
-	echo "#define PERF_VERSION \"${MY_PV}\"" > PERF-VERSION-FILE
+	# Avoid the call to 'make kernelversion' by overwriting the script to generate the version.
+	# Trust me: this is the least retarded way to fix this dumpster fire.
+	echo '#!/bin/sh' > util/PERF-VERSION-GEN
+	echo 'echo \#define PERF_VERSION \"'${MY_PV}'\" > PERF-VERSION-FILE' >> util/PERF-VERSION-GEN
 
 	# The code likes to compile local assembly files which lack ELF markings.
 	find -name '*.S' -exec sed -i '$a.section .note.GNU-stack,"",%progbits' {} +
@@ -182,7 +185,7 @@ perf_make() {
 		NO_LIBAUDIT=$(puse audit) \
 		NO_LIBBABELTRACE=1 \
 		NO_LIBBIONIC=1 \
-		NO_LIBBPF="" \
+		NO_LIBBPF=1 \
 		NO_LIBCRYPTO=$(puse crypt) \
 		NO_LIBDW_DWARF_UNWIND="" \
 		NO_LIBELF="" \
