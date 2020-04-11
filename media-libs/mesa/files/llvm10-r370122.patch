@@ -1,0 +1,67 @@
+From 55c912883c9b3624ee060fe1a0232cf71e329d80 Mon Sep 17 00:00:00 2001
+From: Hal Gentz <zegentzy@protonmail.com>
+Date: Sun, 1 Sep 2019 17:31:04 -0600
+Subject: [PATCH] clover: Fix build after clang r370122.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+../mesa/src/gallium/state_trackers/clover/llvm/invocation.cpp: In function ‘std::unique_ptr<clang::CompilerInstance> {anonymous}::create_compiler_instance(const clover::device&, const std::vector<std::__cxx11::basic_string<char> >&, std::string&)’:
+../mesa/src/gallium/state_trackers/clover/llvm/invocation.cpp:203:81: error: no matching function for call to ‘clang::CompilerInvocation::CreateFromArgs(clang::CompilerInvocation&, const char* const*, const char* const*, clang::DiagnosticsEngine&)’
+  203 |              c->getInvocation(), copts.data(), copts.data() + copts.size(), diag))
+      |                                                                                 ^
+In file included from /opt/llvm64/include/clang/Frontend/CompilerInstance.h:15,
+                 from ../mesa/src/gallium/state_trackers/clover/llvm/codegen.hpp:37,
+                 from ../mesa/src/gallium/state_trackers/clover/llvm/invocation.cpp:49:
+/opt/llvm64/include/clang/Frontend/CompilerInvocation.h:157:15: note: candidate: ‘static bool clang::CompilerInvocation::CreateFromArgs(clang::CompilerInvocation&, llvm::ArrayRef<const char*>, clang::DiagnosticsEngine&)’
+  157 |   static bool CreateFromArgs(CompilerInvocation &Res,
+      |               ^~~~~~~~~~~~~~
+/opt/llvm64/include/clang/Frontend/CompilerInvocation.h:157:15: note:   candidate expects 3 arguments, 4 provided
+
+Signed-off-by: Hal Gentz <zegentzy@protonmail.com>
+Reviewed-by: Aaron Watry <awatry@gmail.com>
+---
+ src/gallium/state_trackers/clover/llvm/compat.hpp  | 14 ++++++++++++++
+ .../state_trackers/clover/llvm/invocation.cpp      |  4 ++--
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/src/gallium/state_trackers/clover/llvm/compat.hpp b/src/gallium/state_trackers/clover/llvm/compat.hpp
+index b040902fcfe..629a759e05d 100644
+--- a/src/gallium/state_trackers/clover/llvm/compat.hpp
++++ b/src/gallium/state_trackers/clover/llvm/compat.hpp
+@@ -167,6 +167,20 @@ namespace clover {
+ #endif
+          }
+ 
++         template<typename T> inline bool
++         create_compiler_invocation_from_args(clang::CompilerInvocation &cinv,
++                                              T copts,
++                                              clang::DiagnosticsEngine &diag)
++         {
++#if HAVE_LLVM >= 0x1000
++            return clang::CompilerInvocation::CreateFromArgs(
++               cinv, copts, diag);
++#else
++            return clang::CompilerInvocation::CreateFromArgs(
++               cinv, copts.data(), copts.data() + copts.size(), diag);
++#endif
++         }
++
+          template<typename T, typename M>
+          T get_abi_type(const T &arg_type, const M &mod) {
+ #if HAVE_LLVM >= 0x0700
+diff --git a/src/gallium/state_trackers/clover/llvm/invocation.cpp b/src/gallium/state_trackers/clover/llvm/invocation.cpp
+index 0a677ce2eaa..deaf1cc4b43 100644
+--- a/src/gallium/state_trackers/clover/llvm/invocation.cpp
++++ b/src/gallium/state_trackers/clover/llvm/invocation.cpp
+@@ -199,8 +199,8 @@ namespace {
+       const target &target = dev.ir_target();
+       const std::string &device_clc_version = dev.device_clc_version();
+ 
+-      if (!clang::CompilerInvocation::CreateFromArgs(
+-             c->getInvocation(), copts.data(), copts.data() + copts.size(), diag))
++      if (!compat::create_compiler_invocation_from_args(
++             c->getInvocation(), copts, diag))
+          throw invalid_build_options_error();
+ 
+       diag_buffer->FlushDiagnostics(diag);

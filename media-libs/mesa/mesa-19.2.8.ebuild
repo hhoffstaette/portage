@@ -329,7 +329,17 @@ pkg_setup() {
 	if use llvm; then
 		llvm_pkg_setup
 	fi
+
 	python-any-r1_pkg_setup
+}
+
+src_prepare() {
+    # LLVM10 patches for OpenCL
+	eapply "${FILESDIR}/llvm10-build.patch"
+	eapply "${FILESDIR}/llvm10-r1dfede3.patch"
+	eapply "${FILESDIR}/llvm10-r370122.patch"
+	eapply "${FILESDIR}/llvm10-r777180.patch"
+	default
 }
 
 multilib_src_configure() {
