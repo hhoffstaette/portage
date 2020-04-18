@@ -4,6 +4,7 @@
 EAPI=7
 
 inherit golang-vcs-snapshot systemd user
+
 GIT_COMMIT="9ea1a20"
 KEYWORDS="amd64"
 EGO_PN="github.com/hashicorp/consul"
@@ -17,15 +18,16 @@ IUSE=""
 
 RESTRICT="test"
 
-DEPEND="dev-go/gox
+DEPEND="
+	acct-group/consul
+	acct-user/consul"
+
+BDEPEND="
+	dev-go/gox
 	>=dev-lang/go-1.11:=
 	>=dev-go/go-tools-0_pre20160121"
-RDEPEND=""
 
-pkg_setup() {
-	enewgroup consul
-	enewuser consul -1 -1 /var/lib/${PN} consul
-}
+RDEPEND=""
 
 src_prepare() {
 	default
