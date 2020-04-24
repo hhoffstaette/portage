@@ -4,7 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8} )
-inherit bash-completion-r1 estack eutils toolchain-funcs python-r1 linux-info
+inherit bash-completion-r1 estack eutils llvm toolchain-funcs python-r1 linux-info
 
 MY_PV="${PV/_/-}"
 MY_PV="${MY_PV/-pre/-git}"
@@ -42,8 +42,8 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 RDEPEND="audit? ( sys-process/audit )
 	crypt? ( dev-libs/openssl:0= )
 	clang? (
-		sys-devel/clang:*
-		sys-devel/llvm:*
+		<sys-devel/clang-10:*
+		<sys-devel/llvm-10:*
 	)
 	bpf? ( dev-libs/libbpf )
 	demangle? ( sys-libs/binutils-libs:= )
@@ -75,6 +75,10 @@ S_K="${WORKDIR}/linux-${LINUX_VER}"
 S="${S_K}/tools/perf"
 
 CONFIG_CHECK="~PERF_EVENTS ~KALLSYMS"
+
+pkg_setup() {
+	LLVM_MAX_SLOT=9 llvm_pkg_setup
+}
 
 src_unpack() {
 	local paths=(
