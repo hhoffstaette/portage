@@ -334,6 +334,10 @@ src_prepare() {
 	eapply "${FILESDIR}/llvm10-r1dfede3.patch"
 	eapply "${FILESDIR}/llvm10-r370122.patch"
 	eapply "${FILESDIR}/llvm10-r777180.patch"
+
+    # Prevent thread starvation with SCHED_IDLE
+    eapply "${FILESDIR}/change-minimum-priority-threads-from-SCHED_IDLE-to-nice-19-SCHED_BATCH.patch"
+
 	default
 }
 
