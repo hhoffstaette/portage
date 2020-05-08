@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8} )
 
-inherit llvm meson multilib-minimal pax-utils python-any-r1
+inherit flag-o-matic llvm meson multilib-minimal pax-utils python-any-r1
 
 OPENGL_DIR="xorg-x11"
 
@@ -14,13 +14,8 @@ MY_P="${P/_/-}"
 DESCRIPTION="OpenGL-like graphic library for Linux"
 HOMEPAGE="https://www.mesa3d.org/ https://mesa.freedesktop.org/"
 
-if [[ ${PV} == 9999 ]]; then
-	EGIT_REPO_URI="https://gitlab.freedesktop.org/mesa/mesa.git"
-	inherit git-r3
-else
-	SRC_URI="https://mesa.freedesktop.org/archive/${MY_P}.tar.xz"
-	KEYWORDS="~alpha amd64 arm arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-linux ~x86-linux ~sparc-solaris ~x64-solaris ~x86-solaris"
-fi
+SRC_URI="https://mesa.freedesktop.org/archive/${MY_P}.tar.xz"
+KEYWORDS="~alpha amd64 arm arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-linux ~x86-linux ~sparc-solaris ~x64-solaris ~x86-solaris"
 
 LICENSE="MIT"
 SLOT="0"
@@ -343,6 +338,9 @@ src_prepare() {
 }
 
 multilib_src_configure() {
+	# fix for gcc-10
+	append-cflags -fcommon
+
 	local emesonargs=()
 
 	if use classic; then
@@ -505,6 +503,7 @@ multilib_src_configure() {
 		--buildtype $(usex debug debug plain)
 		-Db_ndebug=$(usex debug false true)
 	)
+
 	meson_src_configure
 }
 
