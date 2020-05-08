@@ -4,11 +4,9 @@
 EAPI=6
 inherit autotools multilib pam ssl-cert user toolchain-funcs
 
-MY_P=${P/_/}
-
 DESCRIPTION="The Cyrus IMAP Server"
 HOMEPAGE="http://www.cyrusimap.org/"
-SRC_URI="https://www.cyrusimap.org/releases/${MY_P}.tar.gz"
+SRC_URI="https://github.com/cyrusimap/cyrus-imapd/releases/download/${P}/${P}.tar.gz"
 
 LICENSE="BSD-with-attribution"
 SLOT="0"
@@ -49,8 +47,6 @@ RDEPEND="${DEPEND}
 
 REQUIRED_USE="afs? ( kerberos )
 	http? ( sqlite )"
-
-S=${WORKDIR}/${MY_P}
 
 pkg_setup() {
 	enewuser cyrus -1 -1 /usr/cyrus mail
