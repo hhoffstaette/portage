@@ -342,7 +342,10 @@ src_prepare() {
 }
 
 multilib_src_configure() {
-	# fix for gcc-10
+	# broken again with gcc-10
+	filter-flags -flto*
+
+	# build fix for gcc-10
 	append-cflags -fcommon
 
 	local emesonargs=()
