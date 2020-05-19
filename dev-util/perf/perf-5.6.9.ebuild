@@ -153,6 +153,7 @@ perf_make() {
 	# FIXME: NO_LIBBABELTRACE
 	emake V=1 VF=1 \
 		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="$(tc-getLD)" \
+		PKG_CONFIG="$(tc-getPKG_CONFIG)" \
 		prefix="${EPREFIX}/usr" bindir_relative="bin" \
 		LDFLAGS="-Wl,-E,-z,noexecstack" \
 		EXTRA_CFLAGS="${CFLAGS} -Wno-deprecated-declarations" \
