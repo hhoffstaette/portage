@@ -220,6 +220,10 @@ src_install() {
 			newins image/WiresharkDoc-${s}.png application-vnd.tcpdump.pcap.png
 		done
 	fi
+
+	if [[ -d "${D}"/usr/share/appdata ]]; then
+		rm -r "${D}"/usr/share/appdata || die
+	fi
 }
 
 pkg_postinst() {
