@@ -14,13 +14,13 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 RDEPEND="${DEPEND}"
 
-PATCHES=("${FILESDIR}/prefix.patch")
+PATCHES=("${FILESDIR}/config.patch")
 
 S="$WORKDIR"/Swapspace-${PV}
 
-src_prepare() {
+src_configure() {
 	default
-	eautoreconf && econf
+	eautoreconf && econf --localstatedir=/var --sysconfdir=/etc
 }
 
 src_compile() {

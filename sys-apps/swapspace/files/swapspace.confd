@@ -1,2 +1,2 @@
 # /etc/conf.d/swapspace: config file for /etc/init.d/swapspace
-SWAPSPACE_OPTS="-c /etc/swapspace.conf -p /run/swapspace.pid -z"
+SWAPSPACE_OPTS="-c /etc/swapspace.conf -p /run/swapspace.pid"
