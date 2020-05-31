@@ -18,6 +18,11 @@ IUSE=""
 RDEPEND="gnome-base/gconf"
 DEPEND="${RDEPEND}"
 
+QA_PREBUILT="
+	opt/postman/libnode.so
+	opt/postman/libffmpeg.so
+	opt/postman/_Postman"
+
 S="${WORKDIR}/Postman/app"
 
 src_install() {
