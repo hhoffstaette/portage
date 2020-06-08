@@ -1,9 +1,9 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit cmake-utils
+inherit cmake
 
 HOMEPAGE="https://github.com/jupp0r/prometheus-cpp"
 DESCRIPTION="Prometheus Client Library for Modern C++"
@@ -21,7 +21,7 @@ PATCHES=(
 )
 
 src_prepare() {
-	cmake-utils_src_prepare
+	cmake_src_prepare
 }
 
 src_configure() {
@@ -30,5 +30,5 @@ src_configure() {
 		-DENABLE_TESTING=OFF
 		-DUSE_THIRDPARTY_LIBRARIES=OFF
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }
