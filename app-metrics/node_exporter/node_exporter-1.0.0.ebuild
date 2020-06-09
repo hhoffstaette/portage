@@ -33,6 +33,7 @@ src_compile() {
 }
 
 src_install() {
+	strip node_exporter/node_exporter
 	dosbin node_exporter/node_exporter
 	dodoc {README,CHANGELOG,CONTRIBUTING}.md
 	systemd_dounit examples/systemd/node_exporter.service
