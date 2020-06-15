@@ -2,9 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+
 inherit go-module systemd
+
 MY_PV="v${PV/_rc/-rc.}"
-NODE_EXPORTER_COMMIT=ef7c058
+NODE_EXPORTER_COMMIT=b9c9670
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
@@ -12,7 +14,7 @@ SRC_URI="https://github.com/prometheus/node_exporter/archive/${MY_PV}.tar.gz -> 
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 CDEPEND="acct-group/node_exporter
 	acct-user/node_exporter"
