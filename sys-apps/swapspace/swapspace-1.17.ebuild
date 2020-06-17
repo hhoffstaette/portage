@@ -14,7 +14,10 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 RDEPEND="${DEPEND}"
 
-PATCHES=("${FILESDIR}/config.patch")
+PATCHES=(
+	"${FILESDIR}/config.patch"
+	"${FILESDIR}/silence-nocow-message.patch"
+)
 
 S="$WORKDIR"/Swapspace-${PV}
 

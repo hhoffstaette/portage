@@ -1,0 +1,11 @@
+diff -rup Swapspace-1.17/src/swaps.c Swapspace-1.17-nowarn/src/swaps.c
+--- Swapspace-1.17/src/swaps.c	2020-05-21 23:59:12.000000000 +0200
++++ Swapspace-1.17-nowarn/src/swaps.c	2020-06-17 12:20:18.365037773 +0200
+@@ -459,7 +459,6 @@ int set_no_cow(int fd)
+     if (errno == ENOTSUP)
+     {
+       nocow_ok = false;
+-      logm(LOG_NOTICE, "NOCOW attribute not supported!");
+     }
+     else return err;
+   }
