@@ -21,9 +21,14 @@ PATCHES=(
 
 S="$WORKDIR"/Swapspace-${PV}
 
+src_prepare() {
+	default
+	eautoreconf
+}
+
 src_configure() {
 	default
-	eautoreconf && econf --localstatedir=/var --sysconfdir=/etc
+	econf --localstatedir=/var --sysconfdir=/etc
 }
 
 src_compile() {
