@@ -1,18 +1,18 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit user golang-build golang-vcs-snapshot
 
 EGO_PN="github.com/prometheus/alertmanager"
-EGIT_COMMIT="v${PV/_rc/-rc.}"
-ALERTMANAGER_COMMIT="7aa5d19"
-ARCHIVE_URI="https://${EGO_PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
-KEYWORDS="amd64"
+MY_PV="v${PV/_rc/-rc.}"
+ARCHIVE_URI="https://${EGO_PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+ALERTMANAGER_COMMIT="4c6c03e"
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
 SRC_URI="${ARCHIVE_URI}"
+KEYWORDS="amd64"
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
 IUSE=""
@@ -41,6 +41,7 @@ src_compile() {
 
 src_install() {
 	pushd src/${EGO_PN} || die
+	strip bin/*
 	dobin bin/*
 	dodoc {README,CHANGELOG,MAINTAINERS}.md
 	insinto /etc/alertmanager/
