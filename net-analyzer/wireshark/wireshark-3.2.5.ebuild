@@ -17,7 +17,7 @@ IUSE="
 	+dumpcap +editcap http2 kerberos libxml2 lua lz4 maxminddb +mergecap
 	+minizip +netlink +plugins plugin-ifdemo +pcap +qt5 +randpkt +randpktdump
 	+reordercap sbc selinux +sharkd smi snappy spandsp sshdump ssl sdjournal
-	+text2pcap tfshark +tshark +udpdump zlib +zstd
+	test +text2pcap tfshark +tshark +udpdump zlib +zstd
 "
 S=${WORKDIR}/${P/_/}
 
@@ -74,6 +74,10 @@ BDEPEND="
 	qt5? (
 		dev-qt/linguist-tools:5
 	)
+	test? (
+		dev-python/pytest
+		dev-python/pytest-xdist
+	)
 "
 RDEPEND="
 	${CDEPEND}
@@ -83,6 +87,7 @@ RDEPEND="
 REQUIRED_USE="
 	plugin-ifdemo? ( plugins )
 "
+RESTRICT="test"
 PATCHES=(
 	"${FILESDIR}"/${PN}-2.4-androiddump.patch
 	"${FILESDIR}"/${PN}-2.6.0-redhat.patch
@@ -174,6 +179,9 @@ src_configure() {
 }
 
 src_test() {
+	cmake_build test-programs
+
+	myctestargs=( --disable-capture --skip-missing-programs=all --verbose )
 	cmake_src_test
 }
 
