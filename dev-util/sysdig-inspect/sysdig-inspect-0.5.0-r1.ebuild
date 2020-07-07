@@ -1,7 +1,7 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 DESCRIPTION="A powerful interface for container troubleshooting and security investigation"
 HOMEPAGE="https://sysdig.com/opensource/inspect/"
@@ -17,10 +17,9 @@ SLOT="0"
 REQUIRED_USE=""
 DEPEND=""
 
-# not sure if this list is complete;
-# let me know if something is missing
 RDEPEND="${DEPEND}
 	dev-libs/nss
+	dev-util/sysdig
 	media-libs/mesa
 	net-print/cups
 	x11-libs/gtk+:3"
@@ -28,10 +27,9 @@ RDEPEND="${DEPEND}
 QA_PREBUILT="
 	/usr/lib/sysdig-inspect/Sysdig Inspect
 	/usr/lib/sysdig-inspect/libffmpeg.so
-	/usr/lib/sysdig-inspect/libnode.so
-	/usr/lib/sysdig-inspect/resources/app/ember-electron/resources/sysdig/csysdig
-	/usr/lib/sysdig-inspect/resources/app/ember-electron/resources/sysdig/sysdig"
+	/usr/lib/sysdig-inspect/libnode.so"
 
+SYSDIG_DIR="usr/lib/sysdig-inspect/resources/app/ember-electron/resources/sysdig"
 DESTINATION="/"
 S="${WORKDIR}"
 
@@ -39,14 +37,18 @@ src_install() {
 	tar xf data.tar.xz
 	mv usr/share/doc/${PN} usr/share/doc/${PF}
 
+	# use native sysdig installation
+	rm -f ${SYSDIG_DIR}/{csysdig,sysdig}
+	rm -rf ${SYSDIG_DIR}/chisels
+	ln -s /usr/bin/{csysdig,sysdig} ${SYSDIG_DIR}
+	ln -s /usr/share/sysdig/chisels ${SYSDIG_DIR}
+
 	insinto ${DESTINATION}
 	doins -r usr
 
 	fperms +x "/usr/lib/sysdig-inspect/Sysdig Inspect" \
 		/usr/lib/sysdig-inspect/libffmpeg.so \
-		/usr/lib/sysdig-inspect/libnode.so \
-		/usr/lib/sysdig-inspect/resources/app/ember-electron/resources/sysdig/csysdig \
-		/usr/lib/sysdig-inspect/resources/app/ember-electron/resources/sysdig/sysdig
+		/usr/lib/sysdig-inspect/libnode.so
 }
 
 pkg_postinst() {
