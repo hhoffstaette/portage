@@ -1,14 +1,14 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 DESCRIPTION="A glossy Matrix collaboration client for the web"
-HOMEPAGE="https://riot.im"
+HOMEPAGE="https://element.im"
 
 inherit eutils gnome2-utils
 
-SRC_URI="https://packages.riot.im/debian/pool/main/r/riot-web/riot-web_${PV}_amd64.deb"
+SRC_URI="https://packages.riot.im/debian/pool/main/e/element-desktop/element-desktop_${PV}_amd64.deb"
 KEYWORDS="amd64"
 
 LICENSE="Apache-2.0"
@@ -20,8 +20,6 @@ REQUIRED_USE=""
 #DEPEND="emoji? ( >=media-fonts/noto-emoji-20180823 )"
 DEPEND=""
 
-# not sure if this list is complete;
-# let me know if something is missing
 RDEPEND="${DEPEND}
 	dev-libs/nss
 	media-libs/mesa
@@ -29,27 +27,27 @@ RDEPEND="${DEPEND}
 	x11-libs/gtk+:3"
 
 QA_PREBUILT="
-	opt/Riot/libffmpeg.so
-	opt/Riot/riot-web
-	opt/Riot/swiftshader/libvk_swiftshader.so"
+	opt/Element (Riot)/libffmpeg.so
+	opt/Element (Riot)/element-desktop
+	opt/Element (Riot)/libvk_swiftshader.so"
 
-DESTINATION="/"
 S="${WORKDIR}"
+DESTINATION="/"
 
 src_install() {
 	tar xf data.tar.xz
 	mv usr/share/doc/${PN} usr/share/doc/${PF}
 	gunzip usr/share/doc/${PF}/changelog.gz
-	rm -f opt/Riot/chrome-sandbox opt/Riot/lib{EGL,GLESv2}.so opt/Riot/swiftshader/lib{EGL,GLESv2}.so
-
+	rm -rf opt/Element\ \(Riot\)/{chrome-sandbox,crashpad_handler,swiftshader}
+	rm -rf opt/Element\ \(Riot\)/lib{EGL,GLESv2}.so
+	
 	insinto ${DESTINATION}
 	doins -r usr
 	doins -r opt
-	fperms +x /opt/Riot/${PN} \
-		/opt/Riot/libffmpeg.so \
-		/opt/Riot/swiftshader/libvk_swiftshader.so 
+	fperms +x /opt/Element\ \(Riot\)/${PN}
+	fperms +x /opt/Element\ \(Riot\)/{libffmpeg,libvk_swiftshader,libvulkan}.so
 
-	dosym ${DESTINATION}opt/Riot/${PN} ${DESTINATION}/usr/bin/${PN}
+	dosym ${DESTINATION}opt/Element\ \(Riot\)/${PN} ${DESTINATION}/usr/bin/${PN}
 }
 
 pkg_postinst() {
