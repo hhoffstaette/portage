@@ -27,9 +27,9 @@ RDEPEND="${DEPEND}
 	x11-libs/gtk+:3"
 
 QA_PREBUILT="
-	opt/Element (Riot)/libffmpeg.so
-	opt/Element (Riot)/element-desktop
-	opt/Element (Riot)/libvk_swiftshader.so"
+	opt/Element/libffmpeg.so
+	opt/Element/element-desktop
+	opt/Element/libvk_swiftshader.so"
 
 S="${WORKDIR}"
 DESTINATION="/"
@@ -38,16 +38,16 @@ src_install() {
 	tar xf data.tar.xz
 	mv usr/share/doc/${PN} usr/share/doc/${PF}
 	gunzip usr/share/doc/${PF}/changelog.gz
-	rm -rf opt/Element\ \(Riot\)/{chrome-sandbox,crashpad_handler,swiftshader}
-	rm -rf opt/Element\ \(Riot\)/lib{EGL,GLESv2}.so
+	rm -rf opt/Element/{chrome-sandbox,crashpad_handler,swiftshader}
+	rm -rf opt/Element/lib{EGL,GLESv2}.so
 	
 	insinto ${DESTINATION}
 	doins -r usr
 	doins -r opt
-	fperms +x /opt/Element\ \(Riot\)/${PN}
-	fperms +x /opt/Element\ \(Riot\)/{libffmpeg,libvk_swiftshader,libvulkan}.so
+	fperms +x /opt/Element/${PN}
+	fperms +x /opt/Element/{libffmpeg,libvk_swiftshader,libvulkan}.so
 
-	dosym ${DESTINATION}opt/Element\ \(Riot\)/${PN} ${DESTINATION}/usr/bin/${PN}
+	dosym ${DESTINATION}opt/Element/${PN} ${DESTINATION}/usr/bin/${PN}
 }
 
 pkg_postinst() {
