@@ -34,20 +34,29 @@ QA_PREBUILT="
 S="${WORKDIR}"
 DESTINATION="/"
 
-src_install() {
+src_unpack() {
+	default
 	tar xf data.tar.xz
-	mv usr/share/doc/${PN} usr/share/doc/${PF}
-	gunzip usr/share/doc/${PF}/changelog.gz
 	rm -rf opt/Element/{chrome-sandbox,crashpad_handler,swiftshader}
 	rm -rf opt/Element/lib{EGL,GLESv2}.so
-	
+}
+
+src_install() {
+	# move original binary and install shell wrapper
+	# See: https://github.com/electron/electron/issues/16097
+	mv opt/Element/${PN} opt/Element/${PN}.bin
+	cp -a "${FILESDIR}"/${PN} opt/Element
+	mv usr/share/doc/${PN} usr/share/doc/${PF}
+	gunzip usr/share/doc/${PF}/changelog.gz
+
 	insinto ${DESTINATION}
 	doins -r usr
 	doins -r opt
-	fperms +x /opt/Element/${PN}
+
+	fperms +x /opt/Element/{${PN},${PN}.bin}
 	fperms +x /opt/Element/{libffmpeg,libvk_swiftshader,libvulkan}.so
 
-	dosym ${DESTINATION}opt/Element/${PN} ${DESTINATION}/usr/bin/${PN}
+	dosym ${DESTINATION}opt/Element/${PN} ${DESTINATION}usr/bin/${PN}
 }
 
 pkg_postinst() {
