@@ -1,8 +1,7 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
-EAPI=5
+EAPI=6
 
 inherit eutils versionator
 
@@ -34,12 +33,12 @@ DEPEND="${RDEPEND}"
 
 # this trainwreck doesn't even build with its own default flags, so help it along
 EXTRA_FLAGS="DEBUG_LEVEL=0 DISABLE_WARNING_AS_ERROR=1"
-EXTRA_CXXFLAGS=""
 
 src_prepare() {
+	default
+
 	# apply patches
 	epatch "${FILESDIR}"/*.patch
-	epatch_user
 
 	# we need to build some of the jars ourselves, so we define
 	# their names from shared prefixes
@@ -51,14 +50,14 @@ src_prepare() {
 
 src_compile() {
 	# by default we build only the shared lib
-	emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} shared_lib
+	emake ${EXTRA_FLAGS} shared_lib
 
 	# building Java support is optional
 	if use java ; then
 
 		# this builds the JNI jar where the embedded JNI library
 		# has dependencies to externally installed bzip/lz4/snappy.
-		emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} rocksdbjava
+		emake ${EXTRA_FLAGS} rocksdbjava
 
 		# WTF: we need to manually create IDE-attachable support jars
 		# because those are built by the wrong Makefile target.
@@ -76,7 +75,10 @@ src_compile() {
 }
 
 src_install() {
-	emake ${EXTRA_FLAGS} ${EXTRA_CXXFLAGS} INSTALL_PATH="${D}/usr" install-shared
+	emake ${EXTRA_FLAGS} INSTALL_PATH="${D}usr" install-shared
+
+	# work around hardcoded libdir :(
+	mv "${D}usr/lib" "${D}usr/$(get_libdir)"
 
 	dodoc README.md
 
