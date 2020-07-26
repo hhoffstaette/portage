@@ -28,8 +28,7 @@ RDEPEND="${DEPEND}
 
 QA_PREBUILT="
 	opt/Element/libffmpeg.so
-	opt/Element/element-desktop
-	opt/Element/libvk_swiftshader.so"
+	opt/Element/element-desktop"
 
 S="${WORKDIR}"
 DESTINATION="/"
@@ -38,7 +37,8 @@ src_unpack() {
 	default
 	tar xf data.tar.xz
 	rm -rf opt/Element/{chrome-sandbox,crashpad_handler,swiftshader}
-	rm -rf opt/Element/lib{EGL,GLESv2}.so
+	rm -rf opt/Element/lib{EGL,GLESv2,vk_swiftshader,vulkan}.so
+	rm -rf opt/Element/vk_swiftshader_icd.json
 }
 
 src_install() {
@@ -54,7 +54,7 @@ src_install() {
 	doins -r opt
 
 	fperms +x /opt/Element/{${PN},${PN}.bin}
-	fperms +x /opt/Element/{libffmpeg,libvk_swiftshader,libvulkan}.so
+	fperms +x /opt/Element/libffmpeg.so
 
 	dosym ${DESTINATION}opt/Element/${PN} ${DESTINATION}usr/bin/${PN}
 }
