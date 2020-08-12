@@ -68,16 +68,9 @@ REQUIRED_USE="
 
 LIBDRM_DEPSTRING=">=x11-libs/libdrm-2.4.99"
 RDEPEND="
-	!app-eselect/eselect-mesa
 	>=dev-libs/expat-2.1.0-r3:=[${MULTILIB_USEDEP}]
 	>=sys-libs/zlib-1.2.8[${MULTILIB_USEDEP}]
-	libglvnd? (
-		>=media-libs/libglvnd-1.2.0-r1[${MULTILIB_USEDEP}]
-		!app-eselect/eselect-opengl
-	)
-	!libglvnd? (
-		>=app-eselect/eselect-opengl-1.3.0
-	)
+	>=media-libs/libglvnd-1.2.0-r1[${MULTILIB_USEDEP}]
 	gallium? (
 		unwind? ( sys-libs/libunwind[${MULTILIB_USEDEP}] )
 		llvm? (
@@ -238,7 +231,7 @@ x86? (
 	usr/lib*/libGLESv2.so.2.0.0
 	usr/lib*/libGL.so.1.2.0
 	usr/lib*/libOSMesa.so.8.0.0
-	libglvnd? ( usr/lib/libGLX_mesa.so.0.0.0 )
+	usr/lib/libGLX_mesa.so.0.0.0 )
 )"
 
 llvm_check_deps() {
@@ -495,12 +488,12 @@ multilib_src_configure() {
 		$(meson_use test build-tests)
 		-Dglx=$(usex X dri disabled)
 		-Dshared-glapi=true
+		-Dglvnd=true
 		$(meson_use dri3)
 		$(meson_use egl)
 		$(meson_use gbm)
 		$(meson_use gles1)
 		$(meson_use gles2)
-		$(meson_use libglvnd glvnd)
 		$(meson_use selinux)
 		-Dvalgrind=$(usex valgrind auto false)
 		-Ddri-drivers=$(driver_list "${DRI_DRIVERS[*]}")
@@ -520,8 +513,7 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	meson_src_install
-
-	use libglvnd && rm -f "${D}"/usr/$(get_libdir)/pkgconfig/{egl,gl}.pc
+	rm -f "${D}"/usr/$(get_libdir)/pkgconfig/{egl,gl}.pc
 }
 
 multilib_src_install_all() {
@@ -530,14 +522,6 @@ multilib_src_install_all() {
 
 multilib_src_test() {
 	meson test -v -C "${BUILD_DIR}" -t 100
-}
-
-pkg_postinst() {
-	if ! use libglvnd; then
-		# Switch to the xorg implementation.
-		echo
-		eselect opengl set --use-old ${OPENGL_DIR}
-	fi
 }
 
 # $1 - VIDEO_CARDS flag (check skipped for "--")
