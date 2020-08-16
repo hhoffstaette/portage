@@ -39,7 +39,6 @@ src_unpack() {
 
 src_prepare() {
 	eapply "${FILESDIR}/${PN}-3.25.0-nonfull_archive-build.patch"
-	eapply "${FILESDIR}/${PN}-3.32.3-local-return.patch"
 	eapply_user
 
 	# Fix AC_CHECK_FUNCS.
