@@ -1,13 +1,11 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit user systemd
 
-MY_PN=${PN/-bin/}
-MY_PV=${PV/_beta/-beta}
-S=${WORKDIR}/${MY_PN}-${MY_PV}
+S=${WORKDIR}/${PN}-${PV}
 
 DESCRIPTION="Gorgeous metric viz, dashboards & editors for Graphite, InfluxDB & OpenTSDB"
 HOMEPAGE="https://grafana.org"
@@ -17,18 +15,14 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
 
-DEPEND=""
+DEPEND="acct-group/grafana
+    acct-user/grafana"
 RDEPEND="${DEPEND}
-	media-libs/fontconfig"
+    media-libs/fontconfig"
 
 QA_EXECSTACK="usr/share/grafana/tools/phantomjs/phantomjs"
 QA_PREBUILT="usr/bin/grafana-* ${QA_EXECSTACK}"
 QA_PRESTRIPPED=${QA_PREBUILT}
-
-pkg_setup() {
-	enewgroup grafana
-	enewuser grafana -1 -1 /usr/share/grafana grafana
-}
 
 src_install() {
 	keepdir /etc/grafana
@@ -37,7 +31,7 @@ src_install() {
 	rm "${S}"/conf/sample.ini || die
 
 	# Frontend assets
-	insinto /usr/share/${MY_PN}
+	insinto /usr/share/${PN}
 	doins -r public conf
 
 	dobin bin/grafana-cli
