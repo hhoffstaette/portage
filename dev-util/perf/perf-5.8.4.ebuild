@@ -4,7 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8} )
-inherit bash-completion-r1 estack eutils llvm toolchain-funcs python-r1 linux-info
+inherit bash-completion-r1 estack eutils llvm toolchain-funcs prefix python-r1 linux-info
 
 MY_PV="${PV/_/-}"
 MY_PV="${MY_PV/-pre/-git}"
@@ -35,7 +35,7 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 mips ppc ppc64 x86 amd64-linux x86-linux"
-IUSE="audit bpf clang crypt debug +demangle doc gtk java lzma numa perl python slang systemtap unwind zlib"
+IUSE="audit clang crypt debug +demangle doc gtk java lzma numa perl python slang systemtap unwind zlib"
 # TODO babeltrace
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -45,7 +45,6 @@ RDEPEND="audit? ( sys-process/audit )
 		<sys-devel/clang-10:*
 		<sys-devel/llvm-10:*
 	)
-	bpf? ( dev-libs/libbpf )
 	demangle? ( sys-libs/binutils-libs:= )
 	gtk? ( x11-libs/gtk+:2 )
 	java? ( virtual/jre:* )
@@ -83,7 +82,7 @@ pkg_setup() {
 src_unpack() {
 	local paths=(
 		tools/arch tools/build tools/include tools/lib tools/perf tools/scripts
-		include lib "arch/*/lib"
+		scripts include lib "arch/*/lib"
 	)
 
 	# We expect the tar implementation to support the -j option (both
@@ -122,7 +121,6 @@ src_prepare() {
 	sed -i \
 		-e "s:\$(sysconfdir_SQ)/bash_completion.d:$(get_bashcompdir):" \
 		"${S}"/Makefile.perf || die
-
 	# A few places still use -Werror w/out $(WERROR) protection.
 	sed -i -e 's:-Werror::' \
 		"${S}"/Makefile.perf "${S_K}"/tools/lib/bpf/Makefile || die
@@ -134,6 +132,11 @@ src_prepare() {
 
 	# The code likes to compile local assembly files which lack ELF markings.
 	find -name '*.S' -exec sed -i '$a.section .note.GNU-stack,"",%progbits' {} +
+
+	# Fix shebang to use python from prefix
+	if [[ -n "${EPREFIX}" ]]; then
+		hprefixify ${S_K}/scripts/bpf_helpers_doc.py
+	fi
 }
 
 puse() { usex $1 "" no; }
@@ -152,11 +155,11 @@ perf_make() {
 	# FIXME: NO_CORESIGHT
 	# FIXME: NO_LIBBABELTRACE
 	emake V=1 VF=1 \
-		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="$(tc-getLD)" \
+		HOSTCC="$(tc-getBUILD_CC)" HOSTLD="$(tc-getBUILD_LD)" \
+		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="$(tc-getLD)" NM="$(tc-getNM)" \
 		PKG_CONFIG="$(tc-getPKG_CONFIG)" \
 		prefix="${EPREFIX}/usr" bindir_relative="bin" \
-		LDFLAGS="-Wl,-E,-z,noexecstack" \
-		EXTRA_CFLAGS="${CFLAGS} -Wno-deprecated-declarations" \
+		EXTRA_CFLAGS="${CFLAGS}" \
 		ARCH="${arch}" \
 		JDIR="${java_dir}" \
 		LIBCLANGLLVM=$(usex clang 1 "") \
@@ -169,7 +172,7 @@ perf_make() {
 		NO_LIBAUDIT=$(puse audit) \
 		NO_LIBBABELTRACE=1 \
 		NO_LIBBIONIC=1 \
-		NO_LIBBPF=$(puse bpf) \
+		NO_LIBBPF="" \
 		NO_LIBCRYPTO=$(puse crypt) \
 		NO_LIBDW_DWARF_UNWIND="" \
 		NO_LIBELF="" \
@@ -207,7 +210,6 @@ src_install() {
 	}
 
 	perf_make -f Makefile.perf install-tools try-install-man DESTDIR="${D}"
-
 	if use python; then
 		python_foreach_impl _install_python_ext
 	fi
