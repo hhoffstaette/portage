@@ -20,7 +20,6 @@ RDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PV}-do-not-hardcode-ethtool-path.patch"
 )
 
 S="${WORKDIR}"/prometheus-${P}
