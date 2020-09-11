@@ -22,8 +22,8 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/${MY_P}.linux-amd64"
 
 src_install() {
-	strip prometheus promtool tsdb
-	dobin prometheus promtool tsdb
+	strip prometheus promtool
+	dobin prometheus promtool
 	insinto /usr/share/prometheus
 	doins -r console_libraries consoles
 	insinto /etc/prometheus
