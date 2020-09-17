@@ -57,8 +57,8 @@ DOCS=( docs/TODO HACKING NEWS README )
 
 PATCHES=(
 	# bug 660880
-	"${FILESDIR}"/polkit-0.117-elogind.patch
-	"${FILESDIR}"/polkit-0.117-duktape.patch
+	"${FILESDIR}"/${PN}-${PV}-elogind.patch
+	"${FILESDIR}"/${PN}-${PV}-duktape.patch
 )
 
 QA_MULTILIB_PATHS="
