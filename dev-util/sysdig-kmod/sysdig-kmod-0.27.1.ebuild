@@ -13,7 +13,7 @@ S=${WORKDIR}/${MY_P}
 
 LICENSE="|| ( MIT GPL-2 )"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 
 RDEPEND="!<=dev-util/sysdig-0.26.4[modules]"
 
