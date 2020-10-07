@@ -24,6 +24,10 @@ RDEPEND="${CDEPEND}"
 
 S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
 
+PATCHES=(
+	"${FILESDIR}"/${PV}-downgrade-CPU-counter-warnings.patch
+)
+
 src_prepare() {
 	default
 	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" .promu.yml || die
