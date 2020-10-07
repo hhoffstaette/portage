@@ -135,13 +135,12 @@ RDEPEND="${RDEPEND}
 # 1. List all the working slots (with min versions) in ||, newest first.
 # 2. Update the := to specify *max* version, e.g. < 10.
 # 3. Specify LLVM_MAX_SLOT, e.g. 9.
-LLVM_MAX_SLOT="10"
+LLVM_MAX_SLOT="11"
 LLVM_DEPSTR="
 	|| (
+		sys-devel/llvm:11[${MULTILIB_USEDEP}]
 		sys-devel/llvm:10[${MULTILIB_USEDEP}]
 		sys-devel/llvm:9[${MULTILIB_USEDEP}]
-		sys-devel/llvm:8[${MULTILIB_USEDEP}]
-		sys-devel/llvm:7[${MULTILIB_USEDEP}]
 	)
 	sys-devel/llvm:=[${MULTILIB_USEDEP}]
 "
@@ -322,14 +321,18 @@ pkg_setup() {
 }
 
 src_prepare() {
-    # LLVM10 patches for OpenCL
+	# Prevent thread starvation with SCHED_IDLE
+	eapply "${FILESDIR}/change-minimum-priority-threads-from-SCHED_IDLE-to-nice-19-SCHED_BATCH.patch"
+
+	# LLVM10 patches for OpenCL
 	eapply "${FILESDIR}/llvm10-build.patch"
 	eapply "${FILESDIR}/llvm10-r1dfede3.patch"
 	eapply "${FILESDIR}/llvm10-r370122.patch"
 	eapply "${FILESDIR}/llvm10-r777180.patch"
 
-    # Prevent thread starvation with SCHED_IDLE
-    eapply "${FILESDIR}/change-minimum-priority-threads-from-SCHED_IDLE-to-nice-19-SCHED_BATCH.patch"
+	# LLVM11
+	eapply "${FILESDIR}/llvm11-add-missing-header-for-powf.patch"
+	eapply "${FILESDIR}/llvm11-remove-unused-header-include-for-newer-LLVM.patch"
 
 	default
 }
