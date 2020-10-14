@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-PYTHON_COMPAT=( python3_{7,8} )
+PYTHON_COMPAT=( python3_{7,8,9} )
 
 inherit python-r1 python-utils-r1
 
@@ -19,7 +19,7 @@ KEYWORDS="amd64 x86"
 IUSE="doc"
 
 src_install() {
-    python_foreach_impl python_newscript heatmap.py btrfs-heatmap
+    python_foreach_impl python_newscript btrfs-heatmap btrfs-heatmap
     docompress -x /usr/share/doc/${PF}
     dodoc COPYING README.md
     use doc && dodoc -r doc/*
