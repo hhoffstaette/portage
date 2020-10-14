@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7,8} )
+PYTHON_COMPAT=( python3_{7,8,9} )
 
 inherit flag-o-matic llvm meson multilib-minimal pax-utils python-any-r1
 
@@ -323,6 +323,9 @@ pkg_setup() {
 src_prepare() {
 	# Prevent thread starvation with SCHED_IDLE
 	eapply "${FILESDIR}/change-minimum-priority-threads-from-SCHED_IDLE-to-nice-19-SCHED_BATCH.patch"
+
+	# Python 3.9
+	eapply "${FILESDIR}/glapi-remove-deprecated-getchildren.patch"
 
 	# LLVM10 patches for OpenCL
 	eapply "${FILESDIR}/llvm10-build.patch"
