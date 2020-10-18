@@ -56,8 +56,6 @@ src_prepare() {
 	eapply -p0 "${FILESDIR}/${PN}-db.patch"
 	# bug 604470
 	eapply -p1 "${FILESDIR}/${PN}-sieve-libs.patch"
-	# bug 630684
-	eapply -p1 "${FILESDIR}/${PN}-${PV}-fix-uninitialised-memory.patch"
 	# Fix master(8)->cyrusmaster(8) manpage.
 	for i in `grep -rl -e 'master\.8' -e 'master(8)' "${S}"` ; do
 		sed -i -e 's:master\.8:cyrusmaster.8:g' \
