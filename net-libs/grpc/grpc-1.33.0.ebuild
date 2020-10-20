@@ -32,7 +32,6 @@ BDEPEND="virtual/pkgconfig"
 RESTRICT="test"
 
 PATCHES=(
-    "${FILESDIR}/grpc-1.32.0-find-re2.patch" # https://github.com/grpc/grpc/pull/24088
 )
 
 S="${WORKDIR}/${PN}-${MY_PV}"
