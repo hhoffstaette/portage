@@ -220,7 +220,7 @@ src_install() {
 	fi
 
 	if ! use examples ; then
-		rm -vr demo/ samples/ || die
+		rm -fvr demo sample || die
 	fi
 
 	if ! use source ; then
