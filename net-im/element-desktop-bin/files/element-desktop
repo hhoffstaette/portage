@@ -1,0 +1,6 @@
+#!/bin/sh
+CMD=$(readlink -f ${0})
+AD=$(readlink -f $(dirname ${CMD}))
+TD=$(mktemp -d)
+env TMPDIR=${TD} ${AD}/element-desktop.bin
+rm -rf ${TD}
