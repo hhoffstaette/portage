@@ -3,7 +3,12 @@
 
 EAPI=7
 
-inherit bash-completion-r1 cmake
+LUA_COMPAT=( luajit )
+# Documentation says this might be needed but since the unmigrated ebuilds
+# did not enforce it, nor does this one.
+#LUA_REQ_USE="-lua52compat"
+
+inherit bash-completion-r1 cmake lua-single
 
 DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
@@ -13,12 +18,12 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="libressl +modules test"
+REQUIRED_USE="${LUA_REQUIRED_USE}"
 RESTRICT="!test? ( test )"
 
-RDEPEND="
+RDEPEND="${LUA_DEPS}
 	app-misc/jq:0=
 	dev-cpp/tbb:0=
-	dev-lang/luajit:2=
 	>=dev-libs/jsoncpp-0.6_pre:0=
 	dev-libs/libb64:0=
 	dev-libs/protobuf:0=
