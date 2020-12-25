@@ -3,19 +3,22 @@
 
 EAPI=7
 
-inherit eutils flag-o-matic
+LUA_COMPAT=( lua5-{1..4} luajit )
+
+inherit flag-o-matic lua-single
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
 
 SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="dnscrypt dnstap doh gnutls +lmdb luajit regex remote-logging snmp +ssl systemd test"
+IUSE="dnscrypt dnstap doh gnutls +lmdb regex remote-logging snmp +ssl systemd test"
 RESTRICT="!test? ( test )"
-REQUIRED_USE="dnscrypt? ( ssl )
+REQUIRED_USE="${LUA_REQUIRED_USE}
+		dnscrypt? ( ssl )
 		gnutls? ( ssl )
 		doh? ( ssl !gnutls )"
 
@@ -27,8 +30,6 @@ RDEPEND="acct-group/dnsdist
 	dnstap? ( dev-libs/fstrm:= )
 	doh? ( www-servers/h2o:=[libh2o] )
 	lmdb? ( dev-db/lmdb:= )
-	luajit? ( dev-lang/luajit:= )
-	!luajit? ( >=dev-lang/lua-5.1:= )
 	regex? ( dev-libs/re2:= )
 	remote-logging? ( >=dev-libs/protobuf-3:= )
 	snmp? ( net-analyzer/net-snmp:= )
@@ -37,11 +38,11 @@ RDEPEND="acct-group/dnsdist
 		!gnutls? ( dev-libs/openssl:= )
 	)
 	systemd? ( sys-apps/systemd:0= )
+	${LUA_DEPS}
 "
 
-DEPEND="${RDEPEND}
-	virtual/pkgconfig
-"
+DEPEND="${RDEPEND}"
+BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
 	default
@@ -51,11 +52,11 @@ src_prepare() {
 src_configure() {
 	econf \
 		--sysconfdir=/etc/dnsdist \
+		--with-lua="${ELUA}" \
 		$(use_enable doh dns-over-https) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
 		$(use_with lmdb ) \
-		$(use luajit && echo "--with-lua=luajit" || echo "--with-lua=lua" ) \
 		$(use_with regex re2) \
 		$(use_with remote-logging protobuf) \
 		$(use_with snmp net-snmp) \
