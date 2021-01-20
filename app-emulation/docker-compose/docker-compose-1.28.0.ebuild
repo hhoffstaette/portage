@@ -32,6 +32,11 @@ src_prepare() {
 	default
 }
 
+src_compile() {
+	# no thanks
+	:
+}
+
 src_install() {
 	newbashcomp contrib/completion/bash/docker-compose ${PN}
 
