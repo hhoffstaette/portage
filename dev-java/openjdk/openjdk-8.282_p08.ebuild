@@ -8,9 +8,10 @@ inherit check-reqs eapi7-ver flag-o-matic java-pkg-2 java-vm-2 multiprocessing p
 # we need latest -ga tag from hg, but want to keep build number as well
 # as _p component of the gentoo version string.
 
+AARCH_PV="8.282-b07"
 MY_PV=$(ver_rs 1 'u' 2 '-' ${PV%_p*}-ga)
 MY_PN_AARCH64="${PN}-aarch64-shenandoah"
-MY_PV_AARCH64="$(ver_rs 1 'u' 2 '-' ${PV/_p/-b})"
+MY_PV_AARCH64="$(ver_rs 1 'u' 2 '-' ${AARCH_PV/_p/-b})"
 MY_P_AARCH64="${MY_PN_AARCH64/#${PN}-}-jdk${MY_PV_AARCH64}"
 
 BASE_URI="https://hg.${PN}.java.net/jdk8u/jdk8u"
