@@ -577,7 +577,7 @@ EGO_SUM=(
 	)
 go-module_set_globals
 
-SRC_URI="https://github.com/prometheus/node_exporter/archive/${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/prometheus/node_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_SUM_SRC_URI}"
 
 CDEPEND="acct-group/node_exporter
