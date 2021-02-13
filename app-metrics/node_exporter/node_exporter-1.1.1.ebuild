@@ -5,14 +5,13 @@ EAPI=7
 
 inherit go-module systemd
 
-NODE_EXPORTER_COMMIT=0e74fbc
-
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
-
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
 KEYWORDS="amd64"
+
+NODE_EXPORTER_COMMIT=4e837d4
 
 EGO_SUM=(
 	"cloud.google.com/go v0.26.0/go.mod"
@@ -331,8 +330,8 @@ EGO_SUM=(
 	"github.com/prometheus/procfs v0.1.3/go.mod"
 	"github.com/prometheus/procfs v0.2.0"
 	"github.com/prometheus/procfs v0.2.0/go.mod"
-	"github.com/prometheus/procfs v0.3.0"
-	"github.com/prometheus/procfs v0.3.0/go.mod"
+	"github.com/prometheus/procfs v0.6.0"
+	"github.com/prometheus/procfs v0.6.0/go.mod"
 	"github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod"
 	"github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod"
 	"github.com/rogpeppe/go-internal v1.3.0/go.mod"
@@ -451,6 +450,8 @@ EGO_SUM=(
 	"golang.org/x/sync v0.0.0-20190423024810-112230192c58/go.mod"
 	"golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e"
 	"golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e/go.mod"
+	"golang.org/x/sync v0.0.0-20201207232520-09787c993a3a"
+	"golang.org/x/sync v0.0.0-20201207232520-09787c993a3a/go.mod"
 	"golang.org/x/sys v0.0.0-20180823144017-11551d06cbcc/go.mod"
 	"golang.org/x/sys v0.0.0-20180830151530-49385e6e1522/go.mod"
 	"golang.org/x/sys v0.0.0-20180905080454-ebe1bf3edb33/go.mod"
