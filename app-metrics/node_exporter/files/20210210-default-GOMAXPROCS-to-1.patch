@@ -1,0 +1,62 @@
+From d11d48c7a89b71869a343a1f1dc41e6d5078aaa4 Mon Sep 17 00:00:00 2001
+From: Ben Kochie <superq@gmail.com>
+Date: Wed, 10 Feb 2021 13:38:28 +0100
+Subject: [PATCH] Default GOMAXPROCS to 1
+
+Avoid running on all CPUs by limiting the Go runtime to one CPU by
+default. Avoids having Go routines schedule on every CPU, driving up the
+visible run queue length on high CPU count systems.
+
+https://github.com/prometheus/node_exporter/issues/1880
+
+[HH: small context fix in hunk #1 for clean merge]
+Signed-off-by: Ben Kochie <superq@gmail.com>
+---
+ CHANGELOG.md     | 2 ++
+ node_exporter.go | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 7e7d109d3..b678b119d 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -5,6 +5,8 @@
+ * [ENHANCEMENT]
+ * [BUGFIX]
+ 
++* [CHANGE] Default GOMAXPROCS to 1
++
+ ## 1.1.1 / 2021-02-12
+ 
+ * [BUGFIX] Fix ineffassign issue #1957
+diff --git a/node_exporter.go b/node_exporter.go
+index 2347a4907..6db7acbad 100644
+--- a/node_exporter.go
++++ b/node_exporter.go
+@@ -19,6 +19,7 @@ import (
+ 	_ "net/http/pprof"
+ 	"os"
+ 	"os/user"
++	"runtime"
+ 	"sort"
+ 
+ 	"github.com/prometheus/common/promlog"
+@@ -163,6 +164,9 @@ func main() {
+ 			"web.config",
+ 			"[EXPERIMENTAL] Path to config yaml file that can enable TLS or authentication.",
+ 		).Default("").String()
++		maxProcs = kingpin.Flag(
++			"runtime.gomaxprocs", "The target number of CPUs Go will run on (GOMAXPROCS)",
++		).Envar("GOMAXPROCS").Default("1").Int()
+ 	)
+ 
+ 	promlogConfig := &promlog.Config{}
+@@ -180,6 +184,8 @@ func main() {
+ 	if user, err := user.Current(); err == nil && user.Uid == "0" {
+ 		level.Warn(logger).Log("msg", "Node Exporter is running as root user. This exporter is designed to run as unpriviledged user, root is not required.")
+ 	}
++	runtime.GOMAXPROCS(*maxProcs)
++	level.Debug(logger).Log("msg", "Go MAXPROCS", "procs", *maxProcs)
+ 
+ 	http.Handle(*metricsPath, newHandler(!*disableExporterMetrics, *maxRequests, logger))
+ 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
