@@ -590,7 +590,6 @@ RDEPEND="${CDEPEND}"
 S="${WORKDIR}/${PN}-${PV}"
 
 PATCHES=(
-	"${FILESDIR}/20210210-default-GOMAXPROCS-to-1.patch"
 )
 
 src_prepare() {

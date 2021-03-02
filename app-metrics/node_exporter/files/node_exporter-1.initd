@@ -12,7 +12,8 @@ command_args="${command_args:---collector.textfile.directory=/var/lib/node_expor
 command_background="true"
 start_stop_daemon_args="--user ${user} --group ${group} \
 	--stdout /var/log/node_exporter/${RC_SVCNAME}.log \
-	--stderr /var/log/node_exporter/${RC_SVCNAME}.log"
+	--stderr /var/log/node_exporter/${RC_SVCNAME}.log \
+	--env GOMAXPROCS=${GOMAXPROCS:-1}"
 
 depend() {
 	after net
