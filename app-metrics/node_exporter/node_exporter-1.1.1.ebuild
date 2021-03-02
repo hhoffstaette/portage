@@ -590,6 +590,7 @@ RDEPEND="${CDEPEND}"
 S="${WORKDIR}/${PN}-${PV}"
 
 PATCHES=(
+	"${FILESDIR}"/20210302-sanitize-strings-from-sys-class-power_supply.patch
 )
 
 src_prepare() {
