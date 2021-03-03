@@ -1,6 +1,13 @@
-diff -rup Swapspace-1.17/src/swaps.c Swapspace-1.17-nowarn/src/swaps.c
---- Swapspace-1.17/src/swaps.c	2020-05-21 23:59:12.000000000 +0200
-+++ Swapspace-1.17-nowarn/src/swaps.c	2020-06-17 12:20:18.365037773 +0200
+commit c8a7d1276bbda6e8102a44fb3f5473fa9374dad3
+Author: Holger Hoffstätte <holger@applied-asynchrony.com>
+Date:   Wed Mar 3 17:00:14 2021 +0100
+
+    Silence unnecessary nocow warning
+
+diff --git a/src/swaps.c b/src/swaps.c
+index e477344..03ba91a 100644
+--- a/src/swaps.c
++++ b/src/swaps.c
 @@ -459,7 +459,6 @@ int set_no_cow(int fd)
      if (errno == ENOTSUP)
      {

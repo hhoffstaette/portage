@@ -1,0 +1,46 @@
+commit 626d120b8d76ec3d9702c1e4effee4186eb979ea
+Author: Holger Hoffstätte <holger@applied-asynchrony.com>
+Date:   Wed Mar 3 17:00:34 2021 +0100
+
+    Increase wakeup interval to 5 seconds
+
+diff --git a/src/main.c b/src/main.c
+index 629df7e..8678d0b 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -349,7 +349,7 @@ int main(int argc, char *argv[])
+     else if (unlikely(adjust_swap))	adjust_swap = false,	request_diet();
+     else 			        handle_requirements();
+ 
+-    sleep(1);
++    sleep(WAKEUP_INTERVAL);
+   }
+ 
+   int result = EXIT_SUCCESS;
+diff --git a/src/state.c b/src/state.c
+index 846c3ac..2d0c6ff 100644
+--- a/src/state.c
++++ b/src/state.c
+@@ -51,7 +51,7 @@ static time_t cooldown_time = 600;
+ static time_t timer = 0;
+ 
+ static inline void timer_reset(void) { timer = cooldown_time; }
+-static inline void timer_tick(void) { --timer; }
++static inline void timer_tick(void) { timer -= WAKEUP_INTERVAL; }
+ static inline bool timer_timeout(void) { return timer <= 0; }
+ 
+ #ifndef NO_CONFIG
+diff --git a/src/state.h b/src/state.h
+index a89d2eb..9e67054 100644
+--- a/src/state.h
++++ b/src/state.h
+@@ -22,6 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ #ifndef SWAPSPACE_STATE_H
+ #define SWAPSPACE_STATE_H
+ 
++/// State machine wakeup interval
++#define WAKEUP_INTERVAL 5
++
+ /// Perform one iteration of the allocation algorithm.  Clobbers localbuf.
+ void handle_requirements(void);
+ 

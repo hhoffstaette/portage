@@ -17,6 +17,7 @@ RDEPEND="${DEPEND}"
 PATCHES=(
 	"${FILESDIR}/config.patch"
 	"${FILESDIR}/silence-nocow-message.patch"
+	"${FILESDIR}/wakeup-interval.patch"
 )
 
 S="$WORKDIR"/Swapspace-${PV}
