@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>williamh@gentoo.org</email>
-		<name>William Hubbs</name>
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffst&auml;tte</name>
 	</maintainer>
 	<upstream>
 		<remote-id type="github">prometheus/node_exporter</remote-id>
