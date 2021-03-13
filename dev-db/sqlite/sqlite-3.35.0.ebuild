@@ -10,8 +10,8 @@ DOC_PV="${SRC_PV}"
 
 DESCRIPTION="SQL database engine"
 HOMEPAGE="https://sqlite.org/"
-SRC_URI="https://sqlite.org/2020/${PN}-autoconf-${SRC_PV}.tar.gz
-	doc? ( https://sqlite.org/2020/${PN}-doc-${DOC_PV}.zip )"
+SRC_URI="https://sqlite.org/2021/${PN}-autoconf-${SRC_PV}.tar.gz
+	doc? ( https://sqlite.org/2021/${PN}-doc-${DOC_PV}.zip )"
 
 LICENSE="public-domain"
 SLOT="3"
