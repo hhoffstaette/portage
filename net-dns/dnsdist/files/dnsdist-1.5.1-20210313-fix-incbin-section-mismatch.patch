@@ -1,0 +1,19 @@
+
+Fix section mismatch leading to link errors with LTO:
+https://github.com/graphitemaster/incbin/issues/45
+
+Fixed in dnsdist-1.6 which no longer uses incbin.
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+
+diff -rup dnsdist-1.5.1/ext/incbin/incbin.h dnsdist-1.5.1-incbin/ext/incbin/incbin.h
+--- dnsdist-1.5.1/ext/incbin/incbin.h	2018-11-12 09:33:58.000000000 +0100
++++ dnsdist-1.5.1-incbin/ext/incbin/incbin.h	2021-03-13 17:53:28.552595628 +0100
+@@ -216,6 +216,7 @@
+             INCBIN_MANGLE INCBIN_STRINGIZE(INCBIN_PREFIX) #NAME "Size:\n" \
+                 INCBIN_INT INCBIN_MANGLE INCBIN_STRINGIZE(INCBIN_PREFIX) #NAME "End - " \
+                            INCBIN_MANGLE INCBIN_STRINGIZE(INCBIN_PREFIX) #NAME "Data\n" \
++            ".previous" "\n" \
+     ); \
+     INCBIN_EXTERN(NAME)
+ 
