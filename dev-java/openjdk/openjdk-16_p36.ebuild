@@ -11,7 +11,7 @@ BUILDSLOT=$((${SLOT}-1))
 
 DESCRIPTION="Open source implementation of the Java programming language"
 HOMEPAGE="https://openjdk.java.net"
-SRC_URI="https://github.com/AdoptOpenJDK/openjdk-jdk${SLOT}/archive/jdk-${MY_PV}.tar.gz"
+SRC_URI="https://github.com/openjdk/jdk${SLOT}u/archive/tags/jdk-${MY_PV}.tar.gz"
 
 LICENSE="GPL-2"
 KEYWORDS="amd64 arm arm64 ppc64"
@@ -73,7 +73,7 @@ PDEPEND=""
 
 REQUIRED_USE="javafx? ( alsa !headless-awt )"
 
-S="${WORKDIR}/openjdk-jdk${SLOT}-jdk-${MY_PV/+/-}"
+S="${WORKDIR}/jdk${SLOT}u-tags-jdk-${MY_PV/+/-}"
 
 
 # The space required to build varies wildly depending on USE flags,
