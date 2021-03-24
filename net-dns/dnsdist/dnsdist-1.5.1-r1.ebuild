@@ -71,7 +71,7 @@ src_install() {
 	default
 
 	insinto /etc/dnsdist
-	doins "${FILESDIR}"/dnsdist.conf.example
+	newins "${FILESDIR}"/dnsdist.conf.example dnsdist.conf
 
 	newconfd "${FILESDIR}"/dnsdist.confd ${PN}
 	newinitd "${FILESDIR}"/dnsdist.initd ${PN}
