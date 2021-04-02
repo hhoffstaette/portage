@@ -14,10 +14,10 @@ SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64 ppc64 x86"
-IUSE="doc examples"
+IUSE="+cxx17 doc examples"
 
 DEPEND="
-	>=dev-cpp/abseil-cpp-20200225:=
+	>=dev-cpp/abseil-cpp-20200225:=[cxx17(+)]
 	>=dev-libs/protobuf-3.11.2:=
 	>=net-dns/c-ares-1.15.0:=
 	sys-libs/zlib:=
@@ -45,6 +45,7 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
+		$(usex cxx17 -DCMAKE_CXX_STANDARD=17 '')
 		-DgRPC_INSTALL=ON
 		-DgRPC_ABSL_PROVIDER=package
 		-DgRPC_CARES_PROVIDER=package
