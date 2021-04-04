@@ -19,6 +19,7 @@ IUSE="+cxx17 doc examples"
 DEPEND="
 	>=dev-cpp/abseil-cpp-20200225:=[cxx17(+)]
 	>=dev-libs/protobuf-3.11.2:=
+	dev-libs/re2:=
 	>=net-dns/c-ares-1.15.0:=
 	sys-libs/zlib:=
 	>=dev-libs/openssl-1.0.2:0=[-bindist]
