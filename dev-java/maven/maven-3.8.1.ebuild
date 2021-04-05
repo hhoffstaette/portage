@@ -13,7 +13,7 @@ SRC_URI="mirror://apache/maven/maven-${MY_MV}/${PV}/binaries/${MY_P}-bin.tar.gz"
 HOMEPAGE="http://maven.apache.org/"
 
 LICENSE="Apache-2.0"
-SLOT="3.6"
+SLOT="3.8"
 KEYWORDS="amd64 x86"
 
 DEPEND="app-eselect/eselect-java"
