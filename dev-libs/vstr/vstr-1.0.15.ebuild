@@ -1,9 +1,9 @@
 
-inherit eutils flag-o-matic
+EAPI=7
 
 DESCRIPTION="Fast, secure and complete C string library"
 HOMEPAGE="http://www.and.org/vstr/"
-SRC_URI="ftp://ftp.and.org/pub/james/vstr/${PV}/${P}.tar.gz"
+SRC_URI="http://www.and.org/vstr/latest/${P}.tar.gz"
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="amd64 x86"
@@ -14,6 +14,8 @@ src_unpack() {
 }
 
 src_configure() {
+	# fix for gcc-10 inlining behaviour
+	CFLAGS="${CFLAGS} -fno-inline"
 	econf || die "econf failed"
 }
 
