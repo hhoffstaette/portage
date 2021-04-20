@@ -27,6 +27,9 @@ QA_PREBUILT="
 	opt/postman/Postman
 	opt/postman/_Postman"
 
+QA_PRESTRIPPED="
+	opt/postman/libvk_swiftshader.so"
+
 S="${WORKDIR}/Postman/app"
 
 src_unpack() {
