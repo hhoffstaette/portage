@@ -1,23 +1,22 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit autotools check-reqs flag-o-matic java-pkg-2 java-vm-2 multiprocessing pax-utils toolchain-funcs
 
-# we need -ga tag to fetch tarball and unpack it, but exact number everywhere else to
-# set build version properly
 MY_PV="${PV%_p*}-ga"
-SLOT="${MY_PV%%[.+]*}"
+SLOT=${MY_PV%%[.+]*}
+BUILDSLOT=$((${SLOT}-1))
 
 DESCRIPTION="Open source implementation of the Java programming language"
 HOMEPAGE="https://openjdk.java.net"
-SRC_URI="https://hg.${PN}.java.net/jdk-updates/jdk${SLOT}u/archive/jdk-${MY_PV}.tar.bz2 -> ${P}.tar.bz2"
+SRC_URI="https://github.com/openjdk/jdk${SLOT}u/archive/tags/jdk-${MY_PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~arm ~arm64 ~ppc64"
+KEYWORDS="amd64 arm arm64 ppc64"
 
-IUSE="alsa cups debug doc examples gentoo-vm headless-awt javafx +jbootstrap +pch selinux +shenandoah source systemtap"
+IUSE="alsa cups debug doc examples gentoo-vm headless-awt javafx +jbootstrap +pch selinux source systemtap"
 
 COMMON_DEPEND="
 	media-libs/freetype:2=
@@ -61,16 +60,21 @@ DEPEND="
 	x11-libs/libXrender
 	x11-libs/libXt
 	x11-libs/libXtst
-	javafx? ( dev-java/openjfx:${SLOT}= )
+	javafx? ( dev-java/openjfx:${SLOT} )
 	|| (
 		dev-java/openjdk-bin:${SLOT}
 		dev-java/openjdk:${SLOT}
+		dev-java/openjdk-bin:${BUILDSLOT}
+		dev-java/openjdk:${BUILDSLOT}
 	)
 "
 
+PDEPEND=""
+
 REQUIRED_USE="javafx? ( alsa !headless-awt )"
 
-S="${WORKDIR}/jdk${SLOT}u-jdk-${MY_PV}"
+S="${WORKDIR}/jdk${SLOT}u-tags-jdk-${MY_PV}"
+
 
 # The space required to build varies wildly depending on USE flags,
 # ranging from 2GB to 16GB. This function is certainly not exact but
@@ -87,16 +91,14 @@ openjdk_check_requirements() {
 
 pkg_pretend() {
 	openjdk_check_requirements
-	if [[ ${MERGE_TYPE} != binary ]]; then
-		has ccache ${FEATURES} && die "FEATURES=ccache doesn't work with ${PN}, bug #677876"
-	fi
+	has ccache ${FEATURES} && die "FEATURES=ccache doesn't work with ${PN}"
 }
 
 pkg_setup() {
 	openjdk_check_requirements
 	java-vm-2_pkg_setup
 
-	JAVA_PKG_WANT_BUILD_VM="openjdk-${SLOT} openjdk-bin-${SLOT}"
+	JAVA_PKG_WANT_BUILD_VM="openjdk-${SLOT} openjdk-bin-${SLOT} openjdk-${BUILDSLOT} openjdk-bin-${BUILDSLOT}"
 	JAVA_PKG_WANT_SOURCE="${SLOT}"
 	JAVA_PKG_WANT_TARGET="${SLOT}"
 
@@ -131,15 +133,13 @@ pkg_setup() {
 
 src_prepare() {
 	default
+	# epatch "${FILESDIR}"/*.patch
 	chmod +x configure || die
 }
 
 src_configure() {
 	# Work around stack alignment issue, bug #647954. in case we ever have x86
 	use x86 && append-flags -mincoming-stack-boundary=2
-
-	# Work around -fno-common ( GCC10 default ), bug #713180
-	append-flags -fcommon
 
 	# Enabling full docs appears to break doc building. If not
 	# explicitly disabled, the flag will get auto-enabled if pandoc and
@@ -163,15 +163,11 @@ src_configure() {
 		--with-vendor-vm-bug-url="https://bugs.openjdk.java.net"
 		--with-vendor-version-string="${PVR}"
 		--with-version-pre=""
-		--with-version-string="${PV%_p*}"
-		--with-version-build="${PV#*_p}"
+        --with-version-string="${PV%_p*}"
+        --with-version-build="${PV#*_p}"
 		--with-zlib=system
 		--enable-dtrace=$(usex systemtap yes no)
 		--enable-headless-only=$(usex headless-awt yes no)
-	)
-
-	use shenandoah && myconf+=(
-		--with-jvm-features=shenandoahgc
 	)
 
 	if use javafx; then
@@ -264,7 +260,7 @@ pkg_postinst() {
 	if use gentoo-vm ; then
 		ewarn "WARNING! You have enabled the gentoo-vm USE flag, making this JDK"
 		ewarn "recognised by the system. This will almost certainly break"
-		ewarn "many java ebuilds as they are not ready for openjdk-11"
+		ewarn "many java ebuilds as they are not ready for openjdk-${SLOT}"
 	else
 		ewarn "The experimental gentoo-vm USE flag has not been enabled so this JDK"
 		ewarn "will not be recognised by the system. For example, simply calling"
