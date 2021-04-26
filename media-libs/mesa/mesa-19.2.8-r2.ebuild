@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -135,9 +135,10 @@ RDEPEND="${RDEPEND}
 # 1. List all the working slots (with min versions) in ||, newest first.
 # 2. Update the := to specify *max* version, e.g. < 10.
 # 3. Specify LLVM_MAX_SLOT, e.g. 9.
-LLVM_MAX_SLOT="11"
+LLVM_MAX_SLOT="12"
 LLVM_DEPSTR="
 	|| (
+		sys-devel/llvm:12[${MULTILIB_USEDEP}]
 		sys-devel/llvm:11[${MULTILIB_USEDEP}]
 		sys-devel/llvm:10[${MULTILIB_USEDEP}]
 		sys-devel/llvm:9[${MULTILIB_USEDEP}]
@@ -336,6 +337,9 @@ src_prepare() {
 	# LLVM11
 	eapply "${FILESDIR}/llvm11-add-missing-header-for-powf.patch"
 	eapply "${FILESDIR}/llvm11-remove-unused-header-include-for-newer-LLVM.patch"
+
+	# LLVM12
+	eapply "${FILESDIR}/llvm12-fix-build-due-to-LLVMAddConstantPropagationPass-removal.patch"
 
 	default
 }
