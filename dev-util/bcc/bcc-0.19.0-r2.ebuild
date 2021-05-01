@@ -47,7 +47,7 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bcc-0.9.0-no-luajit-automagic-dep.patch"
 	"${FILESDIR}/bcc-0.14.0-cmakelists.patch"
-	"${FILESDIR}/bcc-0.19-disable-macro-warnings.patch"
+	"${FILESDIR}/bcc-0.19-move-HAVE_BUILTIN_BSWAP-includes-to-separate-header.patch"
 )
 
 # tests need root access
