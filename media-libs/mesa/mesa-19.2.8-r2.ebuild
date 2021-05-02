@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8,9} )
 
-inherit llvm meson multilib-minimal pax-utils python-any-r1
+inherit flag-o-matic llvm meson multilib-minimal pax-utils python-any-r1
 
 OPENGL_DIR="xorg-x11"
 
@@ -141,6 +141,7 @@ LLVM_DEPSTR="
 		sys-devel/llvm:12[${MULTILIB_USEDEP}]
 		sys-devel/llvm:11[${MULTILIB_USEDEP}]
 		sys-devel/llvm:10[${MULTILIB_USEDEP}]
+		sys-devel/llvm:9[${MULTILIB_USEDEP}]
 	)
 	sys-devel/llvm:=[${MULTILIB_USEDEP}]
 "
