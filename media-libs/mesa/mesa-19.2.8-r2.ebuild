@@ -30,7 +30,7 @@ for card in ${VIDEO_CARDS}; do
 done
 
 IUSE="${IUSE_VIDEO_CARDS}
-	+classic d3d9 debug +dri3 +egl +gallium +gbm gles1 +gles2 +libglvnd +llvm
+	+classic d3d9 debug +dri3 +egl +gallium +gbm gles1 +gles2 +llvm
 	lm-sensors opencl osmesa pax_kernel selinux test unwind vaapi valgrind
 	vdpau vulkan vulkan-overlay wayland +X xa xvmc"
 
@@ -328,28 +328,31 @@ src_prepare() {
 	# Python 3.9
 	eapply "${FILESDIR}/glapi-remove-deprecated-getchildren.patch"
 
-	# LLVM10 patches for OpenCL
+	# Fixes for -fno-common with gcc-10+
+	eapply "${FILESDIR}/gcc10-fix-a-couple-of-multiple-definition-warnings.patch"
+	eapply "${FILESDIR}/gcc10-fix-multiple-definition-error-with-radeon_debug.patch"
+	eapply "${FILESDIR}/gcc10-move-get_pic_param-to-radeon_vce.c.patch"
+	eapply "${FILESDIR}/gcc10-move-si_get_pic_param-to-radeon_vce.c.patch"
+
+	# LLVM-10 patches for OpenCL
 	eapply "${FILESDIR}/llvm10-build.patch"
 	eapply "${FILESDIR}/llvm10-r1dfede3.patch"
 	eapply "${FILESDIR}/llvm10-r370122.patch"
 	eapply "${FILESDIR}/llvm10-r777180.patch"
 
-	# LLVM11
+	# LLVM-11
 	eapply "${FILESDIR}/llvm11-add-missing-header-for-powf.patch"
 	eapply "${FILESDIR}/llvm11-remove-unused-header-include-for-newer-LLVM.patch"
 
-	# LLVM12
+	# LLVM-12
 	eapply "${FILESDIR}/llvm12-fix-build-due-to-LLVMAddConstantPropagationPass-removal.patch"
 
 	default
 }
 
 multilib_src_configure() {
-	# broken again with gcc-10
+	# broken again with gcc-10+
 	filter-flags -flto*
-
-	# build fix for gcc-10
-	append-cflags -fcommon
 
 	local emesonargs=()
 
