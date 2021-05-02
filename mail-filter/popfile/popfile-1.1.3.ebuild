@@ -1,9 +1,7 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-filter/popfile/popfile-1.1.3.ebuild,v 1.7 2014/07/23 02:29:13 patrick Exp $
 
-EAPI=5
-inherit eutils
+EAPI=7
 
 DESCRIPTION="Anti-spam bayesian filter"
 HOMEPAGE="http://getpopfile.org"
@@ -33,9 +31,15 @@ RDEPEND="virtual/perl-Digest-MD5
 
 DEPEND="app-arch/unzip"
 
+PATCHES=(
+	# increase select timeout
+	"${FILESDIR}"/${P}-select-timeout.patch
+)
+
 S="${WORKDIR}"
 
 src_prepare() {
+	default
     # patch templates for relative URLs
 	local f
 	for f in `find skins -name "*.thtml"`
@@ -45,9 +49,6 @@ src_prepare() {
 		sed s/'src\=\"\/'/'src\=\"'/g $f.tmp2 > $f
 		rm -f $f.tmp1 $f.tmp2
 	done
-	
-	# increase select timeout
-	epatch ${FILESDIR}/popfile-select-timeout.patch
 }
 
 src_install() {
