@@ -1,19 +1,17 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI="5"
-GCONF_DEBUG="yes"
+EAPI="7"
 GNOME2_LA_PUNT="yes"
 
-inherit eutils gnome2
+inherit gnome2
 
 DESCRIPTION="Image viewer and browser for Gnome"
 HOMEPAGE="https://wiki.gnome.org/Apps/gthumb"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc ~ppc64 x86 ~amd64-linux ~x86-linux ~x86-solaris"
+KEYWORDS="amd64 arm ppc ppc64 x86 amd64-linux x86-linux x86-solaris"
 IUSE="cdr exif gstreamer http jpeg json libsecret raw slideshow svg tiff test webkit webp"
 
 COMMON_DEPEND="
@@ -58,9 +56,11 @@ DEPEND="${COMMON_DEPEND}
 # eautoreconf needs:
 #	gnome-base/gnome-common
 
-src_prepare() {
-	epatch "${FILESDIR}"/${P}-exiv2-0.27.patch
+PATCHES=(
+	"${FILESDIR}"/${P}-exiv2-0.27.patch
+)
 
+src_prepare() {
 	# Remove unwanted CFLAGS added with USE=debug
 	sed -e 's/CFLAGS="$CFLAGS -g -O0 -DDEBUG"//' \
 		-i configure.ac -i configure || die
