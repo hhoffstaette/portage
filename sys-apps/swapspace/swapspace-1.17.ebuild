@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit autotools eutils flag-o-matic
+inherit autotools
 
 DESCRIPTION="A dynamic swap space manager"
 HOMEPAGE="https://github.com/Tookmund/Swapspace"
@@ -15,9 +15,9 @@ KEYWORDS="amd64 x86"
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/config.patch"
-	"${FILESDIR}/silence-nocow-message.patch"
-	"${FILESDIR}/wakeup-interval.patch"
+	"${FILESDIR}/${PN}-${PV}-config.patch"
+	"${FILESDIR}/${PN}-${PV}-silence-nocow-message.patch"
+	"${FILESDIR}/${PN}-${PV}-wakeup-interval.patch"
 )
 
 S="$WORKDIR"/Swapspace-${PV}
