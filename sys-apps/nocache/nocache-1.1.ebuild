@@ -1,7 +1,7 @@
+# Copyright 1999-2021 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-inherit eutils flag-o-matic
+EAPI=7
 
 DESCRIPTION="Minimize caching effects for applications"
 HOMEPAGE="https://github.com/Feh/nocache"
@@ -12,10 +12,9 @@ KEYWORDS="x86 amd64"
 
 RDEPEND="${DEPEND}"
 
-src_prepare() {
-	default
-	epatch "${FILESDIR}"/${P}-*.patch
-}
+PATCHES=(
+	"${FILESDIR}"/${P}-sync-minsize.patch
+)
 
 src_compile() {
 	emake CFLAGS="${CFLAGS}" || die "Make failed!"
