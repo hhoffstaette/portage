@@ -1,11 +1,11 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 
-inherit flag-o-matic lua-single
+inherit lua-single
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
@@ -43,11 +43,13 @@ RDEPEND="acct-group/dnsdist
 
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
-
-src_prepare() {
-	default
-	eapply -p1 "${FILESDIR}"/${PN}-${PV}-*.patch
-}
+PATCHES=(
+	"${FILESDIR}"/${PN}-${PV}-20200729-speed-up-the-round-robin-policy.patch
+	"${FILESDIR}"/${PN}-${PV}-20200824-handle-an-empty-servers-list-in-the-RR-policy.patch
+	"${FILESDIR}"/${PN}-${PV}-20200828-get-rid-of-allocations-in-the-packet-cache-fast-path.patch
+	"${FILESDIR}"/${PN}-${PV}-20201127-drop-second-argument-in-SpoofAction.patch
+	"${FILESDIR}"/${PN}-${PV}-20210313-fix-incbin-section-mismatch.patch
+)
 
 src_configure() {
 	econf \
