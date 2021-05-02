@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="7"
 
-inherit eutils prefix
+inherit prefix
 
 DESCRIPTION="rpm workalike for Gentoo Linux"
 HOMEPAGE="https://github.com/hhoffstaette/epm"
@@ -17,10 +17,13 @@ IUSE=""
 DEPEND=">=dev-lang/perl-5"
 RDEPEND="${DEPEND}"
 
+PATCHES=(
+	"${FILESDIR}"/${P}-prefix.patch
+	"${FILESDIR}"/${P}-layout.patch
+)
+
 src_prepare() {
 	default
-	epatch "${FILESDIR}"/${P}-prefix.patch
-	epatch "${FILESDIR}"/${P}-layout.patch
 	eprefixify epm
 }
 

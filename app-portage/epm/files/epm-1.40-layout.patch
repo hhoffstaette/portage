@@ -1,5 +1,5 @@
---- epm	2013-12-16 19:33:23.102231517 +0100
-+++ epm.new	2013-12-16 19:35:03.123854072 +0100
+--- a/epm	2013-12-16 19:33:23.102231517 +0100
++++ b/epm.new	2013-12-16 19:35:03.123854072 +0100
 @@ -191,15 +191,18 @@
      my %vals = map {$_, '(n/a)'} qw/CATEGORY HOSTNAME DESCRIPTION URL LICENSE NAME RELEASE VERSION SLOT PACKAGER/;
      my $ldbpath = "$dbpath/$p";
