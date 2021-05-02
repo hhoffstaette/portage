@@ -134,7 +134,6 @@ pkg_setup() {
 
 src_prepare() {
 	default
-	# epatch "${FILESDIR}"/*.patch
 	chmod +x configure || die
 }
 
