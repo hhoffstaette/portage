@@ -16,7 +16,7 @@ SRC_URI="https://github.com/openjdk/jdk${SLOT}u/archive/tags/jdk-${MY_PV}.tar.gz
 LICENSE="GPL-2"
 KEYWORDS="amd64 arm arm64 ppc64"
 
-IUSE="alsa cups debug doc examples gentoo-vm headless-awt javafx +jbootstrap +pch selinux source systemtap"
+IUSE="alsa cups debug doc examples gentoo-vm headless-awt +jbootstrap +pch selinux source systemtap"
 
 COMMON_DEPEND="
 	media-libs/freetype:2=
@@ -61,18 +61,9 @@ DEPEND="
 	x11-libs/libXrender
 	x11-libs/libXt
 	x11-libs/libXtst
-	javafx? ( dev-java/openjfx:${SLOT} )
-	|| (
-		dev-java/openjdk-bin:${SLOT}
-		dev-java/openjdk:${SLOT}
-		dev-java/openjdk-bin:${BUILDSLOT}
-		dev-java/openjdk:${BUILDSLOT}
-	)
 "
 
 PDEPEND=""
-
-REQUIRED_USE="javafx? ( alsa !headless-awt )"
 
 S="${WORKDIR}/jdk${SLOT}u-tags-jdk-${MY_PV}"
 
@@ -171,15 +162,6 @@ src_configure() {
 		--enable-dtrace=$(usex systemtap yes no)
 		--enable-headless-only=$(usex headless-awt yes no)
 	)
-
-	if use javafx; then
-		local zip="${EROOT%/}/usr/$(get_libdir)/openjfx-${SLOT}/javafx-exports.zip"
-		if [[ -r ${zip} ]]; then
-			myconf+=( --with-import-modules="${zip}" )
-		else
-			die "${zip} not found or not readable"
-		fi
-	fi
 
 	# PaX breaks pch, bug #601016
 	if use pch && ! host-is-pax; then
