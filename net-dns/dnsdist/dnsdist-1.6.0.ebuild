@@ -15,7 +15,7 @@ KEYWORDS="amd64 x86"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="dnscrypt dnstap doh gnutls +lmdb regex remote-logging snmp +ssl systemd test"
+IUSE="dnscrypt dnstap doh gnutls +lmdb regex snmp +ssl systemd test"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -31,7 +31,6 @@ RDEPEND="acct-group/dnsdist
 	doh? ( www-servers/h2o:=[libh2o] )
 	lmdb? ( dev-db/lmdb:= )
 	regex? ( dev-libs/re2:= )
-	remote-logging? ( >=dev-libs/protobuf-3:= )
 	snmp? ( net-analyzer/net-snmp:= )
 	ssl? (
 		gnutls? ( net-libs/gnutls:= )
@@ -44,11 +43,7 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}"/${PN}-${PV}-20200729-speed-up-the-round-robin-policy.patch
-	"${FILESDIR}"/${PN}-${PV}-20200824-handle-an-empty-servers-list-in-the-RR-policy.patch
-	"${FILESDIR}"/${PN}-${PV}-20200828-get-rid-of-allocations-in-the-packet-cache-fast-path.patch
-	"${FILESDIR}"/${PN}-${PV}-20201127-drop-second-argument-in-SpoofAction.patch
-	"${FILESDIR}"/${PN}-${PV}-20210313-fix-incbin-section-mismatch.patch
+	"${FILESDIR}"/${PN}-${PV}-add-missing-include.patch
 )
 
 src_configure() {
@@ -60,7 +55,6 @@ src_configure() {
 		$(use_enable dnstap) \
 		$(use_with lmdb ) \
 		$(use_with regex re2) \
-		$(use_with remote-logging protobuf) \
 		$(use_with snmp net-snmp) \
 		$(use ssl && { echo "--enable-dns-over-tls" && use_with gnutls && use_with !gnutls libssl;} || echo "--without-gnutls --without-libssl") \
 		$(use_enable systemd) \
