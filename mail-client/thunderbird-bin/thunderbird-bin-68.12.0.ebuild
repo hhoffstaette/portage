@@ -25,7 +25,7 @@ MOZ_P="${MOZ_PN}-${MOZ_PV}"
 
 MOZ_HTTP_URI="https://archive.mozilla.org/pub/${MOZ_PN}/releases"
 
-inherit eutils multilib pax-utils xdg-utils nsplugins mozlinguas-v2
+inherit eutils multilib pax-utils xdg-utils mozlinguas-v2
 
 DESCRIPTION="Thunderbird Mail Client"
 SRC_URI="${SRC_URI}
@@ -166,9 +166,6 @@ src_install() {
 	# Disable built-in auto-update because we update thunderbird-bin through package manager
 	insinto ${MOZILLA_FIVE_HOME}/distribution/
 	newins "${FILESDIR}"/disable-auto-update.policy.json policies.json
-
-	# Plugins dir
-	share_plugins_dir
 
 	pax-mark mr "${ED}"${MOZILLA_FIVE_HOME}/{thunderbird-bin,thunderbird,plugin-container}
 }
