@@ -33,6 +33,7 @@ RDEPEND="app-accessibility/at-spi2-atk:2
 	x11-libs/gtk+:3
 	x11-libs/libdrm
 	x11-libs/libxcb
+	x11-libs/libxkbcommon
 	x11-libs/libX11
 	x11-libs/libXcomposite
 	x11-libs/libXcursor
