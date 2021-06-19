@@ -44,6 +44,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
 	"${FILESDIR}"/${PN}-${PV}-add-missing-include.patch
+	"${FILESDIR}"/${PN}-${PV}-do-not-report-metrics-of-down-servers.patch
 )
 
 src_configure() {
