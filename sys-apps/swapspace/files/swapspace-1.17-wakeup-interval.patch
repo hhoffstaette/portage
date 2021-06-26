@@ -1,8 +1,13 @@
-commit 626d120b8d76ec3d9702c1e4effee4186eb979ea
-Author: Holger Hoffstätte <holger@applied-asynchrony.com>
-Date:   Wed Mar 3 17:00:34 2021 +0100
+From c2bd81082272cb6a70c203c38e66ab08b4a96e6c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Wed, 3 Mar 2021 17:00:34 +0100
+Subject: [PATCH] Increase wakeup interval to 2 seconds
 
-    Increase wakeup interval to 5 seconds
+---
+ src/main.c  | 2 +-
+ src/state.c | 2 +-
+ src/state.h | 3 +++
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/src/main.c b/src/main.c
 index 629df7e..8678d0b 100644
@@ -31,7 +36,7 @@ index 846c3ac..2d0c6ff 100644
  
  #ifndef NO_CONFIG
 diff --git a/src/state.h b/src/state.h
-index a89d2eb..9e67054 100644
+index a89d2eb..0ca172f 100644
 --- a/src/state.h
 +++ b/src/state.h
 @@ -22,6 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
@@ -39,8 +44,11 @@ index a89d2eb..9e67054 100644
  #define SWAPSPACE_STATE_H
  
 +/// State machine wakeup interval
-+#define WAKEUP_INTERVAL 5
++#define WAKEUP_INTERVAL 2
 +
  /// Perform one iteration of the allocation algorithm.  Clobbers localbuf.
  void handle_requirements(void);
  
+-- 
+2.32.0
+
