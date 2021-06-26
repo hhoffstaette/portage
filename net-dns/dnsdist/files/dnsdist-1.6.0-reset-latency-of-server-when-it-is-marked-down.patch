@@ -1,0 +1,95 @@
+From f857b3e5d92e31257b8cee56045163979b805b8a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Sat, 26 Jun 2021 18:16:42 +0200
+Subject: [PATCH] Dnsdist: Reset latency of an upstream server when it is marked down
+
+---
+ dnsdist-lua-bindings.cc             |  2 +-
+ dnsdist.cc                          |  2 +-
+ dnsdist.hh                          | 12 +++++++++++-
+ dnsdist-healthchecks.cc |  6 +++---
+ 4 files changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/dnsdist-lua-bindings.cc b/dnsdist-lua-bindings.cc
+index 1a1ace93d..f8c04b8d0 100644
+--- a/dnsdist-lua-bindings.cc
++++ b/dnsdist-lua-bindings.cc
+@@ -111,7 +111,7 @@ void setupLuaBindings(LuaContext& luaCtx, bool client)
+   luaCtx.registerFunction("setUp", &DownstreamState::setUp);
+   luaCtx.registerFunction<void(DownstreamState::*)(boost::optional<bool> newStatus)>("setAuto", [](DownstreamState& s, boost::optional<bool> newStatus) {
+       if (newStatus) {
+-        s.upStatus = *newStatus;
++        s.setUpStatus(*newStatus);
+       }
+       s.setAuto();
+     });
+diff --git a/dnsdist.cc b/dnsdist.cc
+index 9a2ac0a23..3a0b2c20d 100644
+--- a/dnsdist.cc
++++ b/dnsdist.cc
+@@ -2413,7 +2413,7 @@ int main(int argc, char** argv)
+     for(auto& dss : g_dstates.getCopy()) { // it is a copy, but the internal shared_ptrs are the real deal
+       if (dss->availability == DownstreamState::Availability::Auto) {
+         if (!queueHealthCheck(mplexer, dss, true)) {
+-          dss->upStatus = false;
++          dss->setUpStatus(false);
+           warnlog("Marking downstream %s as 'down'", dss->getNameWithAddr());
+         }
+       }
+diff --git a/dnsdist.hh b/dnsdist.hh
+index 5d6ed9401..cd2328e64 100644
+--- a/dnsdist.hh
++++ b/dnsdist.hh
+@@ -988,7 +988,17 @@ struct DownstreamState
+     return upStatus;
+   }
+   void setUp() { availability = Availability::Up; }
+-  void setDown() { availability = Availability::Down; }
++  void setUpStatus(bool newStatus)
++  {
++    upStatus = newStatus;
++    if (!upStatus)
++      latencyUsec = 0.0;
++  }
++  void setDown()
++  {
++    availability = Availability::Down;
++    latencyUsec = 0.0;
++  }
+   void setAuto() { availability = Availability::Auto; }
+   const string& getName() const {
+     return name;
+diff --git a/dnsdist-healthchecks.cc b/dnsdist-healthchecks.cc
+index ac013d2c0..4b1dd9057 100644
+--- a/dnsdist-healthchecks.cc
++++ b/dnsdist-healthchecks.cc
+@@ -68,7 +68,7 @@ void updateHealthCheckResult(const std::shared_ptr<DownstreamState>& dss, bool n
+       }
+     }
+ 
+-    dss->upStatus = newState;
++    dss->setUpStatus(newState);
+     dss->currentCheckFailures = 0;
+     dss->consecutiveSuccessfulChecks = 0;
+     if (g_snmpAgent && g_snmpTrapsEnabled) {
+@@ -172,7 +172,7 @@ static void initialHealthCheckCallback(int fd, FDMultiplexer::funcparam_t& param
+   data->d_mplexer->removeReadFD(fd);
+   bool up = handleResponse(data);
+   warnlog("Marking downstream %s as '%s'", data->d_ds->getNameWithAddr(), up ? "up" : "down");
+-  data->d_ds->upStatus = up;
++  data->d_ds->setUpStatus(up);
+ }
+ 
+ bool queueHealthCheck(std::shared_ptr<FDMultiplexer>& mplexer, const std::shared_ptr<DownstreamState>& ds, bool initialCheck)
+@@ -284,7 +284,7 @@ void handleQueuedHealthChecks(std::shared_ptr<FDMultiplexer>& mplexer, bool init
+       }
+       if (initial) {
+         warnlog("Marking downstream %s as 'down'", data->d_ds->getNameWithAddr());
+-        data->d_ds->upStatus = false;
++        data->d_ds->setUpStatus(false);
+       }
+       else {
+         updateHealthCheckResult(data->d_ds, false);
+-- 
+2.32.0
+
