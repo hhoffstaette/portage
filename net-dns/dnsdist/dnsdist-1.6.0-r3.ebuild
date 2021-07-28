@@ -26,7 +26,7 @@ RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
 	>=dev-libs/boost-1.35:=
 	dev-libs/libedit:=
-	dnscrypt? ( dev-libs/libsodium:= )
+	dev-libs/libsodium:=
 	dnstap? ( dev-libs/fstrm:= )
 	doh? ( www-servers/h2o:=[libh2o] )
 	lmdb? ( dev-db/lmdb:= )
@@ -52,6 +52,7 @@ src_configure() {
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
+		--with-libsodium \
 		$(use_enable doh dns-over-https) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
