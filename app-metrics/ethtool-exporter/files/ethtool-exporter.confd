@@ -1,3 +1,0 @@
-# config file for ethtool-exporter
-# run ethtool-exporter-exporter -h to see available options
-ETHTOOL_EXPORTER_OPTS="--port 9110"
