@@ -43,7 +43,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}"/${PN}-${PV}-add-missing-include.patch
 	"${FILESDIR}"/${PN}-${PV}-do-not-report-latency-of-down-servers.patch
 	"${FILESDIR}"/${PN}-${PV}-reset-latency-of-server-when-it-is-marked-down.patch
 )
