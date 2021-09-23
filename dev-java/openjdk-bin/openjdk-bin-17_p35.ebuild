@@ -10,7 +10,7 @@ SLOT=${MY_PV%%[.+]*}
 
 abi_uri() {
 	echo "${2-$1}? (
-			https://github.com/adoptium/temurin${SLOT}-binaries/releases/download/jdk-${MY_PV}/OpenJDK${SLOT}U-jdk_${1}_linux_hotspot_${MY_PV//+/_}.tar.gz
+			https://github.com/adoptium/temurin${SLOT}-binaries/releases/download/jdk-${MY_PV}/OpenJDK${SLOT}-jdk_${1}_linux_hotspot_${MY_PV//+/_}.tar.gz
 		)"
 }
 
