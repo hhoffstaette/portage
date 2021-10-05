@@ -127,6 +127,11 @@ src_install() {
 	diropts -m 0700 -o polkitd
 	keepdir /usr/share/polkit-1/rules.d
 
+	# meson does not install required files with SUID bit. See https://bugs.gentoo.org/816393
+	# Remove the following lines once this has been fixed by upstream
+	fperms u+s /usr/bin/pkexec
+	fperms u+s /usr/lib/polkit-1/polkit-agent-helper-1
+
 	find "${ED}" -name '*.la' -delete || die
 }
 
