@@ -1,7 +1,7 @@
 # Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 LUA_COMPAT=( luajit )
 # Documentation says this might be needed but since the unmigrated ebuilds
@@ -39,6 +39,10 @@ DEPEND="${RDEPEND}
 PDEPEND="
 	modules? ( >=dev-util/sysdig-kmod-${PV} )"
 
+PATCHES=(
+	"${FILESDIR}/${PV}-grpc-absl-sync.patch"
+)
+
 src_prepare() {
 	sed -i -e 's:-ggdb::' CMakeLists.txt || die
 
@@ -47,10 +51,12 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
+		# only build tests when requested
 		-DCREATE_TEST_TARGETS=$(usex test)
 
 		# done in dev-util/sysdig-kmod
 		-DBUILD_DRIVER=OFF
+
 		# libscap examples are not installed or really useful
 		-DBUILD_LIBSCAP_EXAMPLES=OFF
 
