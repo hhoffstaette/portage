@@ -1,7 +1,7 @@
 # Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit gnome2
 
 MY_PV=${PV/./_}
@@ -16,7 +16,7 @@ IUSE="dbus gnome-keyring libnotify spell ssl"
 
 RDEPEND="
 	>=dev-libs/glib-2.26:2
-	dev-libs/gmime:2.6
+	dev-libs/gmime:3.0
 	>=sys-libs/zlib-1.2.0
 	>=x11-libs/gtk+-2.16:2
 	gnome-keyring? ( >=gnome-base/libgnome-keyring-3.2 )
@@ -42,7 +42,7 @@ src_configure() {
 	gnome2_src_configure \
 		--with-yelp-tools \
 		--without-gtk3 \
-		--without-gmime30 \
+		--with-gmime30 \
 		--without-webkit \
 		$(use_with dbus) \
 		$(use_enable gnome-keyring gkr) \
