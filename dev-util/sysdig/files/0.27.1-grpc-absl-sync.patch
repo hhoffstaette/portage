@@ -1,6 +1,6 @@
 diff -rup sysdig-0.27.1/CMakeLists.txt sysdig-0.27.1-grpc-1.41/CMakeLists.txt
 --- sysdig-0.27.1/CMakeLists.txt	2020-09-30 16:21:52.000000000 +0200
-+++ sysdig-0.27.1-grpc-1.41/CMakeLists.txt	2021-10-08 23:46:51.058659662 +0200
++++ sysdig-0.27.1-grpc-1.41/CMakeLists.txt	2021-10-13 10:34:36.747939272 +0200
 @@ -552,6 +552,7 @@ if(NOT WIN32 AND NOT APPLE)
  			else()
  				message(FATAL_ERROR "Couldn't find system grpc")
@@ -11,12 +11,15 @@ diff -rup sysdig-0.27.1/CMakeLists.txt sysdig-0.27.1-grpc-1.41/CMakeLists.txt
  				message(FATAL_ERROR "System grpc_cpp_plugin not found")
 diff -rup sysdig-0.27.1/userspace/libsinsp/CMakeLists.txt sysdig-0.27.1-grpc-1.41/userspace/libsinsp/CMakeLists.txt
 --- sysdig-0.27.1/userspace/libsinsp/CMakeLists.txt	2020-09-30 16:21:52.000000000 +0200
-+++ sysdig-0.27.1-grpc-1.41/userspace/libsinsp/CMakeLists.txt	2021-10-08 23:46:35.785353019 +0200
-@@ -209,6 +209,7 @@ if(NOT WIN32)
- 			target_link_libraries(sinsp
- 				"${GRPCPP_LIB}"
- 				"${GRPC_LIB}"
-+				"${ABSL_SYNC_LIB}"
- 				"${PROTOBUF_LIB}"
- 				"${CARES_LIB}"
++++ sysdig-0.27.1-grpc-1.41/userspace/libsinsp/CMakeLists.txt	2021-10-13 10:37:18.330827194 +0200
+@@ -214,6 +214,10 @@ if(NOT WIN32)
  				"${JQ_LIB}"
+ 				"${B64_LIB}")
+ 
++			if(ABSL_SYNC_LIB)
++				target_link_libraries(sinsp "${ABSL_SYNC_LIB}")
++			endif()
++
+ 			if(NOT MUSL_OPTIMIZED_BUILD)
+ 			target_link_libraries(sinsp
+ 				rt
