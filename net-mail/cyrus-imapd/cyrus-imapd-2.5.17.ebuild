@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit autotools multilib pam ssl-cert user toolchain-funcs
 
 DESCRIPTION="The Cyrus IMAP Server"
@@ -34,7 +34,7 @@ DEPEND="sys-libs/zlib
 	postgres? ( dev-db/postgresql:* )
 	snmp? ( >=net-analyzer/net-snmp-5.2.2-r1 )
 	sqlite? ( dev-db/sqlite:3 )
-	ssl? ( >=dev-libs/openssl-1.0.1e:0[-bindist] )
+	ssl? ( >=dev-libs/openssl-1.0.1e:0 )
 	tcpd? ( >=sys-apps/tcp-wrappers-7.6 snmp? ( net-analyzer/net-snmp[tcpd=] ) )"
 
 # all blockers really needed?
