@@ -4,10 +4,9 @@
 EAPI=7
 inherit gnome2
 
-MY_PV=${PV/./_}
 DESCRIPTION="A newsreader for GNOME"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/pan"
-SRC_URI="https://gitlab.gnome.org/GNOME/pan/-/archive/PAN_${MY_PV}/pan-PAN_${MY_PV}.tar.bz2"
+SRC_URI="https://gitlab.gnome.org/GNOME/pan/-/archive/v${PV}/pan-v${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -32,17 +31,15 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 "
 
-S="${WORKDIR}/${PN}-PAN_${MY_PV}"
+S="${WORKDIR}/${PN}-v${PV}"
 
 src_configure() {
 	# Wait for webkitgtk4 support
 	# gtk3 support is still not ready (follow what Fedora does)
-	# gmime:3.0 support claimed to be experimental still in 0.145, waiting with it until it's not experimental anymore or we work towards removing :2.6
     NOCONFIGURE=1 ./autogen.sh
 	gnome2_src_configure \
 		--with-yelp-tools \
 		--without-gtk3 \
-		--with-gmime30 \
 		--without-webkit \
 		$(use_with dbus) \
 		$(use_enable gnome-keyring gkr) \
