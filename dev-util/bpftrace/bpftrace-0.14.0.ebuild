@@ -95,4 +95,8 @@ src_configure() {
 src_install() {
 	cmake_src_install
 	doman man/man8/*.?
+	# quick fix for missing libbpftraceast.so
+	# https://bugs.gentoo.org/784332
+	insinto /usr/$(get_libdir)
+	doins ${BUILD_DIR}/src/ast/libbpftraceast.so
 }
