@@ -43,6 +43,7 @@ BDEPEND="
 	virtual/pkgconfig
 	doc? (
 		app-text/asciidoc
+		app-text/docbook2X
 		app-text/sgml-common
 		app-text/xmlto
 		sys-process/time
@@ -54,8 +55,8 @@ RDEPEND="audit? ( sys-process/audit )
 	babeltrace? ( dev-util/babeltrace )
 	crypt? ( dev-libs/openssl:0= )
 	clang? (
-		<sys-devel/clang-10:*
-		<sys-devel/llvm-10:*
+		<sys-devel/clang-13:*
+		<sys-devel/llvm-13:*
 	)
 	demangle? ( sys-libs/binutils-libs:= )
 	gtk? ( x11-libs/gtk+:2 )
@@ -90,7 +91,7 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	use clang && LLVM_MAX_SLOT=9 llvm_pkg_setup
+	use clang && LLVM_MAX_SLOT=13 llvm_pkg_setup
 	# We enable python unconditionally as libbpf always generates
 	# API headers using python script
 	python_setup
