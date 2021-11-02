@@ -5,8 +5,8 @@
 		<description>Holgers portage overlay</description>
 		<homepage>https://github.com/hhoffstaette/portage</homepage>
 		<owner>
-			<email>holger.hoffstaette@googlemail.com</email>
+			<email>holger@applied-asynchrony.com</email>
 		</owner>
-		<source type="git">git://github.com/hhoffstaette/portage.git</source>
+		<source type="git">https://github.com/hhoffstaette/portage.git</source>
 	</repo>
 </repositories>
