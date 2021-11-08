@@ -32,8 +32,7 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 arm arm64 mips ppc ppc64 x86 amd64-linux x86-linux"
-IUSE="audit babeltrace clang crypt debug +demangle +doc gtk java libpfm lzma numa perl python slang systemtap unwind zlib"
-# TODO babeltrace
+IUSE="audit babeltrace crypt debug +demangle +doc gtk java libpfm lzma numa perl python slang systemtap unwind zlib"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 BDEPEND="
@@ -54,10 +53,6 @@ BDEPEND="
 RDEPEND="audit? ( sys-process/audit )
 	babeltrace? ( dev-util/babeltrace )
 	crypt? ( dev-libs/openssl:0= )
-	clang? (
-		<sys-devel/clang-13:*
-		<sys-devel/llvm-13:*
-	)
 	demangle? ( sys-libs/binutils-libs:= )
 	gtk? ( x11-libs/gtk+:2 )
 	java? ( virtual/jre:* )
@@ -91,7 +86,6 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	use clang && LLVM_MAX_SLOT=13 llvm_pkg_setup
 	# We enable python unconditionally as libbpf always generates
 	# API headers using python script
 	python_setup
@@ -179,7 +173,6 @@ perf_make() {
 		EXTRA_CFLAGS="${CFLAGS}" \
 		ARCH="${arch}" \
 		JDIR="${java_dir}" \
-		LIBCLANGLLVM=$(usex clang 1 "") \
 		LIBPFM4=$(usex libpfm 1 "") \
 		NO_AUXTRACE="" \
 		NO_BACKTRACE="" \
@@ -211,12 +204,6 @@ perf_make() {
 }
 
 src_compile() {
-	# test-clang.bin not build with g++
-	if use clang; then
-		pushd "${S_K}/tools/build/feature/" || die
-		make V=1 CXX=${CHOST}-clang++ test-clang.bin || die
-		popd
-	fi
 	perf_make -f Makefile.perf
 	use doc && perf_make -C Documentation
 }
