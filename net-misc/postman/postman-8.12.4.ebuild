@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -25,7 +25,7 @@ RDEPEND="${DEPEND}
 QA_PREBUILT="
 	opt/postman/libffmpeg.so
 	opt/postman/Postman
-	opt/postman/_Postman"
+	opt/postman/postman"
 
 QA_PRESTRIPPED="
 	opt/postman/libvk_swiftshader.so"
@@ -43,7 +43,7 @@ src_install() {
 	doins -r *
 
 	exeinto /opt/${PN}
-	doexe Postman _Postman
+	doexe Postman postman
 
 	dosym ../../opt/${PN}/Postman /usr/bin/${PN}
 
