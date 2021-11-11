@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{7..10} )
 inherit bash-completion-r1 estack llvm toolchain-funcs prefix python-r1 linux-info
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
@@ -32,7 +32,7 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 arm arm64 mips ppc ppc64 riscv x86 amd64-linux x86-linux"
-IUSE="audit babeltrace crypt debug +doc gtk java libpfm lzma numa perl python slang systemtap unwind zlib zstd"
+IUSE="audit babeltrace clang crypt debug +doc gtk java libpfm lzma numa perl python slang systemtap unwind zlib zstd"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
@@ -53,6 +53,10 @@ BDEPEND="
 RDEPEND="audit? ( sys-process/audit )
 	babeltrace? ( dev-util/babeltrace )
 	crypt? ( virtual/libcrypt:= )
+	clang? (
+		sys-devel/clang:=
+		sys-devel/llvm:=
+	)
 	gtk? ( x11-libs/gtk+:2 )
 	java? ( virtual/jre:* )
 	libpfm? ( dev-libs/libpfm )
@@ -92,6 +96,7 @@ pkg_pretend() {
 }
 
 pkg_setup() {
+	use clang && llvm_pkg_setup
 	# We enable python unconditionally as libbpf always generates
 	# API headers using python script
 	python_setup
@@ -136,6 +141,12 @@ src_prepare() {
 		popd || die
 	fi
 
+	if use clang; then
+		pushd "${S_K}" >/dev/null || die
+		eapply "${FILESDIR}"/${P}-clang.patch
+		popd || die
+	fi
+
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
 	sed -i \
@@ -151,11 +162,6 @@ src_prepare() {
 
 	# The code likes to compile local assembly files which lack ELF markings.
 	find -name '*.S' -exec sed -i '$a.section .note.GNU-stack,"",%progbits' {} +
-
-	# Fix shebang to use python from prefix
-	if [[ -n "${EPREFIX}" ]]; then
-		hprefixify ${S_K}/scripts/bpf_helpers_doc.py
-	fi
 }
 
 puse() { usex $1 "" no; }
@@ -182,6 +188,7 @@ perf_make() {
 		EXTRA_LDFLAGS="${LDFLAGS}" \
 		ARCH="${arch}" \
 		JDIR="${java_dir}" \
+		LIBCLANGLLVM=$(usex clang 1 "") \
 		LIBPFM4=$(usex libpfm 1 "") \
 		NO_AUXTRACE="" \
 		NO_BACKTRACE="" \
@@ -214,6 +221,10 @@ perf_make() {
 }
 
 src_compile() {
+	# test-clang.bin not build with g++
+	if use clang; then
+		make -C "${S_K}/tools/build/feature" V=1 CXX=${CHOST}-clang++ test-clang.bin || die
+	fi
 	perf_make -f Makefile.perf
 	use doc && perf_make -C Documentation man
 }
