@@ -1,11 +1,12 @@
 # Copyright 1999-2021 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 DESCRIPTION="Anti-spam bayesian filter"
 HOMEPAGE="http://getpopfile.org"
 SRC_URI="http://getpopfile.org/downloads/${P}.zip"
+S="${WORKDIR}"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -29,20 +30,18 @@ RDEPEND="virtual/perl-Digest-MD5
 		dev-perl/Net-SSLeay )
 	xmlrpc? ( dev-perl/PlRPC )"
 
-DEPEND="app-arch/unzip"
+BDEPEND="app-arch/unzip"
 
 PATCHES=(
 	# increase select timeout
 	"${FILESDIR}"/${P}-select-timeout.patch
 )
 
-S="${WORKDIR}"
-
 src_prepare() {
 	default
     # patch templates for relative URLs
 	local f
-	for f in `find skins -name "*.thtml"`
+	for f in $(find skins -name "*.thtml")
 	do
 		sed s/'action\=\"\/'/'action\=\"'/g $f > $f.tmp1
 		sed s/'href\=\"\/'/'href\=\"'/g $f.tmp1 > $f.tmp2
@@ -53,7 +52,7 @@ src_prepare() {
 
 src_install() {
 	dodoc *.change*
-	rm -rf *.change* license
+	rm -rf *.change* license || die
 
 	insinto /usr/share/${PN}
 	doins -r * || die
