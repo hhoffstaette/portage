@@ -3,7 +3,7 @@
 <pkgmetadata>
 	<maintainer type="person">
 		<email>holger@applied-asynchrony.com</email>
-		<name>Holger Hoffst&auml;tte</name>
+		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<longdescription lang="en">
 		A Prometheus metrics collector for AVM fritz!box routers.

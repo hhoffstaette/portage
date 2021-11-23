@@ -3,7 +3,7 @@
 <pkgmetadata>
 	<maintainer type="person">
 		<email>holger@applied-asynchrony.com</email>
-		<name>Holger Hoffst&auml;tte</name>
+		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<longdescription lang="en">
 		dnsdist is a highly DNS-, DoS- and abuse-aware loadbalancer. Its goal in life is to route traffic to the best server, delivering top performance to legitimate users while shunting or blocking abusive traffic.
