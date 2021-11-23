@@ -205,6 +205,7 @@ src_compile() {
 		JOBS=$(makeopts_jobs)
 		LOG=debug
 		CFLAGS_WARNINGS_ARE_ERRORS= # No -Werror
+		NICE= # Use PORTAGE_NICENESS
 		$(usex doc docs '')
 		$(usex jbootstrap bootcycle-images product-images)
 	)
