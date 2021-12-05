@@ -4,7 +4,7 @@
 EAPI=7
 inherit go-module systemd
 MY_PV="v${PV/_rc/-rc.}"
-NODE_EXPORTER_COMMIT=c65f870ef90a
+NODE_EXPORTER_COMMIT=a2321e7b940d
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
@@ -617,6 +617,7 @@ src_compile() {
 }
 
 src_install() {
+	strip node_exporter/node_exporter
 	dosbin node_exporter/node_exporter
 	dodoc {README,CHANGELOG,CONTRIBUTING}.md
 	systemd_dounit "${FILESDIR}"/node_exporter.service
