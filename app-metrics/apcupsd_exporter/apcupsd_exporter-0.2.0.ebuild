@@ -193,7 +193,6 @@ src_compile() {
 }
 
 src_install() {
-	strip ${S}/cmd/${PN}/${PN}
 	dobin ${S}/cmd/${PN}/${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
