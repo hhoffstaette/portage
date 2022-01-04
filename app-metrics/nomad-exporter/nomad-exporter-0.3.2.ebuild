@@ -123,7 +123,6 @@ src_compile() {
 }
 
 src_install() {
-	strip nomad-exporter
 	dobin nomad-exporter
 	einstalldocs
 
