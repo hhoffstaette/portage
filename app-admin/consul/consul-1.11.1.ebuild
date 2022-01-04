@@ -14,7 +14,7 @@ SLOT="0"
 LICENSE="MPL-2.0 Apache-2.0 BSD BSD-2 CC0-1.0 ISC MIT"
 IUSE=""
 
-RESTRICT="test"
+RESTRICT="strip test"
 
 DEPEND="
 	acct-group/consul
@@ -27,7 +27,6 @@ S=${WORKDIR}
 src_install() {
 	local x
 
-	strip consul
 	dobin consul
 
 	keepdir /etc/consul.d
