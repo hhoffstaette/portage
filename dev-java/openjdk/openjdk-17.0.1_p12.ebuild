@@ -15,7 +15,7 @@ SRC_URI="https://github.com/openjdk/jdk${SLOT}u/archive/refs/tags/jdk-${MY_PV}.t
 LICENSE="GPL-2"
 KEYWORDS="amd64 arm arm64 ppc64"
 
-IUSE="alsa cups debug doc examples gentoo-vm headless-awt javafx +jbootstrap +pch selinux source systemtap"
+IUSE="alsa cups debug doc examples gentoo-vm headless-awt javafx +jbootstrap pch selinux source systemtap"
 
 COMMON_DEPEND="
 	media-libs/freetype:2=
