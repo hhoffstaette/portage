@@ -13,8 +13,8 @@ SRC_URI="http://download.sonatype.com/nexus/oss/${MY_PN}-${MY_PV}-bundle.tar.gz"
 
 IUSE=""
 
-RDEPEND=">=virtual/jre-1.7"
-DEPEND=">=virtual/jdk-1.7"
+RDEPEND="virtual/jre:1.8"
+DEPEND="virtual/jdk:1.8"
 
 S=${WORKDIR}/${MY_PN}-${MY_PV}
 
