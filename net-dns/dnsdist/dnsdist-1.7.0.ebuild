@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="dnscrypt dnstap doh gnutls +lmdb regex snmp +ssl systemd test"
+IUSE="dnscrypt dnstap doh doh-client gnutls lmdb regex snmp ssl systemd test"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -29,6 +29,7 @@ RDEPEND="acct-group/dnsdist
 	dev-libs/libsodium:=
 	dnstap? ( dev-libs/fstrm:= )
 	doh? ( www-servers/h2o:=[libh2o] )
+	doh-client? ( net-libs/nghttp2:= )
 	lmdb? ( dev-db/lmdb:= )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
@@ -51,6 +52,7 @@ src_configure() {
 		--with-lua="${ELUA}" \
 		--with-libsodium \
 		$(use_enable doh dns-over-https) \
+		$(use_with doh-client nghttp2 ) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
 		$(use_with lmdb ) \
