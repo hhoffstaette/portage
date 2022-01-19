@@ -1,8 +1,0 @@
-# config file for /etc/init.d/nomad-exporter
-# run /usr/bin/nomad-exporter -h to see available options
-
-NOMAD_EXPORTER_OPTS=""
-
-# Logging
-#output_log="/var/log/nomad-exporter/nomad-exporter.log"
-#error_log="/var/log/nomad-exporter/error.log"
