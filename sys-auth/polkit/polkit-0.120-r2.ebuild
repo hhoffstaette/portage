@@ -60,6 +60,7 @@ DOCS=( docs/TODO HACKING NEWS README )
 
 PATCHES=(
 	"${FILESDIR}/polkit-0.120-meson.patch"
+	"${FILESDIR}/polkit-0.120-CVE-2021-4043.patch"
 	# bug 660880
 	"${FILESDIR}/${PN}-${PV}-elogind.patch"
 	"${FILESDIR}/${PN}-${PV}-duktape.patch"
