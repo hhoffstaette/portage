@@ -10,7 +10,8 @@ DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gitea.io https://github.com/go-gitea/gitea"
 
 if [[ ${PV} != 9999* ]] ; then
-	SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${MY_PV}/gitea-src-${MY_PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://dl.gitea.io/gitea/${MY_PV}/gitea-src-${MY_PV}.tar.gz -> ${P}.tar.gz"
+	# SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${MY_PV}/gitea-src-${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 arm arm64"
 	S="${WORKDIR}"
 else
