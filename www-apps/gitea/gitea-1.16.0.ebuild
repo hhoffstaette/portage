@@ -45,14 +45,14 @@ src_prepare() {
 	default
 
 	local sedcmds=(
-		-e "s#^ROOT =#ROOT = ${EPREFIX}/var/lib/gitea/gitea-repositories#"
-		-e "s#^ROOT_PATH =#ROOT_PATH = ${EPREFIX}/var/log/gitea#"
-		-e "s#^APP_DATA_PATH = data#APP_DATA_PATH = ${EPREFIX}/var/lib/gitea/data#"
-		-e "s#^HTTP_ADDR = 0.0.0.0#HTTP_ADDR = 127.0.0.1#"
+		-e "s#^;ROOT =#ROOT = ${EPREFIX}/var/lib/gitea/gitea-repositories#"
+		-e "s#^;ROOT_PATH =#ROOT_PATH = ${EPREFIX}/var/log/gitea#"
+		-e "s#^;APP_DATA_PATH = data#APP_DATA_PATH = ${EPREFIX}/var/lib/gitea/data#"
+		-e "s#^;HTTP_ADDR = 0.0.0.0#HTTP_ADDR = 127.0.0.1#"
 		-e "s#^MODE = console#MODE = file#"
-		-e "s#^LEVEL = Trace#LEVEL = Info#"
-		-e "s#^LOG_SQL = true#LOG_SQL = false#"
-		-e "s#^DISABLE_ROUTER_LOG = false#DISABLE_ROUTER_LOG = true#"
+		-e "s#^;LEVEL = Trace#LEVEL = Info#"
+		-e "s#^;LOG_SQL = true#LOG_SQL = false#"
+		-e "s#^;DISABLE_ROUTER_LOG = false#DISABLE_ROUTER_LOG = true#"
 	)
 
 	sed -i "${sedcmds[@]}" custom/conf/app.example.ini || die
