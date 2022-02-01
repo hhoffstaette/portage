@@ -1,14 +1,14 @@
 
-EAPI=5
+EAPI=7
 
-inherit eutils java-pkg-2 versionator user
+inherit eutils java-pkg-2 user
 
 DESCRIPTION="Nexus Maven Repository Server"
 KEYWORDS="amd64 x86"
 SLOT="0"
 
 MY_PN=${PN/nexus-bin/nexus}
-MY_PV=$(replace_version_separator 3 '-' ) 
+MY_PV=$(ver_rs 3 -)
 SRC_URI="http://download.sonatype.com/nexus/oss/${MY_PN}-${MY_PV}-bundle.tar.gz"
 
 IUSE=""
