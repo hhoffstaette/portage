@@ -1,5 +1,5 @@
 
-EAPI=5
+EAPI=7
 
 DESCRIPTION="Shows per-process swap usage."
 HOMEPAGE="https://github.com/hhoffstaette/swapusage"
@@ -14,5 +14,5 @@ src_compile() {
 }
 
 src_install() {
-    dobin swapusage
+    dobin ${PN}
 }
