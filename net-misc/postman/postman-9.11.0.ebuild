@@ -1,9 +1,9 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit eutils
+inherit desktop eutils
 
 DESCRIPTION="Supercharge your API workflow"
 HOMEPAGE="https://www.getpostman.com/"
