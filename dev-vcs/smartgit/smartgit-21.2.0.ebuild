@@ -1,9 +1,9 @@
 
-EAPI=5
+EAPI=7
 
-inherit versionator java-utils-2
+inherit java-utils-2
 
-MY_PV=$(replace_all_version_separators '_')
+MY_PV=$(ver_rs 1- '_')
 S="${WORKDIR}/${PN}"
 
 DESCRIPTION="SmartGit/Hg is a client for Git and Mercurial"
