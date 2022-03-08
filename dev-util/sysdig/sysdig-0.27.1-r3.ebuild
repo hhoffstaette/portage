@@ -41,6 +41,7 @@ PDEPEND="
 
 PATCHES=(
 	"${FILESDIR}/${PV}-grpc-absl-sync.patch"
+	"${FILESDIR}/${PV}-luajit-2.1.patch"
 )
 
 src_prepare() {
