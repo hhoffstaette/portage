@@ -4,21 +4,13 @@
 EAPI=8
 
 inherit fcaps go-module tmpfiles systemd
-MY_PV="${PV/_rc/-rc}"
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gitea.io https://github.com/go-gitea/gitea"
 
-if [[ ${PV} != 9999* ]] ; then
-	# SRC_URI="https://dl.gitea.io/gitea/${MY_PV}/gitea-src-${MY_PV}.tar.gz -> ${P}.tar.gz"
-	SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${MY_PV}/gitea-src-${MY_PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="amd64 arm arm64"
-	S="${WORKDIR}"
-else
-	EGIT_REPO_URI="https://github.com/go-gitea/gitea"
-	inherit git-r3
-	S="${WORKDIR}/${P}"
-fi
+SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${PV}/gitea-src-${PV}.tar.gz -> ${P}.tar.gz"
+KEYWORDS="amd64 arm arm64"
+S="${WORKDIR}"
 
 LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
 SLOT="0"
@@ -76,7 +68,7 @@ src_compile() {
 		TAGS="${gitea_tags[*]}"
 		LDFLAGS="-extldflags \"${LDFLAGS}\" ${gitea_settings[*]}"
 	)
-	[[ ${PV} != 9999* ]] && makeenv+=("DRONE_TAG=${MY_PV}")
+	[[ ${PV} != 9999* ]] && makeenv+=("DRONE_TAG=${PV}")
 
 	env "${makeenv[@]}" emake backend
 }
