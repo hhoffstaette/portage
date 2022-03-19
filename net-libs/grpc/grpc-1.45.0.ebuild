@@ -5,15 +5,13 @@ EAPI=7
 
 inherit cmake
 
-MY_PV="${PV//_pre/-pre}"
-
 DESCRIPTION="Modern open source high performance RPC framework"
 HOMEPAGE="https://www.grpc.io"
-SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 # format is 0/${CORE_SOVERSION//./}.${CPP_SOVERSION//./} , check top level CMakeLists.txt
-SLOT="0/22.144"
+SLOT="0/23.145"
 KEYWORDS="amd64 arm64 ppc64 riscv x86"
 IUSE="doc examples test"
 
@@ -40,7 +38,7 @@ BDEPEND="virtual/pkgconfig"
 # requires sources of many google tools
 RESTRICT="test"
 
-S="${WORKDIR}/${PN}-${MY_PV}"
+S="${WORKDIR}/${PN}-${PV}"
 
 soversion_check() {
 	local core_sover cpp_sover
