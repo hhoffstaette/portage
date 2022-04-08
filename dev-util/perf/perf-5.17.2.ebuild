@@ -1,10 +1,10 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7..10} )
-inherit bash-completion-r1 estack llvm toolchain-funcs prefix python-r1 linux-info
+PYTHON_COMPAT=( python3_{8..10} )
+inherit bash-completion-r1 estack llvm toolchain-funcs python-r1 linux-info
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
 HOMEPAGE="https://perf.wiki.kernel.org/"
@@ -83,8 +83,8 @@ S="${S_K}/tools/perf"
 CONFIG_CHECK="~PERF_EVENTS ~KALLSYMS"
 
 QA_FLAGS_IGNORED=(
-	usr/bin/perf-read-vdso32 # not linked with anything except for libc
-	usr/libexec/perf-core/dlfilters/dlfilter-test-api-v0.so # not installed
+	'usr/bin/perf-read-vdso32' # not linked with anything except for libc
+	'usr/libexec/perf-core/dlfilters/.*' # plugins
 )
 
 pkg_pretend() {
@@ -141,11 +141,9 @@ src_prepare() {
 		popd || die
 	fi
 
-	if use clang; then
-		pushd "${S_K}" >/dev/null || die
-		eapply "${FILESDIR}"/${P}-clang.patch
-		popd || die
-	fi
+	pushd "${S_K}" >/dev/null || die
+	eapply "${FILESDIR}"/perf-5.17-clang.patch
+	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
