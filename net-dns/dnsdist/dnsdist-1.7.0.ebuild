@@ -11,7 +11,7 @@ DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
 
 SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-#KEYWORDS="amd64 arm64 ppc64"
+KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
