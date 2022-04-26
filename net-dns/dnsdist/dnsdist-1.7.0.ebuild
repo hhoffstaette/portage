@@ -11,7 +11,7 @@ DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
 
 SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-#KEYWORDS="amd64 arm64 ppc64"
+KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -44,9 +44,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}/1.7.1-increase-health-check-interval.patch"
-	"${FILESDIR}/1.7.1-only-allocate-health-check-mplexer-when-needed.patch"
-	"${FILESDIR}/1.7.1-reduce-udp-bucket-scanning.patch"
 )
 
 src_configure() {
