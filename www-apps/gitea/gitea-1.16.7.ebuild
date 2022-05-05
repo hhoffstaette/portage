@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit fcaps go-module tmpfiles systemd
+inherit fcaps go-module tmpfiles systemd flag-o-matic
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gitea.io https://github.com/go-gitea/gitea"
@@ -14,7 +14,7 @@ S="${WORKDIR}"
 
 LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
 SLOT="0"
-IUSE="+acct pam sqlite"
+IUSE="+acct pam pie sqlite"
 
 DEPEND="
 	acct? (
@@ -53,6 +53,12 @@ src_prepare() {
 	fi
 }
 
+src_configure() {
+	# bug 832756 - PIE build issues
+	filter-flags -fPIE
+	filter-ldflags -fPIE -pie
+}
+
 src_compile() {
 	local gitea_tags=(
 		bindata
@@ -65,12 +71,17 @@ src_compile() {
 		"-X code.gitea.io/gitea/modules/setting.AppWorkPath=${EPREFIX}/var/lib/gitea"
 	)
 	local makeenv=(
-		TAGS="${gitea_tags[*]}"
+		DRONE_TAG="${PV}"
 		LDFLAGS="-extldflags \"${LDFLAGS}\" ${gitea_settings[*]}"
+		TAGS="${gitea_tags[*]}"
 	)
-	[[ ${PV} != 9999* ]] && makeenv+=("DRONE_TAG=${PV}")
 
-	env "${makeenv[@]}" emake backend
+	GOFLAGS=""
+	if use pie ; then
+		GOFLAGS+="-buildmode=pie"
+	fi
+
+	env "${makeenv[@]}" emake EXTRA_GOFLAGS="${GOFLAGS}" backend
 }
 
 src_install() {
@@ -87,7 +98,7 @@ src_install() {
 
 	insinto /etc/gitea
 	newins custom/conf/app.example.ini app.ini
-	if use acct ; then
+	if use acct; then
 		fowners root:git /etc/gitea/{,app.ini}
 		fperms g+w,o-rwx /etc/gitea/{,app.ini}
 
