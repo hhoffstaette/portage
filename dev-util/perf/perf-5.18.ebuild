@@ -142,7 +142,7 @@ src_prepare() {
 	fi
 
 	pushd "${S_K}" >/dev/null || die
-	eapply "${FILESDIR}"/perf-5.17-clang.patch
+	eapply "${FILESDIR}"/${P}-clang.patch
 	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the

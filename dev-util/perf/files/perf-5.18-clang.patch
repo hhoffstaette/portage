@@ -44,18 +44,3 @@ adjust header includes for Clang >= 14.
    LIBS += -L$(shell $(LLVM_CONFIG) --libdir) $(LIBLLVM)
  endif
  
---- a/tools/perf/util/c++/clang.cpp
-+++ b/tools/perf/util/c++/clang.cpp
-@@ -20,7 +20,11 @@
- #include "llvm/Option/Option.h"
- #include "llvm/Support/FileSystem.h"
- #include "llvm/Support/ManagedStatic.h"
-+#if CLANG_VERSION_MAJOR >= 14
-+#include "llvm/MC/TargetRegistry.h"
-+#else
- #include "llvm/Support/TargetRegistry.h"
-+#endif
- #include "llvm/Support/TargetSelect.h"
- #include "llvm/Target/TargetMachine.h"
- #include "llvm/Target/TargetOptions.h"
-
