@@ -3,10 +3,12 @@
 
 EAPI=7
 
+ARCH="linux-x86_64"
 DESCRIPTION="A robust, optimal, and maintainable programming language"
 HOMEPAGE="https://ziglang.org/"
-SRC_URI="https://ziglang.org/download/${PV}/zig-linux-x86_64-${PV}.tar.xz -> ${P}.tar.xz"
 KEYWORDS="amd64"
+RESTRICT="mirror"
+SRC_URI="https://ziglang.org/download/${PV}/zig-${ARCH}-${PV}.tar.xz -> ${P}.tar.xz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -16,7 +18,7 @@ DEPEND="${RDEPEND}"
 
 QA_PREBUILT="zig"
 
-S="${WORKDIR}/zig-linux-x86_64-${PV}"
+S="${WORKDIR}/zig-${ARCH}-${PV}"
 DEST="/opt/${P}"
 
 src_install() {
@@ -31,9 +33,9 @@ src_install() {
 	dosym "../../../opt/${P}/doc" "/usr/share/doc/${P}"
 
 	# generate environment
-	echo 'PATH="'${DEST}'"' >> zig-bin.env
-	echo 'ROOTPATH="'${DEST}'"' >> zig-bin.env
-	newenvd zig-bin.env 70zig-bin
+	echo 'PATH="'${DEST}'"' >> zig.env
+	echo 'ROOTPATH="'${DEST}'"' >> zig.env
+	newenvd zig.env 70zig
 }
 
 pkg_postinst() {
