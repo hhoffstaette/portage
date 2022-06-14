@@ -44,8 +44,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}/1.7.1-only-allocate-health-check-mplexer-when-needed.patch"
-	"${FILESDIR}/1.7.1-reduce-udp-bucket-scanning.patch"
 )
 
 src_configure() {
