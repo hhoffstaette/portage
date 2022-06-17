@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm64 ppc64 x86"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="dnscrypt dnstap doh doh-client gnutls lmdb regex snmp ssl systemd test"
+IUSE="bpf dnscrypt dnstap doh doh-client gnutls lmdb regex snmp ssl systemd test"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -55,6 +55,7 @@ src_configure() {
 		--with-libsodium \
 		$(use_enable doh dns-over-https) \
 		$(use_with doh-client nghttp2 ) \
+		$(use_with bpf ebpf ) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
 		$(use_with lmdb ) \
