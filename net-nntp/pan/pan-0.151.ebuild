@@ -39,7 +39,7 @@ src_configure() {
     NOCONFIGURE=1 ./autogen.sh
 	gnome2_src_configure \
 		--with-yelp-tools \
-		--without-gtk3 \
+		--with-gtk2 \
 		--without-webkit \
 		$(use_with dbus) \
 		$(use_enable gnome-keyring gkr) \
