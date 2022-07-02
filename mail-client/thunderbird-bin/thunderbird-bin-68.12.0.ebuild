@@ -1,7 +1,7 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 MOZ_ESR=""
 MOZ_LIGHTNING_VER="68.0b6"
 
@@ -25,7 +25,7 @@ MOZ_P="${MOZ_PN}-${MOZ_PV}"
 
 MOZ_HTTP_URI="https://archive.mozilla.org/pub/${MOZ_PN}/releases"
 
-inherit eutils multilib pax-utils xdg-utils mozlinguas-v2
+inherit desktop multilib pax-utils xdg-utils mozlinguas-v2
 
 DESCRIPTION="Thunderbird Mail Client"
 SRC_URI="${SRC_URI}
