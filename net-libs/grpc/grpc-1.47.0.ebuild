@@ -7,11 +7,14 @@ inherit cmake
 
 DESCRIPTION="Modern open source high performance RPC framework"
 HOMEPAGE="https://www.grpc.io"
-SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/envoyproxy/data-plane-api/archive/9c42588c956220b48eb3099d186487c2f04d32ec.tar.gz -> ${P}-envoy-api.tar.gz
+	https://github.com/googleapis/googleapis/archive/2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz -> ${P}-googleapis.tar.gz
+	https://github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz -> ${P}-opencensus-proto.tar.gz"
 
 LICENSE="Apache-2.0"
 # format is 0/${CORE_SOVERSION//./}.${CPP_SOVERSION//./} , check top level CMakeLists.txt
-SLOT="0/24.146"
+SLOT="0/25.147"
 KEYWORDS="amd64 arm64 ppc64 riscv x86"
 IUSE="doc examples test"
 
@@ -50,6 +53,23 @@ soversion_check() {
 	cpp_sover="${cpp_sover//./}"
 	[[ ${core_sover} -eq $(ver_cut 2 ${SLOT}) ]] || die "fix core sublot! should be ${core_sover}"
 	[[ ${cpp_sover} -eq $(ver_cut 3 ${SLOT}) ]] || die "fix cpp sublot! should be ${cpp_sover}"
+}
+
+src_unpack() {
+	# skip default
+
+	# main package
+	tar xf $DISTDIR/${P}.tar.gz
+
+	# prepare additional target directories
+	mkdir -p ${P}/third_party/envoy-api
+	tar xf $DISTDIR/${P}-envoy-api.tar.gz -C ${P}/third_party/envoy-api
+	
+	mkdir -p ${P}/third_party/googleapis
+	tar xf $DISTDIR/${P}-googleapis.tar.gz -C ${P}/third_party/googleapis
+
+	mkdir -p ${P}/third_party/opencensus-proto/src
+	tar xf $DISTDIR/${P}-opencensus-proto.tar.gz -C ${P}/third_party/opencensus-proto/src
 }
 
 src_prepare() {
