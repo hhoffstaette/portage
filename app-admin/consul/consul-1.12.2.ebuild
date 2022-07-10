@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit systemd user
+inherit systemd
 
 KEYWORDS="amd64"
 DESCRIPTION="A tool for service discovery, monitoring and configuration"
