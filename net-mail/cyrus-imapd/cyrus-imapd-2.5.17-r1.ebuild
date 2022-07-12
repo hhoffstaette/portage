@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit autotools multilib pam ssl-cert user toolchain-funcs
+inherit autotools multilib pam ssl-cert toolchain-funcs
 
 DESCRIPTION="The Cyrus IMAP Server"
 HOMEPAGE="http://www.cyrusimap.org/"
@@ -39,6 +39,8 @@ DEPEND="sys-libs/zlib
 
 # all blockers really needed?
 RDEPEND="${DEPEND}
+    acct-group/mail
+    acct-user/cyrus
 	!mail-mta/courier
 	!net-mail/bincimap
 	!net-mail/courier-imap
@@ -47,10 +49,6 @@ RDEPEND="${DEPEND}
 
 REQUIRED_USE="afs? ( kerberos )
 	http? ( sqlite )"
-
-pkg_setup() {
-	enewuser cyrus -1 -1 /usr/cyrus mail
-}
 
 src_prepare() {
 	eapply -p0 "${FILESDIR}/${PN}-db.patch"
