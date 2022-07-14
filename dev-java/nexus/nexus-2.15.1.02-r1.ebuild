@@ -1,10 +1,10 @@
 
 EAPI=7
 
-inherit eutils java-pkg-2 user
+inherit eutils java-pkg-2
 
 DESCRIPTION="Nexus Maven Repository Server"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 SLOT="0"
 
 MY_PN=${PN/nexus-bin/nexus}
@@ -13,8 +13,11 @@ SRC_URI="http://download.sonatype.com/nexus/oss/${MY_PN}-${MY_PV}-bundle.tar.gz"
 
 IUSE=""
 
+DEPEND="acct-group/nexus
+        acct-user/nexus
+		virtual/jdk:1.8"
+
 RDEPEND="virtual/jre:1.8"
-DEPEND="virtual/jdk:1.8"
 
 S=${WORKDIR}/${MY_PN}-${MY_PV}
 
@@ -23,8 +26,6 @@ NEXUS_DATA=/var/lib/nexus
 
 pkg_setup() {
 	java-pkg-2_pkg_setup
-	enewgroup nexus
-	enewuser nexus -1 /bin/sh /var/lib/nexus nexus
 }
 
 src_install() {
