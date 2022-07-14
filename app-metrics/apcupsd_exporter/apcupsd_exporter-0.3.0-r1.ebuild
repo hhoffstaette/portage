@@ -1,9 +1,9 @@
-# Copyright 1999-2022 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit eutils user go-module
+inherit eutils go-module
 
 DESCRIPTION="APC UPS statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/mdlayher/apcupsd_exporter"
@@ -12,13 +12,11 @@ LICENSE="MIT"
 SLOT="0"
 IUSE=""
 
+DEPEND="acct-group/apcupsd_exporter
+		acct-user/apcupsd_exporter"
+
 SRC_URI="https://github.com/mdlayher/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
-
-pkg_setup() {
-	enewgroup ${PN}
-	enewuser ${PN} -1 -1 -1 ${PN}
-}
 
 src_compile() {
 	# first build the library
