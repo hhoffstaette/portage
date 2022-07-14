@@ -1,9 +1,9 @@
-# Copyright 1999-2022 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit eutils user go-module
+inherit eutils go-module
 
 KEYWORDS="amd64"
 
@@ -16,10 +16,8 @@ IUSE=""
 SRC_URI="https://github.com/hhoffstaette/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
-pkg_setup() {
-	enewgroup ${PN}
-	enewuser ${PN} -1 -1 -1 ${PN}
-}
+DEPEND="acct-group/fritzbox_exporter
+        acct-user/fritzbox_exporter"
 
 src_compile() {
 	cd ${S}
