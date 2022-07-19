@@ -2,10 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>mgorny@gentoo.org</email>
-		<name>Michał Górny</name>
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
 	</maintainer>
-	<upstream>
-		<remote-id type="github">draios/sysdig</remote-id>
-	</upstream>
 </pkgmetadata>

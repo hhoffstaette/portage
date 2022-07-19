@@ -1,25 +1,25 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit cmake linux-mod
 
-MY_P=${P/-kmod}
 DESCRIPTION="Kernel module for dev-util/sysdig"
 HOMEPAGE="https://sysdig.com/"
-SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${MY_P}.tar.gz"
-S=${WORKDIR}/${MY_P}
 
-LICENSE="|| ( MIT GPL-2 )"
+COMMIT="e5c53d648f3c4694385bbe488e7d47eaa36c229a"
+SRC_URI="https://github.com/falcosecurity/libs/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
+
+LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~arm64 ~x86"
 
-RDEPEND="!<=dev-util/sysdig-0.26.4[modules]"
+RDEPEND="!<dev-util/sysdig-${PV}[modules]"
 
 CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 
-PATCHES=( "${FILESDIR}"/${PV}-fix-kmod-build-on-5.18+.patch )
+S="${WORKDIR}/libs-${COMMIT}"
 
 pkg_pretend() {
 	linux-mod_pkg_setup
@@ -30,20 +30,22 @@ pkg_setup() {
 }
 
 src_prepare() {
-	sed -i -e '/USE_BUNDLED_DEPS/,$d' CMakeLists.txt || die
 	cmake_src_prepare
 }
 
 src_configure() {
 	local mycmakeargs=(
-		# we will use linux-mod for that
-		-DBUILD_DRIVER=OFF
+		# we will use linux-mod, so just pretend to use bundled deps
+		# in order to make it through the cmake setup
+		-DUSE_BUNDLED_DEPS=on
+		-DCREATE_TEST_TARGETS=off
+		-DDRIVER_VERSION=${COMMIT}
 	)
 
 	cmake_src_configure
 
 	# setup linux-mod ugliness
-	MODULE_NAMES="sysdig-probe(extra:${BUILD_DIR}/driver/src:)"
+	MODULE_NAMES="scap(extra:${BUILD_DIR}/driver/src:)"
 	BUILD_PARAMS='KERNELDIR="${KERNEL_DIR}"'
 	# try to work with clang-built kernels (#816024)
 	if linux_chkconfig_present CC_IS_CLANG; then
