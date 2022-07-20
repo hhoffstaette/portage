@@ -2,6 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>patrick@gentoo.org</email>
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
 	</maintainer>
 </pkgmetadata>
