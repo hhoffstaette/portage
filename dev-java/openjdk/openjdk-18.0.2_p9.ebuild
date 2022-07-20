@@ -264,7 +264,7 @@ src_install() {
 	# Oracle and IcedTea have libjsoundalsa.so depending on
 	# libasound.so.2 but OpenJDK only has libjsound.so. Weird.
 	if ! use alsa ; then
-		rm -v lib/libjsound.* || die
+		rm -vf lib/libjsound.* || die
 	fi
 
 	if ! use examples ; then
@@ -272,15 +272,15 @@ src_install() {
 	fi
 
 	if ! use source ; then
-		rm -v lib/src.zip || die
+		rm -vf lib/src.zip || die
 	fi
 
-	rm -v lib/security/cacerts || die
+	rm -vf lib/security/cacerts || die
 
 	dodir "${dest}"
 	cp -pPR * "${ddest}" || die
 
-	dosym -r /etc/ssl/certs/java/cacerts "${dest}"/lib/security/cacerts
+	dosym8 -r /etc/ssl/certs/java/cacerts "${dest}"/lib/security/cacerts
 
 	# must be done before running itself
 	java-vm_set-pax-markings "${ddest}"
@@ -295,7 +295,7 @@ src_install() {
 	if use doc ; then
 		docinto html
 		dodoc -r "${S}"/build/*-release/images/docs/*
-		dosym ../../../usr/share/doc/"${PF}" /usr/share/doc/"${PN}-${SLOT}"
+		dosym8 ../../../usr/share/doc/"${PF}" /usr/share/doc/"${PN}-${SLOT}"
 	fi
 }
 
