@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit eutils go-module
+inherit go-module
 
 DESCRIPTION="APC UPS statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/mdlayher/apcupsd_exporter"
