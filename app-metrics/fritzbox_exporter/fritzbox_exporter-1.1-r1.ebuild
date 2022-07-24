@@ -3,13 +3,12 @@
 
 EAPI=7
 
-inherit eutils go-module
-
-KEYWORDS="amd64"
+inherit go-module
 
 DESCRIPTION="Fritz!Box Upnp statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/hhoffstaette/fritzbox_exporter"
 LICENSE="Apache-2.0"
+KEYWORDS="amd64 arm64 x86"
 SLOT="0"
 IUSE=""
 
