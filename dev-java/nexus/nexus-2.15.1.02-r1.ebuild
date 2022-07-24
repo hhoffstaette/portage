@@ -1,7 +1,9 @@
+# Copyright 1999-2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit eutils java-pkg-2
+inherit java-pkg-2
 
 DESCRIPTION="Nexus Maven Repository Server"
 KEYWORDS="amd64 x86"
@@ -50,8 +52,6 @@ src_install() {
 	keepdir /etc/nexus
 	keepdir ${NEXUS_DATA}
 	keepdir /var/log/nexus/
-	keepdir /var/tmp/nexus/
-	keepdir run/nexus/
 
 	dosym /etc/nexus ${NEXUS_HOME}/conf
 	dosym /var/log/nexus ${NEXUS_HOME}/logs

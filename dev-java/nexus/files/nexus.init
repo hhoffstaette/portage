@@ -18,6 +18,9 @@ PRIORITY=
 # Location of the pid file.
 PIDDIR="/run/nexus"
 
+# Location of the temp directory.
+TMPDIR="/var/tmp/nexus"
+
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
 #  TERM signals.
@@ -316,6 +319,7 @@ depend() {
 
 checkconfig() {
 	checkpath -q -d -o ${RUN_AS_USER}:nexus ${PIDDIR}
+    checkpath -q -d -o ${RUN_AS_USER}:nexus ${TMPDIR}
     return 0
 }
 
