@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit desktop eutils
+inherit desktop
 
 DESCRIPTION="Supercharge your API workflow"
 HOMEPAGE="https://www.getpostman.com/"
@@ -20,15 +20,18 @@ RDEPEND="${DEPEND}
 	dev-libs/nss
 	media-libs/mesa
 	net-print/cups
-	x11-libs/gtk+:3"
+	x11-libs/gtk+:3
+"
 
 QA_PREBUILT="
 	opt/postman/libffmpeg.so
 	opt/postman/Postman
-	opt/postman/postman"
+	opt/postman/postman
+"
 
 QA_PRESTRIPPED="
-	opt/postman/libvk_swiftshader.so"
+	opt/postman/libvk_swiftshader.so
+"
 
 S="${WORKDIR}/Postman/app"
 
