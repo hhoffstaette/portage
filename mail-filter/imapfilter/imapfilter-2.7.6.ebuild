@@ -26,8 +26,6 @@ DEPEND="${RDEPEND}"
 DOCS="AUTHORS NEWS README samples/*"
 
 PATCHES=(
-	"${FILESDIR}/${PV}-add-missing-braces.patch"
-	"${FILESDIR}/${PV}-do-not-destroy-session-on-recover-mechanism-login-failures.patch"
 )
 
 src_prepare() {
