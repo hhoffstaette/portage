@@ -6,7 +6,7 @@ EAPI=8
 inherit optfeature unpacker xdg
 
 MY_PN="${PN/-bin}"
-MY_PV="$(ver_cut 1-3)-1"
+MY_PV="$(ver_cut 1-3)"
 
 DESCRIPTION="A glossy Matrix collaboration client for desktop (binary package)"
 HOMEPAGE="https://element.io"
