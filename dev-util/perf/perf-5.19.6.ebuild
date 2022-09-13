@@ -106,7 +106,7 @@ pkg_setup() {
 # it's building from the same tarball, please keep it in sync with bpftool
 src_unpack() {
 	local paths=(
-		tools/arch tools/build tools/include tools/lib tools/perf tools/scripts
+		tools/arch tools/bpf tools/build tools/include tools/lib tools/perf tools/scripts
 		scripts include lib "arch/*/lib"
 	)
 
@@ -142,6 +142,8 @@ src_prepare() {
 	fi
 
 	pushd "${S_K}" >/dev/null || die
+	eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-binutils-2.39-*.patch
+	eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-fail-to-read-phdr-workaround.patch
 	use clang && eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-clang.patch
 	popd || die
 
