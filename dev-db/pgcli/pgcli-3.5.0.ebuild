@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{8..11} )
 inherit distutils-r1
 
 DESCRIPTION="CLI for Postgres with auto-completion and syntax highlighting"
@@ -19,9 +19,9 @@ RDEPEND="
 	dev-python/cli_helpers[${PYTHON_USEDEP}]
 	dev-python/configobj[${PYTHON_USEDEP}]
 	dev-python/pendulum[${PYTHON_USEDEP}]
-	<dev-python/pgspecial-2.0.0[${PYTHON_USEDEP}]
+	>=dev-python/pgspecial-2.0.0[${PYTHON_USEDEP}]
 	dev-python/prompt_toolkit[${PYTHON_USEDEP}]
-	dev-python/psycopg:2[${PYTHON_USEDEP}]
+	>=dev-python/psycopg-3.1[${PYTHON_USEDEP}]
 	dev-python/pygments[${PYTHON_USEDEP}]
 	dev-python/setproctitle[${PYTHON_USEDEP}]
 	dev-python/sqlparse[${PYTHON_USEDEP}]"
