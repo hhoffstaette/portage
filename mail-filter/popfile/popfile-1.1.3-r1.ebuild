@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -41,12 +41,10 @@ src_prepare() {
 	default
     # patch templates for relative URLs
 	local f
-	for f in $(find skins -name "*.thtml")
-	do
-		sed s/'action\=\"\/'/'action\=\"'/g $f > $f.tmp1
-		sed s/'href\=\"\/'/'href\=\"'/g $f.tmp1 > $f.tmp2
-		sed s/'src\=\"\/'/'src\=\"'/g $f.tmp2 > $f
-		rm -f $f.tmp1 $f.tmp2
+	for f in $(find skins -name "*.thtml"); do
+		sed -i -e s/'action\=\"\/'/'action\=\"'/g \
+			-e s/'href\=\"\/'/'href\=\"'/g \
+			-e s/'src\=\"\/'/'src\=\"'/g $f
 	done
 }
 
