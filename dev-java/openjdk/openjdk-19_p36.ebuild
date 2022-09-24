@@ -5,26 +5,6 @@ EAPI=7
 
 inherit check-reqs eapi8-dosym flag-o-matic java-pkg-2 java-vm-2 multiprocessing toolchain-funcs
 
-# variable name format: <UPPERCASE_KEYWORD>_XPAK
-ARM64_XPAK="17.0.2_p8" # musl bootstrap install
-PPC64_XPAK="17.0.1_p12" # big-endian bootstrap tarball
-X86_XPAK="17.0.1_p12"
-
-# Usage: bootstrap_uri <keyword> <version> [extracond]
-# Example: $(bootstrap_uri ppc64 17.0.1_p12 big-endian)
-# Output: ppc64? ( big-endian? ( https://...17.0.1_p12-ppc64.tar.xz ) )
-bootstrap_uri() {
-	local baseuri="https://dev.gentoo.org/~arthurzam/distfiles/dev-java/${PN}/${PN}-bootstrap"
-	local suff="tar.xz"
-	local kw="${1:?${FUNCNAME[0]}: keyword not specified}"
-	local ver="${2:?${FUNCNAME[0]}: version not specified}"
-	local cond="${3-}"
-	[[ ${cond} == elibc_musl* ]] && local musl=yes
-
-	# here be dragons
-	echo "${kw}? ( ${cond:+${cond}? (} ${baseuri}-${ver}-${kw}${musl:+-musl}.${suff} ${cond:+) })"
-}
-
 MY_PV="${PV//_p/+}"
 SLOT="$(ver_cut 1)"
 BUILDSLOT=$((${SLOT}-1))
@@ -34,21 +14,15 @@ HOMEPAGE="https://openjdk.org/"
 SRC_URI="
 	https://github.com/${PN}/jdk${SLOT}u/archive/refs/tags/jdk-${MY_PV}.tar.gz
 		-> ${P}.tar.gz
-	!system-bootstrap? (
-		$(bootstrap_uri arm64 ${ARM64_XPAK} elibc_musl)
-		$(bootstrap_uri ppc64 ${PPC64_XPAK} big-endian)
-		$(bootstrap_uri x86 ${X86_XPAK})
-	)
 "
 
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~arm ~arm64 ~ppc64 ~x86"
+KEYWORDS="amd64 arm arm64 ppc64 x86"
 
-IUSE="alsa big-endian cups debug doc examples headless-awt javafx +jbootstrap selinux source system-bootstrap systemtap"
+IUSE="alsa big-endian cups debug doc examples headless-awt javafx selinux source systemtap"
 
 REQUIRED_USE="
 	javafx? ( alsa !headless-awt )
-	!system-bootstrap? ( jbootstrap )
 "
 
 COMMON_DEPEND="
@@ -95,7 +69,7 @@ DEPEND="
 	x11-libs/libXt
 	x11-libs/libXtst
 	javafx? ( dev-java/openjfx:${SLOT}= )
-	system-bootstrap? (
+	(
 		|| (
 			dev-java/openjdk-bin:${SLOT}
 			dev-java/openjdk:${SLOT}
@@ -113,7 +87,6 @@ S="${WORKDIR}/jdk${SLOT}u-jdk-${MY_PV//+/-}"
 openjdk_check_requirements() {
 	local M
 	M=2048
-	M=$(( $(usex jbootstrap 2 1) * $M ))
 	M=$(( $(usex debug 3 1) * $M ))
 	M=$(( $(usex doc 320 0) + $(usex source 128 0) + 192 + $M ))
 
@@ -145,9 +118,6 @@ pkg_setup() {
 
 	if has_version dev-java/openjdk:${SLOT}; then
 		export JDK_HOME=${EPREFIX}/usr/$(get_libdir)/openjdk-${SLOT}
-	elif use !system-bootstrap ; then
-		local xpakvar="${ARCH^^}_XPAK"
-		export JDK_HOME="${WORKDIR}/openjdk-bootstrap-${!xpakvar}"
 	else
 		if [[ ${MERGE_TYPE} != "binary" ]]; then
 			JDK_HOME=$(best_version dev-java/openjdk-bin:${SLOT})
@@ -167,9 +137,6 @@ src_prepare() {
 src_configure() {
 	# Work around stack alignment issue, bug #647954. in case we ever have x86
 	use x86 && append-flags -mincoming-stack-boundary=2
-
-	# Work around -fno-common ( GCC10 default ), bug #713180
-	append-flags -fcommon
 
 	# Strip some flags users may set, but should not. #818502
 	filter-flags -fexceptions
@@ -217,11 +184,6 @@ src_configure() {
 		fi
 	fi
 
-	if use !system-bootstrap ; then
-		addpredict /dev/random
-		addpredict /proc/self/coredump_filter
-	fi
-
 	(
 		unset _JAVA_OPTIONS JAVA JAVA_TOOL_OPTIONS JAVAC XARGS
 		CFLAGS= CXXFLAGS= LDFLAGS= \
@@ -237,7 +199,7 @@ src_compile() {
 		CFLAGS_WARNINGS_ARE_ERRORS= # No -Werror
 		NICE= # Use PORTAGE_NICENESS, don't adjust further down
 		$(usex doc docs '')
-		$(usex jbootstrap bootcycle-images product-images)
+		product-images
 	)
 	emake "${myemakeargs[@]}" -j1 #nowarn
 }
