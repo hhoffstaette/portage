@@ -142,8 +142,6 @@ src_prepare() {
 	fi
 
 	pushd "${S_K}" >/dev/null || die
-	eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-binutils-2.39-*.patch
-	eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-fail-to-read-phdr-workaround.patch
 	use clang && eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-clang.patch
 	popd || die
 
