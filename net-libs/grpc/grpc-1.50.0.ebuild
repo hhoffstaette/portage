@@ -20,7 +20,7 @@ IUSE="doc examples test"
 
 # look for submodule versions in third_party dir
 RDEPEND="
-	=dev-cpp/abseil-cpp-20220623.0*:=
+	>=dev-cpp/abseil-cpp-20220623:=
 	>=dev-libs/re2-0.2021.11.01:=
 	>=dev-libs/openssl-1.1.1:0=[-bindist(-)]
 	>=dev-libs/protobuf-3.18.1:=
