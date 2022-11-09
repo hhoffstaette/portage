@@ -2,12 +2,16 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+
 inherit go-module systemd
+
 MY_PV="v${PV/_rc/-rc.}"
+
 NODE_EXPORTER_COMMIT=7da1321761b3b8dfc9e496e1a60e6a476fec6018
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
+RESTRICT="mirror"
 
 SRC_URI="https://github.com/prometheus/node_exporter/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
