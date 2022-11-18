@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm ~arm64 ~ia64 ppc ppc64 ~sparc x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 RDEPEND=">=dev-libs/glib-2.16:=
-	>=net-libs/libsoup-2.26:=
+	>=net-libs/libsoup-2.26:2.4=
 	>=x11-libs/gdk-pixbuf-2.16:=
 	>=x11-libs/gtk+-3.20:3=
 	dev-libs/libxml2:=
