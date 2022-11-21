@@ -14,8 +14,8 @@ SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 
 LICENSE="Apache-2.0"
 # format is 0/${CORE_SOVERSION//./}.${CPP_SOVERSION//./} , check top level CMakeLists.txt
-SLOT="0/28.150"
-KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
+SLOT="0/29.151"
+KEYWORDS="amd64 arm64 ppc64 riscv x86"
 IUSE="doc examples test"
 
 # look for submodule versions in third_party dir
