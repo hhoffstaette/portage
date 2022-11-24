@@ -1,7 +1,9 @@
+# Copyright 1999-2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit java-utils-2
+inherit desktop java-utils-2
 
 MY_PV=$(ver_rs 1- '_')
 S="${WORKDIR}/${PN}"
@@ -12,7 +14,7 @@ SRC_URI="http://www.syntevo.com/downloads/smartgit/${PN}-linux-${MY_PV}.tar.gz"
 
 LICENSE="smartgithg"
 SLOT="0"
-KEYWORDS="x86 amd64"
+KEYWORDS="amd64"
 IUSE=""
 
 DEPEND=""
