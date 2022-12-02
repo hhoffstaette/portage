@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/prometheus/blackbox_exporter"
 SRC_URI="https://github.com/prometheus/blackbox_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
-GIT_COMMIT=148a9de
+GIT_COMMIT=26fc98b9c6db21457653ed752f34d1b7fb5bba43
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
