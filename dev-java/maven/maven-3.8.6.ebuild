@@ -1,5 +1,7 @@
+# Copyright 1999-2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="8"
 
 inherit java-pkg-2
 
@@ -11,6 +13,7 @@ MY_MV="${PV%%.*}"
 DESCRIPTION="Project Management and Comprehension Tool for Java"
 SRC_URI="mirror://apache/maven/maven-${MY_MV}/${PV}/binaries/${MY_P}-bin.tar.gz"
 HOMEPAGE="http://maven.apache.org/"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="3.8"
@@ -26,7 +29,8 @@ S="${WORKDIR}/${MY_P}"
 MAVEN=${PN}-${SLOT}
 MAVEN_SHARE="/usr/share/${MAVEN}"
 
-java_prepare() {
+src_prepare() {
+	default
 	rm -fv "${S}"/bin/*.bat "${S}"/bin/*.cmd || die
 	chmod 644 "${S}"/boot/*.jar "${S}"/lib/*.jar "${S}"/conf/settings.xml || die
 }
