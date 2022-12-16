@@ -12,6 +12,8 @@ LICENSE="Apache-2.0"
 SLOT="0"
 IUSE=""
 
+RESTRICT="mirror"
+
 DEPEND="acct-group/chrony_exporter
 		acct-user/chrony_exporter"
 

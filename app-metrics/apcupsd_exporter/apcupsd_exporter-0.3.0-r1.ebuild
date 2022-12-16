@@ -11,6 +11,7 @@ KEYWORDS="amd64"
 LICENSE="MIT"
 SLOT="0"
 IUSE=""
+RESTRICT="mirror"
 
 DEPEND="acct-group/apcupsd_exporter
 		acct-user/apcupsd_exporter"

@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="amd64"
 
 QA_PREBUILT=".*"
-RESTRICT="strip"
+RESTRICT="mirror strip"
 
 DEPEND="acct-group/prometheus
 	acct-user/prometheus

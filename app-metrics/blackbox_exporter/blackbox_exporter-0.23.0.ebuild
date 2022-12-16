@@ -29,7 +29,7 @@ FILECAPS=(
 )
 
 # tests require the network
-RESTRICT+=" test "
+RESTRICT+=" mirror test "
 
 src_prepare() {
 	default

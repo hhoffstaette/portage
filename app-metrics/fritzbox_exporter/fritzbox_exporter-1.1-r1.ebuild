@@ -12,6 +12,8 @@ KEYWORDS="amd64 arm64 x86"
 SLOT="0"
 IUSE=""
 
+RESTRICT="mirror"
+
 SRC_URI="https://github.com/hhoffstaette/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
