@@ -1,17 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="8"
 
 inherit toolchain-funcs mount-boot
 
-# Find updates by searching and clicking the first link (hopefully it's the one):
-# http://www.intel.com/content/www/us/en/search.html?keyword=Processor+Microcode+Data+File
-
-NUM="27337"
 DESCRIPTION="Intel IA32/IA64 microcode update data"
-HOMEPAGE="http://inertiawar.com/microcode/ https://downloadcenter.intel.com/Detail_Desc.aspx?DwnldID=${NUM}"
-SRC_URI="http://downloadmirror.intel.com/${NUM}/eng/microcode-${PV}.tgz"
+HOMEPAGE="http://inertiawar.com/microcode/ https://www.touslesdrivers.com/index.php?v_page=23&v_code=55512&v_langue=en"
+RESTRICT="mirror"
+
+# The archive is gone from Intel's download site.
+SRC_URI="https://www.applied-asynchrony.com/distfiles/microcode-${PV}.tgz"
 
 LICENSE="intel-ucode"
 SLOT="0"
