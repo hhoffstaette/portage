@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
+	</maintainer>
+	<use>
+		<flag name="caps">Use <pkg>sys-libs/libcap</pkg> to enable unprivileged run support</flag>
+	</use>
+</pkgmetadata>
