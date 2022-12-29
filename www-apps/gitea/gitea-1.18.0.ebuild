@@ -9,7 +9,7 @@ DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gitea.io https://github.com/go-gitea/gitea"
 
 SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${PV}/gitea-src-${PV}.tar.gz -> ${P}.tar.gz"
-KEYWORDS="amd64 arm arm64"
+KEYWORDS="amd64 arm64"
 S="${WORKDIR}/${PN}-src-${PV}"
 
 LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
