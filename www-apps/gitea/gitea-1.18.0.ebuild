@@ -31,7 +31,7 @@ FILECAPS=(
 	-m 711 cap_net_bind_service+ep usr/bin/gitea
 )
 
-RESTRICT="test"
+RESTRICT="mirror test"
 
 src_prepare() {
 	default
