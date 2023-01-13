@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -18,11 +18,11 @@ KEYWORDS="amd64 arm ~arm64 ~ia64 ~loong ppc ppc64 ~riscv ~sparc x86 ~amd64-linux
 
 DEPEND="
 	>=dev-libs/glib-2.66.0
-	>=net-libs/libsoup-3.0.0:3.0
 	>=x11-libs/gdk-pixbuf-2.16
-	>=x11-libs/gtk+-3.22.0:3
+	>=x11-libs/gtk+-3.24.0:3
 	>=x11-libs/pango-1.42.0
 	dev-libs/libxml2
+	>=net-libs/libsoup-3.0.0:3.0
 	x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXfixes
