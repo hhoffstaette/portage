@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit check-reqs eapi8-dosym flag-o-matic java-pkg-2 java-vm-2 multiprocessing toolchain-funcs
 
-MY_PV="${PV//_p/+}"
+MY_PV="${PV%_p*}-ga"
 SLOT="$(ver_cut 1)"
 BUILDSLOT=$((${SLOT}-1))
 
