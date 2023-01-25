@@ -3,8 +3,8 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
-inherit estack linux-info optfeature python-any-r1 toolchain-funcs
+PYTHON_COMPAT=( python3_{9..11} )
+inherit estack linux-info optfeature python-any-r1 bash-completion-r1 toolchain-funcs
 
 MY_PV="${PV/_/-}"
 MY_PV="${MY_PV/-pre/-git}"
@@ -25,7 +25,7 @@ S="${S_K}/tools/bpf/bpftool"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 riscv x86"
+KEYWORDS="~amd64 ~riscv ~x86"
 IUSE="caps"
 
 RDEPEND="
@@ -88,7 +88,7 @@ src_prepare() {
 
 	pushd "${S_K}" >/dev/null || die
 	# bug #890638
-	eapply "${FILESDIR}"/${PV}-no-stack-protector.patch
+	eapply "${FILESDIR}"/5.19.12-no-stack-protector.patch
 	popd || die
 
 	# dev-python/docutils installs rst2man.py, not rst2man
@@ -103,6 +103,7 @@ bpftool_make() {
 		HOSTCC="$(tc-getBUILD_CC)" HOSTLD="$(tc-getBUILD_LD)" \
 		EXTRA_CFLAGS="${CFLAGS}" ARCH="${arch}" BPFTOOL_VERSION="${MY_PV}" \
 		prefix="${EPREFIX}"/usr \
+		bash_compdir="$(get_bashcompdir)" \
 		feature-libcap="$(usex caps 1 0)" \
 		"$@"
 }
