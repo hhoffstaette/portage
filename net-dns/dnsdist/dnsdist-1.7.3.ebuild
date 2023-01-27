@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 
-inherit flag-o-matic lua-single
+inherit lua-single
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
@@ -47,12 +47,12 @@ PATCHES=(
 )
 
 src_configure() {
+	# bug #822855
 	append-lfs-flags
-	
+
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
-		--with-libsodium \
 		$(use_enable doh dns-over-https) \
 		$(use_with doh-client nghttp2 ) \
 		$(use_with bpf ebpf ) \
@@ -72,7 +72,7 @@ src_install() {
 	default
 
 	insinto /etc/dnsdist
-	newins "${FILESDIR}"/dnsdist.conf.example dnsdist.conf
+	doins "${FILESDIR}"/dnsdist.conf.example
 
 	newconfd "${FILESDIR}"/dnsdist.confd ${PN}
 	newinitd "${FILESDIR}"/dnsdist.initd ${PN}
