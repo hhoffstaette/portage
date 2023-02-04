@@ -8,9 +8,10 @@ inherit cmake
 DESCRIPTION="Modern open source high performance RPC framework"
 HOMEPAGE="https://www.grpc.io"
 SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/envoyproxy/data-plane-api/archive/9c42588c956220b48eb3099d186487c2f04d32ec.tar.gz -> ${P}-envoy-api.tar.gz
+	https://github.com/envoyproxy/data-plane-api/archive/bf6154e482bbd5e6f64032993206e66b6116f2bd.tar.gz -> ${P}-envoy-api.tar.gz
 	https://github.com/googleapis/googleapis/archive/2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz -> ${P}-googleapis.tar.gz
-	https://github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz -> ${P}-opencensus-proto.tar.gz"
+	https://github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz -> ${P}-opencensus-proto.tar.gz
+	https://github.com/cncf/xds/archive/06c439db220b89134a8a49bad41994560d6537c6.tar.gz -> ${P}-xds.tar.gz"
 
 LICENSE="Apache-2.0"
 # format is 0/${CORE_SOVERSION//./}.${CPP_SOVERSION//./} , check top level CMakeLists.txt
@@ -70,6 +71,9 @@ src_unpack() {
 
 	mkdir -p ${P}/third_party/opencensus-proto/src
 	tar xf $DISTDIR/${P}-opencensus-proto.tar.gz -C ${P}/third_party/opencensus-proto/src
+
+	mkdir -p ${P}/third_party/xds
+	tar xf $DISTDIR/${P}-xds.tar.gz -C ${P}/third_party/xds/
 }
 
 src_prepare() {
