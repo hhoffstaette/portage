@@ -5,7 +5,7 @@ EAPI=7
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 
-inherit lua-single
+inherit flag-o-matic lua-single
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
@@ -45,6 +45,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
 	"${FILESDIR}"/${PV}-include-stdexcept.patch
+	"${FILESDIR}"/${PV}-build-with-fvisibility-hidden-by-default.patch
 )
 
 src_configure() {
