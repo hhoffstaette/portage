@@ -33,8 +33,9 @@ src_install() {
 
 	# Frontend assets
 	insinto /usr/share/${MY_PN}
-	doins -r public conf
+	doins -r conf plugins-bundled public
 
+	dobin bin/grafana
 	dobin bin/grafana-cli
 	dobin bin/grafana-server
 
