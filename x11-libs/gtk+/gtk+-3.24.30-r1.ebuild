@@ -108,6 +108,13 @@ PATCHES=(
 
 	# Fix broken autotools logic
 	"${FILESDIR}"/${PN}-3.22.20-libcloudproviders-automagic.patch
+
+	# Silence some annoying warnings
+	"${FILESDIR}"/${PN}-3.24.22-warnings.patch
+
+	# Glib-2.76 compatibility:
+	# https://gitlab.gnome.org/GNOME/gtk/-/commit/c1fa916e88de20fc61dc06d3ff9f26722effa0df
+	"${FILESDIR}"/${PN}-3.24.30-check-for-attribute-availability-before-accessing-it.patch
 )
 
 strip_builddir() {
