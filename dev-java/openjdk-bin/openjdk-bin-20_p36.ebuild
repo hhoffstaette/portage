@@ -30,13 +30,13 @@ MY_PV=${PV/_p/+}
 SLOT=$(ver_cut 1)
 
 SRC_URI="
-	$(abi_uri x64 amd64)
+	$(abi_uri x64 arm64)
 "
 
 DESCRIPTION="Prebuilt Java JDK binaries provided by Eclipse Temurin"
 HOMEPAGE="https://adoptium.net"
 LICENSE="GPL-2-with-classpath-exception"
-KEYWORDS="amd64"
+KEYWORDS="amd64 arm64"
 IUSE="alsa cups headless-awt selinux source"
 
 RDEPEND="
