@@ -44,8 +44,7 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}"/${PV}-include-stdexcept.patch
-	"${FILESDIR}"/${PV}-build-with-fvisibility-hidden-by-default.patch
+	"${FILESDIR}"/1.8.0-properly-handle-reconnection-failure-for-backend-UDP-sockets.patch
 )
 
 src_configure() {
@@ -73,6 +72,14 @@ src_configure() {
 src_install() {
 	default
 
+	# clean up duplicate
+	rm ${ED}/usr/share/doc/${P}/README.md
+
+	# useful but too complex to get started - install with docs
+	dodoc dnsdist.conf-dist
+	rm ${ED}/etc/${PN}/dnsdist.conf-dist
+
+	# add Gentoo sample config
 	insinto /etc/dnsdist
 	doins "${FILESDIR}"/dnsdist.conf.example
 
