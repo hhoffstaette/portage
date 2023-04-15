@@ -1,10 +1,9 @@
 
-Fix building against LLVM/Clang with monolithic libraries and
-adjust header includes for Clang >= 14.
+Adapt for building against LLVM/Clang with monolithic libraries.
 
 --- a/tools/build/feature/Makefile
 +++ b/tools/build/feature/Makefile
-@@ -299,7 +299,7 @@ $(OUTPUT)test-llvm.bin:
+@@ -338,7 +338,7 @@ $(OUTPUT)test-llvm.bin:
  	$(BUILDXX) -std=gnu++14 				\
  		-I$(shell $(LLVM_CONFIG) --includedir) 		\
  		-L$(shell $(LLVM_CONFIG) --libdir)		\
@@ -13,7 +12,7 @@ adjust header includes for Clang >= 14.
  		$(shell $(LLVM_CONFIG) --system-libs)		\
  		> $(@:.bin=.make.output) 2>&1
  
-@@ -312,10 +312,7 @@ $(OUTPUT)test-clang.bin:
+@@ -351,10 +351,7 @@ $(OUTPUT)test-clang.bin:
  	$(BUILDXX) -std=gnu++14					\
  		-I$(shell $(LLVM_CONFIG) --includedir) 		\
  		-L$(shell $(LLVM_CONFIG) --libdir)		\
@@ -27,7 +26,7 @@ adjust header includes for Clang >= 14.
  
 --- a/tools/perf/Makefile.perf
 +++ b/tools/perf/Makefile.perf
-@@ -417,14 +417,11 @@ EXTLIBS := $(call filter-out,$(EXCLUDE_EXTLIBS),$(EXTLIBS))
+@@ -416,14 +416,11 @@ EXTLIBS := $(call filter-out,$(EXCLUDE_EXTLIBS),$(EXTLIBS))
  LIBS = -Wl,--whole-archive $(PERFLIBS) $(EXTRA_PERFLIBS) -Wl,--no-whole-archive -Wl,--start-group $(EXTLIBS) -Wl,--end-group
  
  ifeq ($(USE_CLANG), 1)
@@ -43,4 +42,3 @@ adjust header includes for Clang >= 14.
 +  LIBLLVM = $(shell $(LLVM_CONFIG) --libs) $(shell $(LLVM_CONFIG) --system-libs)
    LIBS += -L$(shell $(LLVM_CONFIG) --libdir) $(LIBLLVM)
  endif
- 

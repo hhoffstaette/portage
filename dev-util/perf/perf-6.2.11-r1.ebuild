@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{9..11} )
 inherit bash-completion-r1 estack llvm toolchain-funcs python-r1 linux-info
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
@@ -31,13 +31,16 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 mips ppc ppc64 riscv x86 amd64-linux x86-linux"
+KEYWORDS="amd64 ~arm arm64 ~mips ~ppc ~ppc64 ~riscv ~x86 amd64-linux ~x86-linux"
 IUSE="audit babeltrace clang crypt debug +doc gtk java libpfm lzma numa perl python slang systemtap unwind zlib zstd"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
+# setuptools (and Python) are always needed even if not building Python bindings
 BDEPEND="
 	${LINUX_PATCH+dev-util/patchutils}
+	${PYTHON_DEPS}
+	dev-python/setuptools[${PYTHON_USEDEP}]
 	sys-devel/bison
 	sys-devel/flex
 	virtual/pkgconfig
@@ -47,7 +50,6 @@ BDEPEND="
 		app-text/xmlto
 		sys-process/time
 	)
-	${PYTHON_DEPS}
 "
 
 RDEPEND="audit? ( sys-process/audit )
@@ -106,14 +108,14 @@ pkg_setup() {
 # it's building from the same tarball, please keep it in sync with bpftool
 src_unpack() {
 	local paths=(
-		tools/arch tools/bpf tools/build tools/include tools/lib tools/perf tools/scripts
+		tools/arch tools/build tools/include tools/lib tools/perf tools/scripts
 		scripts include lib "arch/*/lib"
 	)
 
 	# We expect the tar implementation to support the -j option (both
 	# GNU tar and libarchive's tar support that).
 	echo ">>> Unpacking ${LINUX_SOURCES} (${paths[*]}) to ${PWD}"
-	tar --wildcards -xpf "${DISTDIR}"/${LINUX_SOURCES} \
+	gtar --wildcards -xpf "${DISTDIR}"/${LINUX_SOURCES} \
 		"${paths[@]/#/linux-${LINUX_VER}/}" || die
 
 	if [[ -n ${LINUX_PATCH} ]] ; then
@@ -142,7 +144,8 @@ src_prepare() {
 	fi
 
 	pushd "${S_K}" >/dev/null || die
-	use clang && eapply "${FILESDIR}"/${PN}-$(ver_cut 1-2)-clang.patch
+	eapply "${FILESDIR}"/perf-6.0-clang.patch
+	eapply "${FILESDIR}"/perf-6.0-c++17.patch
 	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
@@ -152,7 +155,8 @@ src_prepare() {
 		"${S}"/Makefile.perf || die
 	# A few places still use -Werror w/out $(WERROR) protection.
 	sed -i -e 's@-Werror@@' \
-		"${S}"/Makefile.perf "${S_K}"/tools/lib/bpf/Makefile || die
+		"${S}"/Makefile.perf "${S_K}"/tools/lib/bpf/Makefile \
+		"${S_K}"/tools/lib/perf/Makefile || die
 
 	# Avoid the call to make kernelversion
 	sed -i -e '/PERF-VERSION-GEN/d' Makefile.perf || die
