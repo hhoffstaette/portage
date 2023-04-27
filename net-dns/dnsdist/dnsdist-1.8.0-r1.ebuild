@@ -72,12 +72,9 @@ src_configure() {
 src_install() {
 	default
 
-	# clean up duplicate
-	rm ${ED}/usr/share/doc/${P}/README.md
-
-	# useful but too complex to get started - install with docs
+	# useful but too complex to get started; install with docs instead
 	dodoc dnsdist.conf-dist
-	rm ${ED}/etc/${PN}/dnsdist.conf-dist
+	rm ${D}/etc/${PN}/dnsdist.conf-dist
 
 	# add Gentoo sample config
 	insinto /etc/dnsdist
@@ -88,6 +85,9 @@ src_install() {
 }
 
 pkg_postinst() {
+	# clean up duplicate
+	rm /usr/share/doc/${PN}-${PV}-${PR}/README.md.bz2
+
 	elog "dnsdist provides multiple instances support. You can create more instances"
 	elog "by symlinking the dnsdist init script to another name."
 	elog
