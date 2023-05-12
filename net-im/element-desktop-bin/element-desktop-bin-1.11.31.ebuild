@@ -29,7 +29,6 @@ RDEPEND="
 	dev-libs/glib:2
 	dev-libs/nspr
 	dev-libs/nss
-	dev-libs/openssl-compat:1.1.1
 	media-libs/alsa-lib
 	media-libs/mesa
 	net-print/cups
@@ -57,7 +56,7 @@ QA_PREBUILT="
 	/opt/Element/libffmpeg.so
 	/opt/Element/libvk_swiftshader.so
 	/opt/Element/libvulkan.so.1
-	/opt/Element/resources/app.asar.unpacked/node_modules/matrix-seshat/native/index.node
+	/opt/Element/resources/app.asar.unpacked/node_modules/matrix-seshat/index.node
 	/opt/Element/resources/app.asar.unpacked/node_modules/keytar/build/Release/keytar.node"
 
 src_prepare() {
