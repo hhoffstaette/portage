@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/prometheus/blackbox_exporter"
 SRC_URI="https://github.com/prometheus/blackbox_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
-GIT_COMMIT=26fc98b9c6db21457653ed752f34d1b7fb5bba43
+GIT_COMMIT=0b0467473916fd9e8526e2635c2a0b1c56011dff
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
