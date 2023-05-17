@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 VALA_USE_DEPEND="vapigen"
 VALA_MIN_API_VERSION=0.46
 
-inherit gnome2 multilib-minimal rust-toolchain vala
+inherit autotools gnome2 multilib-minimal rust-toolchain vala
 
 DESCRIPTION="Scalable Vector Graphics (SVG) rendering library"
 HOMEPAGE="https://wiki.gnome.org/Projects/LibRsvg"
@@ -40,6 +40,9 @@ DEPEND="${RDEPEND}
 RESTRICT="test" # Lots of issues on 32bit builds, 64bit build seems to get into an infinite compilation sometimes, etc.
 
 src_prepare() {
+	eapply "${FILESDIR}"/${PV}-gc-sections.patch
+	eaclocal -I m4
+	eautomake
 	use vala && vala_src_prepare
 	gnome2_src_prepare
 }

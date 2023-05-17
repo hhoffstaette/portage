@@ -1,0 +1,14 @@
+
+See: https://gitlab.gnome.org/GNOME/librsvg/-/issues/965
+
+diff -rup librsvg-2.50.5/Makefile.am librsvg-2.50.5-patched/Makefile.am
+--- librsvg-2.50.5/Makefile.am	2020-12-04 19:29:12.000000000 +0100
++++ librsvg-2.50.5-patched/Makefile.am	2023-05-17 16:32:36.043241970 +0200
+@@ -223,6 +223,7 @@ librsvg_@RSVG_API_MAJOR_VERSION@_la_LDFL
+ 	-export-dynamic \
+ 	-no-undefined \
+ 	-export-symbols-regex "^rsvg_.*" \
++	-Wl,--gc-sections \
+ 	$(AM_LDFLAGS)
+ 
+ if OS_DARWIN
