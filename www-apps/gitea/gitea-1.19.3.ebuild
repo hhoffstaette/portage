@@ -9,7 +9,7 @@ DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gitea.io https://github.com/go-gitea/gitea"
 
 SRC_URI="https://github.com/go-gitea/gitea/releases/download/v${PV}/gitea-src-${PV}.tar.gz -> ${P}.tar.gz"
-KEYWORDS="amd64 arm64"
+KEYWORDS="amd64 arm arm64 riscv x86"
 S="${WORKDIR}/${PN}-src-${PV}"
 
 LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
@@ -36,18 +36,7 @@ RESTRICT="mirror test"
 src_prepare() {
 	default
 
-	local sedcmds=(
-		-e "s#^;ROOT =#ROOT = ${EPREFIX}/var/lib/gitea/gitea-repositories#"
-		-e "s#^;ROOT_PATH =#ROOT_PATH = ${EPREFIX}/var/log/gitea#"
-		-e "s#^;APP_DATA_PATH = data#APP_DATA_PATH = ${EPREFIX}/var/lib/gitea/data#"
-		-e "s#^;HTTP_ADDR = 0.0.0.0#HTTP_ADDR = 127.0.0.1#"
-		-e "s#^MODE = console#MODE = file#"
-		-e "s#^;LEVEL = Trace#LEVEL = Info#"
-		-e "s#^;LOG_SQL = true#LOG_SQL = false#"
-		-e "s#^;DISABLE_ROUTER_LOG = false#DISABLE_ROUTER_LOG = true#"
-	)
-
-	sed -i "${sedcmds[@]}" custom/conf/app.example.ini || die
+	sed -i -e "s#^MODE = console#MODE = file#" custom/conf/app.example.ini || die
 	if use sqlite ; then
 		sed -i -e "s#^DB_TYPE = .*#DB_TYPE = sqlite3#" custom/conf/app.example.ini || die
 	fi
