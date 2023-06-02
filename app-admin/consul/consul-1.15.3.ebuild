@@ -5,13 +5,13 @@ EAPI=8
 
 inherit systemd
 
-KEYWORDS="amd64"
 DESCRIPTION="A tool for service discovery, monitoring and configuration"
 HOMEPAGE="https://www.consul.io"
 SRC_URI="https://releases.hashicorp.com/consul/${PV}/${PN}_${PV}_linux_amd64.zip"
 
-SLOT="0"
 LICENSE="MPL-2.0 Apache-2.0 BSD BSD-2 CC0-1.0 ISC MIT"
+SLOT="0"
+KEYWORDS="amd64"
 IUSE=""
 
 RESTRICT="strip test"
