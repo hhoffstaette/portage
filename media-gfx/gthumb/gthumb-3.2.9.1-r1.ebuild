@@ -38,7 +38,6 @@ COMMON_DEPEND="
 	svg? ( >=gnome-base/librsvg-2.34 )
 	tiff? ( media-libs/tiff:= )
 	raw? ( >=media-libs/libopenraw-0.0.8:= )
-	!raw? ( media-gfx/dcraw )
 	webkit? ( >=net-libs/webkit-gtk-1.10.0:3 )
 	webp? ( >=media-libs/libwebp-0.2.0 )
 "
