@@ -31,13 +31,18 @@ SLOT=$(ver_cut 1)
 
 SRC_URI="
 	$(abi_uri aarch64 arm64)
+	$(abi_uri aarch64 arm64-macos)
+	$(abi_uri arm)
+	$(abi_uri ppc64le ppc64)
 	$(abi_uri x64 amd64)
+	$(abi_uri x64 amd64 musl)
+	$(abi_uri x64 x64-macos)
 "
 
 DESCRIPTION="Prebuilt Java JDK binaries provided by Eclipse Temurin"
 HOMEPAGE="https://adoptium.net"
 LICENSE="GPL-2-with-classpath-exception"
-KEYWORDS="amd64 arm64"
+KEYWORDS="amd64 ~arm arm64 ppc64 ~x64-macos"
 IUSE="alsa cups headless-awt selinux source"
 
 RDEPEND="
@@ -61,7 +66,7 @@ RDEPEND="
 		)
 	)"
 
-RESTRICT="mirror preserve-libs splitdebug"
+RESTRICT="preserve-libs splitdebug"
 QA_PREBUILT="*"
 
 S="${WORKDIR}/jdk-${MY_PV}"
