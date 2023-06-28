@@ -72,6 +72,7 @@ RDEPEND="audit? ( sys-process/audit )
 	zlib? ( sys-libs/zlib )
 	zstd? ( app-arch/zstd )
 	dev-libs/elfutils
+	dev-libs/libtraceevent
 	sys-libs/binutils-libs:="
 
 DEPEND="${RDEPEND}
