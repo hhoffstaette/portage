@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,8 +11,8 @@ SRC_URI="https://github.com/heftig/${PN}/releases/download/v${PV}/${P}.tar.xz"
 
 LICENSE="GPL-3 BSD"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ppc ppc64 sparc x86"
-IUSE="systemd"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+IUSE="selinux systemd"
 
 BDEPEND="virtual/pkgconfig"
 DEPEND="acct-group/rtkit
@@ -21,9 +21,11 @@ DEPEND="acct-group/rtkit
 	sys-auth/polkit
 	sys-libs/libcap
 	systemd? ( sys-apps/systemd )"
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	selinux? ( sec-policy/selinux-rtkit )"
 
 PATCHES=(
+	"${FILESDIR}"/${PN}-0.13_daemon_verbosity.patch
 	"${FILESDIR}"/${PN}-0.13_meson_rtkitctl_dir.patch
 	"${FILESDIR}"/${PN}-0.13_meson_xxd_optional.patch
 	"${FILESDIR}"/${PN}-0.13-reduce-logging.patch
