@@ -2,29 +2,21 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
   <maintainer type="person">
+    <email>amadio@gentoo.org</email>
+    <name>Guilherme Amadio</name>
+  </maintainer>
+  <maintainer type="person">
     <email>naota@gentoo.org</email>
+    <name>Naohiro Aota</name>
   </maintainer>
   <maintainer type="person">
     <email>dlan@gentoo.org</email>
     <name>Yixun Lan</name>
   </maintainer>
-  <maintainer type="person">
-    <email>amadio@gentoo.org</email>
-    <name>Guilherme Amadio</name>
-  </maintainer>
-  <maintainer type="person">
-    <email>zlogene@gentoo.org</email>
-    <name>Mikle Kolyada</name>
-  </maintainer>
   <use>
+    <flag name="bpf">Enable support for eBPF features with <pkg>dev-libs/libbpf</pkg></flag>
     <flag name="babeltrace">Enable <pkg>dev-util/babeltrace</pkg> support</flag>
     <flag name="clang">Enable builtin clang and LLVM support</flag>
-    <flag name="demangle">
-      Enable C++ symbol name demangling, using libbfd from
-      <pkg>sys-devel/binutils</pkg>. When this flag is enabled, the
-      package will have to be rebuilt after every version bump of
-      binutils.
-    </flag>
     <flag name="doc">
       Build documentation and man pages. With this USE flag disabled,
       the --help parameter for perf and its sub-tools will not be
@@ -33,6 +25,8 @@
       systems.
     </flag>
     <flag name="libpfm">Enable <pkg>dev-libs/libpfm</pkg> support</flag>
+    <flag name="libtraceevent">Enable <pkg>dev-libs/libtraceevent</pkg> support</flag>
+    <flag name="libtracefs">Enable <pkg>dev-libs/libtracefs</pkg> support</flag>
     <flag name="numa">Enable NUMA support</flag>
     <flag name="perl">
       Add support for Perl as a scripting language for perf tools.
@@ -41,7 +35,7 @@
       Add support to define SDT event in perf tools.
     </flag>
     <flag name="unwind">
-      Use sys-libs/libunwind for frame unwinding support.
+      Use <pkg>sys-libs/libunwind</pkg> for frame unwinding support.
     </flag>
   </use>
 </pkgmetadata>

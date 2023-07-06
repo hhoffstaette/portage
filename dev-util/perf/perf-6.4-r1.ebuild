@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..12} )
-inherit bash-completion-r1 estack llvm toolchain-funcs python-r1 linux-info
+inherit bash-completion-r1 estack linux-info llvm toolchain-funcs python-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
 HOMEPAGE="https://perf.wiki.kernel.org/"
@@ -32,9 +32,12 @@ SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~mips ~ppc ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"
-IUSE="audit babeltrace caps clang crypt debug +doc gtk java libpfm lzma numa perl python slang systemtap unwind zstd"
+IUSE="audit babeltrace bpf caps clang crypt debug +doc gtk java libpfm libtraceevent libtracefs lzma numa perl python slang systemtap tcmalloc unwind zstd"
 
-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+REQUIRED_USE="
+	bpf? ( clang )
+	${PYTHON_REQUIRED_USE}
+"
 
 # setuptools (and Python) are always needed even if not building Python bindings
 BDEPEND="
@@ -56,6 +59,11 @@ BDEPEND="
 RDEPEND="
 	audit? ( sys-process/audit )
 	babeltrace? ( dev-util/babeltrace )
+	bpf? (
+		dev-libs/libbpf
+		dev-util/bpftool
+		dev-util/pahole
+	)
 	caps? ( sys-libs/libcap )
 	clang? (
 		sys-devel/clang:=
@@ -65,16 +73,18 @@ RDEPEND="
 	gtk? ( x11-libs/gtk+:2 )
 	java? ( virtual/jre:* )
 	libpfm? ( dev-libs/libpfm:= )
+	libtraceevent? ( dev-libs/libtraceevent )
+	libtracefs? ( dev-libs/libtracefs )
 	lzma? ( app-arch/xz-utils )
 	numa? ( sys-process/numactl )
 	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
 	slang? ( sys-libs/slang )
 	systemtap? ( dev-util/systemtap )
+	tcmalloc? ( dev-util/google-perftools )
 	unwind? ( sys-libs/libunwind:= )
 	zstd? ( app-arch/zstd:= )
 	dev-libs/elfutils
-	dev-libs/libtraceevent
 	sys-libs/binutils-libs:=
 	sys-libs/zlib
 "
@@ -87,7 +97,19 @@ DEPEND="${RDEPEND}
 S_K="${WORKDIR}/linux-${LINUX_VER}"
 S="${S_K}/tools/perf"
 
-CONFIG_CHECK="~PERF_EVENTS ~KALLSYMS"
+CONFIG_CHECK="
+	~DEBUG_INFO
+	~FTRACE
+	~FTRACE_SYSCALLS
+	~FUNCTION_TRACER
+	~KALLSYMS
+	~KALLSYMS_ALL
+	~KPROBES
+	~KPROBE_EVENTS
+	~PERF_EVENTS
+	~UPROBES
+	~UPROBE_EVENTS
+"
 
 QA_FLAGS_IGNORED=(
 	'usr/bin/perf-read-vdso32' # not linked with anything except for libc
@@ -107,13 +129,19 @@ pkg_setup() {
 	# We enable python unconditionally as libbpf always generates
 	# API headers using python script
 	python_setup
+
+	if use bpf ; then
+		CONFIG_CHECK+="~BPF ~BPF_EVENTS ~BPF_SYSCALL ~DEBUG_INFO_BTF ~HAVE_EBPF_JIT"
+	fi
+
+	linux-info_pkg_setup
 }
 
 # src_unpack and src_prepare are copied to dev-util/bpftool since
 # it's building from the same tarball, please keep it in sync with bpftool
 src_unpack() {
 	local paths=(
-		tools/arch tools/build tools/include tools/lib tools/perf tools/scripts
+		kernel/bpf tools/{arch,bpf,build,include,lib,perf,scripts}
 		scripts include lib "arch/*/lib"
 	)
 
@@ -151,6 +179,7 @@ src_prepare() {
 	pushd "${S_K}" >/dev/null || die
 	eapply "${FILESDIR}"/perf-6.0-clang.patch
 	eapply "${FILESDIR}"/perf-6.0-c++17.patch
+	eapply "${FILESDIR}"/perf-6.4-libtracefs.patch
 	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
@@ -171,7 +200,7 @@ src_prepare() {
 	find -name '*.S' -exec sed -i '$a.section .note.GNU-stack,"",%progbits' {} +
 }
 
-puse() { usex $1 "" no; }
+puse() { usex $1 "" 1; }
 perf_make() {
 	# The arch parsing is a bit funky.  The perf tools package is integrated
 	# into the kernel, so it wants an ARCH that looks like the kernel arch,
@@ -195,33 +224,38 @@ perf_make() {
 		EXTRA_CFLAGS="${CFLAGS}"
 		EXTRA_LDFLAGS="${LDFLAGS}"
 		ARCH="${arch}"
+		BUILD_BPF_SKEL=$(usex bpf 1 "") \
+		BUILD_NONDISTRO=1
 		JDIR="${java_dir}"
-		LIBCLANGLLVM=$(usex clang 1 "")
-		LIBPFM4=$(usex libpfm 1 "")
-		NO_AUXTRACE=""
-		NO_BACKTRACE=""
-		NO_CORESIGHT=1
-		NO_DEMANGLE=
+		CORESIGHT=
 		GTK2=$(usex gtk 1 "")
+		LIBCLANGLLVM=$(usex clang 1 "")
 		feature-gtk2-infobar=$(usex gtk 1 "")
+		NO_AUXTRACE=
+		NO_BACKTRACE=
+		NO_DEMANGLE=
+		NO_JEVENTS=$(puse python)
 		NO_JVMTI=$(puse java)
 		NO_LIBAUDIT=$(puse audit)
 		NO_LIBBABELTRACE=$(puse babeltrace)
 		NO_LIBBIONIC=1
-		NO_LIBBPF=
+		NO_LIBBPF=$(puse bpf)
 		NO_LIBCAP=$(puse caps)
 		NO_LIBCRYPTO=$(puse crypt)
 		NO_LIBDW_DWARF_UNWIND=
 		NO_LIBELF=
 		NO_LIBNUMA=$(puse numa)
 		NO_LIBPERL=$(puse perl)
+		NO_LIBPFM4=$(puse libpfm)
 		NO_LIBPYTHON=$(puse python)
+		NO_LIBTRACEEVENT=$(puse libtraceevent)
 		NO_LIBUNWIND=$(puse unwind)
 		NO_LIBZSTD=$(puse zstd)
 		NO_SDT=$(puse systemtap)
 		NO_SLANG=$(puse slang)
 		NO_LZMA=$(puse lzma)
 		NO_ZLIB=
+		TCMALLOC=$(usex tcmalloc 1 "")
 		WERROR=0
 		LIBDIR="/usr/libexec/perf-core"
 		libdir="${EPREFIX}/usr/$(get_libdir)"
