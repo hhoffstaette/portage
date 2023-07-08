@@ -34,9 +34,12 @@ MAKEOPTS+=" V=1"
 
 PATCHES=(
 	"${FILESDIR}"/${PV}-no-Werror.patch
+	"${FILESDIR}"/${PV}-toolchain.patch
 )
 
 src_configure() {
+	export CC="$(tc-getCC)"
+	export LD="$(tc-getLD)"
 	export PREFIX="${EPREFIX}/usr"
 	export LIBDIR="${PREFIX}/$(get_libdir)"
 	export BPF_OBJECT_DIR="${PREFIX}/lib/bpf"
