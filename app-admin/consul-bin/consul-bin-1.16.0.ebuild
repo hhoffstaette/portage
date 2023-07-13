@@ -7,7 +7,9 @@ inherit systemd
 
 DESCRIPTION="A tool for service discovery, monitoring and configuration"
 HOMEPAGE="https://www.consul.io"
-SRC_URI="https://releases.hashicorp.com/consul/${PV}/${PN}_${PV}_linux_amd64.zip"
+
+MY_PN="${PN/-bin/}"
+SRC_URI="https://releases.hashicorp.com/consul/${PV}/${MY_PN}_${PV}_linux_amd64.zip"
 
 LICENSE="MPL-2.0 Apache-2.0 BSD BSD-2 CC0-1.0 ISC MIT"
 SLOT="0"
@@ -38,9 +40,9 @@ src_install() {
 		fowners consul:consul "${x}"
 	done
 
-	newinitd "${FILESDIR}/consul.initd" "${PN}"
-	newconfd "${FILESDIR}/consul.confd" "${PN}"
+	newinitd "${FILESDIR}/consul.initd" "${MY_PN}"
+	newconfd "${FILESDIR}/consul.confd" "${MY_PN}"
 	insinto /etc/logrotate.d
-	newins "${FILESDIR}/${PN}.logrotated" "${PN}"
+	newins "${FILESDIR}/${MY_PN}.logrotated" "${MY_PN}"
 	systemd_dounit "${FILESDIR}/consul.service"
 }
