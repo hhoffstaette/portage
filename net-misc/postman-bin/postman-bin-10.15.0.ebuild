@@ -8,6 +8,7 @@ inherit desktop
 DESCRIPTION="Supercharge your API workflow"
 HOMEPAGE="https://www.getpostman.com/"
 SRC_URI="https://dl.pstmn.io/download/version/${PV}/linux64 -> ${P}.tar.gz"
+MY_PN="${PN/-bin/}"
 
 KEYWORDS="amd64"
 LICENSE="MPL-2.0"
@@ -42,13 +43,13 @@ src_unpack() {
 }
 
 src_install() {
-	insinto /opt/${PN}
+	insinto /opt/${MY_PN}
 	doins -r *
 
-	exeinto /opt/${PN}
+	exeinto /opt/${MY_PN}
 	doexe Postman postman
 
-	dosym ../../opt/${PN}/Postman /usr/bin/${PN}
+	dosym ../../opt/${MY_PN}/Postman /usr/bin/${MY_PN}
 
 	newicon -s 128 "${S}/resources/app/assets/icon.png" postman.png
 
