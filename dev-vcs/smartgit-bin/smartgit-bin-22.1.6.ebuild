@@ -5,12 +5,13 @@ EAPI=8
 
 inherit desktop java-utils-2
 
+MY_PN="${PN/-bin/}"
 MY_PV=$(ver_rs 1- '_')
-S="${WORKDIR}/${PN}"
+S="${WORKDIR}/${MY_PN}"
 
 DESCRIPTION="SmartGit/Hg is a client for Git and Mercurial"
 HOMEPAGE="http://www.syntevo.com/smartgithg/"
-SRC_URI="http://www.syntevo.com/downloads/smartgit/${PN}-linux-${MY_PV}.tar.gz"
+SRC_URI="http://www.syntevo.com/downloads/smartgit/${MY_PN}-linux-${MY_PV}.tar.gz"
 
 LICENSE="smartgithg"
 SLOT="0"
@@ -22,7 +23,7 @@ RDEPEND="${DEPEND} >=virtual/jre-1.8.0"
 
 src_install()
 {
-	local rdir="/opt/${PN}"
+	local rdir="/opt/${MY_PN}"
 	insinto $rdir
 	doins -r lib licenses
 	insinto $rdir/bin
@@ -32,9 +33,9 @@ src_install()
 	dodoc changelog.txt known-issues.txt
 	for i in 32 48 64 128 256
 	do
-		newicon -s $i "bin/${PN}-${i}.png" "${PN}.png"
+		newicon -s $i "bin/${MY_PN}-${i}.png" "${PN}.png"
 	done
-	make_desktop_entry "${PN}" "SmartGit/Hg" "${PN}" "Development;RevisionControl" \
+	make_desktop_entry "${MY_PN}" "SmartGit/Hg" "${MY_PN}" "Development;RevisionControl" \
 		"GenericName=Git&Hg-Client + SVN-support\nStartupNotify=true\nMimeType=x-scheme-handler/smartgit;\nKeywords=git;hg;svn;mercurial;subversion;"
 	sed -e "/^Exec/s/$/ %u/" -i "${D}"/usr/share/applications/*.desktop || die
 }
