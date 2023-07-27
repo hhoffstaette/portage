@@ -83,10 +83,7 @@ src_install() {
 	done
 
 	fperms +x "${f}" /opt/Element/${MY_PN}.bin
-	fperms u+s /opt/Element/chrome-sandbox
-
 	dosym ../../opt/Element/${MY_PN} /usr/bin/${MY_PN}
-	dosym ${MY_PN} /usr/bin/riot-desktop
 }
 
 pkg_postinst() {

@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>steils@gentoo.org</email>
-		<name>Stefan Strogin</name>
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<use>
 		<flag name="emoji">Use <pkg>media-fonts/noto-emoji</pkg> for displaying emoji</flag>
