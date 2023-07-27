@@ -12,6 +12,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 hppa ppc ppc64 sparc x86"
 IUSE="dbus gnome-keyring libnotify spell ssl"
+RESTRICT="mirror"
 
 RDEPEND="
 	>=dev-libs/glib-2.26:2
