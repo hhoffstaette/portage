@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -8,7 +8,8 @@ HOMEPAGE="https://sysdig.com/opensource/inspect/"
 
 inherit gnome2-utils
 
-SRC_URI="https://download.sysdig.com/stable/sysdig-inspect/${PN}_${PV}_amd64.deb"
+MY_PN=${PN%%-bin}
+SRC_URI="https://download.sysdig.com/stable/sysdig-inspect/${MY_PN}_${PV}_amd64.deb"
 
 LICENSE="GPL-2"
 KEYWORDS="amd64"
@@ -36,7 +37,7 @@ S="${WORKDIR}"
 
 src_install() {
 	tar xf data.tar.xz
-	mv usr/share/doc/${PN} usr/share/doc/${PF}
+	mv usr/share/doc/${MY_PN} usr/share/doc/${PF}
 
 	# use native sysdig installation
 	rm -f ${SYSDIG_DIR}/{csysdig,sysdig}
