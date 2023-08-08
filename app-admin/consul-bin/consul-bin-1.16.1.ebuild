@@ -22,7 +22,7 @@ DEPEND="
 	acct-group/consul
 	acct-user/consul"
 
-RDEPEND=""
+RDEPEND="!app-admin/consul"
 
 S=${WORKDIR}
 
