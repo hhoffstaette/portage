@@ -1,7 +1,7 @@
 # Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 DESCRIPTION="A powerful interface for container troubleshooting and security investigation"
 HOMEPAGE="https://sysdig.com/opensource/inspect/"
@@ -9,7 +9,7 @@ HOMEPAGE="https://sysdig.com/opensource/inspect/"
 inherit gnome2-utils
 
 MY_PN=${PN%%-bin}
-SRC_URI="https://download.sysdig.com/stable/sysdig-inspect/${MY_PN}_${PV}_amd64.deb"
+SRC_URI="https://github.com/draios/sysdig-inspect/releases/download/${PV}/${MY_PN}-linux-x86_64.deb -> ${MY_PN}-${PV}-linux-x86_64.deb"
 
 LICENSE="GPL-2"
 KEYWORDS="amd64"
