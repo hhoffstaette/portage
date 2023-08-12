@@ -35,7 +35,7 @@ src_install() {
 	insinto /etc/consul.d
 	doins "${FILESDIR}/"*.json.example
 
-	for x in /var/{lib,log}/${PN}; do
+	for x in /var/{lib,log}/${MY_PN}; do
 		keepdir "${x}"
 		fowners consul:consul "${x}"
 	done
