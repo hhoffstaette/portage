@@ -56,7 +56,9 @@ DEPEND="${COMMON_DEPEND}
 #	gnome-base/gnome-common
 
 PATCHES=(
-	"${FILESDIR}"/${P}-exiv2-0.27.patch
+	"${FILESDIR}"/${PV}-exiv2-0.27.patch
+	"${FILESDIR}"/${PV}-exiv2-ignore-binary-comment.patch
+	"${FILESDIR}"/${PV}-exiv2-0.28.patch
 )
 
 src_prepare() {
