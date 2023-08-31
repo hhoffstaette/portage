@@ -99,3 +99,6 @@ LICENSE=""
 LICENSE+=" BSD ISC MIT"
 SLOT="0"
 KEYWORDS="~amd64"
+
+RDEPEND="net-libs/libpcap"
+DEPEND="${RDEPEND}"
