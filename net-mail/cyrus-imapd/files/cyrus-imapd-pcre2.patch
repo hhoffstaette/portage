@@ -1,0 +1,163 @@
+diff -rup cyrus-imapd-2.5.17/configure.ac cyrus-imapd-2.5.17-pcre2/configure.ac
+--- cyrus-imapd-2.5.17/configure.ac	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/configure.ac	2023-09-06 16:38:18.779899220 +0200
+@@ -414,8 +414,8 @@ dnl End SQL DB Detection
+ 
+ AC_ARG_ENABLE(sieve,
+         [AS_HELP_STRING([--disable-sieve], [disable Sieve support])],,[enable_sieve="yes";])
+-AC_ARG_ENABLE(pcre,
+-	[AS_HELP_STRING([--disable-pcre], [disable PCRE library])])
++AC_ARG_ENABLE(pcre2,
++	[AS_HELP_STRING([--disable-pcre2], [disable PCRE2 library])],[cyrus_cv_pcre2_utf8="$enableval"])
+ 
+ if test "$enable_sieve" != "no"; then
+ 	AC_DEFINE(USE_SIEVE,[],[Build in Sieve support?])
+@@ -424,26 +424,26 @@ if test "$enable_sieve" != "no"; then
+ 	AC_PROG_YACC
+ 	AM_PROG_LEX
+ 
+-	if test "$enable_pcre" != "no"; then
+-	    AC_CHECK_HEADER(pcreposix.h)
+-	    if test "$ac_cv_header_pcreposix_h" = "yes"; then
+-		    AC_MSG_CHECKING(for utf8 enabled pcre)
+-		    AC_CACHE_VAL(cyrus_cv_pcre_utf8, AC_TRY_CPP([#include <pcreposix.h>
+-#ifndef REG_UTF8
++	if test "$enable_pcre2" != "no"; then
++	    AC_CHECK_HEADER(pcre2posix.h)
++	    if test "$ac_cv_header_pcre2posix_h" = "yes"; then
++		    AC_MSG_CHECKING(for utf8 enabled pcre2)
++		    AC_CACHE_VAL(cyrus_cv_pcre2_utf8, AC_TRY_CPP([#include <pcre2posix.h>
++#ifndef REG_UTF
+ #include </nonexistent>
+-#endif],cyrus_cv_pcre_utf8=yes,cyrus_cv_pcre_utf8=no))
+-		    AC_MSG_RESULT($cyrus_cv_pcre_utf8)
++#endif],cyrus_cv_pcre2_utf8=yes,cyrus_cv_pcre2_utf8=no))
++		    AC_MSG_RESULT($cyrus_cv_pcre2_utf8)
+ 	    else
+-		    cyrus_cv_pcre_utf8="no"
++		    cyrus_cv_pcre2_utf8="no"
+ 	    fi
+ 	fi
+ 
+-	if test "$cyrus_cv_pcre_utf8" = "yes"; then
+-		PCRE_LIBS="-lpcre -lpcreposix"
++	if test "$cyrus_cv_pcre2_utf8" = "yes"; then
++		PCRE_LIBS="-lpcre2-posix -lpcre2-8"
+ 		AC_SUBST(PCRE_LIBS)
+ 		LIBS="$LIBS $PCRE_LIBS"
+ 		AC_DEFINE(ENABLE_REGEX, [], [Do we have a regex library?])
+-		AC_DEFINE(HAVE_PCREPOSIX_H, [], [Do we have usable pcre library?])
++		AC_DEFINE(HAVE_PCRE2POSIX_H, [], [Do we have usable pcre2 library?])
+ 	else
+ 		AC_CHECK_HEADERS(rxposix.h)
+ 		if test "$ac_cv_header_rxposix_h" = "yes"; then
+@@ -1777,7 +1777,7 @@ Cyrus Imapd configured components
+ External dependencies:
+    ldap:               $have_ldap
+    openssl:            $with_ssl
+-   pcre:               $cyrus_cv_pcre_utf8
++   pcre2:              $cyrus_cv_pcre2_utf8
+    clamav:             $with_clamav
+ 
+ Database support:
+diff -rup cyrus-imapd-2.5.17/imap/cyr_buildinfo.c cyrus-imapd-2.5.17-pcre2/imap/cyr_buildinfo.c
+--- cyrus-imapd-2.5.17/imap/cyr_buildinfo.c	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/imap/cyr_buildinfo.c	2023-09-06 14:35:09.763802897 +0200
+@@ -176,10 +176,10 @@ int main (int argc __attribute__((unused
+ #else
+     key_false("zlib");
+ #endif
+-#if defined(ENABLE_REGEX) && defined(HAVE_PCREPOSIX_H)
+-    key_true("pcre");
++#if defined(ENABLE_REGEX) && defined(HAVE_PCRE2POSIX_H)
++    key_true("pcre2");
+ #else
+-    key_false("pcre");
++    key_false("pcre2");
+ #endif
+ #ifdef HAVE_CLAMAV
+     key_true("clamav");
+diff -rup cyrus-imapd-2.5.17/lib/util.h cyrus-imapd-2.5.17-pcre2/lib/util.h
+--- cyrus-imapd-2.5.17/lib/util.h	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/lib/util.h	2023-09-06 14:25:52.998181792 +0200
+@@ -54,16 +54,18 @@
+ #include <stdio.h>
+ 
+ #ifdef ENABLE_REGEX
+-# ifdef HAVE_PCREPOSIX_H
+-#  include <pcre.h>
+-#  include <pcreposix.h>
+-# else /* !HAVE_PCREPOSIX_H */
++# ifdef HAVE_PCRE2POSIX_H
++#  ifndef PCRE2POSIX_H_INCLUDED
++#    include <pcre2posix.h>
++#    define PCRE2POSIX_H_INCLUDED
++#  endif
++# else /* !HAVE_PCRE2POSIX_H */
+ #  ifdef HAVE_RXPOSIX_H
+ #   include <rxposix.h>
+ #  else /* !HAVE_RXPOSIX_H */
+ #   include <regex.h>
+ #  endif /* HAVE_RXPOSIX_H */
+-# endif /* HAVE_PCREPOSIX_H */
++# endif /* HAVE_PCRE2POSIX_H */
+ #endif /* ENABLE_REGEX */
+ 
+ #ifndef __GNUC__
+diff -rup cyrus-imapd-2.5.17/sieve/bc_eval.c cyrus-imapd-2.5.17-pcre2/sieve/bc_eval.c
+--- cyrus-imapd-2.5.17/sieve/bc_eval.c	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/sieve/bc_eval.c	2023-09-06 14:36:57.990277806 +0200
+@@ -124,9 +124,9 @@ static regex_t * bc_compile_regex(const
+     int ret;
+     regex_t *reg = (regex_t *) xmalloc(sizeof(regex_t));
+ 
+-#ifdef HAVE_PCREPOSIX_H
++#ifdef HAVE_PCRE2POSIX_H
+     /* support UTF8 comparisons */
+-    ctag |= REG_UTF8;
++    ctag |= REG_UTF;
+ #endif
+     if ( (ret=regcomp(reg, s, ctag)) != 0)
+     {
+diff -rup cyrus-imapd-2.5.17/sieve/comparator.h cyrus-imapd-2.5.17-pcre2/sieve/comparator.h
+--- cyrus-imapd-2.5.17/sieve/comparator.h	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/sieve/comparator.h	2023-09-06 14:25:40.434886580 +0200
+@@ -47,16 +47,18 @@
+ #include <sys/types.h>
+ 
+ #ifdef ENABLE_REGEX
+-# ifdef HAVE_PCREPOSIX_H
+-#  include <pcre.h>
+-#  include <pcreposix.h>
+-# else /* !HAVE_PCREPOSIX_H */
++# ifdef HAVE_PCRE2POSIX_H
++#  ifndef PCRE2POSIX_H_INCLUDED
++#    include <pcre2posix.h>
++#    define PCRE2POSIX_H_INCLUDED
++#  endif
++# else /* !HAVE_PCRE2POSIX_H */
+ #  ifdef HAVE_RXPOSIX_H
+ #   include <rxposix.h>
+ #  else /* !HAVE_RXPOSIX_H */
+ #   include <regex.h>
+ #  endif /* HAVE_RXPOSIX_H */
+-# endif /* HAVE_PCREPOSIX_H */
++# endif /* HAVE_PCRE2POSIX_H */
+ #endif /* ENABLE_REGEX */
+ 
+ /* compares pat to text; returns 1 if it's true, 0 otherwise 
+diff -rup cyrus-imapd-2.5.17/sieve/sieve.y cyrus-imapd-2.5.17-pcre2/sieve/sieve.y
+--- cyrus-imapd-2.5.17/sieve/sieve.y	2021-03-09 03:28:07.000000000 +0100
++++ cyrus-imapd-2.5.17-pcre2/sieve/sieve.y	2023-09-06 14:26:08.008136247 +0200
+@@ -1655,9 +1655,9 @@ static int verify_regex(sieve_script_t *
+     int ret;
+     regex_t *reg = (regex_t *) xmalloc(sizeof(regex_t));
+ 
+-#ifdef HAVE_PCREPOSIX_H
++#ifdef HAVE_PCRE2POSIX_H
+     /* support UTF8 comparisons */
+-    cflags |= REG_UTF8;
++    cflags |= REG_UTF;
+ #endif
+ 
+     if ((ret = regcomp(reg, s, cflags)) != 0) {

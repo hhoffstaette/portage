@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Foundation
+# Copyright 1999-2023 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit autotools multilib pam ssl-cert toolchain-funcs
 
 DESCRIPTION="The Cyrus IMAP Server"
@@ -10,17 +10,16 @@ SRC_URI="https://github.com/cyrusimap/cyrus-imapd/releases/download/${P}/${P}.ta
 
 LICENSE="BSD-with-attribution"
 SLOT="0"
-KEYWORDS="amd64 arm hppa ia64 ppc ppc64 sparc x86"
-IUSE="afs berkdb clamav http kerberos mysql nntp pam perl postgres \
+KEYWORDS="amd64 arm arm64 hppa ppc ppc64 sparc x86"
+IUSE="afs clamav http kerberos mysql nntp pam perl postgres \
 	replication +server sieve snmp sqlite ssl static-libs tcpd"
 
 # virtual/mysql-5.5 added for the --variable= option below
 DEPEND="sys-libs/zlib
-	dev-libs/libpcre
+	dev-libs/libpcre2
 	>=dev-libs/cyrus-sasl-2.1.13
 	dev-libs/jansson
 	afs? ( net-fs/openafs )
-	berkdb? ( >=sys-libs/db-3.2:* )
 	clamav? ( app-antivirus/clamav )
 	http? ( dev-libs/libxml2 dev-libs/libical )
 	kerberos? ( virtual/krb5 )
@@ -51,9 +50,10 @@ REQUIRED_USE="afs? ( kerberos )
 	http? ( sqlite )"
 
 src_prepare() {
-	eapply -p0 "${FILESDIR}/${PN}-db.patch"
-	# bug 604470
+    # bug 604470
 	eapply -p1 "${FILESDIR}/${PN}-sieve-libs.patch"
+	# pcre2
+	eapply -p1 "${FILESDIR}/${PN}-pcre2.patch"
 	# Fix master(8)->cyrusmaster(8) manpage.
 	for i in `grep -rl -e 'master\.8' -e 'master(8)' "${S}"` ; do
 		sed -i -e 's:master\.8:cyrusmaster.8:g' \
@@ -86,18 +86,18 @@ src_configure() {
 		--enable-idled \
 		--enable-event-notification \
 		--enable-autocreate \
-		--enable-pcre \
+		--enable-pcre2 \
 		--with-service-path=/usr/$(get_libdir)/cyrus \
 		--with-cyrus-user=cyrus \
 		--with-cyrus-group=mail \
 		--with-com_err=yes \
 		--with-sasl \
+		--without-bdb \
 		--without-krb \
 		--without-krbdes \
 		--with-zlib \
 		$(use_enable afs) \
 		$(use_enable afs krb5afspts) \
-		$(use_with berkdb bdb) \
 		$(use_with clamav) \
 		$(use_enable nntp) \
 		$(use_enable http) \
@@ -168,7 +168,7 @@ pkg_postinst() {
 	if use ssl ; then
 		if [ ! -f "${ROOT}"etc/ssl/cyrus/server.key ]; then
 			install_cert /etc/ssl/cyrus/server
-			chown cyrus:mail "${ROOT}"etc/ssl/cyrus/server.{key,pem}
+			chown -f cyrus:mail "${ROOT}"etc/ssl/cyrus/server.{key,pem}
 		fi
 	fi
 }
