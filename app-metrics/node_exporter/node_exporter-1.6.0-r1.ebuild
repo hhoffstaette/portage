@@ -22,7 +22,7 @@ KEYWORDS="amd64 arm arm64 x86"
 
 CDEPEND="acct-group/node_exporter
 	acct-user/node_exporter"
-DEPEND=">=dev-util/promu-0.3.0
+BDEPEND=">=dev-util/promu-0.3.0
 	${CDEPEND}"
 RDEPEND="${CDEPEND}"
 
