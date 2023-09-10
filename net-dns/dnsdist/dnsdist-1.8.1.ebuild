@@ -46,6 +46,13 @@ BDEPEND="virtual/pkgconfig"
 PATCHES=(
 )
 
+src_prepare() {
+	default
+
+	# clean up duplicate
+	rm -f README.md
+}
+
 src_configure() {
 	# bug #822855
 	append-lfs-flags
@@ -84,9 +91,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	# clean up duplicate
-	rm /usr/share/doc/${PN}-${PV}-${PR}/README.md.bz2
-
 	elog "dnsdist provides multiple instances support. You can create more instances"
 	elog "by symlinking the dnsdist init script to another name."
 	elog
