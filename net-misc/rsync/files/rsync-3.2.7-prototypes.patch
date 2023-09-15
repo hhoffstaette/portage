@@ -1,0 +1,29 @@
+diff --git a/lib/pool_alloc.c b/lib/pool_alloc.c
+index a1a7245f..bc1cc1a6 100644
+--- a/lib/pool_alloc.c
++++ b/lib/pool_alloc.c
+@@ -9,7 +9,7 @@ struct alloc_pool
+ 	size_t			size;		/* extent size		*/
+ 	size_t			quantum;	/* allocation quantum	*/
+ 	struct pool_extent	*extents;	/* top extent is "live" */
+-	void			(*bomb)();	/* called if malloc fails */
++	void			(*bomb)(const char*, const char*, int);	/* called if malloc fails */
+ 	int			flags;
+ 
+ 	/* statistical data */
+diff --git a/syscall.c b/syscall.c
+index d92074aa..b4b0f1f1 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -388,11 +388,6 @@ int do_fstat(int fd, STRUCT_STAT *st)
+ OFF_T do_lseek(int fd, OFF_T offset, int whence)
+ {
+ #ifdef HAVE_LSEEK64
+-#if !SIZEOF_OFF64_T
+-	OFF_T lseek64();
+-#else
+-	off64_t lseek64();
+-#endif
+ 	return lseek64(fd, offset, whence);
+ #else
+ 	return lseek(fd, offset, whence);

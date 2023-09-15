@@ -1,0 +1,22 @@
+From 185f2d09e7cb9aeec7ce3120bba62f59f43d54c6 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Fri, 19 Jun 2020 14:13:04 +0200
+Subject: [PATCH] Increase I/O buffer size to 128k
+
+---
+ rsync.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rsync.h b/rsync.h
+index 8af83ecf..15a031d5 100644
+--- a/rsync.h
++++ b/rsync.h
+@@ -145,7 +145,7 @@
+ #define WRITE_SIZE (32*1024)
+ #define CHUNK_SIZE (32*1024)
+ #define MAX_MAP_SIZE (256*1024)
+-#define IO_BUFFER_SIZE (32*1024)
++#define IO_BUFFER_SIZE (128*1024)
+ #define MAX_BLOCK_SIZE ((int32)1 << 17)
+ 
+ /* For compatibility with older rsyncs */

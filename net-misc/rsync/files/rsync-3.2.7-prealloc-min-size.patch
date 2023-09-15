@@ -1,0 +1,22 @@
+From 57c20748e5e84a690a35666cde348268baae8364 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Fri, 19 Jun 2020 14:19:02 +0200
+Subject: [PATCH] Limit preallocation to files >= 128m
+
+---
+ receiver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/receiver.c b/receiver.c
+index 9df603fe..0f5a2c81 100644
+--- a/receiver.c
++++ b/receiver.c
+@@ -249,7 +249,7 @@ static int receive_data(int f_in, char *fname_r, int fd_r, OFF_T size_r,
+ 	char *map = NULL;
+ 
+ #ifdef SUPPORT_PREALLOCATION
+-	if (preallocate_files && fd != -1 && total_size > 0 && (!inplace_sizing || total_size > size_r)) {
++	if (preallocate_files && fd != -1 && total_size >= (128*1024*1024) && (!inplace_sizing || total_size > size_r)) {
+ 		/* Try to preallocate enough space for file's eventual length.  Can
+ 		 * reduce fragmentation on filesystems like ext4, xfs, and NTFS. */
+ 		if ((preallocated_len = do_fallocate(fd, 0, total_size)) < 0)
