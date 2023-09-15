@@ -32,4 +32,6 @@ BDEPEND="
 		dev-python/mock[${PYTHON_USEDEP}]
 	)"
 
+PATCHES=( "${FILESDIR}/3.5.0-fix-sql-insert-format-emits-NULL-as-None.patch" )
+
 distutils_enable_tests pytest

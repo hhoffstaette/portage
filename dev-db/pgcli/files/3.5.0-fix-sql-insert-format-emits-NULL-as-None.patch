@@ -1,0 +1,56 @@
+From 69dcceb5f6d3ecbcc9e7a0a48c9bdabeed470dcd Mon Sep 17 00:00:00 2001
+From: astroshot <astroshot@outlook.com>
+Date: Fri, 23 Jun 2023 13:05:58 +0800
+Subject: [PATCH] Fix sql-insert format emits NULL as 'None' (#1409)
+
+diff --git a/pgcli/packages/formatter/sqlformatter.py b/pgcli/packages/formatter/sqlformatter.py
+index 5bf25fec..5224eff6 100644
+--- a/pgcli/packages/formatter/sqlformatter.py
++++ b/pgcli/packages/formatter/sqlformatter.py
+@@ -14,10 +14,13 @@
+ 
+ 
+ def escape_for_sql_statement(value):
++    if value is None:
++        return "NULL"
++
+     if isinstance(value, bytes):
+         return f"X'{value.hex()}'"
+-    else:
+-        return "'{}'".format(value)
++
++    return "'{}'".format(value)
+ 
+ 
+ def adapter(data, headers, table_format=None, **kwargs):
+@@ -29,7 +32,7 @@ def adapter(data, headers, table_format=None, **kwargs):
+         else:
+             table_name = table[1]
+     else:
+-        table_name = '"DUAL"'
++        table_name = "DUAL"
+     if table_format == "sql-insert":
+         h = '", "'.join(headers)
+         yield 'INSERT INTO "{}" ("{}") VALUES'.format(table_name, h)
+diff --git a/tests/formatter/test_sqlformatter.py b/tests/formatter/test_sqlformatter.py
+index b8cd9c2b..016ed956 100644
+--- a/tests/formatter/test_sqlformatter.py
++++ b/tests/formatter/test_sqlformatter.py
+@@ -34,7 +34,7 @@ def test_output_sql_insert():
+             "Jackson",
+             "jackson_test@gmail.com",
+             "132454789",
+-            "",
++            None,
+             "2022-09-09 19:44:32.712343+08",
+             "2022-09-09 19:44:32.712343+08",
+         ]
+@@ -58,7 +58,7 @@ def test_output_sql_insert():
+     output_list = [l for l in output]
+     expected = [
+         'INSERT INTO "user" ("id", "name", "email", "phone", "description", "created_at", "updated_at") VALUES',
+-        "  ('1', 'Jackson', 'jackson_test@gmail.com', '132454789', '', "
++        "  ('1', 'Jackson', 'jackson_test@gmail.com', '132454789', NULL, "
+         + "'2022-09-09 19:44:32.712343+08', '2022-09-09 19:44:32.712343+08')",
+         ";",
+     ]
