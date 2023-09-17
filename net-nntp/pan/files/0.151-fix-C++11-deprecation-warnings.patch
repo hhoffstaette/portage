@@ -1,0 +1,270 @@
+From e6f5d3778d3fc6bee07fa3a7925862e268853d86 Mon Sep 17 00:00:00 2001
+From: Thomas Tanner <thosrtanner@googlemail.com>
+Date: Sun, 26 Jun 2022 13:01:28 +0100
+Subject: [PATCH] Fix a bunch of C++11 deprecation warnings
+
+---
+ pan/general/map-vector.h  | 75 ++++++++++++++++++++-------------------
+ pan/general/string-view.h |  7 ++--
+ pan/gui/pan.cc            |  2 +-
+ 3 files changed, 43 insertions(+), 41 deletions(-)
+
+diff --git a/pan/general/map-vector.h b/pan/general/map-vector.h
+index fee3ff24..f21eb0b9 100644
+--- a/pan/general/map-vector.h
++++ b/pan/general/map-vector.h
+@@ -2,14 +2,14 @@
+ // The Loki Library
+ // Copyright (c) 2001 by Andrei Alexandrescu
+ // This code accompanies the book:
+-// Alexandrescu, Andrei. "Modern C++ Design: Generic Programming and Design 
++// Alexandrescu, Andrei. "Modern C++ Design: Generic Programming and Design
+ //     Patterns Applied". Copyright (c) 2001. Addison-Wesley.
+-// Permission to use, copy, modify, distribute and sell this software for any 
+-//     purpose is hereby granted without fee, provided that the above copyright 
+-//     notice appear in all copies and that both that copyright notice and this 
++// Permission to use, copy, modify, distribute and sell this software for any
++//     purpose is hereby granted without fee, provided that the above copyright
++//     notice appear in all copies and that both that copyright notice and this
+ //     permission notice appear in supporting documentation.
+-// The author or Addison-Wesley Longman make no representations about the 
+-//     suitability of this software for any purpose. It is provided "as is" 
++// The author or Addison-Wesley Longman make no representations about the
++//     suitability of this software for any purpose. It is provided "as is"
+ //     without express or implied warranty.
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+@@ -42,21 +42,21 @@ namespace Loki
+         public:
+             AssocVectorCompare()
+             {}
+-            
++
+             AssocVectorCompare(const C& src) : C(src)
+             {}
+-            
+-            bool operator()(const first_argument_type& lhs, 
++
++            bool operator()(const first_argument_type& lhs,
+                 const first_argument_type& rhs) const
+             { return C::operator()(lhs, rhs); }
+-            
++
+             bool operator()(const Data& lhs, const Data& rhs) const
+             { return operator()(lhs.first, rhs.first); }
+-            
+-            bool operator()(const Data& lhs, 
++
++            bool operator()(const Data& lhs,
+                 const first_argument_type& rhs) const
+             { return operator()(lhs.first, rhs); }
+-            
++
+             bool operator()(const first_argument_type& lhs,
+                 const Data& rhs) const
+             { return operator()(lhs, rhs.first); }
+@@ -81,7 +81,7 @@ namespace Loki
+         class C = std::less<K>,
+         class A = std::allocator< std::pair<K, V> >
+     >
+-    class AssocVector 
++    class AssocVector
+         : private std::vector< std::pair<K, V>, A >
+         , private Private::AssocVectorCompare<V, C>
+     {
+@@ -107,11 +107,10 @@ namespace Loki
+         typedef typename Base::const_reverse_iterator const_reverse_iterator;
+ 
+         class value_compare
+-            : public std::binary_function<value_type, value_type, bool>
+-            , private key_compare
++            : private key_compare
+         {
+             friend class AssocVector;
+-        
++
+         protected:
+             value_compare(key_compare pred) : key_compare(pred)
+             {}
+@@ -120,27 +119,29 @@ namespace Loki
+             bool operator()(const value_type& lhs, const value_type& rhs) const
+             { return key_compare::operator()(lhs.first, rhs.first); }
+         };
+-        
++
+         // 23.3.1.1 construct/copy/destroy
+ 
+-        explicit AssocVector(const key_compare& comp = key_compare(), 
++        explicit AssocVector(const key_compare& comp = key_compare(),
+             const A& alloc = A())
+         : Base(alloc), MyCompare(comp)
+         {}
+-        
++
+         template <class InputIterator>
+-        AssocVector(InputIterator first, InputIterator last, 
+-            const key_compare& comp = key_compare(), 
++        AssocVector(InputIterator first, InputIterator last,
++            const key_compare& comp = key_compare(),
+             const A& alloc = A())
+         : Base(first, last, alloc), MyCompare(comp)
+         {
+             MyCompare& me = *this;
+             std::sort(begin(), end(), me);
+         }
+-        
++
++        AssocVector(AssocVector const &) = default;
++
+         AssocVector& operator=(const AssocVector& rhs)
+-        { 
+-            AssocVector(rhs).swap(*this); 
++        {
++            AssocVector(rhs).swap(*this);
+             return *this;
+         }
+ 
+@@ -162,7 +163,7 @@ namespace Loki
+         const_reverse_iterator rbegin() const { return Base::rbegin(); }
+         reverse_iterator rend() { return Base::rend(); }
+         const_reverse_iterator rend() const { return Base::rend(); }
+-        
++
+         // capacity:
+         bool empty() const { return Base::empty(); }
+         size_type size() const { return Base::size(); }
+@@ -189,18 +190,18 @@ namespace Loki
+         //http://developer.apple.com/documentation/DeveloperTools/gcc-3.3/libstdc++/23_containers/howto.html#4
+         iterator insert(iterator pos, const value_type& val)
+         {
+-            if( (pos == begin() || this->operator()(*(pos-1),val)) && 
++            if( (pos == begin() || this->operator()(*(pos-1),val)) &&
+                 (pos == end()    || this->operator()(val, *pos)) )
+             {
+                 return Base::insert(pos, val);
+             }
+             return insert(val).first;
+         }
+-       
++
+         template <class InputIterator>
+         void insert(InputIterator first, InputIterator last)
+         { for (; first != last; ++first) insert(*first); }
+-        
++
+         void erase(iterator pos)
+         { Base::erase(pos); }
+ 
+@@ -222,7 +223,7 @@ namespace Loki
+             MyCompare& rhs = other;
+             std::swap(me, rhs);
+         }
+-        
++
+         void clear()
+         { Base::clear(); }
+ 
+@@ -248,7 +249,7 @@ namespace Loki
+         }
+ 
+         const_iterator find(const key_type& k) const
+-        {       
++        {
+             const_iterator i(lower_bound(k));
+             if (i != end() && this->operator()(k, i->first))
+             {
+@@ -296,28 +297,28 @@ namespace Loki
+             const MyCompare& me = *this;
+             return std::equal_range(begin(), end(), k, me);
+         }
+-        
++
+         friend bool operator==(const AssocVector& lhs, const AssocVector& rhs)
+         {
+             const Base& me = lhs;
+             return me == rhs;
+-        } 
++        }
+ 
+         bool operator<(const AssocVector& rhs) const
+         {
+             const Base& me = *this;
+             const Base& yo = rhs;
+             return me < yo;
+-        } 
++        }
+ 
+         friend bool operator!=(const AssocVector& lhs, const AssocVector& rhs)
+-        { return !(lhs == rhs); } 
++        { return !(lhs == rhs); }
+ 
+         friend bool operator>(const AssocVector& lhs, const AssocVector& rhs)
+         { return rhs < lhs; }
+ 
+         friend bool operator>=(const AssocVector& lhs, const AssocVector& rhs)
+-        { return !(lhs < rhs); } 
++        { return !(lhs < rhs); }
+ 
+         friend bool operator<=(const AssocVector& lhs, const AssocVector& rhs)
+         { return !(rhs < lhs); }
+@@ -327,7 +328,7 @@ namespace Loki
+     template <class K, class V, class C, class A>
+     void swap(AssocVector<K, V, C, A>& lhs, AssocVector<K, V, C, A>& rhs)
+     { lhs.swap(rhs); }
+-    
++
+ } // namespace Loki
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+diff --git a/pan/general/string-view.h b/pan/general/string-view.h
+index 06e24f60..e5f8bf7d 100644
+--- a/pan/general/string-view.h
++++ b/pan/general/string-view.h
+@@ -28,7 +28,7 @@
+ namespace pan
+ {
+    /**
+-    * A shallow copy a C string, plus utilities to let us 
++    * A shallow copy a C string, plus utilities to let us
+     * substring, tokenize, walk, search, or otherwise
+     * manipulate it without having to modify the original or
+     * allocate new strings.
+@@ -43,12 +43,12 @@ namespace pan
+                             size_t       str_a_len,
+                             const char * str_b,
+                             size_t       str_b_len);
+-                                                                                                                        
++
+          static char* strchr (const char * haystack,
+                               size_t       haystack_len,
+                               char         needle)
+            { return (char*) memchr (haystack, needle, haystack_len); }
+-                                                                                                                        
++
+          static char* strrchr (const char * haystack,
+                                size_t       haystack_len,
+                                char         needle);
+@@ -86,6 +86,7 @@ namespace pan
+          StringView (const char * s, size_t l) { assign(s,l); }
+          StringView (const char * s, const char * e) { assign(s,e-s); }
+          StringView (const StringView& p): str(p.str), len(p.len) {}
++         constexpr StringView& operator=(StringView const &) = default;
+          ~StringView () { str = (char*)0xDEADBEEF; len = (size_t)~0; }
+ 
+       public:
+diff --git a/pan/gui/pan.cc b/pan/gui/pan.cc
+index b0168367..35d28164 100644
+--- a/pan/gui/pan.cc
++++ b/pan/gui/pan.cc
+@@ -1078,7 +1078,7 @@ main (int argc, char *argv[])
+       }
+ 
+       // if in non-gui mode, contains a PanKiller ptr to quit pan on queue empty
+-      std::auto_ptr<PanKiller> killer;
++      std::unique_ptr<PanKiller> killer;
+ 
+       // don't open the full-blown Pan, just act as a nzb client,
+       // with a gui or without.
+-- 
+GitLab
+
