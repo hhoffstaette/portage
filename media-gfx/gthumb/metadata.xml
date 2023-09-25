@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<herd>gnome</herd>
+	<maintainer type="person">
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
+	</maintainer>
 	<use>
 		<flag name="http">Enable webservice integration through <pkg>net-libs/libsoup</pkg></flag>
 		<flag name="json">Compile code that uses the libjson-glib library</flag>

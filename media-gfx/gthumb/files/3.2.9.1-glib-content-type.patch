@@ -1,0 +1,135 @@
+diff -rup gthumb-3.2.9.1/extensions/catalogs/callbacks.c gthumb-3.2.9.1-nowarn/extensions/catalogs/callbacks.c
+--- gthumb-3.2.9.1/extensions/catalogs/callbacks.c	2023-09-25 16:59:15.991783890 +0200
++++ gthumb-3.2.9.1-nowarn/extensions/catalogs/callbacks.c	2023-09-25 17:13:32.410333657 +0200
+@@ -615,12 +615,12 @@ catalogs__gth_browser_folder_tree_popup_
+ 
+ 		action = gtk_action_group_get_action (data->actions, "Catalog_Rename");
+ 		sensitive = ((folder != NULL)
+-			     && (_g_content_type_is_a (g_file_info_get_content_type (folder->info), "gthumb/library") || _g_content_type_is_a (g_file_info_get_content_type (folder->info), "gthumb/catalog"))
++			     && (_g_content_type_is_a (g_file_info_get_attribute_string (folder->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/library") || _g_content_type_is_a (g_file_info_get_attribute_string (folder->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/catalog"))
+ 			     && g_file_info_get_attribute_boolean (folder->info, G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME));
+ 		g_object_set (action, "sensitive", sensitive, NULL);
+ 
+ 		action = gtk_action_group_get_action (data->actions, "Catalog_Properties");
+-		sensitive = (folder != NULL) && (! _g_content_type_is_a (g_file_info_get_content_type (folder->info), "gthumb/library"));
++		sensitive = (folder != NULL) && (! _g_content_type_is_a (g_file_info_get_attribute_string (folder->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/library"));
+ 		g_object_set (action, "sensitive", sensitive, NULL);
+ 	}
+ 	else {
+@@ -690,7 +690,7 @@ catalogs__gth_browser_update_extra_widge
+ 
+ 	location_data = gth_browser_get_location_data (browser);
+ 	if (GTH_IS_FILE_SOURCE_CATALOGS (gth_browser_get_location_source (browser))
+-	    && ! _g_content_type_is_a (g_file_info_get_content_type (location_data->info), "gthumb/library"))
++	    && ! _g_content_type_is_a (g_file_info_get_attribute_string (location_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/library"))
+ 	{
+ 		if (data->properties_button == NULL) {
+ 			data->properties_button = gtk_button_new ();
+diff -rup gthumb-3.2.9.1/extensions/catalogs/gth-file-source-catalogs.c gthumb-3.2.9.1-nowarn/extensions/catalogs/gth-file-source-catalogs.c
+--- gthumb-3.2.9.1/extensions/catalogs/gth-file-source-catalogs.c	2015-04-16 19:21:55.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/extensions/catalogs/gth-file-source-catalogs.c	2023-09-25 17:14:37.860387051 +0200
+@@ -1066,7 +1066,7 @@ gth_file_source_catalogs_copy (GthFileSo
+ 
+ 	first_file = file_list->data;
+ 	if (g_file_has_uri_scheme (first_file, "catalog")) {
+-		if (g_strcmp0 (g_file_info_get_content_type (destination->info), "gthumb/catalog") == 0) {
++		if (g_strcmp0 (g_file_info_get_attribute_string (destination->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/catalog") == 0) {
+ 			CopyCatalogData *ccd;
+ 			const char      *msg;
+ 			GtkWidget       *d;
+diff -rup gthumb-3.2.9.1/extensions/search/callbacks.c gthumb-3.2.9.1-nowarn/extensions/search/callbacks.c
+--- gthumb-3.2.9.1/extensions/search/callbacks.c	2015-04-16 19:21:56.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/extensions/search/callbacks.c	2023-09-25 17:20:10.789899190 +0200
+@@ -119,7 +119,7 @@ search__gth_browser_update_extra_widget_
+ 	BrowserData *data;
+ 
+ 	location_data = gth_browser_get_location_data (browser);
+-	if (! _g_content_type_is_a (g_file_info_get_content_type (location_data->info), "gthumb/search"))
++	if (! _g_content_type_is_a (g_file_info_get_attribute_string (location_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/search"))
+ 		return;
+ 
+ 	data = g_object_get_data (G_OBJECT (browser), BROWSER_DATA_KEY);
+@@ -163,7 +163,7 @@ search__dlg_catalog_properties (GtkBuild
+ 	GtkWidget     *alignment;
+ 	GtkWidget     *search_editor;
+ 
+-	if (! _g_content_type_is_a (g_file_info_get_content_type (file_data->info), "gthumb/search"))
++	if (! _g_content_type_is_a (g_file_info_get_attribute_string (file_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/search"))
+ 		return;
+ 
+ 	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+@@ -199,7 +199,7 @@ search__dlg_catalog_properties_save (Gtk
+ {
+ 	GthSearch *search;
+ 
+-	if (! _g_content_type_is_a (g_file_info_get_content_type (file_data->info), "gthumb/search"))
++	if (! _g_content_type_is_a (g_file_info_get_attribute_string (file_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/search"))
+ 		return;
+ 
+ 	g_return_if_fail (GTH_IS_SEARCH (catalog));
+@@ -221,7 +221,7 @@ search__dlg_catalog_properties_saved (Gt
+ {
+ 	GthTask *task;
+ 
+-	if (! _g_content_type_is_a (g_file_info_get_content_type (file_data->info), "gthumb/search"))
++	if (! _g_content_type_is_a (g_file_info_get_attribute_string (file_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/search"))
+ 		return;
+ 
+ 	/* Search only if the search parameters changed */
+diff -rup gthumb-3.2.9.1/extensions/selections/callbacks.c gthumb-3.2.9.1-nowarn/extensions/selections/callbacks.c
+--- gthumb-3.2.9.1/extensions/selections/callbacks.c	2015-04-16 19:21:56.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/extensions/selections/callbacks.c	2023-09-25 17:15:32.887052845 +0200
+@@ -274,7 +274,7 @@ selections__gth_browser_update_extra_wid
+ 	char        *msg;
+ 
+ 	location_data = gth_browser_get_location_data (browser);
+-	if (! _g_content_type_is_a (g_file_info_get_content_type (location_data->info), "gthumb/selection"))
++	if (! _g_content_type_is_a (g_file_info_get_attribute_string (location_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE), "gthumb/selection"))
+ 		return;
+ 
+ 	n_selection = g_file_info_get_attribute_int32 (location_data->info, "gthumb::n-selection");
+diff -rup gthumb-3.2.9.1/gthumb/glib-utils.c gthumb-3.2.9.1-nowarn/gthumb/glib-utils.c
+--- gthumb-3.2.9.1/gthumb/glib-utils.c	2015-04-16 19:21:56.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/gthumb/glib-utils.c	2023-09-25 17:16:47.393646612 +0200
+@@ -2266,7 +2266,7 @@ _g_file_get_mime_type (GFile    *file,
+ 		g_clear_error (&err);
+ 	}
+ 	else {
+-		result = get_static_string (g_content_type_get_mime_type (g_file_info_get_content_type (info)));
++		result = get_static_string (g_content_type_get_mime_type (g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)));
+ 		g_object_unref (info);
+ 	}
+ 
+diff -rup gthumb-3.2.9.1/gthumb/gth-metadata-provider-file.c gthumb-3.2.9.1-nowarn/gthumb/gth-metadata-provider-file.c
+--- gthumb-3.2.9.1/gthumb/gth-metadata-provider-file.c	2015-04-16 19:19:05.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/gthumb/gth-metadata-provider-file.c	2023-09-25 17:17:55.220193141 +0200
+@@ -68,7 +68,7 @@ gth_metadata_provider_file_read (GthMeta
+ 	g_file_info_set_attribute_string (file_data->info, "gth::file::full-name", value);
+ 	g_free (value);
+ 
+-	value_s = get_static_string (g_file_info_get_content_type (file_data->info));
++	value_s = get_static_string (g_file_info_get_attribute_string (file_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE));
+ 	if (value_s != NULL)
+ 		g_file_info_set_attribute_string (file_data->info, "gth::file::content-type", value_s);
+ 
+diff -rup gthumb-3.2.9.1/gthumb/gth-overwrite-dialog.c gthumb-3.2.9.1-nowarn/gthumb/gth-overwrite-dialog.c
+--- gthumb-3.2.9.1/gthumb/gth-overwrite-dialog.c	2015-04-16 19:21:56.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/gthumb/gth-overwrite-dialog.c	2023-09-25 17:21:41.209641182 +0200
+@@ -155,7 +155,7 @@ info_ready_cb (GList    *files,
+ 
+ 		icon = (GIcon*) g_file_info_get_attribute_object (self->priv->source_data->info, "preview::icon");
+ 		if (icon == NULL)
+-			icon = g_content_type_get_icon (g_file_info_get_content_type (self->priv->source_data->info));
++			icon = g_content_type_get_icon (g_file_info_get_attribute_string (self->priv->source_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE));
+ 		pixbuf = _g_icon_get_pixbuf (icon, ICON_SIZE, _gtk_widget_get_icon_theme (GTK_WIDGET (self)));
+ 		if (pixbuf != NULL) {
+ 			gth_image_viewer_set_pixbuf (GTH_IMAGE_VIEWER (self->priv->new_image_viewer), pixbuf, -1, -1);
+@@ -203,7 +203,7 @@ info_ready_cb (GList    *files,
+ 
+ 	icon = (GIcon*) g_file_info_get_attribute_object (self->priv->destination_data->info, "preview::icon");
+ 	if (icon == NULL)
+-		icon = g_content_type_get_icon (g_file_info_get_content_type (self->priv->destination_data->info));
++		icon = g_content_type_get_icon (g_file_info_get_attribute_string (self->priv->destination_data->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE));
+ 	pixbuf = _g_icon_get_pixbuf (icon, ICON_SIZE, _gtk_widget_get_icon_theme (GTK_WIDGET (self)));
+ 	if (pixbuf != NULL) {
+ 		gth_image_viewer_set_pixbuf (GTH_IMAGE_VIEWER (self->priv->old_image_viewer), pixbuf, -1, -1);

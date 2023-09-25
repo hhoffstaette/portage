@@ -59,6 +59,8 @@ PATCHES=(
 	"${FILESDIR}"/${PV}-exiv2-0.27.patch
 	"${FILESDIR}"/${PV}-exiv2-ignore-binary-comment.patch
 	"${FILESDIR}"/${PV}-exiv2-0.28.patch
+	"${FILESDIR}"/${PV}-glib-content-type.patch
+	"${FILESDIR}"/${PV}-glib-sort-order.patch
 )
 
 src_prepare() {

@@ -1,0 +1,28 @@
+diff -rup gthumb-3.2.9.1/extensions/catalogs/callbacks.c gthumb-3.2.9.1-nowarn/extensions/catalogs/callbacks.c
+--- gthumb-3.2.9.1/extensions/catalogs/callbacks.c	2015-04-16 19:21:55.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/extensions/catalogs/callbacks.c	2023-09-25 16:51:49.995440082 +0200
+@@ -374,10 +374,10 @@ sort_catalogs (gconstpointer a,
+ 		/* put the libraries before the catalogs */
+ 		return g_file_info_get_attribute_boolean (file_data_a->info, "gthumb::no-child") ? 1 : -1;
+ 	}
+-	else if (g_file_info_get_sort_order (file_data_a->info) == g_file_info_get_sort_order (file_data_b->info))
++	else if (g_file_info_get_attribute_int32 (file_data_a->info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == g_file_info_get_attribute_int32 (file_data_b->info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER))
+ 		return g_utf8_collate (g_file_info_get_display_name (file_data_a->info),
+ 				       g_file_info_get_display_name (file_data_b->info));
+-	else if (g_file_info_get_sort_order (file_data_a->info) < g_file_info_get_sort_order (file_data_b->info))
++	else if (g_file_info_get_attribute_int32 (file_data_a->info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) < g_file_info_get_attribute_int32 (file_data_b->info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER))
+ 		return -1;
+ 	else
+ 		return 1;
+diff -rup gthumb-3.2.9.1/gthumb/gth-folder-tree.c gthumb-3.2.9.1-nowarn/gthumb/gth-folder-tree.c
+--- gthumb-3.2.9.1/gthumb/gth-folder-tree.c	2015-04-16 19:21:56.000000000 +0200
++++ gthumb-3.2.9.1-nowarn/gthumb/gth-folder-tree.c	2023-09-25 16:48:33.949057398 +0200
+@@ -1124,7 +1124,7 @@ _gth_folder_tree_set_file_data (GthFolde
+ 			    COLUMN_FILE_DATA, file_data,
+ 			    COLUMN_NAME, name,
+ 			    COLUMN_SORT_KEY, sort_key,
+-			    COLUMN_SORT_ORDER, g_file_info_get_sort_order (file_data->info),
++			    COLUMN_SORT_ORDER, g_file_info_get_attribute_int32 (file_data->info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER),
+ 			    COLUMN_NO_CHILD, g_file_info_get_attribute_boolean (file_data->info, "gthumb::no-child"),
+ 			    COLUMN_LOADED, FALSE,
+ 			    -1);
