@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf dnscrypt dnstap doh doh-client gnutls lmdb regex snmp ssl systemd test"
+IUSE="bpf dnscrypt dnstap doh gnutls lmdb regex snmp ssl systemd test"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -28,8 +28,7 @@ RDEPEND="acct-group/dnsdist
 	dev-libs/libedit:=
 	dev-libs/libsodium:=
 	dnstap? ( dev-libs/fstrm:= )
-	doh? ( www-servers/h2o:=[libh2o] )
-	doh-client? ( net-libs/nghttp2:= )
+	doh? ( net-libs/nghttp2:= )
 	lmdb? ( dev-db/lmdb:= )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
@@ -57,14 +56,16 @@ src_configure() {
 	# bug #822855
 	append-lfs-flags
 
+	# re-enable outgoing doh in 1.9
+	# $(use_enable doh dns-over-https) \
+
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
-		$(use_enable doh dns-over-https) \
-		$(use_with doh-client nghttp2 ) \
 		$(use_with bpf ebpf ) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
+		$(use_with doh nghttp2 ) \
 		$(use_with lmdb ) \
 		$(use_with regex re2) \
 		$(use_with snmp net-snmp) \
