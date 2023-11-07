@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10,11,12} )
-LLVM_MAX_SLOT=16
+LLVM_MAX_SLOT=17
 
 inherit flag-o-matic linux-info llvm pam python-single-r1 systemd tmpfiles
 
@@ -36,8 +36,8 @@ icu? ( dev-libs/icu:= )
 kerberos? ( virtual/krb5 )
 ldap? ( net-nds/openldap:= )
 llvm? (
-	<sys-devel/llvm-17:=
-	<sys-devel/clang-17:=
+	<sys-devel/llvm-18:=
+	<sys-devel/clang-18:=
 )
 lz4? ( app-arch/lz4 )
 pam? ( sys-libs/pam )
@@ -104,6 +104,7 @@ src_prepare() {
 
 	if use server ; then
 		eapply "${FILESDIR}/${PN}-16.0-jit-support-opaque-pointers-in-LLVM-16.patch"
+		eapply "${FILESDIR}/${PN}-16.0-jit-support-LLVM-17.patch"
 	else
 		eapply "${FILESDIR}/${PN}-16.0-no-server.patch"
 	fi
