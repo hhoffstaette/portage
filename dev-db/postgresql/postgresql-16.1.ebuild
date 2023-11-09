@@ -103,8 +103,8 @@ src_prepare() {
 	sed 's/@install_bin@/install -c/' -i src/Makefile.global.in || die
 
 	if use server ; then
-		eapply "${FILESDIR}/${PN}-16.0-jit-support-opaque-pointers-in-LLVM-16.patch"
-		eapply "${FILESDIR}/${PN}-16.0-jit-support-LLVM-17.patch"
+		# patches go here
+		:
 	else
 		eapply "${FILESDIR}/${PN}-16.0-no-server.patch"
 	fi
