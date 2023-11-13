@@ -7,7 +7,7 @@ inherit go-module systemd
 
 MY_PV="v${PV/_rc/-rc.}"
 
-NODE_EXPORTER_COMMIT=ff7f9d69b645cb691dd3e84dc3afc88f5c006962
+NODE_EXPORTER_COMMIT=7333465abf9efba81876303bb57e6fadb946041b
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
@@ -29,7 +29,6 @@ RDEPEND="${CDEPEND}"
 S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
 
 PATCHES=(
-	"${FILESDIR}"/${PV}-btrfs-close-fds.patch
 )
 
 src_prepare() {
