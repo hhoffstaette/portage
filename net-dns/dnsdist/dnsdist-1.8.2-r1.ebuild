@@ -43,6 +43,7 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
+	"${FILESDIR}/1.8.2-fix-removal-of-last-rule.patch"
 )
 
 src_prepare() {
@@ -85,7 +86,7 @@ src_install() {
 
 	# add Gentoo sample config
 	insinto /etc/dnsdist
-	doins "${FILESDIR}"/dnsdist.conf.example
+	newins "${FILESDIR}"/dnsdist.conf.example dnsdist.conf
 
 	newconfd "${FILESDIR}"/dnsdist.confd ${PN}
 	newinitd "${FILESDIR}"/dnsdist.initd ${PN}

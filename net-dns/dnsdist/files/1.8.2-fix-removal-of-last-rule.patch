@@ -1,0 +1,50 @@
+
+From: https://github.com/PowerDNS/pdns/pull/13488
+
+From 26fb52245b02022f50ab138dfcde4140bd2f707f Mon Sep 17 00:00:00 2001
+From: Remi Gacogne <remi.gacogne@powerdns.com>
+Date: Tue, 14 Nov 2023 10:20:43 +0100
+Subject: [PATCH] dnsdist: Fix the removal of the last rule by name or UUID
+
+---
+ dnsdist-lua-rules.cc | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/dnsdist-lua-rules.cc b/dnsdist-lua-rules.cc
+index 2495b4a9ee8e..63beb7220c76 100644
+--- a/dnsdist-lua-rules.cc
++++ b/dnsdist-lua-rules.cc
+@@ -131,23 +131,27 @@ static void rmRule(GlobalStateHolder<vector<T> > *someRuleActions, const boost::
+   if (auto str = boost::get<std::string>(&id)) {
+     try {
+       const auto uuid = getUniqueID(*str);
+-      if (rules.erase(std::remove_if(rules.begin(),
++      auto removeIt = std::remove_if(rules.begin(),
+                                      rules.end(),
+-                                     [uuid](const T& a) { return a.d_id == uuid; }),
+-                      rules.end()) == rules.end()) {
++                                     [&uuid](const T& rule) { return rule.d_id == uuid; });
++      if (removeIt == rules.end()) {
+         g_outputBuffer = "Error: no rule matched\n";
+         return;
+       }
++      rules.erase(removeIt,
++                  rules.end());
+     }
+     catch (const std::runtime_error& e) {
+       /* it was not an UUID, let's see if it was a name instead */
+-      if (rules.erase(std::remove_if(rules.begin(),
++      auto removeIt = std::remove_if(rules.begin(),
+                                      rules.end(),
+-                                     [&str](const T& a) { return a.d_name == *str; }),
+-                      rules.end()) == rules.end()) {
++                                     [&str](const T& rule) { return rule.d_name == *str; });
++      if (removeIt == rules.end()) {
+         g_outputBuffer = "Error: no rule matched\n";
+         return;
+       }
++      rules.erase(removeIt,
++                  rules.end());
+     }
+   }
+   else if (auto pos = boost::get<unsigned int>(&id)) {
