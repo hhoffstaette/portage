@@ -8,5 +8,6 @@
 			<email>holger@applied-asynchrony.com</email>
 		</owner>
 		<source type="git">https://github.com/hhoffstaette/portage.git</source>
+		<feed>https://github.com/hhoffstaette/portage/commits/master.atom</feed>
 	</repo>
 </repositories>
