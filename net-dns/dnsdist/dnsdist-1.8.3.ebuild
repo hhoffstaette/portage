@@ -43,7 +43,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 PATCHES=(
-	"${FILESDIR}/1.8.2-fix-removal-of-last-rule.patch"
 )
 
 src_prepare() {
