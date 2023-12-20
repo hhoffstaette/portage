@@ -28,7 +28,6 @@ RDEPEND="
 	ssl? ( >=net-libs/gnutls-3:0= )
 "
 DEPEND="${RDEPEND}
-	app-text/yelp-tools
 	>=sys-devel/gettext-0.19.7
 	virtual/pkgconfig
 "
@@ -42,9 +41,9 @@ src_configure() {
 	# gtk3 support is still not ready (follow what Fedora does)
     NOCONFIGURE=1 ./autogen.sh
 	gnome2_src_configure \
-		--with-yelp-tools \
 		--with-gtk2 \
 		--without-webkit \
+		--without-yelp-tools \
 		$(use_with dbus) \
 		$(use_enable gnome-keyring gkr) \
 		$(use_with spell gtkspell) \
