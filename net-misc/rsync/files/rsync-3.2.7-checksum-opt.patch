@@ -1,0 +1,12 @@
+
+--- a/Makefile.in	2022-10-02 20:26:44.000000000 +0200
++++ a/Makefile.in	2024-01-05 14:02:39.418422935 +0100
+@@ -150,7 +150,7 @@ git-version.h: ALWAYS_RUN
+ ALWAYS_RUN:
+ 
+ simd-checksum-x86_64.o: simd-checksum-x86_64.cpp
+-	@$(srcdir)/cmd-or-msg disable-roll-simd $(CXX) -I. $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $(srcdir)/simd-checksum-x86_64.cpp
++	@$(srcdir)/cmd-or-msg disable-roll-simd $(CXX) -I. $(CXXFLAGS) $(CPPFLAGS) -O3 -c -o $@ $(srcdir)/simd-checksum-x86_64.cpp
+ 
+ simd-checksum-avx2.o: simd-checksum-avx2.S
+ 	@$(srcdir)/cmd-or-msg disable-roll-asm $(CC) $(CFLAGS) -I. @NOEXECSTACK@ -c -o $@ $(srcdir)/simd-checksum-avx2.S

@@ -85,6 +85,7 @@ PATCHES=(
 	"${FILESDIR}"/${P}-prototypes.patch
 	"${FILESDIR}"/${P}-simd-alignment.patch
 	"${FILESDIR}"/${P}-ipv6-configure-c99.patch
+	"${FILESDIR}"/${P}-checksum-opt.patch
 )
 
 pkg_setup() {
