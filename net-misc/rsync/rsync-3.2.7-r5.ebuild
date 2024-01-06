@@ -133,6 +133,11 @@ src_configure() {
 		$(use_enable zstd)
 	)
 
+	if use elibc_glibc && [[ "${ARCH}" == "amd64" ]] ; then
+		# only enable hand-rolled AVX2 on x64
+		myeconfargs+=( --enable-roll-asm )
+	fi
+
 	# https://github.com/WayneD/rsync/pull/428
 	if is-flagq -fsanitize=undefined ; then
 		sed -E -i \
