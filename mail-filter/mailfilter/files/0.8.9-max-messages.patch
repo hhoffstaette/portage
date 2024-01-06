@@ -1,0 +1,169 @@
+From 3e97e3675a884b48411f9e428e193a4abaf91fec Mon Sep 17 00:00:00 2001
+From: ma-ca <ma-ca@users.noreply.github.com>
+Date: Fri, 23 Dec 2022 09:44:26 +0100
+Subject: [PATCH] Add option --max-messages to check last messages
+
+---
+ src/account.cc     |  8 ++++++++
+ src/mailfilter.cc  | 11 +++++++++--
+ src/mailfilter.hh  |  1 +
+ src/pop3.cc        | 10 +++++++++-
+ src/preferences.cc |  7 +++++++
+ src/preferences.hh |  3 +++
+ 6 files changed, 37 insertions(+), 3 deletions(-)
+
+diff --git a/src/account.cc b/src/account.cc
+index c35715b..b9d4626 100644
+--- a/src/account.cc
++++ b/src/account.cc
+@@ -163,6 +163,14 @@ int Account :: check (void)
+ 			  + int_to_string (messages)
+ 			  + " message(s).", 3);
+       
++      if (Preferences :: Instance ().max_messages() > 0
++	  && messages > Preferences :: Instance ().max_messages())
++	{
++      logger->print_msg ("Examining last "
++	    + int_to_string (Preferences :: Instance ().max_messages())
++	    + " message(s).", 3);
++	}
++
+       // Scan mailbox for spam and unwanted bulk.
+       if (proto->scan () < 0)
+ 	{
+diff --git a/src/mailfilter.cc b/src/mailfilter.cc
+index 727c2ae..ba3acf7 100644
+--- a/src/mailfilter.cc
++++ b/src/mailfilter.cc
+@@ -60,6 +60,7 @@ static struct option long_options[] =
+     {"test", 0, NULL, VALUE_TEST},
+     {"return-value", 0, NULL, VALUE_RETURN},
+     {"skip-ssl-verify", 0, NULL, VALUE_SKIP_SSL_VERIFY},
++    {"max-messages", 1, NULL, VALUE_MAX_MESSAGES},
+     {0, 0, 0, 0}
+   };
+ 
+@@ -207,7 +208,7 @@ void get_opts (int argc, char* argv[])
+   int option = 0;
+   int option_index = 0;
+ 
+-  while ((option = getopt_long (argc, argv, "hL:M:Vv:tirs",
++  while ((option = getopt_long (argc, argv, "hL:M:Vv:tirsm:",
+ 				long_options, &option_index)) != -1)
+     {
+       switch (option)
+@@ -235,6 +236,8 @@ void get_opts (int argc, char* argv[])
+ 	  cout << "Enable additional return values" << endl;
+ 	  cout << "  -s, --skip-ssl-verify      ";
+ 	  cout << "Skip verification of SSL certificates (Do not use unless you know better!)" << endl;
++	  cout << "  -m, --max-messages=NUMBER  ";
++	  cout << "Maximum number messages to check, starting from end (POP3 only)" << endl;
+ 	  cout << "  -t, --test                 ";
+ 	  cout << "Simulate deletes" << endl;
+ 	  cout << "  -i, --ignore-time-stamps   ";
+@@ -284,6 +287,10 @@ void get_opts (int argc, char* argv[])
+ 	case VALUE_SKIP_SSL_VERIFY:
+ 	  Preferences :: Instance ().set_skip_ssl_verify (true);
+ 	  break;	  
++	case 'm':
++	case VALUE_MAX_MESSAGES:
++	  Preferences :: Instance ().set_max_messages (atoi (optarg));
++	  break;
+ 	case 'M':
+ 	case VALUE_MAILFILTERRC:
+ 	  Preferences :: Instance ().set_rc_file (optarg);
+@@ -350,7 +357,7 @@ int precompile_expressions (void)
+ // Comapre two strings, but disregard case-sensitivity.  Returns 0, if
+ // no differences could be determined, a negative integer if s is
+ // lexicographically before s2, and a positive integer otherwise.
+-// (See also Stroustrup §20.3.8.)
++// (See also Stroustrup ï¿½20.3.8.)
+ 
+ int cmp_no_case (const string& s, const string& s2)
+ {
+diff --git a/src/mailfilter.hh b/src/mailfilter.hh
+index 9dd554b..bb07605 100644
+--- a/src/mailfilter.hh
++++ b/src/mailfilter.hh
+@@ -38,6 +38,7 @@ using namespace std;
+ #define VALUE_RETURN                    7
+ #define VALUE_TIMESTAMP                 8
+ #define VALUE_SKIP_SSL_VERIFY           9
++#define VALUE_MAX_MESSAGES             10
+ 
+ #define ERROR_MSG(msg)  \
+   cerr << PACKAGE_NAME  \
+diff --git a/src/pop3.cc b/src/pop3.cc
+index c29f4cf..aeeb636 100644
+--- a/src/pop3.cc
++++ b/src/pop3.cc
+@@ -105,6 +105,8 @@ int POP3 :: scan (void) const
+ 
+   Header* msg_header;
+   int num_messages;
++  int max_messages;
++  int start_message;
+   stringstream msg_no;
+   string cmd;
+ 
+@@ -114,10 +116,16 @@ int POP3 :: scan (void) const
+       logger->print_err ("Error occurred while sending STAT to server.");
+       return GEN_FAILURE_FLAG;
+     }
++  start_message = 1;
++  max_messages = Preferences :: Instance ().max_messages();
++  if (max_messages > 0 && num_messages > max_messages)
++    {
++      start_message = num_messages - max_messages + 1;
++    }
+   
+   try
+     {
+-      for (int i = 1; i <= num_messages; i++)
++      for (int i = start_message; i <= num_messages; i++)
+ 	{
+ 	  // Reserve heap for the message to be stored, parsed, and
+ 	  // processed.
+diff --git a/src/preferences.cc b/src/preferences.cc
+index c80debc..7a5a514 100644
+--- a/src/preferences.cc
++++ b/src/preferences.cc
+@@ -60,6 +60,7 @@ Preferences :: Preferences ()
+   ret_status        = false;
+   _ignore_time_stamp= false;
+   _skip_ssl_verify  = false;
++  _max_messages     = 0;
+   high_score        = 100;
+   time_out_val      = 30;
+   negative_allows   = 0;
+@@ -480,3 +481,9 @@ void Preferences :: set_skip_ssl_verify (bool skip)
+ 
+ bool Preferences :: skip_ssl_verify (void)
+ { return _skip_ssl_verify; }
++
++void Preferences :: set_max_messages (int val)
++{ _max_messages = val; }
++
++int Preferences :: max_messages (void)
++{ return _max_messages; }
+diff --git a/src/preferences.hh b/src/preferences.hh
+index 03cd4b3..a1cb43e 100644
+--- a/src/preferences.hh
++++ b/src/preferences.hh
+@@ -50,6 +50,7 @@ protected:
+   bool             ret_status;
+   bool             _ignore_time_stamp;
+   bool             _skip_ssl_verify;
++  int              _max_messages;
+   int              high_score;
+   unsigned         time_out_val;
+   int              max_size;
+@@ -130,6 +131,8 @@ public:
+   void             set_return_status (bool);
+   void             set_skip_ssl_verify (bool);
+   bool             skip_ssl_verify   (void);
++  void             set_max_messages  (int);
++  int              max_messages      (void);
+   vector<Account>* accounts          (void);
+   vector<Filter>*  allow_filters     (void);
+   vector<Filter>*  deny_filters      (void);
