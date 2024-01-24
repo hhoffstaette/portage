@@ -203,6 +203,7 @@ x86? (
 PATCHES=(
 	# Workaround the CMake dependency lookup returning a different LLVM to llvm-config, bug #907965
 	"${FILESDIR}/clang_config_tool.patch"
+	"${FILESDIR}/23.2.1-python-3.12.patch"
 )
 
 llvm_check_deps() {
