@@ -22,7 +22,7 @@ DEPEND="acct-group/grafana
 RDEPEND="${DEPEND}
 	media-libs/fontconfig"
 
-QA_PREBUILT="usr/bin/grafana-*"
+QA_PREBUILT="usr/bin/grafana*"
 QA_PRESTRIPPED=${QA_PREBUILT}
 
 src_install() {
