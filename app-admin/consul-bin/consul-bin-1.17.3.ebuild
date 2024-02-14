@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ HOMEPAGE="https://www.consul.io"
 MY_PN="${PN/-bin/}"
 SRC_URI="https://releases.hashicorp.com/consul/${PV}/${MY_PN}_${PV}_linux_amd64.zip"
 
-LICENSE="MPL-2.0 Apache-2.0 BSD BSD-2 CC0-1.0 ISC MIT"
+LICENSE="BUSL-1.1"
 SLOT="0"
 KEYWORDS="amd64"
 IUSE=""
