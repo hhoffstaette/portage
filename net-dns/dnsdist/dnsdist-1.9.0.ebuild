@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb regex snmp ssl systemd test"
+IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb quic regex snmp ssl systemd test xdp"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -32,6 +32,7 @@ RDEPEND="acct-group/dnsdist
 	dnstap? ( dev-libs/fstrm:= )
 	doh? ( net-libs/nghttp2:= )
 	lmdb? ( dev-db/lmdb:= )
+	quic? ( net-libs/quiche )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
 	ssl? (
@@ -56,28 +57,27 @@ src_configure() {
 	# bug #822855
 	append-lfs-flags
 
-	# TODO:
-	# - DoH3/DoQ: USE="quic" via quiche
-	# - AF_XDP: USE="xdp" via xdp-tools
-
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
 		--without-h2o \
-		--without-quiche \
-		--without-xsk \
-		$(use_with bpf ebpf ) \
-		$(use_with cdb cdb ) \
+		$(use_with bpf ebpf) \
+		$(use_with cdb cdb) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
 		$(use_enable doh dns-over-https) \
-		$(use_with doh nghttp2 ) \
-		$(use_with lmdb ) \
+		$(use_with doh nghttp2) \
+		$(use_with lmdb) \
+		$(use_enable quic dns-over-http3) \
+		$(use_enable quic dns-over-quic) \
+		$(use_with quic quiche) \
 		$(use_with regex re2) \
 		$(use_with snmp net-snmp) \
 		$(use ssl && { echo "--enable-dns-over-tls" && use_with gnutls && use_with !gnutls libssl;} || echo "--without-gnutls --without-libssl") \
 		$(use_enable systemd) \
-		$(use_enable test unit-tests)
+		$(use_enable test unit-tests) \
+		$(use_with xdp xsk)
+
 		sed 's/hardcode_libdir_flag_spec_CXX='\''$wl-rpath $wl$libdir'\''/hardcode_libdir_flag_spec_CXX='\''$wl-rpath $wl\/$libdir'\''/g' \
 			-i "${S}/configure"
 }
