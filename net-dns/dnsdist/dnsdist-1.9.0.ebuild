@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm64 ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf dnscrypt dnstap doh gnutls lmdb regex snmp ssl systemd test"
+IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb regex snmp ssl systemd test"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
@@ -24,6 +24,8 @@ REQUIRED_USE="${LUA_REQUIRED_USE}
 
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
+	bpf? ( dev-libs/libbpf:= )
+	cdb? ( dev-db/cdb )
 	dev-libs/boost:=
 	dev-libs/libedit:=
 	dev-libs/libsodium:=
@@ -42,8 +44,6 @@ RDEPEND="acct-group/dnsdist
 
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
-PATCHES=(
-)
 
 src_prepare() {
 	default
@@ -56,15 +56,21 @@ src_configure() {
 	# bug #822855
 	append-lfs-flags
 
-	# re-enable outgoing doh in 1.9
-	# $(use_enable doh dns-over-https) \
+	# TODO:
+	# - DoH3/DoQ: USE="quic" via quiche
+	# - AF_XDP: USE="xdp" via xdp-tools
 
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
+		--without-h2o \
+		--without-quiche \
+		--without-xsk \
 		$(use_with bpf ebpf ) \
+		$(use_with cdb cdb ) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
+		$(use_enable doh dns-over-https) \
 		$(use_with doh nghttp2 ) \
 		$(use_with lmdb ) \
 		$(use_with regex re2) \
