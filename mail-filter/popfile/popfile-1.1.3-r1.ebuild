@@ -39,7 +39,8 @@ PATCHES=(
 
 src_prepare() {
 	default
-    # patch templates for relative URLs
+
+	# patch templates for relative URLs
 	local f
 	for f in $(find skins -name "*.thtml"); do
 		sed -i -e s/'action\=\"\/'/'action\=\"'/g \
@@ -60,5 +61,5 @@ src_install() {
 	keepdir /var/spool/${PN}
 	dosym /var/spool/${PN} /usr/share/${PN}/data
 
-	newinitd ${FILESDIR}/popfile.init popfile || die
+	newinitd "${FILESDIR}"/popfile.init popfile || die
 }

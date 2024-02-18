@@ -5,4 +5,7 @@
 		<email>dirk.olmes@codedo.de</email>
 		<name>Dirk Olmes</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">creativeprojects/resticprofile</remote-id>
+	</upstream>
 </pkgmetadata>

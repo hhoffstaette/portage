@@ -14,9 +14,10 @@ SRC_URI="https://releases.hashicorp.com/consul/${PV}/${MY_PN}_${PV}_linux_amd64.
 LICENSE="BUSL-1.1"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE=""
 
 RESTRICT="strip test"
+
+BDEPEND="app-arch/unzip"
 
 DEPEND="
 	acct-group/consul

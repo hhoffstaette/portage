@@ -130,7 +130,7 @@ RDEPEND="${RDEPEND}
 
 DEPEND="${RDEPEND}
 	video_cards_d3d12? ( >=dev-util/directx-headers-1.610.0[${MULTILIB_USEDEP}] )
-	valgrind? ( dev-util/valgrind )
+	valgrind? ( dev-debug/valgrind )
 	wayland? ( >=dev-libs/wayland-protocols-1.24 )
 	X? (
 		x11-libs/libXrandr[${MULTILIB_USEDEP}]
@@ -373,7 +373,7 @@ multilib_src_configure() {
 	emesonargs+=(-Dvulkan-layers=${vulkan_layers#,})
 
 	if use llvm && use vulkan && use video_cards_intel; then
-		PKG_CONFIG_PATH="$(get_llvm_prefix "${LLVM_MAX_SLOT}")/$(get_libdir)/pkgconfig"
+		PKG_CONFIG_PATH="$(get_llvm_prefix)/$(get_libdir)/pkgconfig"
 		emesonargs+=(-Dintel-clc=enabled)
 	else
 		emesonargs+=(-Dintel-clc=disabled)

@@ -10,7 +10,6 @@ HOMEPAGE="https://github.com/mdlayher/apcupsd_exporter"
 KEYWORDS="amd64"
 LICENSE="MIT"
 SLOT="0"
-IUSE=""
 RESTRICT="mirror"
 
 DEPEND="acct-group/apcupsd_exporter
@@ -28,8 +27,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin ${S}/cmd/${PN}/${PN}
+	dobin "${S}"/cmd/${PN}/${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
-

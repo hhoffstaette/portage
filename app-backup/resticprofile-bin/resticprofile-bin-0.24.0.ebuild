@@ -14,9 +14,6 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-
 S="${WORKDIR}"
 
 QA_PREBUILT=(
@@ -29,4 +26,3 @@ src_install() {
 	dosbin resticprofile
 	dodoc README.md
 }
-

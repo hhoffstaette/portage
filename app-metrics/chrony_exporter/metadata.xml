@@ -8,4 +8,7 @@
 	<longdescription lang="en">
 		A Prometheus metrics collector for Chrony NTP.
 	</longdescription>
+	<upstream>
+		<remote-id type="github">SuperQ/chrony_exporter</remote-id>
+	</upstream>
 </pkgmetadata>

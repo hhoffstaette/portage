@@ -8,4 +8,7 @@
 	<longdescription lang="en">
 		A Prometheus metrics collector for AVM fritz!box routers.
 	</longdescription>
+	<upstream>
+		<remote-id type="github">hhoffstaette/fritzbox_exporter</remote-id>
+	</upstream>
 </pkgmetadata>

@@ -9,9 +9,9 @@ DESCRIPTION="A dynamic swap space manager"
 HOMEPAGE="https://github.com/Tookmund/Swapspace"
 SRC_URI="https://github.com/Tookmund/Swapspace/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
-LICENSE="GPL"
+LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 x86"
+KEYWORDS="amd64 arm64 x86"
 RDEPEND="${DEPEND}"
 
 PATCHES=(

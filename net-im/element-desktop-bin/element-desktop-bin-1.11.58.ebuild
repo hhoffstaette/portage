@@ -11,6 +11,7 @@ MY_PV="$(ver_cut 1-3)"
 DESCRIPTION="A glossy Matrix collaboration client for desktop (binary package)"
 HOMEPAGE="https://element.io"
 SRC_URI="https://packages.element.io/debian/pool/main/e/element-desktop/${MY_PN}_${MY_PV}_amd64.deb"
+
 S="${WORKDIR}"
 
 LICENSE="Apache-2.0"
@@ -19,10 +20,7 @@ KEYWORDS="amd64"
 RESTRICT="splitdebug"
 
 RDEPEND="
-    || (
-        >=app-accessibility/at-spi2-core-2.46.0:2
-        ( app-accessibility/at-spi2-atk dev-libs/atk )
-    )
+	>=app-accessibility/at-spi2-core-2.46.0:2
 	app-crypt/libsecret
 	dev-db/sqlcipher
 	dev-libs/expat

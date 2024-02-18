@@ -6,18 +6,18 @@ EAPI=8
 inherit java-pkg-2
 
 DESCRIPTION="Nexus Maven Repository Server"
-KEYWORDS="amd64 x86"
+HOMEPAGE="https://www.sonatype.com/products/sonatype-nexus-repository"
+LICENSE="EPL-1.0"
+KEYWORDS="amd64"
 SLOT="0"
 
 MY_PN=${PN/nexus-bin/nexus}
 MY_PV=$(ver_rs 3 -)
 SRC_URI="http://download.sonatype.com/nexus/oss/${MY_PN}-${MY_PV}-bundle.tar.gz"
 
-IUSE=""
-
 DEPEND="acct-group/nexus
-        acct-user/nexus
-		virtual/jdk:1.8"
+	acct-user/nexus
+	virtual/jdk:1.8"
 
 RDEPEND="virtual/jre:1.8"
 
@@ -34,10 +34,9 @@ src_install() {
 	cd "${S}/bin/jsw"
 
 	case ${ARCH} in
-	x86)   F_ARCH="linux-x86-32" ;;
 	amd64) F_ARCH="linux-x86-64" ;;
 	*) die "This ebuild doesn't support ${ARCH}." ;;
-    esac
+	esac
 
 	# clean out unneeded binaries, but keep conf & lib
 	ls | grep -v $F_ARCH | grep -v conf | grep -v lib | xargs rm -R || die "remove failed"

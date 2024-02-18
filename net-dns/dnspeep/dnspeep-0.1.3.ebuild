@@ -94,9 +94,9 @@ SRC_URI="
 	${CARGO_CRATE_URIS}
 "
 
-LICENSE=""
+LICENSE="MIT"
 # Dependent crate licenses
-LICENSE+=" BSD ISC MIT"
+LICENSE+=" BSD ISC"
 SLOT="0"
 KEYWORDS="~amd64"
 

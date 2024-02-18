@@ -3,7 +3,7 @@
 
 EAPI=8
 
-DESCRIPTION="Sampling CPU and heap profiler for Java featuring AsyncGetCallTrace + perf_events"
+DESCRIPTION="Sampling CPU and heap profiler for Java"
 HOMEPAGE="https://github.com/async-profiler/async-profiler"
 
 ARCH="linux-x64"
@@ -13,9 +13,6 @@ SRC_URI="https://github.com/${MY_PN}/${MY_PN}/releases/download/v${PV}/${MY_PN}-
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
-
-DEPEND=""
-RDEPEND="${DEPEND}"
 
 QA_PREBUILT=(
 	"/opt/${MY_PN}/bin/asprof"
@@ -29,7 +26,6 @@ S=${WORKDIR}/${MY_PN}-${PV}-${ARCH}
 src_install() {
 	insinto /opt/${MY_PN}
 	doins -r *.md lib bin
-	dosym /opt/${MY_PN}/bin/asprof /opt/bin/asprof
+	dosym ../opt/${MY_PN}/bin/asprof /opt/bin/asprof
 	fperms 0755 /opt/${MY_PN}/bin/asprof /opt/${MY_PN}/lib/libasyncProfiler.so
 }
-

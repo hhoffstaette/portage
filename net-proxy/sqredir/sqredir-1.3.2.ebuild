@@ -3,8 +3,6 @@
 
 EAPI=8
 
-inherit flag-o-matic
-
 DESCRIPTION="A correct, small, fast and easy to use Squid URL rewriter"
 HOMEPAGE="https://github.com/hhoffstaette/sqredir"
 SRC_URI="https://github.com/hhoffstaette/sqredir/archive/${PV}.tar.gz -> ${P}.tar.gz"
@@ -28,4 +26,3 @@ src_install() {
 	insinto /etc
 	doins sqredir.conf || die
 }
-

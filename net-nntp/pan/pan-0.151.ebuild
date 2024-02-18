@@ -11,7 +11,7 @@ SRC_URI="https://gitlab.gnome.org/GNOME/pan/-/archive/v${PV}/pan-v${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ppc ppc64 sparc x86"
+KEYWORDS="amd64 arm64 x86"
 IUSE="dbus gnome-keyring libnotify spell ssl"
 RESTRICT="mirror"
 
@@ -20,7 +20,7 @@ RDEPEND="
 	dev-libs/gmime:3.0
 	>=sys-libs/zlib-1.2.0
 	>=x11-libs/gtk+-2.16:2
-	gnome-keyring? ( >=gnome-base/libgnome-keyring-3.2 )
+	gnome-keyring? ( gnome-base/gnome-keyring )
 	libnotify? ( >=x11-libs/libnotify-0.4.1:0= )
 	spell? (
 		>=app-text/enchant-1.6:0/0
@@ -39,7 +39,7 @@ PATCHES=( "${FILESDIR}/0.151-fix-C++11-deprecation-warnings.patch" )
 src_configure() {
 	# Wait for webkitgtk4 support
 	# gtk3 support is still not ready (follow what Fedora does)
-    NOCONFIGURE=1 ./autogen.sh
+	NOCONFIGURE=1 ./autogen.sh
 	gnome2_src_configure \
 		--with-gtk2 \
 		--without-webkit \

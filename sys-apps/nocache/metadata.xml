@@ -6,6 +6,6 @@
 		<name>Holger Hoffstätte</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">rustic-rs/rustic</remote-id>
+		<remote-id type="github">Feh/nocache</remote-id>
 	</upstream>
 </pkgmetadata>

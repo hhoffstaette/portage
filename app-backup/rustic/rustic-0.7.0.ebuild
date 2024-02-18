@@ -469,7 +469,7 @@ LICENSE="|| ( Apache-2.0 MIT )"
 # Dependent crate licenses
 LICENSE+="
 	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD CC0-1.0 ISC MIT
-	MPL-2.0 MPL-2.0 OpenSSL Unicode-DFS-2016
+	MPL-2.0 MPL-2.0 Unicode-DFS-2016
 "
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"

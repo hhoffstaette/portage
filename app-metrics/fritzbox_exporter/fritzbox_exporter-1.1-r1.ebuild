@@ -8,20 +8,19 @@ inherit go-module
 DESCRIPTION="Fritz!Box Upnp statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/hhoffstaette/fritzbox_exporter"
 LICENSE="Apache-2.0"
-KEYWORDS="amd64 arm64 x86"
+KEYWORDS="amd64 arm64"
 SLOT="0"
-IUSE=""
 
 RESTRICT="mirror"
 
 SRC_URI="https://github.com/hhoffstaette/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 DEPEND="acct-group/fritzbox_exporter
-        acct-user/fritzbox_exporter"
+	acct-user/fritzbox_exporter"
 
 src_compile() {
-	cd ${S}
+	cd "${S}"
 	ego build
 }
 
@@ -30,4 +29,3 @@ src_install() {
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
-

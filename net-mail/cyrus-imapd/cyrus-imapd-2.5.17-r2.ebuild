@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-inherit autotools multilib pam ssl-cert toolchain-funcs
+inherit autotools pam ssl-cert
 
 DESCRIPTION="The Cyrus IMAP Server"
 HOMEPAGE="http://www.cyrusimap.org/"
@@ -10,7 +10,7 @@ SRC_URI="https://github.com/cyrusimap/cyrus-imapd/releases/download/${P}/${P}.ta
 
 LICENSE="BSD-with-attribution"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 hppa ppc ppc64 sparc x86"
+KEYWORDS="amd64 arm64 x86"
 IUSE="afs clamav http kerberos mysql nntp pam perl postgres \
 	replication +server sieve snmp sqlite ssl static-libs tcpd"
 
@@ -38,22 +38,21 @@ DEPEND="sys-libs/zlib
 
 # all blockers really needed?
 RDEPEND="${DEPEND}
-    acct-group/mail
-    acct-user/cyrus
+	acct-group/mail
+	acct-user/cyrus
 	!mail-mta/courier
-	!net-mail/bincimap
-	!net-mail/courier-imap
-	!net-mail/uw-imap
-	!net-mail/cyrus-imap-admin"
+	!net-mail/courier-imap"
 
 REQUIRED_USE="afs? ( kerberos )
 	http? ( sqlite )"
 
 src_prepare() {
-    # bug 604470
+	# bug 604470
 	eapply -p1 "${FILESDIR}/${PN}-sieve-libs.patch"
+
 	# pcre2
 	eapply -p1 "${FILESDIR}/${PN}-pcre2.patch"
+
 	# Fix master(8)->cyrusmaster(8) manpage.
 	for i in `grep -rl -e 'master\.8' -e 'master(8)' "${S}"` ; do
 		sed -i -e 's:master\.8:cyrusmaster.8:g' \
@@ -166,9 +165,9 @@ pkg_preinst() {
 pkg_postinst() {
 	# do not install server.{key,pem) if they exist.
 	if use ssl ; then
-		if [ ! -f "${ROOT}"etc/ssl/cyrus/server.key ]; then
+		if [ ! -f "${ROOT}"/etc/ssl/cyrus/server.key ]; then
 			install_cert /etc/ssl/cyrus/server
-			chown -f cyrus:mail "${ROOT}"etc/ssl/cyrus/server.{key,pem}
+			chown -f cyrus:mail "${ROOT}"/etc/ssl/cyrus/server.{key,pem}
 		fi
 	fi
 }

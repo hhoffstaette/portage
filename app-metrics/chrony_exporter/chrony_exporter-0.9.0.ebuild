@@ -7,10 +7,9 @@ inherit go-module
 
 DESCRIPTION="Chrony NTP exporter for Prometheus"
 HOMEPAGE="https://github.com/SuperQ/chrony_exporter"
-KEYWORDS="amd64 arm arm64 x86"
+KEYWORDS="amd64 arm64"
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE=""
 
 RESTRICT="mirror"
 
@@ -34,4 +33,3 @@ src_install() {
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
-

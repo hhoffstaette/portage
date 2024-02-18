@@ -12,7 +12,6 @@ inherit flag-o-matic meson optfeature python-any-r1 toolchain-funcs vala
 if [[ ${PV} == *9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://gitlab.gnome.org/GNOME/gegl.git"
-	SRC_URI=""
 else
 	SRC_URI="https://download.gimp.org/pub/${PN}/${PV:0:3}/${P}.tar.xz"
 	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~mips ~ppc ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"

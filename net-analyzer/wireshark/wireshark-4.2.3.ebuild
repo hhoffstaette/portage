@@ -109,7 +109,7 @@ BDEPEND="
 	sys-devel/gettext
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		dev-ruby/asciidoctor
 	)
 	gui? (
