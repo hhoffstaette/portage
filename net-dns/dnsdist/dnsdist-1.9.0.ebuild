@@ -29,7 +29,7 @@ REQUIRED_USE="${LUA_REQUIRED_USE}
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
 	bpf? ( dev-libs/libbpf:= )
-	cdb? ( || ( dev-db/cdb dev-db/tinycdb ) )
+	cdb? ( dev-db/tinycdb )
 	dev-libs/boost:=
 	dev-libs/libedit:=
 	dev-libs/libsodium:=
