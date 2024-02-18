@@ -25,7 +25,7 @@ REQUIRED_USE="${LUA_REQUIRED_USE}
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
 	bpf? ( dev-libs/libbpf:= )
-	cdb? ( dev-db/cdb )
+	cdb? ( || ( dev-db/cdb dev-db/tinycdb ) )
 	dev-libs/boost:=
 	dev-libs/libedit:=
 	dev-libs/libsodium:=
@@ -40,6 +40,7 @@ RDEPEND="acct-group/dnsdist
 		!gnutls? ( dev-libs/openssl:= )
 	)
 	systemd? ( sys-apps/systemd:0= )
+	xdp? ( net-libs/xdp-tools )
 	${LUA_DEPS}
 "
 
