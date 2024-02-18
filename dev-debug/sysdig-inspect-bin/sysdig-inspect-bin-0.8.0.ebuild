@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,7 +6,7 @@ EAPI=8
 DESCRIPTION="A powerful interface for container troubleshooting and security investigation"
 HOMEPAGE="https://sysdig.com/opensource/inspect/"
 
-inherit gnome2-utils
+inherit xdg-utils
 
 MY_PN=${PN%%-bin}
 SRC_URI="https://github.com/draios/sysdig-inspect/releases/download/${PV}/${MY_PN}-linux-x86_64.deb -> ${MY_PN}-${PV}-linux-x86_64.deb"
@@ -14,12 +14,10 @@ SRC_URI="https://github.com/draios/sysdig-inspect/releases/download/${PV}/${MY_P
 LICENSE="GPL-2"
 KEYWORDS="amd64"
 SLOT="0"
-REQUIRED_USE=""
-DEPEND=""
 
 RDEPEND="${DEPEND}
 	dev-libs/nss
-	dev-util/sysdig
+	dev-debug/sysdig
 	media-libs/mesa
 	net-print/cups
 	x11-libs/gtk+:3
@@ -58,11 +56,10 @@ src_install() {
 }
 
 pkg_postinst() {
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 	elog "For live inspection you will also need to emerge sysdig[modules] for the kernel module."
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 }
-

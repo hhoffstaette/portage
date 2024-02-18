@@ -5,4 +5,7 @@
 		<email>holger@applied-asynchrony.com</email>
 		<name>Holger Hoffstätte</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">draios/sysdig-inspect</remote-id>
+	</upstream>
 </pkgmetadata>
