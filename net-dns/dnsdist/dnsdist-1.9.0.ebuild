@@ -11,16 +11,16 @@ DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
 
 SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-KEYWORDS="amd64 arm64 ppc64"
+KEYWORDS="~amd64 ~arm64 ~ppc64"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb quic regex snmp ssl systemd test xdp"
+IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb quic regex snmp ssl systemd test web xdp"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
-		gnutls? ( ssl )
-		doh? ( ssl !gnutls )"
+		doh? ( ssl !gnutls )
+		gnutls? ( ssl )"
 
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
@@ -57,6 +57,10 @@ src_configure() {
 	# bug #822855
 	append-lfs-flags
 
+	# some things can only be enabled/disabled by defines
+	! use dnstap && append-flags -DDISABLE_PROTOBUF
+	! use web && append-flags -DDISABLE_BUILTIN_HTML
+
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
@@ -87,7 +91,7 @@ src_install() {
 
 	# useful but too complex to get started; install with docs instead
 	dodoc dnsdist.conf-dist
-	rm ${D}/etc/${PN}/dnsdist.conf-dist
+	rm "${D}"/etc/${PN}/dnsdist.conf-dist
 
 	# add Gentoo sample config
 	insinto /etc/dnsdist
