@@ -11,16 +11,20 @@ DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://dnsdist.org"
 
 SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.bz2"
-KEYWORDS="~amd64 ~arm64 ~ppc64"
+KEYWORDS="~amd64 ~x86"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doh gnutls lmdb quic regex snmp ssl systemd test web xdp"
+IUSE="bpf cdb dnscrypt dnstap doh doh3 gnutls ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
 		doh? ( ssl !gnutls )
-		gnutls? ( ssl )"
+		doh3? ( ssl !gnutls quic )
+		gnutls? ( ssl )
+		ipcipher? ( ssl !gnutls )
+		quic? ( ssl !gnutls )
+		ssl? ( !gnutls )"
 
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
@@ -31,8 +35,9 @@ RDEPEND="acct-group/dnsdist
 	dev-libs/libsodium:=
 	dnstap? ( dev-libs/fstrm:= )
 	doh? ( net-libs/nghttp2:= )
+	doh3? ( net-libs/quiche:= )
 	lmdb? ( dev-db/lmdb:= )
-	quic? ( net-libs/quiche )
+	quic? ( net-libs/quiche:= )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
 	ssl? (
@@ -50,7 +55,7 @@ BDEPEND="virtual/pkgconfig"
 src_prepare() {
 	default
 
-	# clean up duplicate
+	# clean up duplicate file
 	rm -f README.md
 }
 
@@ -59,23 +64,23 @@ src_configure() {
 	append-lfs-flags
 
 	# some things can only be enabled/disabled by defines
-	! use dnstap && append-flags -DDISABLE_PROTOBUF
-	! use web && append-flags -DDISABLE_BUILTIN_HTML
+	! use dnstap && append-cppflags -DDISABLE_PROTOBUF
+	! use web && append-cppflags -DDISABLE_BUILTIN_HTML
 
 	econf \
 		--sysconfdir=/etc/dnsdist \
 		--with-lua="${ELUA}" \
 		--without-h2o \
+		--enable-tls-providers \
 		$(use_with bpf ebpf) \
 		$(use_with cdb cdb) \
+		$(use_enable doh dns-over-https) \
+		$(use_enable doh3 dns-over-http3) \
 		$(use_enable dnscrypt) \
 		$(use_enable dnstap) \
-		$(use_enable doh dns-over-https) \
-		$(use_with doh nghttp2) \
-		$(use_with lmdb) \
-		$(use_enable quic dns-over-http3) \
-		$(use_enable quic dns-over-quic) \
-		$(use_with quic quiche) \
+		$(use_enable ipcipher) \
+		$(use_with lmdb ) \
+		$(use_enable quic dns-over-quic ) \
 		$(use_with regex re2) \
 		$(use_with snmp net-snmp) \
 		$(use ssl && { echo "--enable-dns-over-tls" && use_with gnutls && use_with !gnutls libssl;} || echo "--without-gnutls --without-libssl") \
@@ -84,19 +89,14 @@ src_configure() {
 		$(use_with xdp xsk)
 
 		sed 's/hardcode_libdir_flag_spec_CXX='\''$wl-rpath $wl$libdir'\''/hardcode_libdir_flag_spec_CXX='\''$wl-rpath $wl\/$libdir'\''/g' \
-			-i "${S}/configure"
+			-i "${S}/configure" || die
 }
 
 src_install() {
 	default
 
-	# useful but too complex to get started; install with docs instead
-	dodoc dnsdist.conf-dist
-	rm "${D}"/etc/${PN}/dnsdist.conf-dist
-
-	# add Gentoo sample config
 	insinto /etc/dnsdist
-	newins "${FILESDIR}"/dnsdist.conf.example dnsdist.conf
+	doins "${FILESDIR}"/dnsdist.conf.example
 
 	newconfd "${FILESDIR}"/dnsdist.confd ${PN}
 	newinitd "${FILESDIR}"/dnsdist.initd ${PN}
