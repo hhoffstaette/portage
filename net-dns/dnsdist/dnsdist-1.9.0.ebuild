@@ -44,6 +44,7 @@ RDEPEND="acct-group/dnsdist
 		gnutls? ( net-libs/gnutls:= )
 		!gnutls? ( dev-libs/openssl:= )
 	)
+	sys-libs/libcap
 	systemd? ( sys-apps/systemd:0= )
 	xdp? ( net-libs/xdp-tools )
 	${LUA_DEPS}
