@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -25,12 +25,11 @@ MOZ_P="${MOZ_PN}-${MOZ_PV}"
 
 MOZ_HTTP_URI="https://archive.mozilla.org/pub/${MOZ_PN}/releases"
 
-inherit desktop multilib pax-utils xdg-utils mozlinguas-v2
+inherit desktop pax-utils xdg-utils mozlinguas-v2
 
 DESCRIPTION="Thunderbird Mail Client"
 SRC_URI="${SRC_URI}
 	amd64? ( ${MOZ_HTTP_URI}/${MOZ_PV}/linux-x86_64/en-US/${MOZ_P}.tar.bz2 -> ${PN}_x86_64-${PV}.tar.bz2 )
-	x86? ( ${MOZ_HTTP_URI}/${MOZ_PV}/linux-i686/en-US/${MOZ_P}.tar.bz2 -> ${PN}_i686-${PV}.tar.bz2 )
 	https://dev.gentoo.org/~juippis/distfiles/lightning-${MOZ_LIGHTNING_VER}.tar.xz"
 # the below only works when upstream releases the xpi with all locales bundled
 #	${MOZ_HTTP_URI/${MOZ_PN}/calendar/lightning}/${MOZ_LIGHTNING_VER}/linux/lightning.xpi -> lightning-${MOZ_LIGHTNING_VER}.xpi
@@ -38,7 +37,7 @@ SRC_URI="${SRC_URI}
 HOMEPAGE="https://www.thunderbird.net/"
 RESTRICT="strip mirror"
 
-KEYWORDS="-* amd64 x86"
+KEYWORDS="amd64"
 SLOT="0"
 LICENSE="MPL-2.0 GPL-2 LGPL-2.1"
 IUSE="+crashreporter +ffmpeg +pulseaudio selinux"
@@ -46,7 +45,7 @@ IUSE="+crashreporter +ffmpeg +pulseaudio selinux"
 DEPEND="app-arch/unzip
 	app-arch/zip"
 
-RDEPEND="dev-libs/atk
+RDEPEND=">=app-accessibility/at-spi2-core-2.46.0:2
 	>=sys-apps/dbus-0.60
 	>=dev-libs/dbus-glib-0.72
 	>=dev-libs/glib-2.26:2
@@ -63,8 +62,7 @@ RDEPEND="dev-libs/atk
 	x11-libs/libXrender
 	x11-libs/libXt
 	>=x11-libs/pango-1.22.0
-	pulseaudio? ( !<media-sound/apulse-0.1.9
-		|| ( media-sound/pulseaudio media-sound/apulse ) )
+	pulseaudio? ( || ( media-libs/libpulse media-sound/apulse ) )
 	ffmpeg? ( media-video/ffmpeg )
 	crashreporter? ( net-misc/curl )
 	selinux? ( sec-policy/selinux-thunderbird )
