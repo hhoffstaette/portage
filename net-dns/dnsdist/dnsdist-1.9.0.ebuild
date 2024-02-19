@@ -15,16 +15,14 @@ KEYWORDS="~amd64 ~x86"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doh doh3 gnutls ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
+IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
-		doh? ( ssl !gnutls )
-		doh3? ( ssl !gnutls quic )
-		gnutls? ( ssl )
-		ipcipher? ( ssl !gnutls )
-		quic? ( ssl !gnutls )
-		ssl? ( !gnutls )"
+		doh? ( ssl )
+		doh3? ( ssl quic )
+		ipcipher? ( ssl )
+		quic? ( ssl )"
 
 RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
@@ -40,10 +38,7 @@ RDEPEND="acct-group/dnsdist
 	quic? ( net-libs/quiche:= )
 	regex? ( dev-libs/re2:= )
 	snmp? ( net-analyzer/net-snmp:= )
-	ssl? (
-		gnutls? ( net-libs/gnutls:= )
-		!gnutls? ( dev-libs/openssl:= )
-	)
+	ssl? ( dev-libs/openssl:= )
 	sys-libs/libcap
 	systemd? ( sys-apps/systemd:0= )
 	xdp? ( net-libs/xdp-tools )
@@ -84,7 +79,7 @@ src_configure() {
 		$(use_enable quic dns-over-quic ) \
 		$(use_with regex re2) \
 		$(use_with snmp net-snmp) \
-		$(use ssl && { echo "--enable-dns-over-tls" && use_with gnutls && use_with !gnutls libssl;} || echo "--without-gnutls --without-libssl") \
+		$(use ssl && { echo "--enable-dns-over-tls" && use_with libssl;} || echo "--without-gnutls --without-libssl") \
 		$(use_enable systemd) \
 		$(use_enable test unit-tests) \
 		$(use_with xdp xsk)
