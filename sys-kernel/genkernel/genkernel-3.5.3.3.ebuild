@@ -40,18 +40,18 @@ HOMEPAGE="https://wiki.gentoo.org/wiki/No_homepage"
 
 LICENSE="GPL-2"
 SLOT="0"
-RESTRICT=""
 IUSE="cryptsetup ibm +firmware selinux"
 
 DEPEND="sys-fs/e2fsprogs
 	selinux? ( sys-libs/libselinux )"
+
 RDEPEND="${DEPEND}
 	cryptsetup? ( sys-fs/cryptsetup )
 	app-arch/cpio
 	>=app-misc/pax-utils-1.2.2
 	sys-apps/util-linux[static-libs(+)]
-	firmware? ( sys-kernel/linux-firmware )
-	!<sys-apps/openrc-0.9.9"
+	firmware? ( sys-kernel/linux-firmware )"
+
 # pax-utils is used for lddtree
 
 if [[ ${PV} == 9999* ]]; then
