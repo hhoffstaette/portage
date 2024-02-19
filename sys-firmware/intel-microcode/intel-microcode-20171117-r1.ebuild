@@ -1,9 +1,9 @@
-# Copyright 1999-2022 Gentoo Foundation
+# Copyright 1999-2024 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
 
-inherit toolchain-funcs mount-boot
+inherit mount-boot
 
 DESCRIPTION="Intel IA32/IA64 microcode update data"
 HOMEPAGE="http://inertiawar.com/microcode/ https://www.touslesdrivers.com/index.php?v_page=23&v_code=55512&v_langue=en"
@@ -64,9 +64,9 @@ src_install() {
 
 	# The earlyfw cpio needs to be in /boot because it must be loaded before
 	# rootfs is mounted.
-	use initramfs && dodir /boot && opts+=( --write-earlyfw="${ED%/}"/boot/intel-uc.img )
+	use initramfs && dodir /boot && opts+=( --write-earlyfw="${ED%}"/boot/intel-uc.img )
 	# split location:
-	use split-ucode && dodir /lib/firmware/intel-ucode && opts+=( --write-firmware="${ED%/}"/lib/firmware/intel-ucode )
+	use split-ucode && dodir /lib/firmware/intel-ucode && opts+=( --write-firmware="${ED%}"/lib/firmware/intel-ucode )
 
 	iucode_tool \
 		"${opts[@]}" \
