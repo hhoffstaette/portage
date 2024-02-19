@@ -33,8 +33,6 @@ SLOT="stable"
 KEYWORDS="amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~s390 ~x86"
 IUSE="big-endian clippy cpu_flags_x86_sse2 doc prefix rust-analyzer rust-src rustfmt"
 
-DEPEND=""
-
 RDEPEND="
 	>=app-eselect/eselect-rust-20190311
 	dev-libs/openssl
@@ -129,7 +127,7 @@ multilib_src_install() {
 		|| die
 
 	if use prefix; then
-		local interpreter=$(patchelf --print-interpreter ${EPREFIX}/bin/bash)
+		local interpreter=$(patchelf --print-interpreter "${EPREFIX}"/bin/bash)
 		ebegin "Changing interpreter to ${interpreter} for Gentoo prefix at ${ED}/opt/${P}/bin"
 		find "${ED}/opt/${P}/bin" -type f -print0 | \
 			while IFS=  read -r -d '' filename; do
