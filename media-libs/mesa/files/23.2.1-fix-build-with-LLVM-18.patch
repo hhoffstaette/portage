@@ -1,0 +1,30 @@
+From f79617fe804ea6524651ff1bc3a91098d3199179 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>
+Date: Mon, 25 Sep 2023 15:57:33 -0400
+Subject: [PATCH] amd/llvm: fix build with LLVM 18
+
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/25388>
+---
+ src/gallium/auxiliary/gallivm/lp_bld_misc.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
+index 5e7a30a6cc2e3..e213f7e4be180 100644
+--- a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
++++ b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
+@@ -366,7 +366,11 @@ lp_build_create_jit_compiler_for_module(LLVMExecutionEngineRef *OutJIT,
+    builder.setEngineKind(EngineKind::JIT)
+           .setErrorStr(&Error)
+           .setTargetOptions(options)
++#if LLVM_VERSION_MAJOR >= 18
++          .setOptLevel((CodeGenOptLevel)OptLevel);
++#else
+           .setOptLevel((CodeGenOpt::Level)OptLevel);
++#endif
+ 
+ #if DETECT_OS_WINDOWS
+     /*
+-- 
+GitLab
+
