@@ -1,0 +1,21 @@
+From 4d235bf2bea32e492c0f5717eec8684a6b76036f Mon Sep 17 00:00:00 2001
+From: Remi Gacogne <remi.gacogne@powerdns.com>
+Date: Mon, 26 Feb 2024 13:03:58 +0100
+Subject: [PATCH] dnsdist: Properly handle a failure of the first lazy health-check
+
+---
+ pdns/dnsdist.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dnsdist.cc b/dnsdist.cc
+index 6f0d4080ab8a..3c32201abafa 100644
+--- a/dnsdist.cc
++++ b/dnsdist.cc
+@@ -3389,6 +3389,7 @@ int main(int argc, char** argv)
+           }
+ 
+           if (!queueHealthCheck(mplexer, dss, true)) {
++            dss->submitHealthCheckResult(true, false);
+             dss->setUpStatus(false);
+             warnlog("Marking downstream %s as 'down'", dss->getNameWithAddr());
+           }
