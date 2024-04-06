@@ -79,15 +79,13 @@ else
 fi
 
 PATCHES=(
-	"${FILESDIR}"/${P}-flist-memcmp-ub.patch
-	"${FILESDIR}"/${P}-buffer-size.patch
-	"${FILESDIR}"/${P}-fix-crashes-with-fortified-strlcpy.patch
-	"${FILESDIR}"/${P}-fix-runtime-AVX2-detection.patch
-	"${FILESDIR}"/${P}-prealloc-min-size.patch
-	"${FILESDIR}"/${P}-prototypes.patch
-	"${FILESDIR}"/${P}-simd-alignment.patch
-	"${FILESDIR}"/${P}-ipv6-configure-c99.patch
-	"${FILESDIR}"/${P}-checksum-opt.patch
+	"${FILESDIR}"/3.2.7-buffer-size.patch
+	"${FILESDIR}"/3.2.7-fix-runtime-AVX2-detection.patch
+	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
+	"${FILESDIR}"/3.2.7-prototypes.patch
+	"${FILESDIR}"/3.2.7-simd-alignment.patch
+	"${FILESDIR}"/3.2.7-ipv6-configure-c99.patch
+	"${FILESDIR}"/3.2.7-checksum-opt.patch
 )
 
 pkg_setup() {
