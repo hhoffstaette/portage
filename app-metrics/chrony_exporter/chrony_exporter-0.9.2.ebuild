@@ -25,11 +25,11 @@ PATCHES=(
 )
 
 src_compile() {
-	promu build
+	promu build -v --cgo --prefix bin || die
 }
 
 src_install() {
-	newbin ${P} ${PN}
+	newbin bin/${P} ${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
