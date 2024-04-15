@@ -13,7 +13,7 @@ SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64"
+KEYWORDS="amd64 arm64"
 
 RESTRICT+=" test"
 
@@ -30,7 +30,7 @@ src_prepare() {
 }
 
 src_compile() {
-	promu build -v --prefix bin || die
+	promu build --cgo -v --prefix bin || die
 }
 
 src_install() {
