@@ -41,7 +41,7 @@ src_prepare() {
 }
 
 src_compile() {
-	promu build -v --prefix bin || die
+	promu build -v --cgo --prefix bin || die
 }
 
 src_install() {
