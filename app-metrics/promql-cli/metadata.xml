@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>holger@applied-asynchrony.com</email>
+		<name>Holger Hoffstätte</name>
+	</maintainer>
+	<longdescription lang="en">
+		 Prometheus Query CLI
+	</longdescription>
+	<upstream>
+		<remote-id type="github">nalbury/promql-cli</remote-id>
+	</upstream>
+</pkgmetadata>
