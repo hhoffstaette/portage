@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit go-module systemd
 
 MY_PV="v${PV/_rc/-rc.}"
 
-NODE_EXPORTER_COMMIT=7333465abf9efba81876303bb57e6fadb946041b
+NODE_EXPORTER_COMMIT=cadb1d1190ad95c66b951758f01ff4c94e55e6ce
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
@@ -27,9 +27,6 @@ BDEPEND=">=dev-util/promu-0.3.0
 RDEPEND="${CDEPEND}"
 
 S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
-
-PATCHES=(
-)
 
 src_prepare() {
 	default
