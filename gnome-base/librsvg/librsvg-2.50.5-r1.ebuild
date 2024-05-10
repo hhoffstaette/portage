@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -35,11 +35,14 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	vala? ( $(vala_depend) )
 "
-# >=gtk-doc-am-1.13, gobject-introspection-common, vala-common needed by eautoreconf
-
 RESTRICT="test" # Lots of issues on 32bit builds, 64bit build seems to get into an infinite compilation sometimes, etc.
 
+PATCHES=(
+	"${FILESDIR}"/${PV}-rust-1.78-compat.patch
+)
+
 src_prepare() {
+	# must be done before automake
 	eapply "${FILESDIR}"/${PV}-gc-sections.patch
 	eaclocal -I m4
 	eautomake

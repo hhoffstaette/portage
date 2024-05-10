@@ -1,0 +1,32 @@
+diff -rup librsvg-2.50.5.orig/rsvg_internals/src/filters/component_transfer.rs librsvg-2.50.5/rsvg_internals/src/filters/component_transfer.rs
+--- librsvg-2.50.5.orig/rsvg_internals/src/filters/component_transfer.rs	2021-04-30 19:11:32.000000000 +0200
++++ librsvg-2.50.5/rsvg_internals/src/filters/component_transfer.rs	2024-05-10 13:06:45.031224411 +0200
+@@ -261,8 +261,8 @@ macro_rules! func_or_default {
+                 }
+             }
+             _ => &$func_default,
+-        };
+-    };
++        }
++    }
+ }
+ 
+ macro_rules! get_func_x_node {
+diff -rup librsvg-2.50.5.orig/rsvg_internals/src/surface_utils/mod.rs librsvg-2.50.5/rsvg_internals/src/surface_utils/mod.rs
+--- librsvg-2.50.5.orig/rsvg_internals/src/surface_utils/mod.rs	2020-09-04 22:35:35.000000000 +0200
++++ librsvg-2.50.5/rsvg_internals/src/surface_utils/mod.rs	2024-05-10 13:19:32.124335441 +0200
+@@ -68,12 +68,8 @@ pub trait ImageSurfaceDataExt: DerefMut<
+     /// Sets the pixel at the given coordinates. Assumes the `ARgb32` format.
+     #[inline]
+     fn set_pixel(&mut self, stride: usize, pixel: Pixel, x: u32, y: u32) {
+-        let value = pixel.to_u32();
+-
+-        #[allow(clippy::cast_ptr_alignment)]
+-        unsafe {
+-            *(&mut self[y as usize * stride + x as usize * 4] as *mut u8 as *mut u32) = value;
+-        }
++        let this = &mut self[y as usize * stride + x as usize * 4..];
++        this[..4].copy_from_slice(&pixel.to_u32().to_ne_bytes());
+     }
+ }
+ 
