@@ -2,7 +2,7 @@
 diff -rup xfce4-screenshooter-1.10.1/configure xfce4-screenshooter-1.10.1-compat/configure
 --- xfce4-screenshooter-1.10.1/configure	2022-12-21 21:05:50.000000000 +0100
 +++ xfce4-screenshooter-1.10.1-compat/configure	2022-12-31 18:35:05.602421676 +0100
-@@ -16296,9 +16296,9 @@ fi
+@@ -15274,9 +15274,9 @@ fi
  
  
  
@@ -15,7 +15,7 @@ diff -rup xfce4-screenshooter-1.10.1/configure xfce4-screenshooter-1.10.1-compat
      PANGO_VERSION=`$PKG_CONFIG --modversion "pango"`
      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $PANGO_VERSION" >&5
  printf "%s\n" "$PANGO_VERSION" >&6; }
-@@ -16315,7 +16315,7 @@ printf %s "checking PANGO_LIBS... " >&6;
+@@ -15293,7 +15293,7 @@ printf %s "checking PANGO_LIBS... " >&6;
      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $PANGO_LIBS" >&5
  printf "%s\n" "$PANGO_LIBS" >&6; }
  
@@ -24,7 +24,7 @@ diff -rup xfce4-screenshooter-1.10.1/configure xfce4-screenshooter-1.10.1-compat
  
  
  
-@@ -16339,7 +16339,7 @@ printf "%s\n" "found, but $xdt_cv_versio
+@@ -15317,7 +15317,7 @@ printf "%s\n" "found, but $xdt_cv_versio
  
        echo "*** The required package pango was found on your system,"
        echo "*** but the installed version ($xdt_cv_version) is too old."
@@ -33,7 +33,7 @@ diff -rup xfce4-screenshooter-1.10.1/configure xfce4-screenshooter-1.10.1-compat
        echo "*** the PKG_CONFIG_PATH environment variable if you installed"
        echo "*** the new version of the package in a nonstandard prefix so"
        echo "*** pkg-config is able to find it."
-@@ -16351,7 +16351,7 @@ printf "%s\n" "not found" >&6; }
+@@ -15329,7 +15329,7 @@ printf "%s\n" "not found" >&6; }
  
  
        echo "*** The required package pango was not found on your system."
@@ -46,20 +46,20 @@ diff -rup xfce4-screenshooter-1.10.1/configure xfce4-screenshooter-1.10.1-compat
 diff -rup xfce4-screenshooter-1.10.1/configure.ac xfce4-screenshooter-1.10.1-compat/configure.ac
 --- xfce4-screenshooter-1.10.1/configure.ac	2022-12-21 21:05:47.000000000 +0100
 +++ xfce4-screenshooter-1.10.1-compat/configure.ac	2022-12-31 18:32:28.106066604 +0100
-@@ -62,7 +62,7 @@ XDT_CHECK_PACKAGE([SOUP], [libsoup-3.0],
+@@ -49,7 +49,7 @@ XDT_CHECK_PACKAGE([SOUP], [libsoup-3.0],
+ XDT_CHECK_PACKAGE([GLIB], [glib-2.0], [2.66.0])
  XDT_CHECK_PACKAGE([LIBXML], [libxml-2.0], [2.4.0])
  XDT_CHECK_PACKAGE([EXO], [exo-2], [0.12.0])
- XDT_CHECK_PACKAGE([LIBXEXT], [xext], [1.0.0])
 -XDT_CHECK_PACKAGE([PANGO], [pango], [1.44.0])
 +XDT_CHECK_PACKAGE([PANGO], [pango], [1.42.0])
- XDT_CHECK_PACKAGE([XINPUT2], [xi], [1.7.8])
  XDT_CHECK_PACKAGE([XFCONF], [libxfconf-0], [4.16.0])
- XDT_CHECK_OPTIONAL_PACKAGE([XFIXES], [xfixes], [4.0.0], [xfixes], [XFIXES extension support])
+ 
+ dnl ***********************************
 
 diff -rup xfce4-screenshooter-1.10.1/lib/screenshooter-capture.c xfce4-screenshooter-1.10.1-compat/lib/screenshooter-capture.c
---- xfce4-screenshooter-1.10.1/lib/screenshooter-capture.c	2022-12-21 20:47:58.000000000 +0100
-+++ xfce4-screenshooter-1.10.1-compat/lib/screenshooter-capture.c	2022-12-31 16:13:59.485004517 +0100
-@@ -109,6 +109,15 @@ static GdkPixbuf       *get_rectangle_sc
+--- xfce4-screenshooter-1.10.1/lib/screenshooter-capture-x11.c	2022-12-21 20:47:58.000000000 +0100
++++ xfce4-screenshooter-1.10.1-compat/lib/screenshooter-capture-x11.c	2022-12-31 16:13:59.485004517 +0100
+@@ -125,6 +125,15 @@ static GdkPixbuf       *get_rectangle_sc
  
  /* Internals */
  
