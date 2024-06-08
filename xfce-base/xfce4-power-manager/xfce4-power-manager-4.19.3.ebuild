@@ -56,6 +56,8 @@ BDEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PV}-fix-multi-monitor-setup-detection.patch
+	"${FILESDIR}"/${PV}-remove-extra-check-for-multi-monitor-setup.patch
+	"${FILESDIR}"/${PV}-fix-systray-icon.patch
 )
 
 src_configure() {
@@ -66,6 +68,11 @@ src_configure() {
 		$(use_enable X x11)
 	)
 
+	# regenerate xfpm-enum-types
+	econf --enable-maintainer-mode "${myconf[@]}"
+	cd common && make xfpm-enum-types.c && cd ..
+
+	# now do the regular configure
 	econf "${myconf[@]}"
 }
 
