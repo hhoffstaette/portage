@@ -29,6 +29,8 @@ RDEPEND="
 MAVEN="${PN}-${SLOT}"
 MAVEN_SHARE="/usr/share/${MAVEN}"
 
+QA_TEXTRELS="usr/share/mvnd-bin-${SLOT}/bin/mvnd"
+
 src_install() {
 	dodir "${MAVEN_SHARE}"
 
