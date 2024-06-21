@@ -74,6 +74,8 @@ pkg_setup() {
 
 src_configure() {
 	local mycmakeargs=(
+		# prevent automagic lldb use
+		$(cmake_use_find_package lldb LLDB)
 		# DO NOT build the internal libs as shared
 		-DBUILD_SHARED_LIBS=OFF
 		# DO dynamically link the bpftrace executable
