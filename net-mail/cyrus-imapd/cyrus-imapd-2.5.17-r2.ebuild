@@ -53,6 +53,9 @@ src_prepare() {
 	# pcre2
 	eapply -p1 "${FILESDIR}/${PN}-pcre2.patch"
 
+	# idled
+	eapply -p1 "${FILESDIR}/${PN}-idled.patch"
+
 	# Fix master(8)->cyrusmaster(8) manpage.
 	for i in `grep -rl -e 'master\.8' -e 'master(8)' "${S}"` ; do
 		sed -i -e 's:master\.8:cyrusmaster.8:g' \

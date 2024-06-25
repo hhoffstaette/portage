@@ -1,0 +1,16 @@
+
+Increase the idled polling timeout to prevent unneccessary wakeups.
+
+--- a/imap/idled.c	2021-03-09 03:28:07.000000000 +0100
++++ b/imap/idled.c	2024-06-25 08:22:15.840379329 +0200
+@@ -357,8 +357,8 @@ int main(int argc, char **argv)
+ 	    shut_down(1);
+ 	}
+ 
+-	/* timeout for select is 1 second */
+-	timeout.tv_sec = 1;
++	/* timeout for select is 10 second */
++	timeout.tv_sec = 10;
+ 	timeout.tv_usec = 0;
+ 
+ 	/* check for the next input */
