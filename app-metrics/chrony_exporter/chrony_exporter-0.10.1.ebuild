@@ -21,9 +21,6 @@ BDEPEND="dev-util/promu"
 SRC_URI="https://github.com/SuperQ/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
-PATCHES=(
-)
-
 src_compile() {
 	promu build -v --cgo --prefix bin || die
 }
