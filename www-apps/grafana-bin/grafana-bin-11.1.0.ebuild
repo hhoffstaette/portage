@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,20 +7,29 @@ inherit systemd
 
 MY_PN=${PN/-bin/}
 MY_PV=${PV/_beta/-beta}
-S=${WORKDIR}/${MY_PN}-v${MY_PV}
 
 DESCRIPTION="Gorgeous metric viz, dashboards & editors for Graphite, InfluxDB & OpenTSDB"
 HOMEPAGE="https://grafana.org"
-SRC_URI="https://dl.grafana.com/oss/release/grafana-${PV}.linux-amd64.tar.gz -> ${P}.tar.gz"
+SRC_URI="
+amd64? (
+	https://dl.grafana.com/oss/release/grafana-${PV}.linux-amd64.tar.gz -> ${P}.amd64.tar.gz
+)
+arm64? (
+	https://dl.grafana.com/oss/release/grafana-${PV}.linux-arm64.tar.gz -> ${P}.arm64.tar.gz
+)
+"
+S=${WORKDIR}/${MY_PN}-v${MY_PV}
 
-LICENSE="Apache-2.0"
+LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="-* amd64 arm64"
+RESTRICT="mirror"
 
 DEPEND="acct-group/grafana
 	acct-user/grafana"
 RDEPEND="${DEPEND}
-	media-libs/fontconfig"
+	media-libs/fontconfig
+	sys-libs/glibc"
 
 QA_PREBUILT="usr/bin/grafana*"
 QA_PRESTRIPPED=${QA_PREBUILT}
@@ -33,14 +42,14 @@ src_install() {
 
 	# Frontend assets
 	insinto /usr/share/${MY_PN}
-	doins -r conf plugins-bundled public
+	doins -r public conf
 
-	dobin bin/grafana
 	dobin bin/grafana-cli
+	dobin bin/grafana
 	dobin bin/grafana-server
 
 	newconfd "${FILESDIR}"/grafana-r1.confd grafana
-	newinitd "${FILESDIR}"/grafana.initd grafana
+	newinitd "${FILESDIR}"/grafana.initd2 grafana
 	systemd_newunit "${FILESDIR}"/grafana.service grafana.service
 
 	keepdir /var/{lib,log}/grafana
@@ -51,7 +60,7 @@ src_install() {
 	fperms 0750 /var/lib/grafana/{dashboards,plugins}
 }
 
-postinst() {
+pkg_postinst() {
 	if [[ -z "${REPLACING_VERSIONS}" ]]; then
 		# This is a new installation
 

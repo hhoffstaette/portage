@@ -11,8 +11,8 @@ GRAFANA_PIDFILE="${GRAFANA_PIDFILE:-"/run/${RC_SVCNAME}.pid"}"
 GRAFANA_SSDARGS=${GRAFANA_SSDARGS:-"--wait 1000"}
 GRAFANA_TERMTIMEOUT=${GRFANA_TERMTIMEOUT:-"TERM/60/KILL/5"}
 
-command="/usr/bin/grafana-server"
-command_args="-homepath=/usr/share/grafana"
+command="/usr/bin/grafana"
+command_args="server -homepath=/usr/share/grafana"
 command_args="${command_args} -config=\"${GRAFANA_CONFIGFILE}\""
 command_args="${command_args} cfg:default.paths.data=\"${GRAFANA_DATADIR}\""
 command_args="${command_args} cfg:default.paths.logs=\"${GRAFANA_LOGDIR}\""
