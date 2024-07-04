@@ -7,19 +7,18 @@ inherit go-module
 
 DESCRIPTION="Chrony NTP exporter for Prometheus"
 HOMEPAGE="https://github.com/SuperQ/chrony_exporter"
-KEYWORDS="amd64 arm64"
+
+SRC_URI="https://github.com/SuperQ/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+
 LICENSE="Apache-2.0"
 SLOT="0"
-
-RESTRICT="mirror"
+KEYWORDS="~amd64"
 
 DEPEND="acct-group/chrony_exporter
 		acct-user/chrony_exporter"
 
 BDEPEND="dev-util/promu"
-
-SRC_URI="https://github.com/SuperQ/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 src_compile() {
 	promu build -v --cgo --prefix bin || die
