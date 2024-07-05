@@ -23,6 +23,7 @@ LICENSE="Apache-2.0 BSD-2 BSD MIT"
 SLOT="0"
 
 BDEPEND=">=dev-lang/go-1.13"
+RESTRICT="test" # hardcoded paths, plus go extra dependencies not included in tarball
 
 DOCS=(
 	README.md
@@ -61,14 +62,14 @@ src_compile() {
 src_install() {
 	dobin webhook
 
-	newconfd "${FILESDIR}"/${PN}.confd ${PN} 
+	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 
 	insinto /etc
-    newins "${FILESDIR}/${PN}.json.example" ${PN}.json
+	newins "${FILESDIR}/${PN}.json.example" ${PN}.json
 
-    insinto /etc/logrotate.d
-    newins "${FILESDIR}/${PN}.logrotated" ${PN}
+	insinto /etc/logrotate.d
+	newins "${FILESDIR}/${PN}.logrotated" ${PN}
 
 	einstalldocs
 }
