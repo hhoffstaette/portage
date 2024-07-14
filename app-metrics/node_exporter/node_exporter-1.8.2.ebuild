@@ -7,7 +7,7 @@ inherit go-module systemd
 
 MY_PV="v${PV/_rc/-rc.}"
 
-NODE_EXPORTER_COMMIT=400c3979931613db930ea035f39ce7b377cdbb5b
+NODE_EXPORTER_COMMIT=f1e0e8360aa60b6cb5e5cc1560bed348fc2c1895
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
