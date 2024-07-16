@@ -8,13 +8,13 @@ AssertPathIsReadWrite=/var/lib/gitea
 After=network.target
 Requires=network.target
 After=mysqld.service
-After=postgresql-9.5.service
-After=postgresql-9.6.service
 After=postgresql-10.service
 After=postgresql-11.service
 After=postgresql-12.service
 After=postgresql-13.service
 After=postgresql-14.service
+After=postgresql-15.service
+After=postgresql-16.service
 After=memcached.service
 After=redis.service
 
@@ -24,7 +24,7 @@ Group=git
 
 Environment="GITEA_WORK_DIR=/var/lib/gitea" "GITEA_CUSTOM=/var/lib/gitea/custom"
 WorkingDirectory=/var/lib/gitea
-ExecStart=/usr/bin/gitea web --config /etc/gitea/app.ini
+ExecStart=/usr/bin/gitea --config /etc/gitea/app.ini web
 
 Restart=always
 PrivateTmp=true
