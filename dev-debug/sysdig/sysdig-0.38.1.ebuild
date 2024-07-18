@@ -69,6 +69,14 @@ src_prepare() {
 }
 
 src_configure() {
+	# known problems with strict aliasing:
+	# https://github.com/falcosecurity/libs/issues/1964
+	append-flags -fno-strict-aliasing
+
+	# multiple issues with LTO (known/in progress)
+	# https://github.com/falcosecurity/libs/issues/1963
+	filter-lto
+
 	local mycmakeargs=(
 		# do not build the kernel driver
 		-DBUILD_DRIVER=OFF
