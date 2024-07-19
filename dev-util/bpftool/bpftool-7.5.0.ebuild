@@ -4,18 +4,22 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..12} )
+
 inherit estack linux-info optfeature python-any-r1 bash-completion-r1 toolchain-funcs
 
 DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and maps"
 HOMEPAGE="https://kernel.org/"
 
+# Use PV to indicate the full kernel version
+PV=6.10
 LINUX_V="${PV:0:1}.x"
 LINUX_VER=$(ver_cut 1-2)
-LINUX_PATCH=patch-${PV}.xz
-SRC_URI="https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_PATCH}"
 
 LINUX_SOURCES="linux-${LINUX_VER}.tar.xz"
-SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
+SRC_URI+="https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
+
+LINUX_PATCH=patch-${PV}.xz
+SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_PATCH}"
 
 S_K="${WORKDIR}/linux-${LINUX_VER}"
 S="${S_K}/tools/bpf/bpftool"
@@ -117,9 +121,4 @@ src_install() {
 
 pkg_postinst() {
 	optfeature "clang-bpf-co-re support" sys-devel/clang[llvm_targets_BPF]
-
-	elog "Note that 'bpftool --version' output differs from the ebuild version."
-	elog "This is an inconsistency in how bpftool advertises its capabilities,"
-	elog "so for easier maintenance the ebuild aligns with the kernel version."
-	elog "See https://bugs.gentoo.org/936209 for more information."
 }
