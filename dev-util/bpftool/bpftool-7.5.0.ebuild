@@ -10,15 +10,15 @@ inherit estack linux-info optfeature python-any-r1 bash-completion-r1 toolchain-
 DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and maps"
 HOMEPAGE="https://kernel.org/"
 
-# Use PV to indicate the full kernel version
-PV=6.10
-LINUX_V="${PV:0:1}.x"
-LINUX_VER=$(ver_cut 1-2)
+# Use LINUX_VERSION to specify the full kernel version triple (x.y.z)
+LINUX_VERSION=6.10
+LINUX_VER=$(ver_cut 1-2 ${LINUX_VERSION})
+LINUX_V="${LINUX_VERSION:0:1}.x"
 
 LINUX_SOURCES="linux-${LINUX_VER}.tar.xz"
-SRC_URI+="https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
+SRC_URI="https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
-LINUX_PATCH=patch-${PV}.xz
+LINUX_PATCH="patch-${LINUX_VERSION}.xz"
 SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_PATCH}"
 
 S_K="${WORKDIR}/linux-${LINUX_VER}"
