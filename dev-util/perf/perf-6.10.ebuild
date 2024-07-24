@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 inherit bash-completion-r1 estack flag-o-matic linux-info llvm toolchain-funcs python-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
@@ -140,7 +140,7 @@ pkg_setup() {
 src_unpack() {
 	local paths=(
 		kernel/bpf tools/{arch,bpf,build,include,lib,perf,scripts}
-		scripts include lib "arch/*/lib" "arch/*/tools"
+		scripts include lib "arch/*/include" "arch/*/lib" "arch/*/tools"
 	)
 
 	# We expect the tar implementation to support the -j option (both
@@ -247,6 +247,7 @@ perf_make() {
 		V=1 VF=1
 		HOSTCC="$(tc-getBUILD_CC)" HOSTLD="$(tc-getBUILD_LD)"
 		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="${linker}" NM="$(tc-getNM)"
+		CLANG="${CHOST}-clang"
 		PKG_CONFIG="$(tc-getPKG_CONFIG)"
 		prefix="${EPREFIX}/usr" bindir_relative="bin"
 		tipdir="share/doc/${PF}"
@@ -287,6 +288,7 @@ perf_make() {
 		NO_ZLIB=
 		TCMALLOC=$(usex tcmalloc 1 "")
 		WERROR=0
+		DEBUG=$(usex debug 1 "")
 		LIBDIR="/usr/libexec/perf-core"
 		libdir="${EPREFIX}/usr/$(get_libdir)"
 		plugindir="${EPREFIX}/usr/$(get_libdir)/perf/plugins"

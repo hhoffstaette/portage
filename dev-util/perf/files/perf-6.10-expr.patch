@@ -1,11 +1,9 @@
-Ensure versions of libtraceevent and libtracefs have 3 components.
-
-Fixes: https://bugs.gentoo.org/917559
-
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index bc980fd..a7f1e1e 100644
 --- a/tools/perf/Makefile.config
 +++ b/tools/perf/Makefile.config
-@@ -1163,7 +1163,7 @@ ifneq ($(NO_LIBTRACEEVENT),1)
-   ifeq ($(feature-libtraceevent), 1)
+@@ -1184,7 +1184,7 @@ ifneq ($(NO_LIBTRACEEVENT),1)
+     CFLAGS += -DHAVE_LIBTRACEEVENT $(LIBTRACEEVENT_CFLAGS)
      LDFLAGS += $(LIBTRACEEVENT_LDFLAGS)
      EXTLIBS += ${TRACEEVENTLIBS}
 -    LIBTRACEEVENT_VERSION := $(shell PKG_CONFIG_PATH=$(LIBTRACEEVENT_DIR) $(PKG_CONFIG) --modversion libtraceevent)
@@ -13,7 +11,7 @@ Fixes: https://bugs.gentoo.org/917559
      LIBTRACEEVENT_VERSION_1 := $(word 1, $(subst ., ,$(LIBTRACEEVENT_VERSION)))
      LIBTRACEEVENT_VERSION_2 := $(word 2, $(subst ., ,$(LIBTRACEEVENT_VERSION)))
      LIBTRACEEVENT_VERSION_3 := $(word 3, $(subst ., ,$(LIBTRACEEVENT_VERSION)))
-@@ -1177,7 +1177,7 @@ ifneq ($(NO_LIBTRACEEVENT),1)
+@@ -1198,7 +1198,7 @@ ifneq ($(NO_LIBTRACEEVENT),1)
    $(call feature_check,libtracefs)
    ifeq ($(feature-libtracefs), 1)
      EXTLIBS += -ltracefs
