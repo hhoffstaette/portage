@@ -14,40 +14,54 @@ SRC_URI="https://archive.xfce.org/src/apps/${PN}/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="amd64 arm ~arm64 ~ia64 ~loong ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~arm ~arm64 ~ia64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86 ~amd64-linux ~x86-linux"
+IUSE="X wayland"
+REQUIRED_USE="|| ( X wayland )"
 
 DEPEND="
 	>=dev-libs/glib-2.66.0
 	>=x11-libs/gdk-pixbuf-2.16
-	>=x11-libs/gtk+-3.24.0:3
+	>=x11-libs/gtk+-3.24.0:3[X?,wayland?]
 	>=x11-libs/pango-1.42.0
 	dev-libs/libxml2
-	>=net-libs/libsoup-3.0.0:3.0
-	x11-libs/libX11
-	x11-libs/libXext
-	x11-libs/libXfixes
-	>=x11-libs/libXi-1.7.8
 	>=xfce-base/exo-0.11:=
 	>=xfce-base/xfce4-panel-4.16.0:=
 	>=xfce-base/libxfce4util-4.16.0:=
 	>=xfce-base/libxfce4ui-4.16.0:=
 	>=xfce-base/xfconf-4.16.0:=
+	wayland? (
+		dev-libs/wayland
+	)
+	X? (
+		x11-libs/libX11
+		x11-libs/libXext
+		x11-libs/libXfixes
+		>=x11-libs/libXi-1.7.8
+		x11-libs/libXtst
+	)
 "
 RDEPEND="
 	${DEPEND}
 "
 BDEPEND="
 	dev-util/glib-utils
-	dev-util/intltool
 	sys-apps/help2man
+	sys-devel/gettext
 	virtual/pkgconfig
+	wayland? (
+		dev-util/wayland-scanner
+	)
 "
 
-PATCHES=( "${FILESDIR}"/${PV}-pango-1.42-compat.patch )
+PATCHES=(
+	"${FILESDIR}"/${PV}-pango-1.42-compat.patch
+)
 
 src_configure() {
 	local myconf=(
-		--enable-xfixes
+		$(use_enable X x11)
+		$(use_enable X libxtst)
+		$(use_enable wayland)
 	)
 
 	econf "${myconf[@]}"
