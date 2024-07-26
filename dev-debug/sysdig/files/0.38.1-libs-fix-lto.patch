@@ -1,0 +1,37 @@
+
+Include a missing header to fix building with LTO.
+From: https://github.com/falcosecurity/libs/pull/1895
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+
+From 27fdb9d84d8143cd57b659c2ed02634daa4ce184 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Tue, 4 Jun 2024 20:06:56 +0000
+Subject: [PATCH] fix(userspace/libsinsp): Include cri.hpp in container.cpp
+
+Include cri.hpp in container.cpp in order to avoid
+
+```
+/usr/bin/ld: /usr/lib/aarch64-linux-gnu/libsinsp.so: undefined reference to `libsinsp::cri::cri_interface<libsinsp::cri::cri_api_v1>::get_cri_runtime_type() const'
+collect2: error: ld returned 1 exit status
+```
+
+when building with shared libs on Linux.
+
+Signed-off-by: Gerald Combs <gerald@wireshark.org>
+---
+ userspace/libsinsp/container.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/userspace/libsinsp/container.cpp b/userspace/libsinsp/container.cpp
+index b28855eddd..bee446b386 100644
+--- a/userspace/libsinsp/container.cpp
++++ b/userspace/libsinsp/container.cpp
+@@ -20,6 +20,7 @@ limitations under the License.
+ 
+ #if !defined(MINIMAL_BUILD) && !defined(__EMSCRIPTEN__)
+ #include <libsinsp/container_engine/cri.h>
++#include <libsinsp/cri.hpp>
+ #ifndef _WIN32
+ #include <libsinsp/container_engine/docker/docker_linux.h>
+ #include <libsinsp/container_engine/docker/podman.h>

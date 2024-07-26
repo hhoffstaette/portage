@@ -52,11 +52,12 @@ PATCHES=( "${FILESDIR}/${PV}-scap-loader.patch" )
 
 src_prepare() {
 	# manually apply patches to falcosecurity-libs dependency
-	pushd "${WORKDIR}"
+	pushd "${WORKDIR}/libs-${LIBS_VERSION}"
 		# musl has no libanl (#929227)
 		if [ ${ELIBC} == "musl" ] ; then
-			eapply -p0 "${FILESDIR}/${PV}-libs-no-libanl.patch" || die
+			eapply "${FILESDIR}/${PV}-libs-no-libanl.patch" || die
 		fi
+		eapply "${FILESDIR}/${PV}-libs-fix-lto.patch" || die
 	popd
 
 	# do not build with debugging info
@@ -72,10 +73,6 @@ src_configure() {
 	# known problems with strict aliasing:
 	# https://github.com/falcosecurity/libs/issues/1964
 	append-flags -fno-strict-aliasing
-
-	# multiple issues with LTO (known/in progress)
-	# https://github.com/falcosecurity/libs/issues/1963
-	filter-lto
 
 	local mycmakeargs=(
 		# do not build the kernel driver
