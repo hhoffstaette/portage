@@ -14,15 +14,12 @@ SRC_URI="
 amd64? (
 	https://dl.grafana.com/oss/release/grafana-${PV}.linux-amd64.tar.gz -> ${P}.amd64.tar.gz
 )
-arm64? (
-	https://dl.grafana.com/oss/release/grafana-${PV}.linux-arm64.tar.gz -> ${P}.arm64.tar.gz
-)
 "
 S=${WORKDIR}/${MY_PN}-v${MY_PV}
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="-* amd64 arm64"
+KEYWORDS="-* amd64"
 RESTRICT="mirror"
 
 DEPEND="acct-group/grafana
