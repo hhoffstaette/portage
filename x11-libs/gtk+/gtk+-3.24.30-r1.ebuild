@@ -115,6 +115,12 @@ PATCHES=(
 	# Glib-2.76 compatibility:
 	# https://gitlab.gnome.org/GNOME/gtk/-/commit/c1fa916e88de20fc61dc06d3ff9f26722effa0df
 	"${FILESDIR}"/${PN}-3.24.30-check-for-attribute-availability-before-accessing-it.patch
+	
+	# GCC-14 rightfully complains about incompatible pointer types:
+	# https://gitlab.gnome.org/GNOME/gtk/-/commit/a3e82f20a1a1e7d8ffbc960a8bb4aa65b0d151ee
+	"${FILESDIR}"/${PN}-3.24.30-use-the-right-type-when-calling-GtkWidget-methods.patch
+	# https://gitlab.gnome.org/GNOME/gtk/-/commit/76bc2a57136fd6cf0374fa3f86a7ba646b779803
+	"${FILESDIR}"/${PN}-3.24.30-add-GdkEvent-casts-in-testinput.patch
 )
 
 strip_builddir() {
