@@ -139,8 +139,10 @@ pkg_setup() {
 # it's building from the same tarball, please keep it in sync with bpftool
 src_unpack() {
 	local paths=(
-		kernel/bpf tools/{arch,bpf,build,include,lib,perf,scripts}
-		scripts include lib "arch/*/include" "arch/*/lib" "arch/*/tools"
+		'arch/*/include/*' 'arch/*/lib/*' 'arch/*/tools/*' 'include/*'
+		'kernel/bpf/*' 'lib/*' 'scripts/*' 'tools/arch/*' 'tools/bpf/*'
+		'tools/build/*' 'tools/include/*' 'tools/lib/*' 'tools/perf/*'
+		'tools/scripts/*'
 	)
 
 	# We expect the tar implementation to support the -j option (both
@@ -152,8 +154,9 @@ src_unpack() {
 	if [[ -n ${LINUX_PATCH} ]] ; then
 		eshopts_push -o noglob
 		ebegin "Filtering partial source patch"
-		filterdiff -p1 ${paths[@]/#/-i } -z "${DISTDIR}"/${LINUX_PATCH} \
-			> ${P}.patch
+		xzcat "${DISTDIR}"/${LINUX_PATCH} | filterdiff -p1 ${paths[@]/#/-i} > ${P}.patch
+        test -s ${P}.patch
+        assert -n "Unpacking to ${P} from ${DISTDIR}/${LINUX_PATCH} failed"
 		eend $? || die "filterdiff failed"
 		eshopts_pop
 	fi
@@ -247,7 +250,6 @@ perf_make() {
 		V=1 VF=1
 		HOSTCC="$(tc-getBUILD_CC)" HOSTLD="$(tc-getBUILD_LD)"
 		CC="$(tc-getCC)" CXX="$(tc-getCXX)" AR="$(tc-getAR)" LD="${linker}" NM="$(tc-getNM)"
-		CLANG="${CHOST}-clang"
 		PKG_CONFIG="$(tc-getPKG_CONFIG)"
 		prefix="${EPREFIX}/usr" bindir_relative="bin"
 		tipdir="share/doc/${PF}"
