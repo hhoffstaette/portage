@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 
 inherit estack linux-info optfeature python-any-r1 bash-completion-r1 toolchain-funcs
 
@@ -11,7 +11,7 @@ DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and ma
 HOMEPAGE="https://kernel.org/"
 
 # Use LINUX_VERSION to specify the full kernel version triple (x.y.z)
-LINUX_VERSION=6.10
+LINUX_VERSION=6.10.3
 LINUX_VER=$(ver_cut 1-2 ${LINUX_VERSION})
 LINUX_V="${LINUX_VERSION:0:1}.x"
 
@@ -53,8 +53,10 @@ CONFIG_CHECK="~DEBUG_INFO_BTF"
 # it's building from the same tarball, please keep it in sync with perf
 src_unpack() {
 	local paths=(
-		kernel/bpf tools/{arch,bpf,build,include,lib,perf,scripts}
-		scripts include lib "arch/*/include" "arch/*/lib" "arch/*/tools"
+		'arch/*/include/*' 'arch/*/lib/*' 'arch/*/tools/*' 'include/*'
+		'kernel/bpf/*' 'lib/*' 'scripts/*' 'tools/arch/*' 'tools/bpf/*'
+		'tools/build/*' 'tools/include/*' 'tools/lib/*' 'tools/perf/*'
+		'tools/scripts/*'
 	)
 
 	# We expect the tar implementation to support the -j and --wildcards option
@@ -65,8 +67,9 @@ src_unpack() {
 	if [[ -n ${LINUX_PATCH} ]] ; then
 		eshopts_push -o noglob
 		ebegin "Filtering partial source patch"
-		filterdiff -p1 ${paths[@]/#/-i } -z "${DISTDIR}"/${LINUX_PATCH} \
-			> ${P}.patch
+		xzcat "${DISTDIR}"/${LINUX_PATCH} | filterdiff -p1 ${paths[@]/#/-i} > ${P}.patch
+		test -s ${P}.patch
+		assert -n "Unpacking to ${P} from ${DISTDIR}/${LINUX_PATCH} failed"
 		eend $? || die "filterdiff failed"
 		eshopts_pop
 	fi
