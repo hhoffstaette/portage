@@ -11,7 +11,7 @@ DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
 
 # The version of falcosecurity-libs required by sysdig as source tree
-LIBS_VERSION="0.17.2"
+LIBS_VERSION="0.17.3"
 SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> falcosecurity-libs-${LIBS_VERSION}.tar.gz"
 
@@ -57,7 +57,6 @@ src_prepare() {
 		if [ ${ELIBC} == "musl" ] ; then
 			eapply "${FILESDIR}/${PV}-libs-no-libanl.patch" || die
 		fi
-		eapply "${FILESDIR}/${PV}-libs-fix-lto.patch" || die
 	popd
 
 	# do not build with debugging info
