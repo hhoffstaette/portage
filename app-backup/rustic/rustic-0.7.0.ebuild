@@ -473,3 +473,10 @@ LICENSE+="
 "
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
+
+src_prepare() {
+	default
+	pushd "${WORKDIR}/cargo_home/gentoo"
+		eapply "${FILESDIR}/0.7.0-time-0.3.33-rustc-1.80.patch"
+	popd
+}
