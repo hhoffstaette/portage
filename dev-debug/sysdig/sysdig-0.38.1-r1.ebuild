@@ -25,15 +25,14 @@ IUSE="+modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="${LUA_DEPS}
+	dev-cpp/abseil-cpp:=
 	dev-cpp/tbb:=
 	dev-cpp/yaml-cpp:=
 	dev-libs/jsoncpp:=
 	dev-libs/libb64:=
-	dev-libs/openssl:=
 	dev-libs/protobuf:=
 	dev-libs/re2:=
 	dev-libs/uthash
-	net-dns/c-ares:=
 	net-libs/grpc:=
 	net-misc/curl
 	sys-libs/ncurses:=
@@ -121,6 +120,10 @@ src_install() {
 
 	# remove driver headers
 	rm -r "${ED}"/usr/src || die
+
+	# remove libscap/libsinsp headers & libs (see #938187)
+	rm -r "${ED}"/usr/include/sysdig || die
+	rm -r "${ED}"/usr/$(get_libdir) || die
 
 	# move bashcomp to the proper location
 	dobashcomp "${ED}"/usr/etc/bash_completion.d/sysdig || die
