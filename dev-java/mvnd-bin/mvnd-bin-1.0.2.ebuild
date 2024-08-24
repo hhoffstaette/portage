@@ -11,7 +11,7 @@ MY_MV="${PV%%.*}"
 
 DESCRIPTION="Apache Maven Daemon"
 HOMEPAGE="https://github.com/apache/maven-mvnd https://maven.apache.org/"
-SRC_URI="https://github.com/apache/maven-mvnd/releases/download/${PV}/maven-${MY_P}-linux-amd64.tar.gz"
+SRC_URI="https://downloads.apache.org/maven/mvnd/${PV}/maven-${MY_P}-linux-amd64.tar.gz"
 
 S="${WORKDIR}/maven-${MY_P}-linux-amd64"
 
@@ -33,9 +33,6 @@ QA_TEXTRELS="usr/share/mvnd-bin-${SLOT}/bin/mvnd"
 
 src_install() {
 	dodir "${MAVEN_SHARE}"
-
-	# not needed
-	rm -rf mvn/lib/jansi-native
 
 	cp -Rp bin conf mvn "${ED}/${MAVEN_SHARE}" || die "failed to copy"
 
