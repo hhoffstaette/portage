@@ -3,9 +3,11 @@
 
 EAPI=8
 
+LLVM_COMPAT=( {15..18} )
+LLVM_OPTIONAL=1
 PYTHON_COMPAT=( python3_{10..13} )
 
-inherit estack linux-info optfeature python-any-r1 bash-completion-r1 toolchain-funcs
+inherit bash-completion-r1 estack linux-info llvm-r1 optfeature python-any-r1 toolchain-funcs
 
 DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and maps"
 HOMEPAGE="https://kernel.org/"
@@ -33,7 +35,7 @@ RDEPEND="
 	sys-libs/zlib:=
 	virtual/libelf:=
 	caps? ( sys-libs/libcap:= )
-	llvm? ( sys-devel/llvm:= )
+	llvm? ( $(llvm_gen_dep 'sys-devel/llvm:${LLVM_SLOT}') )
 	!llvm? ( sys-libs/binutils-libs:= )
 "
 DEPEND="
