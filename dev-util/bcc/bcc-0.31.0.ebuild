@@ -55,7 +55,6 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.9.0-no-luajit-automagic-dep.patch"
 	"${FILESDIR}/bcc-0.25.0-cmakelists.patch"
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
-	"${FILESDIR}/bcc-0.30.0-fix-warning-multiple-identical-address-spaces.patch"
 )
 
 pkg_pretend() {
