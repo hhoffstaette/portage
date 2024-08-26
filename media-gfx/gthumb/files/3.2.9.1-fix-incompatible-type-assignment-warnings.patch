@@ -1,0 +1,50 @@
+From 5a56915a08ca2ef2041dcd8a5864ebeae0f353e6 Mon Sep 17 00:00:00 2001
+From: Paolo Bacchilega <paobac@src.gnome.org>
+Date: Tue, 15 May 2018 19:55:40 +0200
+Subject: [PATCH] fixed incompatible type assignment warnings
+
+---
+ extensions/catalogs/dlg-catalog-properties.c        | 2 +-
+ extensions/file_tools/gth-file-tool-adjust-colors.c | 2 +-
+ gthumb/gth-image-list-task.c                        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/extensions/catalogs/dlg-catalog-properties.c b/extensions/catalogs/dlg-catalog-properties.c
+index c87caeb2e..f7d6be704 100644
+--- a/extensions/catalogs/dlg-catalog-properties.c
++++ b/extensions/catalogs/dlg-catalog-properties.c
+@@ -153,7 +153,7 @@ catalog_ready_cb (GObject  *object,
+ 		return;
+ 	}
+ 
+-	data->catalog = g_object_ref (object);
++	data->catalog = GTH_CATALOG (g_object_ref (object));
+ 
+ 	if (gth_catalog_get_name (data->catalog) != NULL) {
+ 		gtk_entry_set_text (GTK_ENTRY (GET_WIDGET ("name_entry")), gth_catalog_get_name (data->catalog));
+diff --git a/extensions/file_tools/gth-file-tool-adjust-colors.c b/extensions/file_tools/gth-file-tool-adjust-colors.c
+index 26242f509..b5ccadefc 100644
+--- a/extensions/file_tools/gth-file-tool-adjust-colors.c
++++ b/extensions/file_tools/gth-file-tool-adjust-colors.c
+@@ -324,7 +324,7 @@ apply_cb (gpointer user_data)
+ 
+ 	adjust_data = g_new0 (AdjustData, 1);
+ 	adjust_data->self = self;
+-	adjust_data->viewer_page = g_object_ref (gth_browser_get_viewer_page (GTH_BROWSER (window)));
++	adjust_data->viewer_page = GTK_WIDGET (g_object_ref (gth_browser_get_viewer_page (GTH_BROWSER (window))));
+ 	adjust_data->source = cairo_surface_reference (self->priv->apply_to_original ? self->priv->source : self->priv->preview);
+ 	adjust_data->gamma = pow (10, - (gtk_adjustment_get_value (self->priv->gamma_adj) / 100.0));
+ 	adjust_data->brightness = gtk_adjustment_get_value (self->priv->brightness_adj) / 100.0 * -1.0;
+diff --git a/gthumb/gth-image-list-task.c b/gthumb/gth-image-list-task.c
+index 7dd29a8ab..b477f0891 100644
+--- a/gthumb/gth-image-list-task.c
++++ b/gthumb/gth-image-list-task.c
+@@ -504,7 +504,7 @@ gth_image_list_task_new (GthBrowser    *browser,
+ 	self = GTH_IMAGE_LIST_TASK (g_object_new (GTH_TYPE_IMAGE_LIST_TASK, NULL));
+ 	self->priv->browser = browser;
+ 	self->priv->file_list = _g_object_list_ref (file_list);
+-	self->priv->task = g_object_ref (task);
++	self->priv->task = GTH_TASK (g_object_ref (task));
+ 	self->priv->task_completed = g_signal_connect (self->priv->task,
+ 						       "completed",
+ 						       G_CALLBACK (image_task_completed_cb),

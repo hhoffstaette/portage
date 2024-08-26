@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Foundation
+# Copyright 1999-2024 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 GNOME2_LA_PUNT="yes"
 
 inherit gnome2
@@ -11,7 +11,7 @@ HOMEPAGE="https://wiki.gnome.org/Apps/gthumb"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="amd64 arm ppc ppc64 x86 amd64-linux x86-linux x86-solaris"
+KEYWORDS="amd64"
 IUSE="cdr exif gstreamer http jpeg json libsecret raw slideshow svg tiff test webkit webp"
 
 COMMON_DEPEND="
@@ -60,6 +60,7 @@ PATCHES=(
 	"${FILESDIR}"/${PV}-exiv2-0.28.patch
 	"${FILESDIR}"/${PV}-glib-content-type.patch
 	"${FILESDIR}"/${PV}-glib-sort-order.patch
+	"${FILESDIR}"/${PV}-fix-incompatible-type-assignment-warnings.patch
 )
 
 src_prepare() {
