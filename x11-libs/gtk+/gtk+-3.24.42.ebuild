@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,6 +8,11 @@ inherit gnome2 multilib multilib-minimal virtualx
 
 DESCRIPTION="Gimp ToolKit +"
 HOMEPAGE="https://www.gtk.org/"
+
+# We really are the last version that does not need newer pango
+MY_PV=3.24.30
+SRC_URI=mirror://gnome/sources/gtk+/3.24/gtk+-${MY_PV}.tar.xz
+S="${WORKDIR}/gtk+-${MY_PV}"
 
 LICENSE="LGPL-2+"
 SLOT="3"
