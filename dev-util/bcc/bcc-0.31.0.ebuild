@@ -73,6 +73,9 @@ pkg_setup() {
 src_prepare() {
 	local bpf_link_path
 
+	# https://bugs.gentoo.org/938491
+	filter-lto
+
 	# this avoids bundling
 	bpf_link_path="$(realpath --relative-to="${S}/src/cc/libbpf" /usr/include/bpf)" || die
 	ln -sfn "${bpf_link_path}" src/cc/libbpf/include || die
