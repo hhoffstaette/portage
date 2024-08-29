@@ -61,6 +61,7 @@ PATCHES=(
 	"${FILESDIR}"/${PV}-glib-content-type.patch
 	"${FILESDIR}"/${PV}-glib-sort-order.patch
 	"${FILESDIR}"/${PV}-fix-incompatible-type-assignment-warnings.patch
+	"${FILESDIR}"/${PV}-null-pixbuf.patch
 )
 
 src_prepare() {

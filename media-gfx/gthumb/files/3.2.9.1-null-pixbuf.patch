@@ -1,0 +1,22 @@
+
+Stop g_unref from complaining about null references.
+
+diff -up gthumb-3.2.9.1/extensions/file_manager/callbacks.c gthumb-3.2.9.1-nonull/extensions/file_manager/callbacks.c
+--- gthumb-3.2.9.1/extensions/file_manager/callbacks.c	2015-04-16 19:21:55.000000000 +0200
++++ gthumb-3.2.9.1-nonull/extensions/file_manager/callbacks.c	2024-08-29 16:03:39.075037176 +0200
+@@ -1069,10 +1069,11 @@ _gth_browser_update_open_menu (GthBrowse
+ 			GdkPixbuf *pixbuf;
+ 
+ 			pixbuf = gth_icon_cache_get_pixbuf (icon_cache, icon);
+-			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), gtk_image_new_from_pixbuf (pixbuf));
+-			gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (menu_item), TRUE);
+-
+-			g_object_unref (pixbuf);
++			if (pixbuf != NULL) {
++				gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), gtk_image_new_from_pixbuf (pixbuf));
++				gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (menu_item), TRUE);
++				g_object_unref (pixbuf);
++			}
+ 		}
+ 
+ 		gtk_widget_show (menu_item);
