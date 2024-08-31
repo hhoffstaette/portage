@@ -1,0 +1,14 @@
+
+process.c:1372:36: warning: 'i' may be used uninitialized [-Wmaybe-uninitialized]
+
+--- a/process.c	2024-08-28 21:55:03.000000000 +0200
++++ b/process.c	2024-08-31 14:18:53.958174857 +0200
+@@ -1337,7 +1337,7 @@ static void DoCommandAt(struct action *a
+ 	default:
+ 		{
+ 			int ch;
+-			int i;
++			int i = 0;
+ 
+ 			n++;
+ 			ch = args[0][n];
