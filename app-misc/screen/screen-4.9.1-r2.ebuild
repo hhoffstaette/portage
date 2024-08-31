@@ -147,6 +147,6 @@ pkg_postinst() {
 
 	if use multiuser; then
 		tmpfiles_process screen.conf
-		ewarn "This revision changes the screen socket location to ${EROOT}/run/${PN}"
+		einfo "Note that enabling multiuser mode changes the screen socket location to ${EROOT}/run/${PN}."
 	fi
 }
