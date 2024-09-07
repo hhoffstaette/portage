@@ -15,20 +15,19 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-BDEPEND="dev-lang/go"
-
 src_compile() {
-	emake build-cli VERSION=${PV} || die
+	emake build-cli VERSION=${PV}
 }
 
 src_install() {
 	newbin bin/${PN}.bin ${PN}
 
+	local comp
 	for comp in bash fish zsh; do
-		bin/${PN}.bin completions $comp > ${WORKDIR}/${PN}.$comp
+		bin/${PN}.bin completions $comp > "${WORKDIR}"/${PN}.$comp || die
 	done
 
-	newbashcomp ${WORKDIR}/${PN}.bash ${PN}
-	newfishcomp ${WORKDIR}/${PN}.fish ${PN}.fish
-	newzshcomp ${WORKDIR}/${PN}.zsh _${PN}
+	newbashcomp "${WORKDIR}"/${PN}.bash ${PN}
+	newfishcomp "${WORKDIR}"/${PN}.fish ${PN}.fish
+	newzshcomp "${WORKDIR}"/${PN}.zsh _${PN}
 }
