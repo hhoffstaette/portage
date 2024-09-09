@@ -138,7 +138,7 @@ if [[ ${PV} != *9999* ]] ; then
 	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-wireshark )"
 fi
 
-PATCHES=( "${FILESDIR}/4.4.0-fix-runtime-docdir.patch" )
+PATCHES=( "${FILESDIR}/wireshark-4.4.0-fix-filesystem-absolute-paths.patch" )
 
 python_check_deps() {
 	use test || return 0
