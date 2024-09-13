@@ -40,7 +40,7 @@ c_eend()   { c_quiet || eend "$@" ; }
 #  automatically update ccache's links when upgrading toolchains
 #
 cc_path() {
-	echo ${ROOT%/}${EPREFIX}/usr/${LIBDIR}/ccache/bin/$1
+	echo "${ROOT%/}${EPREFIX}/usr/${LIBDIR}/ccache/bin/$1"
 }
 cc_remove_link() {
 	local t=$(cc_path "$1")
@@ -90,6 +90,10 @@ case $1 in
 		;;
 	--remove-links )
 		cc_links remove "$2"
+		;;
+		--cc-path )
+		_cc_path="$(cc_path)"
+		echo "${_cc_path%/}"
 		;;
 	* )
 		echo "usage: $0 {--install-links|--remove-links} [ CHOST ]"

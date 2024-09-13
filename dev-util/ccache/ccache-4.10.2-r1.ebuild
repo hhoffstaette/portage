@@ -34,7 +34,7 @@ fi
 LICENSE="GPL-3+ || ( CC0-1.0 Apache-2.0 ) Boost-1.0 CC0-1.0"
 LICENSE+=" elibc_mingw? ( LGPL-3 ISC PSF-2 )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 # Enable 'static-c++' by default to make 'gcc' ebuild Just Work: bug #761220
 IUSE="${MY_DOCS_USEFLAG} redis +static-c++ test"
 RESTRICT="!test? ( test )"
@@ -87,13 +87,51 @@ src_unpack() {
 src_prepare() {
 	cmake_src_prepare
 
-	cp "${FILESDIR}"/ccache-config-3 ccache-config || die
+	cp "${FILESDIR}"/ccache-config-4 ccache-config || die
 	eprefixify ccache-config
 }
 
+sanitise_cc() {
+	local compiler_type compiler_version
+	compiler_type="$(tc-get-compiler-type)"
+	compiler_version="$("${compiler_type}-major-version")"
+	CC="${compiler_type}-${compiler_version}"
+}
+
+sanitise_cxx() {
+	local cxx=(${CXX});
+	for i in "${!cxx[@]}"; do
+		# we need grep here because the command can be fully qualified
+		echo "${cxx[i]}" | grep -qE "ccache" && unset "cxx[i]"
+	done
+	CXX="${cxx[@]}"
+}
+
+sanitise_path() {
+	if has_version "${CATEGORY}/${PN}"; then
+		# Sanitise PATH: We don't want to execute Portage's internal helpers
+		# if we're called from an ebuild.
+		OLDIFS="${IFS}"
+		IFS=:
+		# Append ${IFS} to prevent any trailing empty field from being dropped
+		local path i
+		set -f; path=(${PATH}${IFS}); set +f
+		for i in "${!path[@]}"; do
+			[[ ${path[i]} == "${EPREFIX}/usr/lib/ccache/bin" ]] && unset "path[i]"
+		done
+		PATH="${path[*]}"
+		IFS="${OLDIFS}"
+	fi
+}
+
 src_configure() {
+	# Filter ccache (#939561)
+	sanitise_cc
+	sanitise_cxx
+	sanitise_path
+
 	# Mainly used in tests
-	tc-export CC OBJDUMP
+	tc-export CC CXX OBJDUMP
 
 	# Avoid dependency on libstdc++.so. Useful for cases when
 	# we would like to use ccache to build older gcc which injects
@@ -108,6 +146,7 @@ src_configure() {
 		-DENABLE_TESTING=$(usex test)
 		-DDEPS=LOCAL
 		-DREDIS_STORAGE_BACKEND=$(usex redis)
+		-DCMAKE_CXX_COMPILER_LAUNCHER=""
 	)
 
 	use static-c++ && mycmakeargs+=(
