@@ -177,12 +177,6 @@ src_prepare() {
 		popd || die
 	fi
 
-	pushd "${S_K}" >/dev/null || die
-	eapply "${FILESDIR}"/perf-6.4-libtracefs.patch
-	eapply "${FILESDIR}"/perf-6.10-expr.patch
-	eapply "${FILESDIR}"/perf-6.10.3-bpf-capstone.patch
-	popd || die
-
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
 	sed -i \
