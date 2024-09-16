@@ -13,15 +13,17 @@ DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and ma
 HOMEPAGE="https://kernel.org/"
 
 # Use LINUX_VERSION to specify the full kernel version triple (x.y.z)
-LINUX_VERSION=6.10.3
+LINUX_VERSION=6.11
 LINUX_VER=$(ver_cut 1-2 ${LINUX_VERSION})
 LINUX_V="${LINUX_VERSION:0:1}.x"
 
 LINUX_SOURCES="linux-${LINUX_VER}.tar.xz"
 SRC_URI="https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_SOURCES}"
 
-LINUX_PATCH="patch-${LINUX_VERSION}.xz"
-SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_PATCH}"
+if [[ ${LINUX_VERSION} == *.*.* ]] ; then
+	LINUX_PATCH="patch-${LINUX_VERSION}.xz"
+	SRC_URI+=" https://www.kernel.org/pub/linux/kernel/v${LINUX_V}/${LINUX_PATCH}"
+fi
 
 S_K="${WORKDIR}/linux-${LINUX_VER}"
 S="${S_K}/tools/bpf/bpftool"
