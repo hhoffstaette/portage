@@ -33,7 +33,7 @@ COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 
 SRC_URI="https://www.applied-asynchrony.com/distfiles/${P}.tar.gz
 	${COMMON_URI}"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~mips ppc ppc64 ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~mips ppc ppc64 ~s390 sparc x86"
 
 DESCRIPTION="Gentoo automatic kernel building scripts"
 HOMEPAGE="https://wiki.gentoo.org/wiki/No_homepage"
