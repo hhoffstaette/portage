@@ -1,0 +1,65 @@
+From 0e999d5ed40e8830172c8129624da04933f9ab7b Mon Sep 17 00:00:00 2001
+From: Roberto Scolaro <roberto.scolaro21@gmail.com>
+Date: Wed, 18 Sep 2024 14:50:15 +0000
+Subject: [PATCH 1/2] update(deps): bump libs to 0.18.0
+
+Signed-off-by: Roberto Scolaro <roberto.scolaro21@gmail.com>
+---
+ cmake/modules/driver.cmake             | 4 ++--
+ cmake/modules/falcosecurity-libs.cmake | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/cmake/modules/driver.cmake b/cmake/modules/driver.cmake
+index 289cd53ac2..1777133b2d 100644
+--- a/cmake/modules/driver.cmake
++++ b/cmake/modules/driver.cmake
+@@ -31,8 +31,8 @@ else()
+   # In case you want to test against another driver version (or branch, or commit) just pass the variable -
+   # ie., `cmake -DDRIVER_VERSION=dev ..`
+   if(NOT DRIVER_VERSION)
+-    set(DRIVER_VERSION "7.2.0+driver")
+-    set(DRIVER_CHECKSUM "SHA256=82424189620010092d0eaabbfa59d904510771e293fd03f67a01b099691b4c4b")
++    set(DRIVER_VERSION "7.3.0+driver")
++    set(DRIVER_CHECKSUM "SHA256=8f572d9a83feda635a3fa53b859d61e37af127c241e35068aadee3bc50d212c0")
+   endif()
+ 
+   # cd /path/to/build && cmake /path/to/source
+diff --git a/cmake/modules/falcosecurity-libs.cmake b/cmake/modules/falcosecurity-libs.cmake
+index 3a11d348fa..53b22367b7 100644
+--- a/cmake/modules/falcosecurity-libs.cmake
++++ b/cmake/modules/falcosecurity-libs.cmake
+@@ -32,8 +32,8 @@ else()
+   # In case you want to test against another falcosecurity/libs version (or branch, or commit) just pass the variable -
+   # ie., `cmake -DFALCOSECURITY_LIBS_VERSION=dev ..`
+   if(NOT FALCOSECURITY_LIBS_VERSION)
+-    set(FALCOSECURITY_LIBS_VERSION "0.17.2")
+-    set(FALCOSECURITY_LIBS_CHECKSUM "SHA256=5c4f0c987272b7d5236f6ab2bbe3906ffdaf76b59817b63cf90cc8c387ab5b15")
++    set(FALCOSECURITY_LIBS_VERSION "0.18.0")
++    set(FALCOSECURITY_LIBS_CHECKSUM "SHA256=0af0d46edcf97c01e3b5307732ff451d5175e8231ee6b8eec0a498d4c48f308b")
+   endif()
+ 
+   # cd /path/to/build && cmake /path/to/source
+
+From 7d5935700b41cde32914f265df689c31fe374617 Mon Sep 17 00:00:00 2001
+From: Roberto Scolaro <roberto.scolaro21@gmail.com>
+Date: Wed, 18 Sep 2024 14:50:32 +0000
+Subject: [PATCH 2/2] fix(sysdig/utils): align open_plugin api with libs 0.18.0
+
+Signed-off-by: Roberto Scolaro <roberto.scolaro21@gmail.com>
+---
+ userspace/sysdig/utils/sinsp_opener.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/userspace/sysdig/utils/sinsp_opener.cpp b/userspace/sysdig/utils/sinsp_opener.cpp
+index dddf1d4fd4..4f1440404d 100644
+--- a/userspace/sysdig/utils/sinsp_opener.cpp
++++ b/userspace/sysdig/utils/sinsp_opener.cpp
+@@ -44,7 +44,7 @@ void sinsp_opener::open(sinsp* inspector) const
+ 
+     if (plugin.enabled)
+     {
+-        inspector->open_plugin(plugin.name, plugin.params);
++        inspector->open_plugin(plugin.name, plugin.params, sinsp_plugin_platform::SINSP_PLATFORM_HOSTINFO);
+         return;
+     }
+ 

@@ -11,12 +11,13 @@ DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
 
 # The version of falcosecurity-libs required by sysdig as source tree
-LIBS_VERSION="0.17.3"
+LIBS_VERSION="0.18.0"
 SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> falcosecurity-libs-${LIBS_VERSION}.tar.gz"
 
-# The driver version as found in cmake/modules/driver.cmake
-DRIVER_VERSION="7.2.0+driver"
+# The driver version as found in cmake/modules/driver.cmake or alternatively
+# as git tag on the LIBS_VERSION of falcosecurity-libs.
+DRIVER_VERSION="7.3.0+driver"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -47,17 +48,13 @@ DEPEND="${RDEPEND}
 # pin the driver to the falcosecurity-libs version
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
 
-PATCHES=( "${FILESDIR}/${PV}-scap-loader.patch" )
+PATCHES=(
+	"${FILESDIR}/${PV}-fix-warnings.patch"
+	"${FILESDIR}/${PV}-libs-0.18.0.patch"
+	"${FILESDIR}/${PV}-scap-loader.patch"
+)
 
 src_prepare() {
-	# manually apply patches to falcosecurity-libs dependency
-	pushd "${WORKDIR}/libs-${LIBS_VERSION}"
-		# musl has no libanl (#929227)
-		if [ ${ELIBC} == "musl" ] ; then
-			eapply "${FILESDIR}/${PV}-libs-no-libanl.patch" || die
-		fi
-	popd
-
 	# do not build with debugging info
 	sed -i -e 's/-ggdb//g' CMakeLists.txt "${WORKDIR}"/libs-${LIBS_VERSION}/cmake/modules/CompilerFlags.cmake || die
 

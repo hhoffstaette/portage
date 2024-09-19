@@ -1,0 +1,52 @@
+From 558e79756d7300ac102e66661ea491a60d132375 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Wed, 18 Sep 2024 12:50:15 +0200
+Subject: [PATCH] fix(sysdig): fix several compilation warnings
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This fixes some inconsistencies that gcc-14 complains about:
+- mismatched type comparison (uint vs. int)
+- missing virtual default destructor in a base class
+- potential use of uninitialised member variable
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ userspace/chisel/chisel_viewinfo.h   | 2 +-
+ userspace/sinspui/cursescomponents.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/userspace/chisel/chisel_viewinfo.h b/userspace/chisel/chisel_viewinfo.h
+index 5315819c2b..492a38b3d5 100644
+--- a/userspace/chisel/chisel_viewinfo.h
++++ b/userspace/chisel/chisel_viewinfo.h
+@@ -176,7 +176,7 @@ class chisel_view_info
+ 	std::string m_description;
+ 	std::vector<std::string> m_tags;
+ 	std::vector<std::string> m_tips;
+-	int32_t m_sortingcol;
++	uint32_t m_sortingcol;
+ 	std::vector<std::string> m_applies_to;
+ 	std::vector<chisel_view_column_info> m_columns;
+ 	bool m_use_defaults;
+diff --git a/userspace/sinspui/cursescomponents.h b/userspace/sinspui/cursescomponents.h
+index c310363950..a0858a711d 100644
+--- a/userspace/sinspui/cursescomponents.h
++++ b/userspace/sinspui/cursescomponents.h
+@@ -23,6 +23,7 @@ class search_caller_interface
+ 	virtual bool on_search_key_pressed(std::string search_str) = 0;
+ 	virtual bool on_search_next() = 0;
+ 	virtual std::string* get_last_search_string() = 0;
++	virtual ~search_caller_interface() = default;
+ };
+ 
+ class sidemenu_list_entry
+@@ -97,6 +98,7 @@ class curses_table_column_info
+ public:	
+ 	curses_table_column_info()
+ 	{
++		m_size = -1;
+ 	}
+ 
+ 	//
