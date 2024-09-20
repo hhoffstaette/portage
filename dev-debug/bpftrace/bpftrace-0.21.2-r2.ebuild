@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_MAX_SLOT=18
+LLVM_MAX_SLOT=19
 
 inherit llvm linux-info cmake
 
@@ -52,8 +52,9 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
+	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
+	"${FILESDIR}/bpftrace-0.21.2-allow-llvm-19.patch"
 )
 
 pkg_pretend() {
