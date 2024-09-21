@@ -3,9 +3,9 @@
 
 EAPI=8
 
-LLVM_MAX_SLOT=19
+LLVM_COMPAT=( {15..19} )
 
-inherit llvm linux-info cmake
+inherit cmake linux-info llvm-r1
 
 DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
@@ -17,7 +17,7 @@ S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 LICENSE="Apache-2.0"
 SLOT="0"
 
-KEYWORDS="amd64 ~arm64 ~x86"
+KEYWORDS="~amd64 ~arm64 ~x86"
 IUSE="lldb test"
 
 # lots of fixing needed
@@ -26,11 +26,11 @@ RESTRICT="test"
 RDEPEND="
 	>=dev-libs/libbpf-1.1:=
 	>=dev-util/bcc-0.25.0:=
-	lldb? ( >=dev-debug/lldb-15 )
-	>=sys-devel/llvm-15[llvm_targets_BPF(+)]
-	>=sys-devel/clang-15
-	<sys-devel/clang-$((${LLVM_MAX_SLOT} + 1)):=
-	<sys-devel/llvm-$((${LLVM_MAX_SLOT} + 1)):=[llvm_targets_BPF(+)]
+	$(llvm_gen_dep '
+		lldb? ( =dev-debug/lldb-${LLVM_SLOT}* )
+		sys-devel/clang:${LLVM_SLOT}=
+		sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
+	')
 	sys-process/procps
 	sys-libs/binutils-libs:=
 	virtual/libelf:=
@@ -68,10 +68,6 @@ pkg_pretend() {
 	"
 
 	check_extra_config
-}
-
-pkg_setup() {
-	llvm_pkg_setup
 }
 
 src_configure() {
