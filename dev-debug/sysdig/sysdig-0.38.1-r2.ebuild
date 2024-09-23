@@ -3,9 +3,12 @@
 
 EAPI=8
 
+LLVM_COMPAT=( {15..19} )
+LLVM_OPTIONAL=1
+
 LUA_COMPAT=( luajit )
 
-inherit bash-completion-r1 cmake flag-o-matic lua-single
+inherit bash-completion-r1 cmake flag-o-matic linux-info llvm-r1 lua-single
 
 DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
@@ -22,7 +25,7 @@ DRIVER_VERSION="7.3.0+driver"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+modules"
+IUSE="bpf +modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="${LUA_DEPS}
@@ -31,6 +34,7 @@ RDEPEND="${LUA_DEPS}
 	dev-cpp/yaml-cpp:=
 	dev-libs/jsoncpp:=
 	dev-libs/libb64:=
+	bpf? ( >=dev-libs/libbpf-1.1:= )
 	dev-libs/protobuf:=
 	dev-libs/re2:=
 	dev-libs/uthash
@@ -43,6 +47,13 @@ RDEPEND="${LUA_DEPS}
 DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
+	bpf? (
+		dev-util/bpftool
+		$(llvm_gen_dep '
+			sys-devel/clang:${LLVM_SLOT}=
+			sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
+		')
+	)
 	virtual/os-headers"
 
 # pin the driver to the falcosecurity-libs version
@@ -53,6 +64,24 @@ PATCHES=(
 	"${FILESDIR}/${PV}-libs-0.18.0.patch"
 	"${FILESDIR}/${PV}-scap-loader.patch"
 )
+
+pkg_pretend() {
+	if use bpf; then
+		local CONFIG_CHECK="
+			~BPF
+			~BPF_EVENTS
+			~BPF_JIT
+			~BPF_SYSCALL
+			~FTRACE_SYSCALLS
+			~HAVE_EBPF_JIT
+		"
+		check_extra_config
+	fi
+}
+
+pkg_setup() {
+    use bpf && llvm-r1_pkg_setup
+}
 
 src_prepare() {
 	# do not build with debugging info
@@ -79,8 +108,8 @@ src_configure() {
 		# do not build internal libs as shared
 		-DBUILD_SHARED_LIBS=OFF
 
-		# do not build eBPF driver for now
-		-DBUILD_SYSDIG_MODERN_BPF=OFF
+		# build BPF probe depending on USE
+		-DBUILD_SYSDIG_MODERN_BPF:BOOL=$(usex bpf)
 
 		# set driver version to prevent downloading (don't ask..)
 		-DDRIVER_SOURCE_DIR="${WORKDIR}"/libs-${LIBS_VERSION}/driver
@@ -125,4 +154,16 @@ src_install() {
 	# move bashcomp to the proper location
 	dobashcomp "${ED}"/usr/etc/bash_completion.d/sysdig || die
 	rm -r "${ED}"/usr/etc || die
+}
+
+pkg_postinst() {
+	if use bpf; then
+		elog
+		elog "You have enabled the 'modern BPF' probe."
+		elog "This eBPF-based event source is an alternative to the traditional"
+		elog "scap kernel module."
+		elog
+		elog "To use it, start sysdig/csysdig with '--modern-bpf'."
+		elog
+	fi
 }
