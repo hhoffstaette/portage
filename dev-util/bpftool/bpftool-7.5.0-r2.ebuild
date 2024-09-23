@@ -53,6 +53,10 @@ BDEPEND="
 
 CONFIG_CHECK="~DEBUG_INFO_BTF"
 
+pkg_setup() {
+	use llvm && llvm-r1_pkg_setup
+}
+
 # src_unpack and src_prepare are copied from dev-util/perf since
 # it's building from the same tarball, please keep it in sync with perf
 src_unpack() {
