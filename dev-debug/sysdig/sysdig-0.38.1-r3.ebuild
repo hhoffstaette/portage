@@ -14,7 +14,7 @@ DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
 
 # The version of falcosecurity-libs required by sysdig as source tree
-LIBS_VERSION="0.18.0"
+LIBS_VERSION="0.18.1"
 SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> falcosecurity-libs-${LIBS_VERSION}.tar.gz"
 
