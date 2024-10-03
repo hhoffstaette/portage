@@ -14,7 +14,7 @@ DESCRIPTION="Fast, encrypted, deduplicated backups powered by pure Rust"
 HOMEPAGE="https://github.com/rustic-rs/rustic"
 SRC_URI="
 	https://github.com/rustic-rs/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-crates.tar.xz
+	https://www.applied-asynchrony.com/distfiles/${PN}-rs-${PV}-crates.tar.xz
 "
 
 LICENSE="|| ( Apache-2.0 MIT )"
