@@ -49,11 +49,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-PATCHES=(
-	"${FILESDIR}/1.9.6-boost-1.86.0.patch"
-	"${FILESDIR}/1.9.6-json11-gcc15.patch"
-)
-
 src_prepare() {
 	default
 
