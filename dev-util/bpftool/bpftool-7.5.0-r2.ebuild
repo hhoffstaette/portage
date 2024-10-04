@@ -13,7 +13,7 @@ DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and ma
 HOMEPAGE="https://kernel.org/"
 
 # Use LINUX_VERSION to specify the full kernel version triple (x.y.z)
-LINUX_VERSION=6.11
+LINUX_VERSION=6.11.2
 LINUX_VER=$(ver_cut 1-2 ${LINUX_VERSION})
 LINUX_V="${LINUX_VERSION:0:1}.x"
 
