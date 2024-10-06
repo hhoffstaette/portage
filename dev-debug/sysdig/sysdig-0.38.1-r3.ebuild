@@ -15,11 +15,13 @@ HOMEPAGE="https://sysdig.com/"
 
 # The version of falcosecurity-libs required by sysdig as source tree
 LIBS_VERSION="0.18.1"
+LIBS="falcosecurity-libs-${LIBS_VERSION}"
+
 SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> falcosecurity-libs-${LIBS_VERSION}.tar.gz"
+	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> ${LIBS}.tar.gz"
 
 # The driver version as found in cmake/modules/driver.cmake or alternatively
-# as git tag on the LIBS_VERSION of falcosecurity-libs.
+# as git tag on the $LIBS_VERSION of falcosecurity-libs.
 DRIVER_VERSION="7.3.0+driver"
 
 LICENSE="Apache-2.0"
@@ -48,7 +50,7 @@ DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
 	bpf? (
-		dev-util/bpftool
+		>=dev-util/bpftool-7.5.0
 		$(llvm_gen_dep '
 			sys-devel/clang:${LLVM_SLOT}=
 			sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
@@ -60,9 +62,11 @@ DEPEND="${RDEPEND}
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
 
 PATCHES=(
-	"${FILESDIR}/${PV}-fix-warnings.patch"
-	"${FILESDIR}/${PV}-libs-0.18.0.patch"
-	"${FILESDIR}/${PV}-scap-loader.patch"
+	"${FILESDIR}/0.38.1-scap-loader.patch"
+	"${FILESDIR}/0.38.1-libs-0.18.1.patch"
+	"${FILESDIR}/0.38.1-align-open_plugin-api-with-libs-0.18.1.patch"
+	"${FILESDIR}/0.38.1-set-filter-string-when-setting-filter.patch"
+	"${FILESDIR}/0.38.1-fix-warnings.patch"
 )
 
 pkg_pretend() {

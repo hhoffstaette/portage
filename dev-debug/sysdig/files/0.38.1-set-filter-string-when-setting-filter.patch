@@ -1,0 +1,25 @@
+From 8bf2c9bd8e1123194fd6e38e3c01d0b85ad3d24d Mon Sep 17 00:00:00 2001
+From: Roberto Scolaro <roberto.scolaro21@gmail.com>
+Date: Mon, 30 Sep 2024 21:24:34 +0000
+Subject: [PATCH] fix(sysdig): set filter string when setting filter
+
+Signed-off-by: Roberto Scolaro <roberto.scolaro21@gmail.com>
+---
+ userspace/sysdig/sysdig.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/userspace/sysdig/sysdig.cpp b/userspace/sysdig/sysdig.cpp
+index e46838ecdc..3728bc7462 100644
+--- a/userspace/sysdig/sysdig.cpp
++++ b/userspace/sysdig/sysdig.cpp
+@@ -1913,7 +1913,9 @@ sysdig_init_res sysdig_init(int argc, char **argv)
+ 			{
+ 				try
+ 				{
+-					inspector->set_filter(filter);
++					sinsp_filter_compiler compiler(filter_factory, filter);
++					std::unique_ptr<sinsp_filter> s = compiler.compile();
++					inspector->set_filter(std::move(s), filter);
+ 				}
+ 				catch (sinsp_exception& e)
+ 				{
