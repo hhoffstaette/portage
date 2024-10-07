@@ -12,7 +12,7 @@ HOMEPAGE="https://wiki.gnome.org/Apps/gthumb"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE="cdr exif gstreamer http jpeg json libsecret raw slideshow svg tiff test webkit webp"
+IUSE="cdr exif http jpeg json libsecret raw slideshow svg tiff test webp"
 
 COMMON_DEPEND="
 	>=dev-libs/glib-2.34.0:2
@@ -25,9 +25,6 @@ COMMON_DEPEND="
 
 	cdr? ( >=app-cdr/brasero-3.2 )
 	exif? ( >=media-gfx/exiv2-0.21:= )
-	gstreamer? (
-		media-libs/gstreamer:1.0
-		media-libs/gst-plugins-base:1.0 )
 	http? ( >=net-libs/libsoup-gnome-2.36:2.4 )
 	jpeg? ( virtual/jpeg:0= )
 	json? ( >=dev-libs/json-glib-0.15.0 )
@@ -38,7 +35,6 @@ COMMON_DEPEND="
 	svg? ( >=gnome-base/librsvg-2.34 )
 	tiff? ( media-libs/tiff:= )
 	raw? ( >=media-libs/libopenraw-0.0.8:= )
-	webkit? ( >=net-libs/webkit-gtk-1.10.0:3 )
 	webp? ( >=media-libs/libwebp-0.2.0 )
 "
 RDEPEND="${COMMON_DEPEND}
@@ -76,11 +72,12 @@ src_configure() {
 	# Upstream says in configure help that libchamplain support
 	# crashes frequently
 	gnome2_src_configure \
-		--disable-static \
+		--disable-gstreamer \
 		--disable-libchamplain \
+		--disable-static \
+		--disable-webkit2 \
 		$(use_enable cdr libbrasero) \
 		$(use_enable exif exiv2) \
-		$(use_enable gstreamer) \
 		$(use_enable http libsoup) \
 		$(use_enable jpeg) \
 		$(use_enable json libjson-glib) \
@@ -90,6 +87,5 @@ src_configure() {
 		$(use_enable svg librsvg) \
 		$(use_enable test test-suite) \
 		$(use_enable tiff) \
-		$(use_enable webkit webkit2) \
 		$(use_enable webp libwebp)
 }
