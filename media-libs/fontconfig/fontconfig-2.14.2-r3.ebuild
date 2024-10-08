@@ -66,7 +66,11 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-2.14.0-skip-bubblewrap-tests.patch
 
 	# Patches from upstream (can usually be removed with next version bump)
-	"${FILESDIR}"/${P}-fix-sysroot-fc-cache.patch
+	"${FILESDIR}"/${PN}-2.14.2-math-fabs.patch
+	"${FILESDIR}"/${PN}-2.14.2-fix-sysroot-fc-cache.patch
+
+	# Fix aliasing (bug #940923)
+	"${FILESDIR}"/${PN}-2.15.0-aliasing.patch
 )
 
 DOC_CONTENTS="Please make fontconfig configuration changes using
