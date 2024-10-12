@@ -1,7 +1,7 @@
 From 3e97e3675a884b48411f9e428e193a4abaf91fec Mon Sep 17 00:00:00 2001
 From: ma-ca <ma-ca@users.noreply.github.com>
 Date: Fri, 23 Dec 2022 09:44:26 +0100
-Subject: [PATCH] Add option --max-messages to check last messages
+Subject: [PATCH 1/3] Add option --max-messages to check last messages
 
 ---
  src/account.cc     |  8 ++++++++
@@ -167,3 +167,50 @@ index 03cd4b3..a1cb43e 100644
    vector<Account>* accounts          (void);
    vector<Filter>*  allow_filters     (void);
    vector<Filter>*  deny_filters      (void);
+
+From f36227baa9a41f2dc1df4e2e810a7920eed8b475 Mon Sep 17 00:00:00 2001
+From: ma-ca <ma-ca@users.noreply.github.com>
+Date: Wed, 28 Dec 2022 12:12:00 +0100
+Subject: [PATCH 2/3] Add option --max-messages to check last messages
+
+---
+ src/mailfilter.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mailfilter.cc b/src/mailfilter.cc
+index ba3acf7..04cd760 100644
+--- a/src/mailfilter.cc
++++ b/src/mailfilter.cc
+@@ -357,7 +357,7 @@ int precompile_expressions (void)
+ // Comapre two strings, but disregard case-sensitivity.  Returns 0, if
+ // no differences could be determined, a negative integer if s is
+ // lexicographically before s2, and a positive integer otherwise.
+-// (See also Stroustrup ï¿½20.3.8.)
++// (See also Stroustrup §20.3.8.)
+ 
+ int cmp_no_case (const string& s, const string& s2)
+ {
+
+From 44f244e3e32d7f58a4c82b94c525d08e7ee78a03 Mon Sep 17 00:00:00 2001
+From: ma-ca <ma-ca@users.noreply.github.com>
+Date: Sat, 12 Oct 2024 17:02:37 +0200
+Subject: [PATCH 3/3] Add option --max-messages to man page
+
+---
+ man/mailfilter.1 | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/man/mailfilter.1 b/man/mailfilter.1
+index 34d936c..fa2f471 100644
+--- a/man/mailfilter.1
++++ b/man/mailfilter.1
+@@ -64,6 +64,9 @@ Simulate deletes
+ \fB\-i\fR, \fB\-\-ignore-time-stamps\fR
+ Ignore invalid Message-ID time stamps (Do not use unless you know better!)
+ .TP
++\fB\-m\fR, \fB\-\-max-messages\fR=\fINUMBER\fR
++Maximum number messages to check, starting from end (POP3 only)
++.TP
+ \fB\-v\fR, \fB\-\-verbose\fR=\fILEVEL\fR
+ Specify level of verbosity
+ .TP
