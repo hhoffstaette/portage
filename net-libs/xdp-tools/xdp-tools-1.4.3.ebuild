@@ -3,7 +3,9 @@
 
 EAPI=8
 
-inherit flag-o-matic toolchain-funcs
+LLVM_COMPAT=( {15..19} )
+
+inherit flag-o-matic linux-info llvm-r1 toolchain-funcs
 
 DESCRIPTION="The libxdp library and various tools for use with XDP"
 HOMEPAGE="https://github.com/xdp-project/xdp-tools"
@@ -22,9 +24,12 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
-	dev-util/bpftool
+	>=dev-util/bpftool-7.5.0
 	sys-apps/grep[pcre]
-	>=sys-devel/clang-11.0.0
+	$(llvm_gen_dep '
+		sys-devel/clang:${LLVM_SLOT}=
+		sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
+	')
 	sys-devel/m4
 "
 
@@ -32,6 +37,12 @@ BDEPEND="
 QA_PREBUILT="usr/lib/bpf/*.o"
 
 MAKEOPTS+=" V=1"
+
+CONFIG_CHECK="~BPF ~BPF_JIT ~BPF_SYSCALL ~HAVE_EBPF_JIT ~XDP_SOCKETS ~XDP_SOCKETS_DIAG"
+
+pkg_setup() {
+	llvm-r1_pkg_setup
+}
 
 src_prepare() {
 	# remove -Werror: #899744
