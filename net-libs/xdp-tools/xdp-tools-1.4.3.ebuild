@@ -16,13 +16,13 @@ IUSE="+tools"
 
 DEPEND="
 	dev-libs/libbpf:=
-	dev-util/bpftool
 	net-libs/libpcap
 	sys-libs/zlib
 	virtual/libelf
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
+	dev-util/bpftool
 	sys-apps/grep[pcre]
 	>=sys-devel/clang-11.0.0
 	sys-devel/m4
