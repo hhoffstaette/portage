@@ -63,10 +63,6 @@ PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
 
 PATCHES=(
 	"${FILESDIR}/0.38.1-scap-loader.patch"
-	"${FILESDIR}/0.38.1-libs-0.18.1.patch"
-	"${FILESDIR}/0.38.1-align-open_plugin-api-with-libs-0.18.1.patch"
-	"${FILESDIR}/0.38.1-set-filter-string-when-setting-filter.patch"
-	"${FILESDIR}/0.38.1-fix-warnings.patch"
 )
 
 pkg_pretend() {
