@@ -71,9 +71,15 @@ src_prepare() {
 		ln -s "${WORKDIR}/libbpf-${LIBBPF_VERSION}" libbpf || die
 	fi
 
-	# remove -Werror (bug 887981)
+	# remove -Werror from libbpf (bug 887981)
 	sed -i -e 's/\-Werror//g' libbpf/src/Makefile || die
-	
+
+	# remove -Werror from bpftool feature detection
+	sed -i -e 's/-Werror//g' src/Makefile.feature || die
+
+	# remove hardcoded/unhelpful flags from bpftool
+	sed -i -e '/CFLAGS += -O2/d' -e 's/-W //g' -e 's/-Wextra //g' src/Makefile || die
+
 	# Use rst2man or rst2man.py depending on which one exists (#930076)
 	type -P rst2man >/dev/null || sed -i -e 's/rst2man/rst2man.py/g' docs/Makefile || die
 }
