@@ -49,14 +49,14 @@ RDEPEND="${LUA_DEPS}
 DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
-	bpf? (
-		>=dev-util/bpftool-7.5.0
-		$(llvm_gen_dep '
+	bpf? ( $(llvm_gen_dep '
 			sys-devel/clang:${LLVM_SLOT}=
 			sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
 		')
 	)
 	virtual/os-headers"
+
+BDEPEND="bpf? ( dev-util/bpftool )"
 
 # pin the driver to the falcosecurity-libs version
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
