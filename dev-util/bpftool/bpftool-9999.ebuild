@@ -14,20 +14,19 @@ HOMEPAGE="https://github.com/libbpf/bpftool"
 
 if [[ ${PV} == *9999* ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="${HOMEPAGE}.git"
+	EGIT_REPO_URI="https://github.com/libbpf/bpftool.git"
 	EGIT_SUBMODULES=(libbpf)
 else
-	# uncomment both to bundle an updated libbpf
-	# LIBBPF_HOME="https://github.com/libbpf/libbpf"
+	# uncomment to bundle an updated libbpf
 	# LIBBPF_VERSION=1.5.0
 
 	if [ ! -z ${LIBBPF_VERSION} ] ; then
-		SRC_URI="${HOMEPAGE}/archive/refs/tags/v${PV}.tar.gz -> bpftool-${PV}.tar.gz
-			${LIBBPF_HOME}/archive/refs/tags/v${LIBBPF_VERSION}.tar.gz
+		SRC_URI="https://github.com/libbpf/bpftool/archive/refs/tags/v${PV}.tar.gz -> bpftool-${PV}.tar.gz
+			https://github.com/libbpf/libbpf/archive/refs/tags/v${LIBBPF_VERSION}.tar.gz
 			  -> libbpf-${LIBBPF_VERSION}.tar.gz"
 	else
 		# use tarball with bundled libbpf
-		SRC_URI="${HOMEPAGE}/releases/download/v${PV}/bpftool-libbpf-v${PV}-sources.tar.gz"
+		SRC_URI="https://github.com/libbpf/bpftool/releases/download/v${PV}/bpftool-libbpf-v${PV}-sources.tar.gz"
 		S="${WORKDIR}/bpftool-libbpf-v${PV}-sources"
 	fi
 
