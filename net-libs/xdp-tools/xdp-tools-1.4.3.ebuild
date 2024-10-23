@@ -24,7 +24,7 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
-	>=dev-util/bpftool-7.5.0
+	dev-util/bpftool
 	sys-apps/grep[pcre]
 	$(llvm_gen_dep '
 		sys-devel/clang:${LLVM_SLOT}=
