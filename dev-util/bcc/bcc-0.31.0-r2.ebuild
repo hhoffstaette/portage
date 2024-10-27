@@ -3,13 +3,12 @@
 
 EAPI=8
 
-LUA_COMPAT=( luajit )
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{10..13} )
 LLVM_COMPAT=( {15..19} )
 
-inherit cmake linux-info llvm-r1 lua-single distutils-r1 toolchain-funcs
+inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
 DESCRIPTION="Tools for BPF-based Linux IO analysis, networking, monitoring, and more"
 HOMEPAGE="https://iovisor.github.io/bcc/"
@@ -18,11 +17,10 @@ SRC_URI="https://github.com/iovisor/bcc/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
-IUSE="+lua lzma +python static-libs test"
+IUSE="lzma +python static-libs test"
 
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
-	lua? ( python ${LUA_REQUIRED_USE} )
 "
 
 # tests need root access
@@ -44,7 +42,6 @@ RDEPEND="
 		app-arch/lzma
 	) )
 	python? ( ${PYTHON_DEPS} )
-	lua? ( ${LUA_DEPS} )
 "
 DEPEND="
 	${RDEPEND}
@@ -125,6 +122,12 @@ src_prepare() {
 		done
 	fi
 
+	# do not build cpp examples
+    sed -i -e '/add_subdirectory(cpp)/d' examples/CMakeLists.txt || die
+
+	# do not install lua examples
+    sed -i -e '/add_subdirectory(lua)/d' examples/CMakeLists.txt || die
+
 	cmake_src_prepare
 	bcc_distutils_phase
 }
@@ -141,9 +144,6 @@ src_configure() {
 		-DNO_BLAZESYM=ON
 		-Wno-dev
 	)
-	if use lua && use lua_single_target_luajit; then
-		mycmakeargs+=( -DWITH_LUAJIT=ON )
-	fi
 
 	cmake_src_configure
 	bcc_distutils_phase
