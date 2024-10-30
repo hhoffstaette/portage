@@ -17,10 +17,16 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_REPO_URI="https://github.com/libbpf/bpftool.git"
 	EGIT_SUBMODULES=(libbpf)
 else
-	# uncomment to bundle an updated libbpf
+	# bpftool typically vendors whatever libbpf is current at the time
+	# of a release, while libbpf publishes minor updates more frequently.
+	# Uncomment the following to bundle an updated libbpf e.g. in case of
+	# security or crasher bugs in libbpf and to keep the two synchronized.
+	# This allows us to quickly update the vendored lib with a revbump.
+	# Currently bpftool-x.y vendors libbpf-1.y; DO NOT mix different y versions.
+	# See the libbpf repo (https://github.com/libbpf/libbpf) for possible updates.
 	# LIBBPF_VERSION=1.5.0
 
-	if [ ! -z ${LIBBPF_VERSION} ] ; then
+	if [[ ! -z ${LIBBPF_VERSION} ]] ; then
 		SRC_URI="https://github.com/libbpf/bpftool/archive/refs/tags/v${PV}.tar.gz -> bpftool-${PV}.tar.gz
 			https://github.com/libbpf/libbpf/archive/refs/tags/v${LIBBPF_VERSION}.tar.gz
 			  -> libbpf-${LIBBPF_VERSION}.tar.gz"
@@ -33,9 +39,10 @@ else
 	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 fi
 
-LICENSE="GPL-2"
+LICENSE="|| ( GPL-2 BSD-2 )"
 SLOT="0"
 IUSE="caps llvm"
+REQUIRED_USE="llvm? ( ${LLVM_REQUIRED_USE} )"
 
 RDEPEND="
 	caps? ( sys-libs/libcap:= )
@@ -65,7 +72,7 @@ src_prepare() {
 	default
 
 	# prepare libbpf if necessary
-	if [ ! -z ${LIBBPF_VERSION} ] ; then
+	if [[ ! -z ${LIBBPF_VERSION} ]] ; then
 		rm -rf libbpf || die
 		ln -s "${WORKDIR}/libbpf-${LIBBPF_VERSION}" libbpf || die
 	fi
