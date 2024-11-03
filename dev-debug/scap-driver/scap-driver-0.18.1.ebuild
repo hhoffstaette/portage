@@ -22,6 +22,8 @@ CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 # This version can be found as git tag on the same commit as the libs version.
 DRIVER_VERSION="7.3.0+driver"
 
+PATCHES=( "${FILESDIR}"/0.18.1-nsec_to_clock_t.patch )
+
 src_configure() {
 	local mycmakeargs=(
 		# we will use linux-mod, so just pretend to use bundled deps
