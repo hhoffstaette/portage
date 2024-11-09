@@ -5,7 +5,7 @@ EAPI=8
 VALA_USE_DEPEND="vapigen"
 VALA_MIN_API_VERSION=0.46
 
-inherit autotools gnome2 multilib-minimal rust-toolchain vala
+inherit autotools gnome2 multilib-minimal rust vala
 
 DESCRIPTION="Scalable Vector Graphics (SVG) rendering library"
 HOMEPAGE="https://wiki.gnome.org/Projects/LibRsvg"
@@ -25,11 +25,9 @@ RDEPEND="
 	>=media-libs/harfbuzz-2.0.0:=[${MULTILIB_USEDEP}]
 	>=dev-libs/libxml2-2.9.1-r4:2[${MULTILIB_USEDEP}]
 	>=x11-libs/pango-1.38.0[${MULTILIB_USEDEP}]
-
 	introspection? ( >=dev-libs/gobject-introspection-0.10.8:= )
 "
 DEPEND="${RDEPEND}
-	>=virtual/rust-1.40[${MULTILIB_USEDEP}]
 	dev-util/glib-utils
 	>=sys-devel/gettext-0.19.8
 	virtual/pkgconfig
