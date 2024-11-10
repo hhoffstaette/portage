@@ -171,11 +171,18 @@ src_unpack() {
 
 src_prepare() {
 	default
+
+	# minor version update
 	if [[ -n ${LINUX_PATCH} ]] ; then
 		pushd "${S_K}" >/dev/null || die
 		eapply "${WORKDIR}"/${P}.patch
 		popd || die
 	fi
+
+	# other patches
+	pushd "${S_K}" >/dev/null || die
+		eapply "${FILESDIR}"/6.11-set-binary_type-of-dso-when-loading.patch
+	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
