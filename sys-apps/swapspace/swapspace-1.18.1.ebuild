@@ -15,8 +15,8 @@ KEYWORDS="amd64 arm64 x86"
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-${PV}-config.patch"
-	"${FILESDIR}/${PN}-${PV}-wakeup-interval.patch"
+	"${FILESDIR}/1.18.1-config.patch"
+	"${FILESDIR}/1.18.1-wakeup-interval.patch"
 )
 
 S="$WORKDIR"/Swapspace-${PV}
