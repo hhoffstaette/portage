@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="amd64"
 
 QA_PREBUILT=".*"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 DEPEND="acct-group/prometheus
 	acct-user/prometheus
@@ -27,25 +27,12 @@ S="${WORKDIR}/${MY_P}.linux-amd64"
 
 src_install() {
 	dobin prometheus promtool
-	insinto /usr/share/prometheus
-	doins -r console_libraries consoles
 	insinto /etc/prometheus
 	doins prometheus.yml
-	dosym ../../usr/share/prometheus/console_libraries /etc/prometheus/console_libraries
-	dosym ../../usr/share/prometheus/consoles /etc/prometheus/consoles
 
 	systemd_dounit "${FILESDIR}"/prometheus.service
 	newinitd "${FILESDIR}"/prometheus.initd prometheus
 	newconfd "${FILESDIR}"/prometheus.confd prometheus
 	keepdir /var/log/prometheus /var/lib/prometheus
 	fowners prometheus:prometheus /var/log/prometheus /var/lib/prometheus
-}
-
-pkg_postinst() {
-	if has_version '<net-analyzer/prometheus-2.0.0_rc0'; then
-		ewarn "Old prometheus 1.x TSDB won't be converted to the new prometheus 2.0 format"
-		ewarn "Be aware that the old data currently cannot be accessed with prometheus 2.0"
-		ewarn "This release requires a clean storage directory and is not compatible with"
-		ewarn "files created by previous beta releases"
-	fi
 }
