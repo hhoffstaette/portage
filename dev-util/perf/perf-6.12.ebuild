@@ -180,9 +180,8 @@ src_prepare() {
 	fi
 
 	# other patches
-	pushd "${S_K}" >/dev/null || die
-		eapply "${FILESDIR}"/6.11-set-binary_type-of-dso-when-loading.patch
-	popd || die
+	#pushd "${S_K}" >/dev/null || die
+	#popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
