@@ -1,0 +1,27 @@
+From b23ea19339410b2b195a5829504a2e3ec9a5a591 Mon Sep 17 00:00:00 2001
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+Date: Wed, 20 Nov 2024 14:55:50 +0200
+Subject: [PATCH] hlink: Fix function pointer cast in qsort()
+
+Replace unsafe generic function pointer cast with proper type cast for
+qsort() comparison function. This fixes a potential type mismatch
+warning without changing the behavior.
+
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+---
+ hlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hlink.c b/hlink.c
+index 20291f267..2c14407ad 100644
+--- a/hlink.c
++++ b/hlink.c
+@@ -117,7 +117,7 @@ static void match_gnums(int32 *ndx_list, int ndx_count)
+ 	struct ht_int32_node *node = NULL;
+ 	int32 gnum, gnum_next;
+ 
+-	qsort(ndx_list, ndx_count, sizeof ndx_list[0], (int (*)()) hlink_compare_gnum);
++	qsort(ndx_list, ndx_count, sizeof ndx_list[0], (int (*)(const void*, const void*))hlink_compare_gnum);
+ 
+ 	for (from = 0; from < ndx_count; from++) {
+ 		file = hlink_flist->sorted[ndx_list[from]];

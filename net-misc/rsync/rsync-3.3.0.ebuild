@@ -86,6 +86,7 @@ PATCHES=(
 	"${FILESDIR}"/3.2.7-simd-alignment.patch
 	"${FILESDIR}"/3.2.7-ipv6-configure-c99.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
+	"${FILESDIR}"/3.2.7-qsort-function-pointer-cast.patch
 )
 
 pkg_setup() {
