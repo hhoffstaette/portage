@@ -34,7 +34,10 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/${PN}-v${PV}"
 
-PATCHES=( "${FILESDIR}/0.151-fix-C++11-deprecation-warnings.patch" )
+PATCHES=(
+	"${FILESDIR}/0.151-fix-C++11-deprecation-warnings.patch"
+	"${FILESDIR}/0.151-prototypes.patch"
+)
 
 src_configure() {
 	# Wait for webkitgtk4 support

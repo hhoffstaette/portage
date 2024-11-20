@@ -1,0 +1,40 @@
+
+--- pan-v0.151/uulib/crc32.c	2022-06-25 17:43:21.000000000 +0200
++++ pan-v0.151-prototypes/uulib/crc32.c	2024-11-20 16:00:35.357220812 +0100
+@@ -536,10 +536,7 @@ unsigned long crc32(unsigned long crc, c
+ #define DOLIT32 DOLIT4; DOLIT4; DOLIT4; DOLIT4; DOLIT4; DOLIT4; DOLIT4; DOLIT4
+ 
+ /* ========================================================================= */
+-local unsigned long crc32_little(crc, buf, len)
+-    unsigned long crc;
+-    const unsigned char FAR *buf;
+-    unsigned len;
++local unsigned long crc32_little(unsigned long crc, const unsigned char FAR *buf, unsigned len)
+ {
+     register u4 c;
+     register const u4 FAR *buf4;
+@@ -576,10 +573,7 @@ local unsigned long crc32_little(crc, bu
+ #define DOBIG32 DOBIG4; DOBIG4; DOBIG4; DOBIG4; DOBIG4; DOBIG4; DOBIG4; DOBIG4
+ 
+ /* ========================================================================= */
+-local unsigned long crc32_big(crc, buf, len)
+-    unsigned long crc;
+-    const unsigned char FAR *buf;
+-    unsigned len;
++local unsigned long crc32_big(unsigned long crc, const unsigned char FAR *buf, unsigned len)
+ {
+     register u4 c;
+     register const u4 FAR *buf4;
+--- pan-v0.151/pan/gui/xface.c	2024-11-20 16:07:05.000000000 +0100
++++ pan-v0.151-prototypes/pan/gui/xface.c	2024-11-20 16:07:49.846681998 +0100
+@@ -993,9 +993,7 @@ static void PopGreys(char * f, int wid,
+ }
+ 
+ static void
+-UnCompress(f, wid, hei, lev)
+-register char *f;
+-register int wid, hei, lev;
++UnCompress(char *f, int wid, int hei, int lev)
+ {
+ 	switch (BigPop(&levels[lev][0]))
+ 	{
