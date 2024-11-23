@@ -32,7 +32,8 @@ RDEPEND="${DEPEND}
 BDEPEND="sys-apps/texinfo"
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-5.0.0-uninit-variable.patch
+	"${FILESDIR}"/5.0.0-uninit-variable.patch
+	"${FILESDIR}"/5.0.0-utmp-musl.patch
 )
 
 src_prepare() {
@@ -51,13 +52,6 @@ src_prepare() {
 		-e "s:/etc/utmp:${EPREFIX}/var/run/utmp:g" \
 		-e "s:/local/screens/S\\\-:${EPREFIX}/run/screen/S\\\-:g" \
 		doc/screen.1 || die
-
-	if [[ ${CHOST} == *-darwin* ]] || use elibc_musl; then
-		sed -i -e '/^#define UTMPOK/s/define/undef/' acconfig.h || die
-	fi
-
-	# disable musl dummy headers for utmp[x]
-	use elibc_musl && append-cppflags "-D_UTMP_H -D_UTMPX_H"
 
 	# reconfigure
 	eautoreconf
