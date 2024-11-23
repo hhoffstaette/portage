@@ -20,14 +20,15 @@ fi
 
 LICENSE="GPL-3+"
 SLOT="0"
-IUSE="debug pam selinux multiuser"
+IUSE="debug pam selinux utempter multiuser"
 
 DEPEND=">=sys-libs/ncurses-5.2:=
 	virtual/libcrypt:=
 	pam? ( sys-libs/pam )"
 RDEPEND="${DEPEND}
 	acct-group/utmp
-	selinux? ( sec-policy/selinux-screen )"
+	selinux? ( sec-policy/selinux-screen )
+	utempter? ( sys-libs/libutempter:= )"
 BDEPEND="sys-apps/texinfo"
 
 PATCHES=(
@@ -90,6 +91,7 @@ src_configure() {
 		--enable-telnet
 		${socketdir}
 		$(use_enable pam)
+		$(use_enable utempter utmp)
 	)
 
 	econf "${myeconfargs[@]}"
