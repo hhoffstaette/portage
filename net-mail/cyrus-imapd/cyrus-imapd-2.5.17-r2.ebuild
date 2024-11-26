@@ -77,6 +77,9 @@ src_prepare() {
 }
 
 src_configure() {
+	# hard-to-fix function pointer complaints with gcc-15
+	append-cflags -std=gnu17
+
 	local myconf
 	if use afs ; then
 		myconf+=" --with-afs-libdir=/usr/$(get_libdir)"
