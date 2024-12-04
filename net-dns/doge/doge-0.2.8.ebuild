@@ -16,11 +16,6 @@ SRC_URI="
 	https://github.com/Dj-Codeman/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://www.applied-asynchrony.com/distfiles/${P}-crates.tar.xz
 "
-if [[ ${PKGBUMPING} != ${PVR} ]]; then
-	SRC_URI+="
-		doge-0.2.7-crates.tar.xz
-	"
-fi
 
 LICENSE="MIT"
 # Dependent crate licenses
