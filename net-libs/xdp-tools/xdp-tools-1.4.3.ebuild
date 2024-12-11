@@ -27,8 +27,8 @@ BDEPEND="
 	dev-util/bpftool
 	sys-apps/grep[pcre]
 	$(llvm_gen_dep '
-		sys-devel/clang:${LLVM_SLOT}=
-		sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
+		llvm-core/clang:${LLVM_SLOT}=
+		llvm-core/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
 	')
 	sys-devel/m4
 "

@@ -27,9 +27,9 @@ RDEPEND="
 	>=dev-libs/libbpf-1.1:=
 	>=dev-util/bcc-0.25.0:=
 	$(llvm_gen_dep '
-		lldb? ( =dev-debug/lldb-${LLVM_SLOT}* )
-		sys-devel/clang:${LLVM_SLOT}=
-		sys-devel/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
+		lldb? ( =llvm-core/lldb-${LLVM_SLOT}* )
+		llvm-core/clang:${LLVM_SLOT}=
+		llvm-core/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
 	')
 	sys-process/procps
 	sys-libs/binutils-libs:=

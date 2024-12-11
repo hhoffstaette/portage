@@ -64,8 +64,8 @@ RDEPEND="
 		dev-libs/libbpf
 		dev-util/bpftool
 		dev-util/pahole
-		sys-devel/clang:=
-		sys-devel/llvm:=
+		llvm-core/clang:=
+		llvm-core/llvm:=
 	)
 	caps? ( sys-libs/libcap )
 	capstone? ( dev-libs/capstone )
