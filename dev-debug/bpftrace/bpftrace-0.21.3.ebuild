@@ -10,8 +10,10 @@ inherit cmake linux-info llvm-r1
 DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
 MY_PV="${PV//_/}"
+# the man page version may trail the release
+MAN_V="0.21.2"
 SRC_URI="https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.gh.tar.gz"
-SRC_URI+=" https://github.com/bpftrace/${PN}/releases/download/v${MY_PV}/man.tar.xz -> ${P}-man.gh.tar.xz"
+SRC_URI+=" https://github.com/bpftrace/${PN}/releases/download/v${MAN_V}/man.tar.xz -> ${P}-man.gh.tar.xz"
 S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 
 LICENSE="Apache-2.0"
@@ -55,6 +57,7 @@ PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
 	"${FILESDIR}/bpftrace-0.21.2-allow-llvm-19.patch"
+	"${FILESDIR}/bpftrace-0.21.3-cstdint.patch"
 )
 
 pkg_pretend() {
