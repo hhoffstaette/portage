@@ -126,6 +126,9 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-3.24.30-use-the-right-type-when-calling-GtkWidget-methods.patch
 	# https://gitlab.gnome.org/GNOME/gtk/-/commit/76bc2a57136fd6cf0374fa3f86a7ba646b779803
 	"${FILESDIR}"/${PN}-3.24.30-add-GdkEvent-casts-in-testinput.patch
+
+	# GCC-15 rightfully complains about conflicting types for '_gtk_get_slowdown()'
+	"${FILESDIR}"/${PN}-3.24.30-fix-_gtk_get_slowdown.patch
 )
 
 strip_builddir() {
