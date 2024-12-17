@@ -56,8 +56,9 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
-	"${FILESDIR}/bpftrace-0.21.2-allow-llvm-19.patch"
+	"${FILESDIR}/bpftrace-0.21.3-allow-llvm-19.patch"
 	"${FILESDIR}/bpftrace-0.21.3-cstdint.patch"
+	"${FILESDIR}/bpftrace-0.21.3-odr.patch"
 )
 
 pkg_pretend() {
