@@ -3,12 +3,9 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {15..19} )
-LLVM_OPTIONAL=1
-
 LUA_COMPAT=( luajit )
 
-inherit bash-completion-r1 cmake flag-o-matic linux-info llvm-r1 lua-single
+inherit bash-completion-r1 cmake flag-o-matic linux-info lua-single
 
 DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
@@ -49,14 +46,12 @@ RDEPEND="${LUA_DEPS}
 DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
-	bpf? ( $(llvm_gen_dep '
-			llvm-core/clang:${LLVM_SLOT}=
-			llvm-core/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
-		')
-	)
 	virtual/os-headers"
 
-BDEPEND="bpf? ( dev-util/bpftool )"
+BDEPEND="bpf? (
+			dev-util/bpftool
+			llvm-core/clang:*[llvm_targets_BPF]
+		)"
 
 # pin the driver to the falcosecurity-libs version
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
@@ -77,10 +72,6 @@ pkg_pretend() {
 		"
 		check_extra_config
 	fi
-}
-
-pkg_setup() {
-	use bpf && llvm-r1_pkg_setup
 }
 
 src_prepare() {
