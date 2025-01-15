@@ -44,7 +44,7 @@ REQUIRED_USE+=" examples? ( ${PYTHON_REQUIRED_USE} )"
 REQUIRED_USE+=" rrsync? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="
-	>=dev-libs/popt-1.5
+	>=dev-libs/popt-1.19
 	acl? ( virtual/acl )
 	examples? (
 		${PYTHON_DEPS}
