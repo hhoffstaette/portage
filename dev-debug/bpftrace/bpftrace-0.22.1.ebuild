@@ -13,8 +13,8 @@ MY_PV="${PV//_/}"
 # the man page version may trail the release
 #MAN_V="0.22.0"
 SRC_URI="
-	https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.gh.tar.gz
-	https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.gh.tar.xz
+	https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.tar.xz
 "
 S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 
