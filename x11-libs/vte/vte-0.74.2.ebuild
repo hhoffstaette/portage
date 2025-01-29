@@ -12,7 +12,7 @@ HOMEPAGE="https://wiki.gnome.org/Apps/Terminal/VTE"
 # Once SIXEL support ships (0.66 or later), might need xterm license (but code might be considered upgraded to LGPL-3+)
 LICENSE="LGPL-3+ GPL-3+"
 SLOT="2.91"      # vte_api_version in meson.build
-IUSE="+crypt debug gtk-doc +icu +introspection systemd +vala vanilla"
+IUSE="+crypt debug gtk-doc +icu +introspection systemd +vala"
 KEYWORDS="amd64 arm arm64 ~loong ~mips ppc ppc64 ~riscv sparc x86"
 REQUIRED_USE="
 	gtk-doc? ( introspection )
@@ -21,7 +21,6 @@ REQUIRED_USE="
 
 # Upstream is hostile and refuses to upload tarballs.
 SRC_URI="https://gitlab.gnome.org/GNOME/${PN}/-/archive/${PV}/${P}.tar.bz2"
-SRC_URI="${SRC_URI} !vanilla? ( https://dev.gentoo.org/~mattst88/distfiles/${PN}-0.74.0-command-notify.patch.xz )"
 
 DEPEND="
 	>=x11-libs/gtk+-3.24.22:3[introspection?]
@@ -56,12 +55,6 @@ src_prepare() {
 	xdg_environment_reset
 
 	use elibc_musl && eapply "${FILESDIR}"/${PN}-0.66.2-musl-W_EXITCODE.patch
-
-	if ! use vanilla; then
-		# From https://src.fedoraproject.org/rpms/vte291/raw/rawhide/f/vte291-cntnr-precmd-preexec-scroll.patch
-		# Adds OSC 777 support for desktop notifications in gnome-terminal or elsewhere
-		eapply "${WORKDIR}"/${PN}-0.74.0-command-notify.patch
-	fi
 
 	# -Ddebugg option enables various debug support via VTE_DEBUG, but also ggdb3; strip the latter
 	sed -e '/ggdb3/d' -i meson.build || die
