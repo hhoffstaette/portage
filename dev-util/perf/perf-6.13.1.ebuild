@@ -1,10 +1,11 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
-inherit bash-completion-r1 estack flag-o-matic linux-info llvm toolchain-funcs python-r1
+LLVM_COMPAT=( {16..19} )
+PYTHON_COMPAT=( python3_{10..13} python3_13t)
+inherit bash-completion-r1 estack flag-o-matic linux-info llvm-r1 toolchain-funcs python-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
 HOMEPAGE="https://perf.wiki.kernel.org/"
@@ -33,8 +34,8 @@ S="${S_K}/tools/perf"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~mips ~ppc ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"
-IUSE="abi_mips_o32 abi_mips_n32 abi_mips_n64 audit babeltrace capstone big-endian bpf caps crypt debug +doc gtk java libpfm +libtraceevent +libtracefs lzma numa perl python slang systemtap tcmalloc unwind zstd"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"
+IUSE="abi_mips_o32 abi_mips_n32 abi_mips_n64 babeltrace capstone big-endian bpf caps crypt debug +doc gtk java libpfm +libtraceevent +libtracefs lzma numa perl +python +slang systemtap tcmalloc unwind zstd"
 
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
@@ -58,14 +59,15 @@ BDEPEND="
 "
 
 RDEPEND="
-	audit? ( sys-process/audit )
 	babeltrace? ( dev-util/babeltrace:0/1 )
 	bpf? (
 		dev-libs/libbpf
 		dev-util/bpftool
 		dev-util/pahole
-		llvm-core/clang:=
-		llvm-core/llvm:=
+		$(llvm_gen_dep '
+			llvm-core/clang:${LLVM_SLOT}=
+			llvm-core/llvm:${LLVM_SLOT}=
+		')
 	)
 	caps? ( sys-libs/libcap )
 	capstone? ( dev-libs/capstone )
@@ -110,7 +112,9 @@ pkg_pretend() {
 
 pkg_setup() {
 	local CONFIG_CHECK="
+		~!SCHED_OMIT_FRAME_POINTER
 		~DEBUG_INFO
+		~FRAME_POINTER
 		~FTRACE
 		~FTRACE_SYSCALLS
 		~FUNCTION_TRACER
@@ -119,17 +123,19 @@ pkg_setup() {
 		~KPROBES
 		~KPROBE_EVENTS
 		~PERF_EVENTS
+		~STACKTRACE
+		~TRACEPOINTS
 		~UPROBES
 		~UPROBE_EVENTS
 	"
 
-	use bpf && llvm_pkg_setup
+	use bpf && llvm-r1_pkg_setup
 	# We enable python unconditionally as libbpf always generates
 	# API headers using python script
 	python_setup
 
 	if use bpf ; then
-		CONFIG_CHECK+="~BPF ~BPF_EVENTS ~BPF_SYSCALL ~DEBUG_INFO_BTF ~HAVE_EBPF_JIT"
+		CONFIG_CHECK+="~BPF ~BPF_EVENTS ~BPF_SYSCALL ~DEBUG_INFO_BTF ~HAVE_EBPF_JIT ~UNWINDER_FRAME_POINTER"
 	fi
 
 	linux-info_pkg_setup
@@ -171,17 +177,15 @@ src_unpack() {
 
 src_prepare() {
 	default
-
-	# minor version update
 	if [[ -n ${LINUX_PATCH} ]] ; then
 		pushd "${S_K}" >/dev/null || die
 		eapply "${WORKDIR}"/${P}.patch
 		popd || die
 	fi
 
-	# other patches
-	#pushd "${S_K}" >/dev/null || die
-	#popd || die
+	pushd "${S_K}" >/dev/null || die
+	# Gentoo patches go here
+	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
@@ -270,7 +274,7 @@ perf_make() {
 		NO_DEMANGLE=
 		NO_JEVENTS=$(puse python)
 		NO_JVMTI=$(puse java)
-		NO_LIBAUDIT=$(puse audit)
+		NO_LIBAUDIT=1
 		NO_LIBBABELTRACE=$(puse babeltrace)
 		NO_LIBBIONIC=1
 		NO_LIBBPF=$(puse bpf)
