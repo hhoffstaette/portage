@@ -15,7 +15,7 @@ LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 arm64"
 
-RESTRICT+=" test"
+RESTRICT+=" mirror test"
 
 BDEPEND="dev-util/promu"
 
