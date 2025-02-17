@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit go-module systemd
 
 MY_PV="v${PV/_rc/-rc.}"
 
-NODE_EXPORTER_COMMIT=f1e0e8360aa60b6cb5e5cc1560bed348fc2c1895
+NODE_EXPORTER_COMMIT=02afa5c53c36123611533f2defea6ccd4546a9bb
 
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
