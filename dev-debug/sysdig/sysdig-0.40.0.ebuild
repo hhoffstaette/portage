@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://sysdig.com/"
 
 # The version of falcosecurity-libs required by sysdig as source tree
-LIBS_VERSION="0.19.0"
+LIBS_VERSION="0.20.0"
 LIBS="falcosecurity-libs-${LIBS_VERSION}"
 
 SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
@@ -19,7 +19,7 @@ SRC_URI="https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 
 # The driver version as found in cmake/modules/driver.cmake or alternatively
 # as git tag on the $LIBS_VERSION of falcosecurity-libs.
-DRIVER_VERSION="7.3.0+driver"
+DRIVER_VERSION="8.0.0+driver"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -107,6 +107,7 @@ src_configure() {
 		-DDRIVER_VERSION=${DRIVER_VERSION}
 
 		# point sysdig to the libs tree
+		-DUSE_BUNDLED_FALCOSECURITY_LIBS=ON
 		-DFALCOSECURITY_LIBS_SOURCE_DIR="${WORKDIR}"/libs-${LIBS_VERSION}
 
 		# explicitly set sysdig version - required for some reason
