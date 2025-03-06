@@ -117,7 +117,10 @@ if [[ ${PV} != *9999* ]] ; then
 	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-wireshark )"
 fi
 
-PATCHES=( "${FILESDIR}/4.4.4-fix-skipping-rawshark-tests-on-big-endian.patch" )
+PATCHES=(
+	"${FILESDIR}/4.4.4-fix-skipping-rawshark-tests-on-big-endian.patch"
+	"${FILESDIR}/4.4.5-drop-invalid-malloc-attribute.patch"
+)
 
 python_check_deps() {
 	use test || return 0
@@ -157,10 +160,6 @@ src_configure() {
 	if use gui ; then
 		append-cxxflags -fPIC -DPIC
 	fi
-
-	# crashes at runtime
-	# https://bugs.gentoo.org/754021
-	filter-lto
 
 	mycmakeargs+=(
 		-DPython3_EXECUTABLE="${PYTHON}"
@@ -211,8 +210,6 @@ src_configure() {
 		-DENABLE_ILBC=$(usex ilbc)
 		-DENABLE_KERBEROS=$(usex kerberos)
 		-DENABLE_LIBXML2=$(usex libxml2)
-		# only appends -flto
-		-DENABLE_LTO=OFF
 		-DENABLE_LUA=$(usex lua)
 		-DLUA_FIND_VERSIONS="${ELUA#lua}"
 		-DENABLE_LZ4=$(usex lz4)
@@ -233,6 +230,10 @@ src_configure() {
 		-DENABLE_ZLIBNG=$(usex zlib)
 		-DENABLE_ZSTD=$(usex zstd)
 	)
+
+	if tc-is-lto; then
+		mycmakeargs+=( -DENABLE_LTO=ON )
+	fi
 
 	cmake_src_configure
 }
