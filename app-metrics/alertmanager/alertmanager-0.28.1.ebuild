@@ -2,8 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
+
 inherit go-module systemd
-GIT_COMMIT=4ce04fb
+
+GIT_COMMIT=b2099eaa2c9ebc25edb26517cb9c732738e93910
 MY_PV="${PV/_rc/-rc.}"
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
