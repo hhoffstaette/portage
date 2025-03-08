@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{10..13} )
-LLVM_COMPAT=( {15..19} )
+LLVM_COMPAT=( {15..20} )
 
 inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
