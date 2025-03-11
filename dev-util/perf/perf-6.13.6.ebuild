@@ -184,7 +184,8 @@ src_prepare() {
 	fi
 
 	pushd "${S_K}" >/dev/null || die
-	# Gentoo patches go here
+		# Gentoo patches go here
+		eapply "${FILESDIR}/6.13-filter-all-combinations-of-flto-for-libperl.patch"
 	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
