@@ -15,11 +15,12 @@ SLOT="1.4"
 KEYWORDS="~alpha amd64 arm arm64 ~hppa ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
 IUSE="gtk-doc"
 
+# CLOSE YOUR EYES: PANGO IS REALLY 1.42.4++
 DEPEND="
 	>=dev-cpp/cairomm-1.2.2:0[gtk-doc?,${MULTILIB_USEDEP}]
 	>=dev-cpp/glibmm-2.48.0:2[gtk-doc?,${MULTILIB_USEDEP}]
 	dev-libs/libsigc++:2[gtk-doc?,${MULTILIB_USEDEP}]
-	<x11-libs/pango-1.50.0[${MULTILIB_USEDEP}]
+	=x11-libs/pango-1.50.0[${MULTILIB_USEDEP}]
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
