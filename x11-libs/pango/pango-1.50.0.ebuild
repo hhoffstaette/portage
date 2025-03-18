@@ -8,7 +8,10 @@ inherit gnome2 multilib-minimal toolchain-funcs
 
 DESCRIPTION="Internationalized text layout and rendering library"
 HOMEPAGE="https://www.pango.org/"
-SRC_URI+=" https://dev.gentoo.org/~leio/distfiles/${P}-patchset.tar.xz"
+
+REAL_V="1.42.4"
+SRC_URI="http://ftp.gnome.org/pub/GNOME/sources/pango/$(ver_cut 1-2)/${PN}-${REAL_V}.tar.xz"
+SRC_URI+=" https://dev.gentoo.org/~leio/distfiles/${PN}-${REAL_V}-patchset.tar.xz"
 
 LICENSE="LGPL-2+ FTL"
 SLOT="0"
@@ -41,15 +44,20 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=(
-	"${WORKDIR}"/patches/ # bug fix cherry-picks from master by 20190216; each patch has commit id of origin/master included and will be part of 1.43.1/1.44
-	"${FILESDIR}"/${PV}-CVE-2019-1010238.patch
+	# bug fix cherry-picks from master by 20190216;
+	# each patch has commit id of origin/master included and
+	# will be part of 1.44
+	"${WORKDIR}"/patches/
+	"${FILESDIR}"/${REAL_V}-CVE-2019-1010238.patch
 )
+
+S="${WORKDIR}/${PN}-${REAL_V}"
 
 src_prepare() {
 	gnome2_src_prepare
 	# This should be updated if next release fails to pre-generate the manpage as well, or src_prepare removed if is properly generated
 	# https://gitlab.gnome.org/GNOME/pango/issues/270
-	cp -v "${FILESDIR}"/${PV}-pango-view.1.in "${S}/utils/pango-view.1.in" || die
+	cp -v "${FILESDIR}"/${REAL_V}-pango-view.1.in "${S}/utils/pango-view.1.in" || die
 }
 
 multilib_src_configure() {
