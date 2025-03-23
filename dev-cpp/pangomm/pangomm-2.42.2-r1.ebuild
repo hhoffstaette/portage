@@ -12,7 +12,8 @@ HOMEPAGE="https://www.gtkmm.org"
 
 LICENSE="LGPL-2.1+"
 SLOT="1.4"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
+# HIC SUNT DRACONES
+#KEYWORDS="~alpha amd64 arm arm64 ~hppa ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
 IUSE="gtk-doc"
 
 # CLOSE YOUR EYES: PANGO IS REALLY 1.42.4++
