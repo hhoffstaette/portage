@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {15..19} )
+LLVM_COMPAT=( {16..20} )
 
 inherit cmake linux-info llvm-r1
 
@@ -22,7 +22,7 @@ LICENSE="Apache-2.0"
 SLOT="0"
 
 KEYWORDS="~amd64 ~arm64 ~x86"
-IUSE="lldb pcap test systemd"
+IUSE="pcap test systemd"
 
 # lots of fixing needed
 RESTRICT="test"
@@ -31,7 +31,6 @@ RDEPEND="
 	>=dev-libs/libbpf-1.5:=
 	>=dev-util/bcc-0.25.0:=
 	$(llvm_gen_dep '
-		lldb? ( =llvm-core/lldb-${LLVM_SLOT}* )
 		llvm-core/clang:${LLVM_SLOT}=
 		llvm-core/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
 	')
@@ -50,6 +49,7 @@ BDEPEND="
 	app-arch/xz-utils
 	app-alternatives/lex
 	app-alternatives/yacc
+	dev-libs/cereal
 	test? (
 		app-editors/vim-core
 		dev-util/pahole
@@ -60,7 +60,6 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
-	"${FILESDIR}/bpftrace-0.21.3-odr.patch"
 )
 
 pkg_pretend() {
@@ -78,8 +77,6 @@ pkg_pretend() {
 
 src_configure() {
 	local mycmakeargs=(
-		# prevent automagic lldb use
-		$(cmake_use_find_package lldb LLDB)
 		# DO NOT build the internal libs as shared
 		-DBUILD_SHARED_LIBS=OFF
 		# DO dynamically link the bpftrace executable
