@@ -45,9 +45,11 @@ BDEPEND="
 "
 
 PATCHES=(
+	# restore "Open in New Window" menu entry
+	"${FILESDIR}/4.17.1-restore-open-new-window.patch"
 	# https://bugs.gentoo.org/904054
 	# https://gitlab.xfce.org/xfce/xfdesktop/-/commit/84e087b6f36a06d4db503d6aec4bef415b4b5df2
-	"${FILESDIR}/${P}-no-wayland.patch"
+	"${FILESDIR}/4.19.0-no-wayland.patch"
 )
 
 src_configure() {
