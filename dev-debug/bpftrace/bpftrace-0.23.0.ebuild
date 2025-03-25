@@ -75,6 +75,15 @@ pkg_pretend() {
 	check_extra_config
 }
 
+src_prepare() {
+	# 0.23 still has LLDB support, but apparently it's problematic,
+	# deprecated and already gone on master.
+	# Remove the configuration check.
+	sed -i "/find_package(LLDB)/d" CMakeLists.txt || die
+
+	cmake_src_prepare
+}
+
 src_configure() {
 	local mycmakeargs=(
 		# DO NOT build the internal libs as shared
