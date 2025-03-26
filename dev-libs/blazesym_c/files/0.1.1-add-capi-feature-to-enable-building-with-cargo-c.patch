@@ -1,4 +1,7 @@
-From 469cd07ff8e83cbed05ca3bbfce9a887efa7552f Mon Sep 17 00:00:00 2001
+
+Patch from:
+https://github.com/libbpf/blazesym/commit/32f136b06b8b71110499073909dd238e577b23d0
+
 From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
 Date: Tue, 25 Mar 2025 10:10:56 +0100
 Subject: [PATCH] capi: add capi feature to enable building with cargo-c
@@ -11,12 +14,6 @@ and more importantly because we cannot run the required custom
 cbindgen extension from cargo-c.
 
 Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
----
- capi/Cargo.toml | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/capi/Cargo.toml b/capi/Cargo.toml
-index 2c03898..27222e5 100644
 --- a/capi/Cargo.toml
 +++ b/capi/Cargo.toml
 @@ -36,6 +36,8 @@ crate-type = ["cdylib", "staticlib", "lib"]
@@ -44,6 +41,3 @@ index 2c03898..27222e5 100644
  [[bench]]
  name = "capi"
  path = "benches/capi.rs"
--- 
-2.49.0
-

@@ -14,20 +14,19 @@ declare -A GIT_CRATES=(
 	[vmlinux]='https://github.com/libbpf/vmlinux.h;a9c092aa771310bf8b00b5018f7d40a1fdb6ec82;vmlinux.h-%commit%'
 )
 
-inherit cargo
+inherit cargo edo rust-toolchain
 
-DESCRIPTION="C bindings for blazesym"
+DESCRIPTION="C bindings for blazesym, a library for address symbolization and related tasks"
 HOMEPAGE="https://github.com/libbpf/blazesym"
 SRC_URI="
 	https://github.com/libbpf/blazesym/archive/refs/tags/capi-v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/gentoo-crate-dist/blazesym/releases/download/capi-v${PV}/blazesym-capi-v${PV}-crates.tar.xz
 	${CARGO_CRATE_URIS}
 "
-if [[ ${PKGBUMPING} != ${PVR} ]]; then
-	SRC_URI+="
-		blazesym-capi-v0.1.1-crates.tar.xz
-	"
-fi
+
+# build in the capi subdirectory since cargo has no -C option:
+# https://github.com/rust-lang/cargo/issues/10098
+S="${WORKDIR}/blazesym-capi-v${PV}/capi"
 
 LICENSE="BSD"
 # Dependent crate licenses
@@ -35,6 +34,7 @@ LICENSE+="
 	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD-2 BSD Boost-1.0 ISC
 	MIT MPL-2.0 Unicode-3.0
 "
+
 SLOT="0"
 KEYWORDS="~amd64"
 
@@ -42,16 +42,11 @@ BDEPEND="
 	dev-util/cargo-c
 "
 
-# build in the capi subdirectory since cargo has no -C option:
-# https://github.com/rust-lang/cargo/issues/10098
-S="${WORKDIR}/blazesym-capi-v${PV}/capi"
-
 src_prepare() {
 	default
 
 	# make blazesym aware of cargo-c
-	# https://github.com/libbpf/blazesym/issues/1096
-	# https://github.com/lu-zero/cargo-c/issues/452
+	# https://github.com/libbpf/blazesym/pull/1098 (merged)
 	eapply -p2 "${FILESDIR}/0.1.1-add-capi-feature-to-enable-building-with-cargo-c.patch"
 }
 
@@ -61,7 +56,6 @@ src_configure() {
 		--prefix="${EPREFIX}"/usr
 		--libdir="${EPREFIX}/usr/$(get_libdir)"
 		--target="$(rust_abi)"
-		--destdir="${ED}"
 		$(usev !debug '--release')
 	)
 
@@ -69,9 +63,13 @@ src_configure() {
 }
 
 src_compile() {
-	cargo cbuild "${CARGO_ARGS[@]}" || die
+	edo cargo cbuild "${CARGO_ARGS[@]}" || die
 }
 
 src_install() {
-	cargo cinstall "${CARGO_ARGS[@]}" || die
+	CARGO_ARGS+=(
+		--destdir="${ED}"
+	)
+
+	edo cargo cinstall "${CARGO_ARGS[@]}" || die
 }
