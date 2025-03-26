@@ -20,12 +20,12 @@ DESCRIPTION="C bindings for blazesym"
 HOMEPAGE="https://github.com/libbpf/blazesym"
 SRC_URI="
 	https://github.com/libbpf/blazesym/archive/refs/tags/capi-v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-crates.tar.xz
+	https://github.com/gentoo-crate-dist/blazesym/releases/download/capi-v${PV}/blazesym-capi-v${PV}-crates.tar.xz
 	${CARGO_CRATE_URIS}
 "
 if [[ ${PKGBUMPING} != ${PVR} ]]; then
 	SRC_URI+="
-		blazesym_c-0.1.1-crates.tar.xz
+		blazesym-capi-v0.1.1-crates.tar.xz
 	"
 fi
 
