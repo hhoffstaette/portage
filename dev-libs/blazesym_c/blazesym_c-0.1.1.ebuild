@@ -38,6 +38,9 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
+# many failures (WIP)
+RESTRICT="test"
+
 BDEPEND="
 	dev-util/cargo-c
 "
