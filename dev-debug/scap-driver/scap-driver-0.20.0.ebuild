@@ -26,6 +26,8 @@ CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 # This version can be found as git tag on the same commit as the libs version.
 DRIVER_VERSION="8.0.0+driver"
 
+PATCHES=( "${FILESDIR}/0.20.0-fix-driver-and-bpf-makefile-for-kernel-6.13.patch" )
+
 src_configure() {
 	local mycmakeargs=(
 		# we will use linux-mod, so in order to make it through the cmake setup
