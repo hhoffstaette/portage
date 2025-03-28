@@ -77,7 +77,8 @@ pkg_pretend() {
 src_prepare() {
 	# manually apply patches to falcosecurity-libs
 	pushd "${WORKDIR}/libs-${LIBS_VERSION}"
-		eapply "${FILESDIR}/libs-0.20-fix-buffer-overrun-reading-sockets-from-procfs.patch" || die
+		eapply "${FILESDIR}/libs-0.20.0-fix-buffer-overrun-reading-sockets-from-procfs.patch" || die
+		eapply "${FILESDIR}/libs-0.20.0-fix-driver-and-bpf-makefile-for-kernel-6.13.patch" || die
 	popd
 
 	# do not build with debugging info
