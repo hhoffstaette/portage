@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,19 +6,17 @@ EAPI=8
 # Uncomment when introducing a patch which touches configure
 RSYNC_NEEDS_AUTOCONF=1
 PYTHON_COMPAT=( python3_{10..13} )
-
 inherit flag-o-matic prefix python-single-r1 systemd
 
 DESCRIPTION="File transfer program to keep remote files into sync"
 HOMEPAGE="https://rsync.samba.org/"
-
 if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/WayneD/rsync.git"
-	inherit git-r3
+	inherit autotools git-r3
 
 	REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 else
-	VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/waynedavison.asc
+	VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/andrewtridgell.asc
 	inherit verify-sig
 
 	if [[ -n ${RSYNC_NEEDS_AUTOCONF} ]] ; then
@@ -75,14 +73,15 @@ if [[ ${PV} == *9999 ]] ; then
 			dev-python/commonmark[${PYTHON_USEDEP}]
 		')"
 else
-	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-waynedavison )"
+	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-andrewtridgell )"
 fi
 
-PATCHES=(
+ PATCHES=(
 	"${FILESDIR}"/3.2.7-buffer-size.patch
 	"${FILESDIR}"/3.2.7-fix-runtime-AVX2-detection.patch
 	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
+	"${FILESDIR}"/3.4.1-c23.patch
 )
 
 pkg_setup() {
@@ -95,6 +94,8 @@ pkg_setup() {
 
 src_prepare() {
 	default
+
+	sed -i -e 's/AC_HEADER_MAJOR_FIXED/AC_HEADER_MAJOR/' configure.ac
 
 	if [[ ${PV} == *9999 || -n ${RSYNC_NEEDS_AUTOCONF} ]] ; then
 		eaclocal -I m4
@@ -130,11 +131,6 @@ src_configure() {
 		$(use_enable zstd)
 	)
 
-	if use elibc_glibc && [[ "${ARCH}" == "amd64" ]] ; then
-		# only enable hand-rolled AVX2 on x64
-		myeconfargs+=( --enable-roll-asm )
-	fi
-
 	# https://github.com/WayneD/rsync/pull/428
 	if is-flagq -fsanitize=undefined ; then
 		sed -E -i \
@@ -155,7 +151,7 @@ src_install() {
 	dodoc NEWS.md README.md TODO tech_report.tex
 
 	insinto /etc
-	newins "${FILESDIR}"/rsyncd.conf-3.0.9-r1 rsyncd.conf
+	newins "${FILESDIR}"/rsyncd.conf-3.2.7-r5 rsyncd.conf
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/rsyncd.logrotate rsyncd
