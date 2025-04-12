@@ -1,0 +1,14 @@
+
+https://github.com/RsyncProject/rsync/issues/624
+
+--- a/syscall.c
++++ b/syscall.c
+@@ -592,7 +592,7 @@ int do_utime(const char *path, STRUCT_STAT *stp)
+ 
+ #ifdef SUPPORT_PREALLOCATION
+ #ifdef FALLOC_FL_KEEP_SIZE
+-#define DO_FALLOC_OPTIONS FALLOC_FL_KEEP_SIZE
++#define DO_FALLOC_OPTIONS 0
+ #else
+ #define DO_FALLOC_OPTIONS 0
+ #endif

@@ -83,6 +83,7 @@ fi
 	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
 	"${FILESDIR}"/3.4.1-c23.patch
+	"${FILESDIR}"/3.4.1-fallocate-nfs-compat.patch
 )
 
 pkg_setup() {
