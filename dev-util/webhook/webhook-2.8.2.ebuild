@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -22,7 +22,7 @@ fi
 LICENSE="Apache-2.0 BSD-2 BSD MIT"
 SLOT="0"
 
-BDEPEND=">=dev-lang/go-1.13"
+BDEPEND=">=dev-lang/go-1.23"
 RESTRICT="test" # hardcoded paths, plus go extra dependencies not included in tarball
 
 DOCS=(
