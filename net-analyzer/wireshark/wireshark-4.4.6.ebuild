@@ -23,7 +23,7 @@ else
 	S="${WORKDIR}/${P/_/}"
 
 	if [[ ${PV} != *_rc* ]] ; then
-		KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
+		KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~loong ~ppc64 ~riscv ~x86"
 	fi
 fi
 
@@ -119,7 +119,6 @@ fi
 
 PATCHES=(
 	"${FILESDIR}/4.4.4-fix-skipping-rawshark-tests-on-big-endian.patch"
-	"${FILESDIR}/4.4.5-drop-invalid-malloc-attribute.patch"
 )
 
 python_check_deps() {
@@ -232,9 +231,7 @@ src_configure() {
 		-DENABLE_ZSTD=$(usex zstd)
 	)
 
-	if tc-is-lto; then
-		mycmakeargs+=( -DENABLE_LTO=ON )
-	fi
+	tc-is-lto && mycmakeargs+=( -DENABLE_LTO=ON )
 
 	cmake_src_configure
 }
