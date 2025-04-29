@@ -49,11 +49,6 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-PATCHES=(
-	"${FILESDIR}/1.9.8-quiche-0.23.patch"
-	"${FILESDIR}/1.9.8-fix-compat-with-boost-lockfree-1.87.0.patch"
-)
-
 src_prepare() {
 	default
 
