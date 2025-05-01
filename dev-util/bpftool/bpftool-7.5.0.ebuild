@@ -88,6 +88,9 @@ src_prepare() {
 	# remove hardcoded/unhelpful flags from bpftool
 	sed -i -e '/CFLAGS += -O2/d' -e 's/-W //g' -e 's/-Wextra //g' src/Makefile || die
 
+	# always build bpf bits with std=gnu11 for kernel compatibility (bug 955156)
+	sed -i 's/-fno-stack-protector/& -std=gnu11/g' src/Makefile || die
+
 	if ! use clang; then
 		# remove bpf target & add assembly annotations to fix CO-RE feature detection
 		sed -i -e 's/-target bpf/-dA/' src/Makefile.feature || die
