@@ -21,7 +21,7 @@ DEPEND="sys-libs/zlib
 	dev-libs/jansson
 	afs? ( net-fs/openafs )
 	clamav? ( app-antivirus/clamav )
-	http? ( dev-libs/libxml2 dev-libs/libical )
+	http? ( dev-libs/libxml2:= dev-libs/libical )
 	kerberos? ( virtual/krb5 )
 	mysql? ( >=virtual/mysql-5.5 )
 	nntp? ( !net-nntp/leafnode )
