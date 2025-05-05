@@ -36,7 +36,7 @@ RDEPEND="
 "
 BDEPEND="
 	${PYTHON_DEPS}
-	dev-libs/libxml2:2
+	dev-libs/libxml2:2=
 	dev-util/glib-utils
 	>=sys-devel/gettext-0.19.8
 	virtual/pkgconfig

@@ -41,7 +41,7 @@ RDEPEND="${DEPEND}
 "
 BDEPEND="
 	${PYTHON_DEPS}
-	dev-libs/libxml2:2
+	dev-libs/libxml2:2=
 	dev-util/glib-utils
 	gtk-doc? ( dev-util/gi-docgen )
 	>=sys-devel/gettext-0.19.8
