@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -23,6 +23,8 @@ REQUIRED_USE="
 SRC_URI="https://gitlab.gnome.org/GNOME/${PN}/-/archive/${PV}/${P}.tar.bz2"
 
 DEPEND="
+	app-accessibility/at-spi2-core:2
+	x11-libs/gdk-pixbuf:2
 	>=x11-libs/gtk+-3.24.22:3[introspection?]
 	>=x11-libs/cairo-1.0
 	>=dev-libs/fribidi-1.0.0
@@ -41,7 +43,6 @@ RDEPEND="${DEPEND}
 "
 BDEPEND="
 	${PYTHON_DEPS}
-	dev-libs/libxml2:2=
 	dev-util/glib-utils
 	gtk-doc? ( dev-util/gi-docgen )
 	>=sys-devel/gettext-0.19.8
