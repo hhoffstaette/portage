@@ -34,6 +34,12 @@ BDEPEND="sys-apps/texinfo"
 PATCHES=(
 	"${FILESDIR}"/5.0.0-uninit-variable.patch
 	"${FILESDIR}"/5.0.0-utmp-musl.patch
+	"${FILESDIR}"/5.0.0-0001-logfile-reintroduce-lf_secreopen-to-fix-CVE-2025-233.patch
+	"${FILESDIR}"/5.0.0-0002-default-PTY-mode-apply-safe-default-mode-of-0620-to-.patch
+	"${FILESDIR}"/5.0.0-0003-attacher.c-fix-bad-strncpy-which-can-lead-to-a-buffe.patch
+	"${FILESDIR}"/5.0.0-0004-attacher.c-prevent-temporary-0666-mode-on-PTYs-to-fi.patch
+	"${FILESDIR}"/5.0.0-0005-Avoid-file-existence-test-information-leaks-to-fix-C.patch
+	"${FILESDIR}"/5.0.0-0006-socket.c-don-t-send-signals-with-root-privileges-to-.patch
 )
 
 src_prepare() {
@@ -112,8 +118,8 @@ src_install() {
 		local tmpfiles_group="root"
 		newtmpfiles - screen.conf <<<"d /run/screen ${tmpfiles_perms} root ${tmpfiles_group}"
 	else
-		fowners root:utmp /usr/bin/${P}
-		fperms 2755 /usr/bin/${P}
+		# undo suid bit after default installation
+		fperms -s /usr/bin/${P}
 	fi
 
 	insinto /usr/share/${PN}
