@@ -3,8 +3,8 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {16..19} )
-PYTHON_COMPAT=( python3_{11..13} python3_13t)
+LLVM_COMPAT=( {16..20} )
+PYTHON_COMPAT=( python3_{{11..14},13t,14t} )
 inherit bash-completion-r1 estack flag-o-matic linux-info llvm-r1 toolchain-funcs python-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
