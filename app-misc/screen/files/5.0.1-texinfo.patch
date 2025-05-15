@@ -1,0 +1,13 @@
+Bug: https://savannah.gnu.org/bugs/index.php?67126
+
+--- a/doc/screen.texinfo~	2025-05-12 16:19:03.000000000 +0200
++++ b/doc/screen.texinfo	2025-05-15 11:49:15.648135621 +0200
+@@ -5940,7 +5940,7 @@ of @code{Screen} which you are using.  A
+ hardware and operating system, the compiler used to compile, a
+ description of the bug behavior, and the conditions that triggered the
+ bug. In case of security issue please send an mail to
+-@w{@samp{alexander_naumov@opensuse.org}}.
++@w{@samp{alexander_naumov@@opensuse.org}}.
+ 
+ @node Availability,  , Reporting Bugs, Bugs
+ @section Availability

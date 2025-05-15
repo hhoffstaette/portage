@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -32,14 +32,8 @@ RDEPEND="${DEPEND}
 BDEPEND="sys-apps/texinfo"
 
 PATCHES=(
-	"${FILESDIR}"/5.0.0-uninit-variable.patch
 	"${FILESDIR}"/5.0.0-utmp-musl.patch
-	"${FILESDIR}"/5.0.0-0001-logfile-reintroduce-lf_secreopen-to-fix-CVE-2025-233.patch
-	"${FILESDIR}"/5.0.0-0002-default-PTY-mode-apply-safe-default-mode-of-0620-to-.patch
-	"${FILESDIR}"/5.0.0-0003-attacher.c-fix-bad-strncpy-which-can-lead-to-a-buffe.patch
-	"${FILESDIR}"/5.0.0-0004-attacher.c-prevent-temporary-0666-mode-on-PTYs-to-fi.patch
-	"${FILESDIR}"/5.0.0-0005-Avoid-file-existence-test-information-leaks-to-fix-C.patch
-	"${FILESDIR}"/5.0.0-0006-socket.c-don-t-send-signals-with-root-privileges-to-.patch
+	"${FILESDIR}"/5.0.1-texinfo.patch
 )
 
 src_prepare() {
