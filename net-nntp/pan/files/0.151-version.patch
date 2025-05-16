@@ -1,0 +1,11 @@
+--- pan-v0.151/pan/data-impl/groups.cc~	2022-06-25 17:43:21.000000000 +0200
++++ pan-v0.151/pan/data-impl/groups.cc	2025-05-16 17:45:02.029377689 +0200
+@@ -82,7 +82,7 @@ namespace
+ }
+ 
+ // detect std::lib
+-#include <ciso646>
++#include <version>
+ #ifdef _LIBCPP_VERSION
+ // using libc++
+ #include <algorithm>

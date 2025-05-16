@@ -37,12 +37,24 @@ S="${WORKDIR}/${PN}-v${PV}"
 PATCHES=(
 	"${FILESDIR}/0.151-fix-C++11-deprecation-warnings.patch"
 	"${FILESDIR}/0.151-prototypes.patch"
+	"${FILESDIR}/0.151-version.patch"
 )
+
+src_prepare() {
+	default
+
+	# fix gettext macros to work with >=0.23 (bug #946128)
+	# eautoreconf will call autopoint, which will install any necessary files
+	# from the version we set in configure.ac
+	local gettext_version=$(gettextize --version | awk '/GNU gettext-tools/{print $NF}' || die)
+	sed -i "s/^AM_GNU_GETTEXT_VERSION(.*)/AM_GNU_GETTEXT_VERSION([${gettext_version}])/g" configure.ac || die
+}
 
 src_configure() {
 	# Wait for webkitgtk4 support
 	# gtk3 support is still not ready (follow what Fedora does)
 	NOCONFIGURE=1 ./autogen.sh
+
 	gnome2_src_configure \
 		--with-gtk2 \
 		--without-webkit \
