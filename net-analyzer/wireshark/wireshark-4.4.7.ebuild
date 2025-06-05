@@ -45,7 +45,7 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	acct-group/pcap
 	>=dev-libs/glib-2.50.0:2
-	dev-libs/libpcre2:=
+	dev-libs/libpcre2
 	>=net-dns/c-ares-1.13.0:=
 	>=dev-libs/libgcrypt-1.8.0:=
 	media-libs/speexdsp
