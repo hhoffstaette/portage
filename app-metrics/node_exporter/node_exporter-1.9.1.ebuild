@@ -5,46 +5,73 @@ EAPI=8
 
 inherit go-module systemd
 
-MY_PV="v${PV/_rc/-rc.}"
-
-NODE_EXPORTER_COMMIT=f2ec547b49af53815038a50265aa2adcd1275959
-
 DESCRIPTION="Prometheus exporter for machine metrics"
 HOMEPAGE="https://github.com/prometheus/node_exporter"
-RESTRICT="mirror"
 
-SRC_URI="https://github.com/prometheus/node_exporter/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
-		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+if [[ ${PV} == 9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/prometheus/node_exporter.git"
+else
+	SRC_URI="https://github.com/prometheus/node_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI+=" https://github.com/rahilarious/gentoo-distfiles/releases/download/${P}/deps.tar.xz -> ${P}-deps.tar.xz"
 
-LICENSE="Apache-2.0 BSD BSD-2 MIT"
+	KEYWORDS="amd64 arm64 ~loong ~riscv ~x86"
+fi
+
+# main pkg
+LICENSE="Apache-2.0"
+# deps
+LICENSE+=" BSD BSD-2 MIT"
 SLOT="0"
-KEYWORDS="amd64 arm64"
+IUSE="selinux"
 
-CDEPEND="acct-group/node_exporter
-	acct-user/node_exporter"
-BDEPEND=">=dev-util/promu-0.3.0
-	${CDEPEND}"
-RDEPEND="${CDEPEND}"
+COMMON_DEPEND="
+	acct-group/node_exporter
+	acct-user/node_exporter
+	selinux? ( sec-policy/selinux-node_exporter )
+"
+DEPEND="${COMMON_DEPEND}"
+RDEPEND="${COMMON_DEPEND}"
+BDEPEND=">=dev-util/promu-0.17.0"
 
-S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
+src_unpack() {
+	if [[ ${PV} == 9999* ]]; then
+		git-r3_src_unpack
+		go-module_live_vendor
+	else
+		default
+	fi
+}
 
 src_prepare() {
+	[[ ${PV} != 9999* ]] && { ln -sv ../vendor ./ || die ; }
 	default
-	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" .promu.yml || die
-	sed -i -e "s/{{.Revision}}/${NODE_EXPORTER_COMMIT}/" .promu-cgo.yml || die
 }
 
 src_compile() {
-	mkdir -p bin || die
-	promu build -v --prefix node_exporter || die
+	if use x86; then
+		#917577 pie breaks build on x86
+		GOFLAGS=${GOFLAGS//-buildmode=pie}
+	fi
+	promu build -v --cgo || die
+	./"${PN}" --help-man > "${PN}".1 || die
+}
+
+src_test() {
+	emake test-flags= test
 }
 
 src_install() {
-	dosbin node_exporter/node_exporter
-	dodoc {README,CHANGELOG,CONTRIBUTING}.md
-	systemd_dounit "${FILESDIR}"/node_exporter.service
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
+	dosbin "${PN}"
+	dodoc example-rules.yml *.md
+	doman "${PN}".1
+	systemd_dounit examples/systemd/node_exporter.{service,socket}
+	insinto /etc/sysconfig
+	newins examples/systemd/sysconfig.node_exporter node_exporter
+	newinitd "${FILESDIR}"/${PN}.initd-1 ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	keepdir /var/lib/node_exporter /var/log/node_exporter
-	fowners ${PN}:${PN} /var/lib/node_exporter /var/log/node_exporter
+	insinto /etc/logrotate.d
+	newins "${FILESDIR}"/node_exporter-1.7.0.logrotate "${PN}"
+	keepdir /var/lib/node_exporter/textfile_collector /var/log/node_exporter
+	fowners -R ${PN}:${PN} /var/lib/node_exporter /var/log/node_exporter
 }
