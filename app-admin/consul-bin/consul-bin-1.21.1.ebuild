@@ -15,7 +15,7 @@ LICENSE="BUSL-1.1"
 SLOT="0"
 KEYWORDS="amd64"
 
-RESTRICT="strip test"
+RESTRICT="test"
 
 BDEPEND="app-arch/unzip"
 
