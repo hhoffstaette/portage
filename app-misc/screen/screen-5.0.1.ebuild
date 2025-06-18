@@ -21,6 +21,8 @@ fi
 LICENSE="GPL-3+"
 SLOT="0"
 IUSE="debug pam selinux utempter multiuser"
+# bug #956963
+RESTRICT="test"
 
 DEPEND=">=sys-libs/ncurses-5.2:=
 	virtual/libcrypt:=
