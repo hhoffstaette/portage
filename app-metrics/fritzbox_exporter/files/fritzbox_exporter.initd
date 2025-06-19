@@ -1,8 +1,8 @@
 #!/sbin/openrc-run
-# Copyright 2016-2018 Gentoo Foundation
+# Copyright 2016-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-description="Prometheus fritzbox metrics exporter"
+description="Prometheus Fritz!Box metrics exporter"
 pidfile=${pidfile:-"/run/${RC_SVCNAME}.pid"}
 user=${user:-${RC_SVCNAME}}
 group=${group:-${RC_SVCNAME}}
@@ -13,5 +13,5 @@ command_background="true"
 start_stop_daemon_args="--user ${user} --group ${group}"
 
 depend() {
-	after net
+	after net-online
 }

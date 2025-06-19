@@ -1,2 +1,2 @@
-# arguments for prometheus fritzbox exporter
-command_args=""
+# arguments for Prometheus Fritz!Box exporter
+command_args="-gateway-address fritz.box"
