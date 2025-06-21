@@ -7,19 +7,29 @@ inherit go-module
 
 DESCRIPTION="APC UPS statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/mdlayher/apcupsd_exporter"
-KEYWORDS="amd64"
-LICENSE="MIT"
-SLOT="0"
-
-DEPEND="acct-group/apcupsd_exporter
-		acct-user/apcupsd_exporter"
 
 SRC_URI="https://github.com/mdlayher/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
+LICENSE="MIT"
+SLOT="0"
+KEYWORDS="amd64"
+IUSE="test"
+
+DEPEND="acct-group/apcupsd_exporter
+		acct-user/apcupsd_exporter"
+
+RESTRICT="!test? ( test )"
+
 src_compile() {
+	# the binary resides in the cmd subdirectory
 	cd cmd/${PN} || die
 	ego build
+}
+
+src_test() {
+	# tests need to be run from the build root
+	ego test
 }
 
 src_install() {
