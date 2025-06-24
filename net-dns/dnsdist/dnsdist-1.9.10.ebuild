@@ -5,7 +5,7 @@ EAPI=8
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 
-inherit flag-o-matic lua-single
+inherit autotools flag-o-matic lua-single
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://www.dnsdist.org/index.html"
@@ -45,15 +45,21 @@ RDEPEND="acct-group/dnsdist
 	xdp? ( net-libs/xdp-tools )
 	${LUA_DEPS}
 "
-
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
+
+pkg_setup() {
+	lua-single_pkg_setup
+}
 
 src_prepare() {
 	default
 
 	# clean up duplicate file
 	rm -f README.md
+
+	# upstream recommends running autoreconf
+	eautoreconf
 }
 
 src_configure() {
@@ -66,10 +72,10 @@ src_configure() {
 
 	local myeconfargs=(
 		--sysconfdir=/etc/dnsdist
-		--with-lua="${ELUA}"
-		--without-h2o
 		--enable-tls-providers
+		--with-lua="${ELUA}"
 		--without-gnutls
+		--without-h2o
 		$(use_with bpf ebpf)
 		$(use_with cdb cdb)
 		$(use_enable doh dns-over-https)
