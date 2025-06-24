@@ -10,11 +10,11 @@ HOMEPAGE="https://www.consul.io"
 
 MY_PN="${PN/-bin/}"
 SRC_URI="https://releases.hashicorp.com/consul/${PV}/${MY_PN}_${PV}_linux_amd64.zip"
+S=${WORKDIR}
 
 LICENSE="BUSL-1.1"
 SLOT="0"
 KEYWORDS="amd64"
-
 RESTRICT="test"
 
 BDEPEND="app-arch/unzip"
@@ -24,8 +24,6 @@ DEPEND="
 	acct-user/consul"
 
 RDEPEND="!app-admin/consul"
-
-S=${WORKDIR}
 
 src_install() {
 	local x
