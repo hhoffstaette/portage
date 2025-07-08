@@ -12,13 +12,13 @@ DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://www.dnsdist.org/index.html"
 SRC_URI="https://downloads.powerdns.com/releases/${P/_/-}.tar.xz"
 
-# 2.0-beta only
+# 2.0-dev only
 S="${WORKDIR}/${P/_/-}"
 
 LICENSE="GPL-2"
 SLOT="0"
 
-# KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~x86"
 
 IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
 RESTRICT="!test? ( test )"
