@@ -10,18 +10,13 @@ inherit autotools flag-o-matic lua-single python-any-r1
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://www.dnsdist.org/index.html"
-SRC_URI="https://downloads.powerdns.com/releases/${P/_/-}.tar.xz"
-
-# 2.0-dev only
-S="${WORKDIR}/${P/_/-}"
-
+SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
 LICENSE="GPL-2"
 SLOT="0"
-
 KEYWORDS="~amd64 ~x86"
-
 IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
 RESTRICT="!test? ( test )"
+
 REQUIRED_USE="${LUA_REQUIRED_USE}
 		dnscrypt? ( ssl )
 		doh? ( ssl )
