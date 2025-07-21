@@ -27,5 +27,7 @@ src_install() {
 	insinto /opt/${MY_PN}
 	doins -r *.md lib bin
 	dosym ../opt/${MY_PN}/bin/asprof /opt/bin/asprof
-	fperms 0755 /opt/${MY_PN}/bin/asprof /opt/${MY_PN}/lib/libasyncProfiler.so
+	dosym ../opt/${MY_PN}/bin/jfrconv /opt/bin/jfrconv
+	fperms 0755 /opt/${MY_PN}/bin/asprof /opt/${MY_PN}/bin/jfrconv
+	fperms 0755 /opt/${MY_PN}/lib/libasyncProfiler.so
 }
