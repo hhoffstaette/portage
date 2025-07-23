@@ -6,7 +6,6 @@ EAPI=8
 inherit systemd
 
 MY_PN=${PN/-bin/}
-MY_PV=${PV/_beta/-beta}
 
 DESCRIPTION="Gorgeous metric viz, dashboards & editors for Graphite, InfluxDB & OpenTSDB"
 HOMEPAGE="https://grafana.org"
@@ -15,11 +14,11 @@ amd64? (
 	https://dl.grafana.com/oss/release/grafana-${PV}.linux-amd64.tar.gz -> ${P}.amd64.tar.gz
 )
 "
-S=${WORKDIR}/${MY_PN}-v${MY_PV}
+S=${WORKDIR}/${MY_PN}-v${PV}
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="-* amd64"
+KEYWORDS="amd64"
 RESTRICT="mirror"
 
 DEPEND="acct-group/grafana
