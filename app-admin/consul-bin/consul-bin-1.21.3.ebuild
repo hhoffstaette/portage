@@ -15,7 +15,7 @@ S=${WORKDIR}
 LICENSE="BUSL-1.1"
 SLOT="0"
 KEYWORDS="amd64"
-RESTRICT="test"
+RESTRICT+=" test"
 
 BDEPEND="app-arch/unzip"
 
