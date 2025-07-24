@@ -5,16 +5,20 @@ EAPI=8
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 PYTHON_COMPAT=( python3_{11..14} )
+RUST_MIN_VER=1.85.1
+RUST_OPTIONAL=1
 
-inherit autotools flag-o-matic lua-single python-any-r1
+inherit cargo flag-o-matic lua-single python-any-r1
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://www.dnsdist.org/index.html"
-SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
+SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz
+	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
+
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp"
+IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp yaml"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${LUA_REQUIRED_USE}
@@ -48,11 +52,13 @@ RDEPEND="acct-group/dnsdist
 DEPEND="${RDEPEND}"
 BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
 	virtual/pkgconfig
+	yaml? ( ${RUST_DEPEND} )
 "
 
 pkg_setup() {
 	lua-single_pkg_setup
 	python-any-r1_pkg_setup
+	rust_pkg_setup
 }
 
 python_check_deps() {
@@ -64,9 +70,10 @@ src_prepare() {
 
 	# clean up duplicate file
 	rm -f README.md
+}
 
-	# upstream recommends running autoreconf
-	eautoreconf
+src_compile() {
+	emake
 }
 
 src_configure() {
@@ -80,7 +87,6 @@ src_configure() {
 	local myeconfargs=(
 		--sysconfdir=/etc/dnsdist
 		--enable-tls-providers
-		--enable-yaml=no
 		--with-lua="${ELUA}"
 		--without-gnutls
 		--without-h2o
@@ -91,14 +97,15 @@ src_configure() {
 		$(use_enable dnscrypt)
 		$(use_enable dnstap)
 		$(use_enable ipcipher)
-		$(use_with lmdb )
+		$(use_with lmdb)
 		$(use_enable quic dns-over-quic)
 		$(use_with regex re2)
 		$(use_with snmp net-snmp)
 		$(use_enable ssl dns-over-tls)
-		$(use_enable systemd) \
+		$(use_enable systemd)
 		$(use_enable test unit-tests)
 		$(use_with xdp xsk)
+		$(use_enable yaml)
 	)
 
 	econf "${myeconfargs[@]}"
