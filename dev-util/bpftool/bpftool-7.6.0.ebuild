@@ -36,7 +36,7 @@ else
 		S="${WORKDIR}/bpftool-libbpf-v${PV}-sources"
 	fi
 
-	KEYWORDS="amd64 arm arm64 ~loong ppc ppc64 ~riscv x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 fi
 
 LICENSE="|| ( GPL-2 BSD-2 )"
@@ -64,8 +64,6 @@ BDEPEND="
 "
 
 CONFIG_CHECK="~DEBUG_INFO_BTF"
-
-PATCHES=( "${FILESDIR}/7.5.0-setting-error-code-in-do_loader.patch" )
 
 pkg_setup() {
 	python-any-r1_pkg_setup
