@@ -3,8 +3,8 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {16..20} )
-PYTHON_COMPAT=( python3_{{11..14},13t,14t} )
+LLVM_COMPAT=( {18..20} )
+PYTHON_COMPAT=( python3_{10..14} python3_{13,14}t)
 inherit bash-completion-r1 estack flag-o-matic linux-info llvm-r1 toolchain-funcs python-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
@@ -49,6 +49,7 @@ BDEPEND="
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	app-alternatives/yacc
 	app-alternatives/lex
+	sys-apps/which
 	virtual/pkgconfig
 	doc? (
 		app-text/asciidoc
@@ -183,9 +184,9 @@ src_prepare() {
 		popd || die
 	fi
 
-	#pushd "${S_K}" >/dev/null || die
-	#	# Gentoo patches go here
-	#popd || die
+	pushd "${S_K}" >/dev/null || die
+	# Gentoo patches go here
+	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
 	# Makefile in general
