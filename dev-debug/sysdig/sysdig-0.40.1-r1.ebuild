@@ -79,6 +79,7 @@ src_prepare() {
 	pushd "${WORKDIR}/libs-${LIBS_VERSION}"
 		eapply "${FILESDIR}/libs-0.20.0-fix-buffer-overrun-reading-sockets-from-procfs.patch" || die
 		eapply "${FILESDIR}/libs-0.20.0-fix-driver-and-bpf-makefile-for-kernel-6.13.patch" || die
+		eapply "${FILESDIR}/libs-0.20.0-fix-INET6_ADDRSTRLEN-buffer-size.patch" || die
 	popd
 
 	# do not build with debugging info
