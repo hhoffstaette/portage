@@ -108,9 +108,15 @@ src_configure() {
 	econf "${myeconfargs[@]}"
 }
 
-# override otherwise automagic cargo_src_compile
+# explicitly implement src_compile/test to override the
+# otherwise automagic cargo_src_compile/test phases
+
 src_compile() {
 	emake
+}
+
+src_test() {
+	emake check
 }
 
 src_install() {
