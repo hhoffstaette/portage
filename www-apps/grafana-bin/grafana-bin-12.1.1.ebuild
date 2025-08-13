@@ -9,12 +9,13 @@ MY_PN=${PN/-bin/}
 
 DESCRIPTION="Gorgeous metric viz, dashboards & editors for Graphite, InfluxDB & OpenTSDB"
 HOMEPAGE="https://grafana.org"
+
+# check https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1&edition=oss
 SRC_URI="
-amd64? (
-	https://dl.grafana.com/oss/release/grafana-${PV}.linux-amd64.tar.gz -> ${P}.amd64.tar.gz
-)
+	amd64? ( https://dl.grafana.com/grafana/release/12.1.1/grafana_12.1.1_16903967602_linux_amd64.tar.gz )
 "
-S=${WORKDIR}/${MY_PN}-v${PV}
+
+S=${WORKDIR}/${MY_PN}-${PV}
 
 LICENSE="AGPL-3"
 SLOT="0"
