@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{{11..14},13t,14t}  )
-LLVM_COMPAT=( {15..20} )
+LLVM_COMPAT=( {15..21} )
 
 inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
@@ -68,6 +68,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
 	"${FILESDIR}/bcc-0.31.0-no-uapi-for-external-libbpf.patch"
+	"${FILESDIR}/bcc-0.35.0-llvm21.patch"
 )
 
 pkg_pretend() {
