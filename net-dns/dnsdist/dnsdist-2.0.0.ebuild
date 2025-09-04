@@ -59,7 +59,7 @@ BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
 pkg_setup() {
 	lua-single_pkg_setup
 	python-any-r1_pkg_setup
-	rust_pkg_setup
+	use yaml && rust_pkg_setup
 }
 
 python_check_deps() {
