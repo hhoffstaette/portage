@@ -1,0 +1,20 @@
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Mon, 8 Sep 2025 14:57:32 +0200
+Subject: [PATCH] jit: fix build with LLVM-21
+
+LLVM-21 renamed llvm::GlobalValue::getGUID() to
+getGUIDAssumingExternalLinkage(), so add a version guard.
+--- a/src/backend/jit/llvm/llvmjit_inline.cpp
++++ b/src/backend/jit/llvm/llvmjit_inline.cpp
+@@ -238,7 +238,11 @@ llvm_build_inline_plan(LLVMContextRef lc, llvm::Module *mod)
+ 
+ 		llvm_split_symbol_name(symbolName.data(), &cmodname, &cfuncname);
+ 
++#if LLVM_VERSION_MAJOR < 21
+ 		funcGUID = llvm::GlobalValue::getGUID(cfuncname);
++#else
++		funcGUID = llvm::GlobalValue::getGUIDAssumingExternalLinkage(cfuncname);
++#endif
+ 
+ 		/* already processed */
+ 		if (inlineState.processed)
