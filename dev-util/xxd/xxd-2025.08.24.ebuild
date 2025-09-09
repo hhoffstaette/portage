@@ -5,10 +5,11 @@ EAPI=8
 
 DESCRIPTION="Standalone version of Vim's xxd"
 HOMEPAGE="https://www.vim.org https://github.com/vim/vim"
-SRC_URI="https://github.com/vim/vim/archive/v${PV}.tar.gz -> vim-${PV}.tar.gz"
+VIM_VERSION="9.1.1652"
+SRC_URI="https://github.com/vim/vim/archive/v${VIM_VERSION}.tar.gz -> vim-${VIM_VERSION}.tar.gz"
+S="${WORKDIR}/vim-${VIM_VERSION}/src/xxd"
 LICENSE="vim"
 SLOT="0"
-S="${WORKDIR}/vim-${PV}/src/xxd"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris"
 
 src_compile() {
