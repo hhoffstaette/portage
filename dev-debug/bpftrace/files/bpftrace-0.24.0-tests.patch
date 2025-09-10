@@ -1,18 +1,58 @@
 
-As outlined at https://github.com/bpftrace/bpftrace/tree/master/tests
-there are three types of tests: unit, runtime and tools.
-Right now only the unit tests run reliably (probably due to sandbox
-and/or a specific expected kernel), but since there are no switches
-to enable the suites individually we only run the unit tests and
-(for now) delete the rest.
-Yes, the runtime-tests.sh file is required to exist.
+Bug: https://github.com/bpftrace/bpftrace/issues/4574
 
---- bpftrace-0.24.9999/tests/CMakeLists.txt~	2025-09-10 10:39:50.000000000 +0200
-+++ bpftrace-0.24.9999/tests/CMakeLists.txt	2025-09-10 10:40:23.128429239 +0200
-@@ -111,60 +111,3 @@ add_subdirectory(testlibs)
+From 27c85da87efc86a302ff64b27962ee061926b7e2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Wed, 10 Sep 2025 16:13:22 +0200
+Subject: [PATCH] tests: separate test suites from each other (#4574)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This adds default-enabled guards for the runtime and tools tests.
+The unit tests are always built with BUILD_TESTING since they run
+relatively quickly and are our first line of defense.
+Also create a dedicated file to check for instead of the
+runtime-tests.sh driver, which does not belong to the unit tests.
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ CMakeLists.txt       |   2 +
+ tests/CMakeLists.txt | 104 ++++++++++++++++++++++---------------------
+ tests/utils.cpp      |   4 +-
+ 3 files changed, 58 insertions(+), 52 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9802b3d..3098982 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -229,6 +229,8 @@ endif()
+ 
+ add_subdirectory(src)
+ if (BUILD_TESTING)
++  set(ENABLE_TESTS_RUNTIME ON CACHE BOOL "Enable runtime tests")
++  set(ENABLE_TESTS_TOOLS ON CACHE BOOL "Enable tool tests")
+   add_subdirectory(tests)
+ endif()
+ add_subdirectory(tools)
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 35d7393..5763d59 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -77,6 +77,8 @@ add_executable(bpftrace_test
+ )
+ add_test(NAME bpftrace_test COMMAND bpftrace_test)
+ 
++file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/near_self_file "near_self_file")
++
+ add_subdirectory(data)
+ add_dependencies(bpftrace_test data_source_dwarf data_source_btf data_source_funcs parser)
+ target_include_directories(bpftrace_test PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+@@ -111,61 +113,63 @@ add_subdirectory(testlibs)
+ #
  # Runtime Tests
  #
- configure_file(runtime-tests.sh runtime-tests.sh @ONLY)
+-configure_file(runtime-tests.sh runtime-tests.sh @ONLY)
 -add_custom_target(
 -  runtime_tests
 -  COMMAND ./runtime-tests.sh
@@ -38,9 +78,17 @@ Yes, the runtime-tests.sh file is required to exist.
 -    COMMAND ${CMAKE_COMMAND} -E copy
 -      ${CMAKE_CURRENT_SOURCE_DIR}/${runtime_test_file}
 -      ${CMAKE_CURRENT_BINARY_DIR}/${runtime_test_file}
--    DEPENDS
++if(ENABLE_TESTS_RUNTIME)
++  configure_file(runtime-tests.sh runtime-tests.sh @ONLY)
++  add_custom_target(
++    runtime_tests
++    COMMAND ./runtime-tests.sh
+     DEPENDS
 -      ${CMAKE_CURRENT_SOURCE_DIR}/${runtime_test_file}
--  )
++      testprogs
++      testlibs
++      ${CMAKE_BINARY_DIR}/src/bpftrace
+   )
 -  list(APPEND
 -    runtime_test_files
 -    ${CMAKE_CURRENT_BINARY_DIR}/${runtime_test_file}
@@ -52,21 +100,86 @@ Yes, the runtime-tests.sh file is required to exist.
 -file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/runtime/engine)
 -configure_file(runtime/engine/cmake_vars.py ${CMAKE_CURRENT_BINARY_DIR}/runtime/engine/ @ONLY)
 -
--
--
++  add_test(NAME runtime_tests COMMAND ./runtime-tests.sh)
+ 
++  file(GLOB_RECURSE runtime_test_src_files
++    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
++    CONFIGURE_DEPENDS
++    runtime/*
++  )
++  list(REMOVE_ITEM runtime_test_src_files runtime/engine/cmake_vars.py)
++
++  set(runtime_test_files)
++  foreach(runtime_test_file ${runtime_test_src_files})
++    add_custom_command(
++      OUTPUT
++        ${CMAKE_CURRENT_BINARY_DIR}/${runtime_test_file}
++      COMMAND ${CMAKE_COMMAND} -E copy
++        ${CMAKE_CURRENT_SOURCE_DIR}/${runtime_test_file}
++        ${CMAKE_CURRENT_BINARY_DIR}/${runtime_test_file}
++      DEPENDS
++        ${CMAKE_CURRENT_SOURCE_DIR}/${runtime_test_file}
++    )
++    list(APPEND
++      runtime_test_files
++      ${CMAKE_CURRENT_BINARY_DIR}/${runtime_test_file}
++    )
++  endforeach()
++  add_custom_target(runtime_test_files ALL DEPENDS ${runtime_test_files})
++  add_dependencies(runtime_tests runtime_test_files)
+ 
 -configure_file(tools-parsing-test.sh tools-parsing-test.sh COPYONLY)
 -add_custom_target(tools-parsing-test COMMAND ./tools-parsing-test.sh)
 -add_test(NAME tools-parsing-test COMMAND ./tools-parsing-test.sh)
--
++  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/runtime/engine)
++  configure_file(runtime/engine/cmake_vars.py ${CMAKE_CURRENT_BINARY_DIR}/runtime/engine/ @ONLY)
++endif()
+ 
 -if(ENABLE_TEST_VALIDATE_CODEGEN)
 -  if(${LLVM_VERSION_MAJOR} VERSION_EQUAL 18)
 -    message(STATUS "Adding codegen-validator test")
 -    configure_file(codegen-validator.sh codegen-validator.sh COPYONLY)
 -    add_custom_target(codegen-validator COMMAND ./codegen-validator.sh)
 -    add_test(NAME codegen-validator COMMAND ./codegen-validator.sh ${CMAKE_SOURCE_DIR})
--  else()
++if(ENABLE_TESTS_TOOLS)
++  configure_file(tools-parsing-test.sh tools-parsing-test.sh COPYONLY)
++  add_custom_target(tools-parsing-test COMMAND ./tools-parsing-test.sh)
++  add_test(NAME tools-parsing-test COMMAND ./tools-parsing-test.sh)
++
++  if(ENABLE_TEST_VALIDATE_CODEGEN)
++    if(${LLVM_VERSION_MAJOR} VERSION_EQUAL 18)
++      message(STATUS "Adding codegen-validator test")
++      configure_file(codegen-validator.sh codegen-validator.sh COPYONLY)
++      add_custom_target(codegen-validator COMMAND ./codegen-validator.sh)
++      add_test(NAME codegen-validator COMMAND ./codegen-validator.sh ${CMAKE_SOURCE_DIR})
++    else()
++      message(STATUS "Not building with LLVM 18, skipping codegen-validator test")
++    endif()
+   else()
 -    message(STATUS "Not building with LLVM 18, skipping codegen-validator test")
--  endif()
++    message(STATUS "codegen-validator test disabled")
+   endif()
 -else()
 -  message(STATUS "codegen-validator test disabled")
--endif()
+ endif()
+diff --git a/tests/utils.cpp b/tests/utils.cpp
+index 9fd4f43..19ea6fc 100644
+--- a/tests/utils.cpp
++++ b/tests/utils.cpp
+@@ -403,11 +403,11 @@ TEST(utils, find_in_path)
+ // Hopefully they are easy to maintain. If not, please delete.
+ TEST(utils, find_near_self)
+ {
+-  auto runtime_tests = find_near_self("runtime-tests.sh");
++  auto runtime_tests = find_near_self("near_self_file");
+   // clang-tidy is not aware ASSERT_*() terminates testcase
+   // NOLINTBEGIN(bugprone-unchecked-optional-access)
+   ASSERT_TRUE(runtime_tests.has_value());
+-  EXPECT_TRUE(runtime_tests->filename() == "runtime-tests.sh");
++  EXPECT_TRUE(runtime_tests->filename() == "near_self_file");
+   EXPECT_TRUE(std::filesystem::exists(*runtime_tests));
+   // NOLINTEND(bugprone-unchecked-optional-access)
+ 
+-- 
+2.51.0
+

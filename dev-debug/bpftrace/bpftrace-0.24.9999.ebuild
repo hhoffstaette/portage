@@ -108,11 +108,18 @@ src_configure() {
 		-DBUILD_SHARED_LIBS=OFF
 		# DO dynamically link the bpftrace executable
 		-DSTATIC_LINKING:BOOL=OFF
-		# bug 809362, 754648
 		-DBUILD_TESTING:BOOL=$(usex test)
 		-DENABLE_MAN:BOOL=OFF
 		-DENABLE_SYSTEMD:BOOL=$(usex systemd)
 		-DENABLE_SKB_OUTPUT:BOOL=$(usex pcap)
+	)
+
+	use test && mycmakeargs+=(
+		# runtime (end-to-end) & tool tests do not work yet;
+		# they require root privileges and rather specific
+		# userland/kernel setup.
+		-DENABLE_TESTS_RUNTIME=OFF
+		-DENABLE_TESTS_TOOLS=OFF
 	)
 
 	cmake_src_configure
