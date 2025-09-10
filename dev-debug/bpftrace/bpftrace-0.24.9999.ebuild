@@ -87,7 +87,7 @@ src_prepare() {
 	# create a usable version from git
 	if [[ ${PV} == *9999* ]] ; then
 		local rev=$(git branch | sed -e 's/* //g' -e 's/release\///g')-$(git rev-parse --short HEAD)
-		sed -i "/configure_file/i set (BPFTRACE_VERSION \"${rev}\")" cmake/Version.cmake || die
+		sed -i "/configure_file/i set (BPFTRACE_VERSION \"v${rev}\")" cmake/Version.cmake || die
 	fi
 
 	# unpack prepackaged man tarball for bpftrace.8
