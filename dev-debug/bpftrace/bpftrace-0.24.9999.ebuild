@@ -58,7 +58,7 @@ BDEPEND="
 	app-alternatives/lex
 	app-alternatives/yacc
 	dev-libs/cereal
-	|| ( dev-util/xxd app-editors/vim-core )
+	dev-util/xxd
 	test? (
 		dev-util/pahole
 	)
