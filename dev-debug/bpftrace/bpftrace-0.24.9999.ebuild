@@ -5,7 +5,7 @@ EAPI=8
 
 LLVM_COMPAT=( {17..21} )
 
-inherit cmake linux-info llvm-r1
+inherit cmake flag-o-matic linux-info llvm-r1
 
 DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
@@ -16,7 +16,7 @@ MAN_V="0.23.5"
 if [[ ${PV} == *9999* ]] ; then
 	EGIT_REPO_URI="https://github.com/bpftrace/bpftrace"
 	EGIT_BRANCH="release/0.24.x"
-	inherit autotools git-r3
+	inherit git-r3
 else
 	SRC_URI="https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64"
@@ -31,8 +31,7 @@ SLOT="0"
 
 IUSE="pcap test systemd"
 
-# lots of fixing needed
-RESTRICT="test"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-libs/blazesym_c-0.1.1
@@ -60,6 +59,8 @@ BDEPEND="
 	dev-libs/cereal
 	dev-util/xxd
 	test? (
+		dev-lang/go
+		|| ( dev-lang/rust-bin dev-lang/rust )
 		dev-util/pahole
 	)
 	virtual/pkgconfig
@@ -68,6 +69,7 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
+	"${FILESDIR}/bpftrace-0.24.0-tests.patch"
 )
 
 pkg_pretend() {
