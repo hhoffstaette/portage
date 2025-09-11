@@ -35,7 +35,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-libs/blazesym_c-0.1.1
-	>=dev-libs/libbpf-1.5:=[static-libs]
+	>=dev-libs/libbpf-1.5:=
 	>=dev-util/bcc-0.25.0:=
 	$(llvm_gen_dep '
 		llvm-core/clang:${LLVM_SLOT}=
@@ -112,14 +112,6 @@ src_configure() {
 		-DENABLE_MAN:BOOL=OFF
 		-DENABLE_SYSTEMD:BOOL=$(usex systemd)
 		-DENABLE_SKB_OUTPUT:BOOL=$(usex pcap)
-	)
-
-	use test && mycmakeargs+=(
-		# runtime (end-to-end) & tool tests do not work yet;
-		# they require root privileges and rather specific
-		# userland/kernel setup.
-		-DENABLE_TESTS_RUNTIME=OFF
-		-DENABLE_TESTS_TOOLS=OFF
 	)
 
 	cmake_src_configure
