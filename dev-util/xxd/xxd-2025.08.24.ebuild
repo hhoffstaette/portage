@@ -3,6 +3,8 @@
 
 EAPI=8
 
+inherit bash-completion-r1
+
 DESCRIPTION="Standalone version of Vim's xxd"
 HOMEPAGE="https://www.vim.org https://github.com/vim/vim"
 VIM_VERSION="9.1.1652"
@@ -31,4 +33,5 @@ src_compile() {
 src_install() {
 	dobin xxd
 	doman ../../runtime/doc/xxd*.1
+    newbashcomp "${FILESDIR}"/xxd-completion xxd
 }
