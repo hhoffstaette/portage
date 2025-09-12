@@ -32,7 +32,7 @@ DEPEND="
 	crypt?  ( >=net-libs/gnutls-3.2.7:0= )
 	icu? ( dev-libs/icu:= )
 	>=x11-libs/pango-1.22.0
-	>=dev-libs/libpcre2-10.21:=
+	dev-libs/libpcre2:=
 	systemd? ( >=sys-apps/systemd-220:= )
 	sys-libs/zlib
 	introspection? ( >=dev-libs/gobject-introspection-1.56:= )

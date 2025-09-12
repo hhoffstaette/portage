@@ -26,7 +26,7 @@ DEPEND="
 	>=dev-libs/fribidi-1.0.0
 	>=dev-libs/glib-2.60:2
 	>=x11-libs/pango-1.22.0
-	>=dev-libs/libpcre2-10.21
+	dev-libs/libpcre2:=
 	systemd? ( >=sys-apps/systemd-220:= )
 	sys-libs/zlib
 	x11-libs/pango
