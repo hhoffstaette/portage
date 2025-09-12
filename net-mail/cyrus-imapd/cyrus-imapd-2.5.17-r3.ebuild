@@ -16,7 +16,7 @@ IUSE="afs clamav http kerberos mysql nntp pam perl postgres \
 
 # virtual/mysql-5.5 added for the --variable= option below
 DEPEND="sys-libs/zlib
-	dev-libs/libpcre2
+	dev-libs/libpcre2:=
 	>=dev-libs/cyrus-sasl-2.1.13
 	dev-libs/jansson
 	afs? ( net-fs/openafs )
