@@ -98,7 +98,10 @@ dev-libs/libxml2
 dev-libs/libxslt
 "
 
-PATCHES=( "${FILESDIR}"/${PN}-17.6-llvm-21.patch )
+PATCHES=(
+	"${FILESDIR}"/${PN}-17.6-llvm-21.patch
+	"${FILESDIR}"/${PN}-17.6-llvm-21-aarch64.patch
+)
 
 pkg_setup() {
 	use llvm && llvm-r1_pkg_setup
