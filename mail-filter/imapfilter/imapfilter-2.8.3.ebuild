@@ -19,7 +19,7 @@ REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="
 	dev-libs/openssl:=
-	dev-libs/libpcre2
+	dev-libs/libpcre2:=
 	${LUA_DEPS}"
 DEPEND="${RDEPEND}"
 
