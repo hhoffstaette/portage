@@ -70,6 +70,7 @@ PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
 	"${FILESDIR}/bpftrace-0.24.0-tests.patch"
+	"${FILESDIR}/bpftrace-0.24.0-odr.patch"
 )
 
 pkg_pretend() {
@@ -99,8 +100,8 @@ src_prepare() {
 }
 
 src_configure() {
-	# ODR violations:
-	# https://github.com/bpftrace/bpftrace/issues/4566
+	# strange unit test failures:
+	# https://github.com/bpftrace/bpftrace/issues/4591
 	filter-lto
 
 	local mycmakeargs=(

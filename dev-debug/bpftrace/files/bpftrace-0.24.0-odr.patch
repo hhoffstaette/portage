@@ -1,0 +1,102 @@
+From: https://github.com/bpftrace/bpftrace/pull/4590
+
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Sun, 14 Sep 2025 14:23:50 +0200
+Subject: [PATCH] fix: consistent use of blazesym types (#4566)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Building with LTO found redundant and inconsistent type declarations
+for blaze_symbolizer in bpftrace's Ksym and Usym classes.
+Fix this by using blazesym's authoritative declarations.
+
+Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+---
+ src/ksyms.cpp | 4 ----
+ src/ksyms.h   | 6 +++++-
+ src/usyms.cpp | 4 ----
+ src/usyms.h   | 8 ++++++--
+ 4 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/src/ksyms.cpp b/src/ksyms.cpp
+index 8a28bfa890bf..ccafaecfd9ce 100644
+--- a/src/ksyms.cpp
++++ b/src/ksyms.cpp
+@@ -1,10 +1,6 @@
+ #include <bcc/bcc_syms.h>
+ #include <sstream>
+ 
+-#ifdef HAVE_BLAZESYM
+-#include <blazesym.h>
+-#endif
+-
+ #include "ksyms.h"
+ #include "scopeguard.h"
+ 
+diff --git a/src/ksyms.h b/src/ksyms.h
+index 06371c77fa23..3991a339ffed 100644
+--- a/src/ksyms.h
++++ b/src/ksyms.h
+@@ -4,6 +4,10 @@
+ #include <optional>
+ #include <string>
+ 
++#ifdef HAVE_BLAZESYM
++#include <blazesym.h>
++#endif
++
+ #include "config.h"
+ 
+ namespace bpftrace {
+@@ -26,7 +30,7 @@ class Ksyms {
+   void *ksyms_{ nullptr };
+ 
+ #ifdef HAVE_BLAZESYM
+-  struct blaze_symbolizer *symbolizer_{ nullptr };
++  blaze_symbolizer *symbolizer_{ nullptr };
+ 
+   std::vector<std::string> resolve_blazesym_impl(uint64_t addr,
+                                                  bool show_offset,
+diff --git a/src/usyms.cpp b/src/usyms.cpp
+index 24cdb796cd2a..c8c999683ad5 100644
+--- a/src/usyms.cpp
++++ b/src/usyms.cpp
+@@ -3,10 +3,6 @@
+ #include <bcc/bcc_syms.h>
+ #include <sstream>
+ 
+-#ifdef HAVE_BLAZESYM
+-#include <blazesym.h>
+-#endif
+-
+ #include "config.h"
+ #include "log.h"
+ #include "scopeguard.h"
+diff --git a/src/usyms.h b/src/usyms.h
+index 8b0317be931d..894d0881312d 100644
+--- a/src/usyms.h
++++ b/src/usyms.h
+@@ -6,6 +6,10 @@
+ #include <map>
+ #include <string>
+ 
++#ifdef HAVE_BLAZESYM
++#include <blazesym.h>
++#endif
++
+ #include "util/symbols.h"
+ 
+ namespace bpftrace {
+@@ -47,9 +51,9 @@ class Usyms {
+   struct bcc_symbol_option& get_symbol_opts();
+ 
+ #ifdef HAVE_BLAZESYM
+-  struct blaze_symbolizer* symbolizer_{ nullptr };
++  blaze_symbolizer* symbolizer_{ nullptr };
+ 
+-  struct blaze_symbolizer* create_symbolizer() const;
++  blaze_symbolizer* create_symbolizer() const;
+   void cache_blazesym(const std::string& elf_file, std::optional<int> opt_pid);
+   std::vector<std::string> resolve_blazesym_impl(uint64_t addr,
+                                                  int32_t pid,
