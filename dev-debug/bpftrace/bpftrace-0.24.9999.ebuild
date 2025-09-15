@@ -71,6 +71,7 @@ PATCHES=(
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
 	"${FILESDIR}/bpftrace-0.24.0-tests.patch"
 	"${FILESDIR}/bpftrace-0.24.0-odr.patch"
+	"${FILESDIR}/bpftrace-0.24.0-setenv.patch"
 )
 
 pkg_pretend() {
@@ -100,8 +101,8 @@ src_prepare() {
 }
 
 src_configure() {
-	# strange unit test failures:
-	# https://github.com/bpftrace/bpftrace/issues/4591
+	# at least one remaining ODR violation warning due to a generated
+	# libbpf header: https://github.com/bpftrace/bpftrace/issues/4591
 	filter-lto
 
 	local mycmakeargs=(
