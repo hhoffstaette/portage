@@ -101,9 +101,10 @@ src_prepare() {
 }
 
 src_configure() {
-	# at least one remaining ODR violation warning due to a generated
-	# libbpf header: https://github.com/bpftrace/bpftrace/issues/4591
-	filter-lto
+	# suppress one remaining and benign ODR violation warning due to
+	# a generated libbpf header used by the tests, see:
+	# https://github.com/bpftrace/bpftrace/issues/4591
+	use test && append-flags -Wno-odr
 
 	local mycmakeargs=(
 		# DO NOT build the internal libs as shared
@@ -111,6 +112,7 @@ src_configure() {
 		# DO dynamically link the bpftrace executable
 		-DSTATIC_LINKING:BOOL=OFF
 		-DBUILD_TESTING:BOOL=$(usex test)
+		# we use the pregenerated man page
 		-DENABLE_MAN:BOOL=OFF
 		-DENABLE_SYSTEMD:BOOL=$(usex systemd)
 		-DENABLE_SKB_OUTPUT:BOOL=$(usex pcap)
