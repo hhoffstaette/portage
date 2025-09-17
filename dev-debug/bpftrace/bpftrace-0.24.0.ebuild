@@ -3,29 +3,35 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {16..20} )
+LLVM_COMPAT=( {17..21} )
 
-inherit cmake linux-info llvm-r1
+inherit cmake flag-o-matic linux-info llvm-r1
 
 DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
 MY_PV="${PV//_/}"
 # the man page version may trail the release
-#MAN_V="0.22.0"
-SRC_URI="
-	https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.tar.xz
-"
+#MAN_V="0.24.0"
+
+if [[ ${PV} == *9999* ]] ; then
+	EGIT_REPO_URI="https://github.com/bpftrace/bpftrace"
+	EGIT_BRANCH="release/0.24.x"
+	inherit git-r3
+else
+	SRC_URI="https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm64"
+fi
+
+SRC_URI+=" https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.tar.xz"
+
 S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 
-KEYWORDS="~amd64 ~arm64"
 IUSE="pcap test systemd"
 
-# lots of fixing needed
-RESTRICT="test"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-libs/blazesym_c-0.1.1
@@ -51,8 +57,10 @@ BDEPEND="
 	app-alternatives/lex
 	app-alternatives/yacc
 	dev-libs/cereal
+	dev-util/xxd
 	test? (
-		app-editors/vim-core
+		dev-lang/go
+		|| ( dev-lang/rust-bin dev-lang/rust )
 		dev-util/pahole
 	)
 	virtual/pkgconfig
@@ -77,23 +85,31 @@ pkg_pretend() {
 }
 
 src_prepare() {
-	# 0.23 still has LLDB support, but apparently it's problematic,
-	# deprecated and already gone on master.
-	# Remove the configuration check.
-	sed -i "/find_package(LLDB)/d" CMakeLists.txt || die
+	# create a usable version from git
+	if [[ ${PV} == *9999* ]] ; then
+		local rev=$(git branch --show-current | sed -e 's/* //g' -e 's/release\///g')-$(git rev-parse --short HEAD)
+		sed -i "/configure_file/i set (BPFTRACE_VERSION \"v${rev}\")" cmake/Version.cmake || die
+	fi
+
+	# unpack prepackaged man tarball for bpftrace.8
+	pushd "${WORKDIR}" && unpack ${PN}-${MAN_V:-${PV}}-man.tar.xz && popd
 
 	cmake_src_prepare
 }
 
 src_configure() {
+	# suppress one remaining and benign ODR violation warning due to
+	# a generated libbpf header used by the tests, see:
+	# https://github.com/bpftrace/bpftrace/issues/4591
+	use test && append-flags -Wno-odr
+
 	local mycmakeargs=(
 		# DO NOT build the internal libs as shared
 		-DBUILD_SHARED_LIBS=OFF
 		# DO dynamically link the bpftrace executable
 		-DSTATIC_LINKING:BOOL=OFF
-		# bug 809362, 754648
 		-DBUILD_TESTING:BOOL=$(usex test)
-		-DBUILD_FUZZ:BOOL=OFF
+		# we use the pregenerated man page
 		-DENABLE_MAN:BOOL=OFF
 		-DENABLE_SYSTEMD:BOOL=$(usex systemd)
 		-DENABLE_SKB_OUTPUT:BOOL=$(usex pcap)

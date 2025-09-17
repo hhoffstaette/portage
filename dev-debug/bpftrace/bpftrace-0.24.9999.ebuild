@@ -11,7 +11,7 @@ DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
 MY_PV="${PV//_/}"
 # the man page version may trail the release
-MAN_V="0.23.5"
+MAN_V="0.24.0"
 
 if [[ ${PV} == *9999* ]] ; then
 	EGIT_REPO_URI="https://github.com/bpftrace/bpftrace"
