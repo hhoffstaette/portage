@@ -61,6 +61,7 @@ BDEPEND="
 	dev-libs/cereal
 	dev-util/xxd
 	test? (
+		${RUST_DEPEND}
 		dev-lang/go
 		dev-util/pahole
 	)
