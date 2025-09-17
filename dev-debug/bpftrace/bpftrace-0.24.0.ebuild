@@ -4,8 +4,10 @@
 EAPI=8
 
 LLVM_COMPAT=( {17..21} )
+RUST_MIN_VER=1.85.1
+RUST_OPTIONAL=1
 
-inherit cmake flag-o-matic linux-info llvm-r1
+inherit cmake flag-o-matic linux-info llvm-r1 rust
 
 DESCRIPTION="High-level tracing language for eBPF"
 HOMEPAGE="https://github.com/bpftrace/bpftrace"
@@ -60,7 +62,6 @@ BDEPEND="
 	dev-util/xxd
 	test? (
 		dev-lang/go
-		|| ( dev-lang/rust-bin dev-lang/rust )
 		dev-util/pahole
 	)
 	virtual/pkgconfig
@@ -82,6 +83,11 @@ pkg_pretend() {
 	"
 
 	check_extra_config
+}
+
+pkg_setup() {
+	llvm-r1_pkg_setup
+	use test && rust_pkg_setup
 }
 
 src_prepare() {
