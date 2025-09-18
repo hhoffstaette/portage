@@ -59,6 +59,7 @@ BDEPEND="
 	app-alternatives/lex
 	app-alternatives/yacc
 	dev-libs/cereal
+	dev-util/bpftool
 	dev-util/xxd
 	test? (
 		${RUST_DEPEND}
@@ -71,6 +72,7 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
+	"${FILESDIR}/bpftrace-0.24.0-gcc16.patch"
 )
 
 pkg_pretend() {
