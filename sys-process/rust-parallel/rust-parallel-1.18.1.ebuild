@@ -15,7 +15,7 @@ HOMEPAGE="https://github.com/aaronriekenberg/rust-parallel"
 
 SRC_URI="
 	https://github.com/aaronriekenberg/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${PN}-${PV}-crates.tar.xz
+	https://github.com/gentoo-crate-dist/${PN}/releases/download/v${PV}/${P}-crates.tar.xz
 "
 
 LICENSE="MIT"
