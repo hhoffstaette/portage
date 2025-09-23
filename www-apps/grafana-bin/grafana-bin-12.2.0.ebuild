@@ -12,7 +12,7 @@ HOMEPAGE="https://grafana.org"
 
 # check https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1&edition=oss
 SRC_URI="
-	amd64? ( https://dl.grafana.com/grafana/release/12.1.1/grafana_12.1.1_16903967602_linux_amd64.tar.gz )
+	amd64? ( https://dl.grafana.com/grafana/release/12.2.0/grafana_12.2.0_17949786146_linux_amd64.tar.gz )
 "
 
 S=${WORKDIR}/${MY_PN}-${PV}
