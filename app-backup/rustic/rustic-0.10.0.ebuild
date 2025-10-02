@@ -25,3 +25,11 @@ LICENSE+="
 "
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
+
+src_prepare() {
+	default
+
+	pushd "${WORKDIR}/cargo_home/gentoo"
+		eapply -p0 "${FILESDIR}/0.10.0-threads.patch"
+	popd
+}
