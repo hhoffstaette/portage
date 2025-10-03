@@ -14,6 +14,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 IUSE="+tools"
 
+# tests require root privileges
+RESTRICT+=" test"
+
 DEPEND="
 	dev-libs/libbpf:=
 	net-libs/libpcap
@@ -61,8 +64,6 @@ src_configure() {
 
 	default
 }
-
-src_test() { :; }
 
 src_install() {
 	default
