@@ -31,7 +31,7 @@ S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 LICENSE="Apache-2.0"
 SLOT="0"
 
-IUSE="pcap test sanitize systemd"
+IUSE="pcap test systemd"
 
 RESTRICT="!test? ( test )"
 
@@ -72,8 +72,7 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
 	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
-	"${FILESDIR}/bpftrace-0.24.0-handle-unaligned-addresses.patch"
-	"${FILESDIR}/bpftrace-0.24.0-enable-ubsan.patch"
+	"${FILESDIR}/bpftrace-0.24.1-enable-ubsan.patch"
 )
 
 pkg_pretend() {
@@ -114,24 +113,24 @@ src_configure() {
 	use test && append-flags -Wno-odr
 
 	local mycmakeargs=(
+		# DO dynamically link the bpftrace executable
+		-DSTATIC_LINKING=OFF
 		# DO NOT build the internal libs as shared
 		-DBUILD_SHARED_LIBS=OFF
 		-DBUILD_TESTING=$(usex test)
-		-DBUILD_UBSAN=$(usex sanitize)
 		# we use the pregenerated man page
 		-DENABLE_MAN=OFF
 		-DENABLE_SKB_OUTPUT=$(usex pcap)
 		-DENABLE_SYSTEMD=$(usex systemd)
-		# DO dynamically link the bpftrace executable
-		-DSTATIC_LINKING=OFF
 	)
 
-	cmake_src_configure
-}
+	# enable UBSAN only when enabled in the toolchain
+	if is-flagq -fsanitize=undefined; then
+		filter-flags -fsanitize=undefined
+		mycmakeargs+=( -DBUILD_UBSAN=ON )
+	fi
 
-src_test() {
-	use sanitize && export UBSAN_OPTIONS="print_stacktrace=1:halt_on_error=1"
-	cmake_src_test
+	cmake_src_configure
 }
 
 src_install() {

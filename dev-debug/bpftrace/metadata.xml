@@ -19,7 +19,6 @@
   </maintainer>
   <use>
     <flag name="pcap">Enable skb_output using <pkg>net-libs/libpcap</pkg></flag>
-    <flag name="sanitize">Build &amp; test with UBSAN</flag>
   </use>
   <upstream>
     <remote-id type="github">bpftrace/bpftrace</remote-id>
