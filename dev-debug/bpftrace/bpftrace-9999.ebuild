@@ -31,7 +31,7 @@ S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 LICENSE="Apache-2.0"
 SLOT="0"
 
-IUSE="pcap test systemd"
+IUSE="pcap systemd test"
 
 RESTRICT="!test? ( test )"
 
