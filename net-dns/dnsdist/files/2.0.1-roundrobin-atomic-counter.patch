@@ -1,0 +1,32 @@
+Backport of:
+https://github.com/PowerDNS/pdns/commit/1ad48b108eadbe260c16443c1feaf393a2c1324b
+
+From 1ad48b108eadbe260c16443c1feaf393a2c1324b Mon Sep 17 00:00:00 2001
+From: Remi Gacogne <remi.gacogne@powerdns.com>
+Date: Fri, 10 Oct 2025 10:18:40 +0200
+Subject: [PATCH] dnsdist: Make the round-robin LB policy internal counter atomic
+
+Otherwise TSAN is rightfully complaining that there is a data race
+because several threads are updating at the same time. While the
+impact of this counter being corrupted is almost zero, and there is
+an actual overhead to making it atomic, I believe this is the only
+correct way to ensure the expected behaviour of this policy.
+
+Signed-off-by: Remi Gacogne <remi.gacogne@powerdns.com>
+---
+ pdns/dnsdistdist/dnsdist-lbpolicies.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pdns/dnsdistdist/dnsdist-lbpolicies.cc b/pdns/dnsdistdist/dnsdist-lbpolicies.cc
+index 20e6d65afa98..7abd92584813 100644
+--- a/dnsdist-lbpolicies.cc
++++ b/dnsdist-lbpolicies.cc
+@@ -237,7 +237,7 @@ shared_ptr<DownstreamState> roundrobin(c
+     return shared_ptr<DownstreamState>();
+   }
+ 
+-  static unsigned int counter;
++  static std::atomic<unsigned int> counter{0};
+ 
+   size_t serverIdx = (counter++) % servers.size();
+   shared_ptr<DownstreamState> serverState = servers.at(serverIdx).second;

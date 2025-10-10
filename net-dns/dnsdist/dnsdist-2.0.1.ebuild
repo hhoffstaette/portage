@@ -56,6 +56,12 @@ BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
 	yaml? ( ${RUST_DEPEND} )
 "
 
+PATCHES=(
+	"${FILESDIR}/2.0.1-speed-up-cache-hits.patch"
+	"${FILESDIR}/2.0.1-roundrobin-fast-path.patch"
+	"${FILESDIR}/2.0.1-roundrobin-atomic-counter.patch"
+)
+
 pkg_setup() {
 	lua-single_pkg_setup
 	python-any-r1_pkg_setup
