@@ -19,10 +19,11 @@ if [[ ${PV} == *9999* ]] ; then
 	inherit git-r3
 else
 	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz
-		doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )
 		yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
 	KEYWORDS="~amd64 ~x86"
 fi
+
+SRC_URI+="doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -86,6 +87,11 @@ python_check_deps() {
 
 src_prepare() {
 	default
+
+	# unpack prepackaged html tarball
+	if use doc; then
+		pushd "${WORKDIR}" && unpack ${PN}-docs-${PV}.tar.xz && popd
+	fi
 
 	# clean up duplicate file
 	rm -f README.md
@@ -155,9 +161,7 @@ src_test() {
 src_install() {
 	meson_src_install
 
-	if [[ ${PV} != *9999* ]] ; then
-		use doc && dodoc -r "${WORKDIR}"/html
-	fi
+	use doc && dodoc -r "${WORKDIR}"/html
 
 	insinto /etc/dnsdist
 	doins "${FILESDIR}"/dnsdist.conf.example
