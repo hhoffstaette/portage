@@ -18,12 +18,12 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_BRANCH="master"
 	inherit git-r3
 else
-	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz
-		yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
+	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
-SRC_URI+="doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )"
+SRC_URI+="doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )
+	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -72,8 +72,8 @@ fi
 
 pkg_setup() {
 	if [[ ${PV} == *9999* ]] ; then
-		# cannot build rust lib in live without downloading a tarball
-		use yaml && die "USE=yaml not supported in -9999 without crates tarball. :("
+		# cannot build rust lib with meson yet
+		use yaml && die "USE=yaml not supported yet due to build problems. :("
 	fi
 
 	lua-single_pkg_setup
@@ -85,13 +85,17 @@ python_check_deps() {
 	python_has_version "dev-python/pyyaml[${PYTHON_USEDEP}]"
 }
 
-src_prepare() {
+# git-r3 overrides automatic SRC_URI unpacking
+src_unpack() {
 	default
 
-	# unpack prepackaged html tarball
-	if use doc; then
-		pushd "${WORKDIR}" && unpack ${PN}-docs-${PV}.tar.xz && popd
+	if [[ ${PV} == *9999* ]] ; then
+		git-r3_src_unpack
 	fi
+}
+
+src_prepare() {
+	default
 
 	# clean up duplicate file
 	rm -f README.md
