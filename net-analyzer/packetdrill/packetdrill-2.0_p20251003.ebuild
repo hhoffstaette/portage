@@ -8,9 +8,9 @@ inherit toolchain-funcs
 DESCRIPTION="Tool for quick, precise testing of entire TCP/UDP/IPv4/IPv6 network stacks"
 HOMEPAGE="https://github.com/google/packetdrill"
 
-COMMIT="f88d6e64ffbee1c893e60d33c043f8ec9027f642"
+# no up-to-date releases or tags
+COMMIT="46cdcd999d5da0718bee9aa159e17b37aed0f589"
 SRC_URI="https://github.com/google/packetdrill/archive/${COMMIT}.tar.gz -> ${PN}-${PV}.tar.gz"
-
 S="${WORKDIR}/${PN}-${COMMIT}/gtests/net/packetdrill"
 
 LICENSE="GPL-2"
@@ -25,9 +25,10 @@ BDEPEND="
 	sys-kernel/linux-headers
 "
 
+DOCS=( README.md syntax.md )
+
 PATCHES=(
 	"${FILESDIR}/20250604-no-static-linking.patch"
-	"${FILESDIR}/20250604-stdbool.patch"
 )
 
 src_compile() {
@@ -44,4 +45,6 @@ src_test() {
 
 src_install() {
 	dobin packetdrill
+
+	cd "${WORKDIR}/${PN}-${COMMIT}" && einstalldocs
 }
