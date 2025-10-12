@@ -71,11 +71,6 @@ if [[ ${PV} == *9999* ]] ; then
 fi
 
 pkg_setup() {
-	if [[ ${PV} == *9999* ]] ; then
-		# cannot build rust lib with meson yet
-		use yaml && die "USE=yaml not supported yet due to build problems. :("
-	fi
-
 	lua-single_pkg_setup
 	python-any-r1_pkg_setup
 	use yaml && rust_pkg_setup
@@ -155,7 +150,8 @@ src_configure() {
 # otherwise automagic cargo_src_compile/test phases
 
 src_compile() {
-	meson_src_compile
+	cargo_gen_config
+	cargo_env meson_src_compile
 }
 
 src_test() {
