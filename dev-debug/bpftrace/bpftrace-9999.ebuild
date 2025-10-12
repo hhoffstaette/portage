@@ -92,15 +92,21 @@ pkg_setup() {
 	use test && rust_pkg_setup
 }
 
+# git-r3 overrides automatic SRC_URI unpacking
+src_unpack() {
+	default
+
+	if [[ ${PV} == *9999* ]] ; then
+		git-r3_src_unpack
+	fi
+}
+
 src_prepare() {
 	# create a usable version from git
 	if [[ ${PV} == *9999* ]] ; then
 		local rev=$(git branch --show-current | sed -e 's/* //g' -e 's/release\///g')-$(git rev-parse --short HEAD)
 		sed -i "/configure_file/i set (BPFTRACE_VERSION \"v${rev}\")" cmake/Version.cmake || die
 	fi
-
-	# unpack prepackaged man tarball for bpftrace.8
-	pushd "${WORKDIR}" && unpack ${PN}-${MAN_V:-${PV}}-man.tar.xz && popd
 
 	cmake_src_prepare
 }
