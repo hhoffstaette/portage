@@ -81,6 +81,8 @@ pkg_pretend() {
 		~BPF_EVENTS
 		~BPF_JIT
 		~BPF_SYSCALL
+		~DEBUG_INFO_BTF
+		~DEBUG_INFO_BTF_MODULES
 		~FTRACE_SYSCALLS
 		~HAVE_EBPF_JIT
 	"
@@ -137,6 +139,16 @@ src_configure() {
 	fi
 
 	cmake_src_configure
+}
+
+src_test() {
+	if ! linux_config_exists ; then
+		eerror "Unable to check your kernel for BTF support: skipping tests."
+	elif ! linux_chkconfig_present DEBUG_INFO_BTF ; then
+		eerror "CONFIG_DEBUG_INFO_BTF is not set: tests cannot run."
+	else
+		cmake_src_test
+	fi
 }
 
 src_install() {
