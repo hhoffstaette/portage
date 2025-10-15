@@ -112,7 +112,7 @@ src_configure() {
 	! use web && append-cppflags -DDISABLE_BUILTIN_HTML
 
 	local emesonargs=(
-		--sysconfdir=/etc/dnsdist
+		--sysconfdir="${EPREFIX}/etc/dnsdist"
 		# always use libsodium
 		-Dlibsodium=enabled
 		# currently hardcoded:

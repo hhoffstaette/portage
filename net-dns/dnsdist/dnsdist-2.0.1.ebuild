@@ -95,7 +95,7 @@ src_configure() {
 	! use web && append-cppflags -DDISABLE_BUILTIN_HTML
 
 	local myeconfargs=(
-		--sysconfdir=/etc/dnsdist
+		--sysconfdir="${EPREFIX}/etc/dnsdist"
 		--enable-tls-providers
 		--with-lua="${ELUA}"
 		--without-gnutls
