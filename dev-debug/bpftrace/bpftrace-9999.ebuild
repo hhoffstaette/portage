@@ -87,6 +87,14 @@ pkg_pretend() {
 	"
 
 	check_extra_config
+
+	if use test; then
+		if ! linux_config_exists ; then
+			die "Unable to check your kernel for BTF support: tests cannot run."
+		elif ! linux_chkconfig_present DEBUG_INFO_BTF ; then
+			die "CONFIG_DEBUG_INFO_BTF is not set: tests cannot run."
+		fi
+	fi
 }
 
 pkg_setup() {
@@ -140,16 +148,6 @@ src_configure() {
 	fi
 
 	cmake_src_configure
-}
-
-src_test() {
-	if ! linux_config_exists ; then
-		eerror "Unable to check your kernel for BTF support: skipping tests."
-	elif ! linux_chkconfig_present DEBUG_INFO_BTF ; then
-		eerror "CONFIG_DEBUG_INFO_BTF is not set: tests cannot run."
-	else
-		cmake_src_test
-	fi
 }
 
 src_install() {
