@@ -196,6 +196,9 @@ src_prepare() {
 
 	# The code likes to compile local assembly files which lack ELF markings.
 	find -name '*.S' -exec sed -i '$a.section .note.GNU-stack,"",%progbits' {} +
+
+	# capstone-6 compatibility (#964344)
+	append-flags -DCAPSTONE_AARCH64_COMPAT_HEADER -DCAPSTONE_SYSTEMZ_COMPAT_HEADER
 }
 
 puse() { usex $1 "" 1; }
