@@ -58,6 +58,7 @@ PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
 
 PATCHES=(
 	"${FILESDIR}/0.38.1-scap-loader.patch"
+	"${FILESDIR}/0.40.1-cmake4.patch"
 )
 
 pkg_pretend() {
