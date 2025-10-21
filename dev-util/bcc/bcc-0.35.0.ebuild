@@ -125,10 +125,10 @@ src_prepare() {
 	fi
 
 	# do not build cpp examples
-    sed -i -e '/add_subdirectory(cpp)/d' examples/CMakeLists.txt || die
+	sed -i -e '/add_subdirectory(cpp)/d' examples/CMakeLists.txt || die
 
 	# do not install lua examples
-    sed -i -e '/add_subdirectory(lua)/d' examples/CMakeLists.txt || die
+	sed -i -e '/add_subdirectory(lua)/d' examples/CMakeLists.txt || die
 
 	cmake_src_prepare
 	bcc_distutils_phase
@@ -200,6 +200,9 @@ src_install() {
 		[[ -e ${ED}${target} ]] && continue
 
 		dosym -r "${tool#${ED}}" "${target}"
+
+		# fix up tool libdir (#964734)
+		sed -i "s/\$(dirname \$0)/\/usr\/share\/bcc\/tools/g" ${tool}
 	done
 
 	docompress /usr/share/${PN}/man
