@@ -105,12 +105,6 @@ src_prepare() {
 	bpf_link_path="$(realpath --relative-to="${S}/src/cc/libbpf" /usr/include/bpf)" || die
 	ln -sfn "${bpf_link_path}" src/cc/libbpf/include || die
 
-	# bug 811288
-	local script scriptname
-	for script in $(find tools/old -type f -name "*.py" || die); do
-		mv "${script}" "tools/old/old-${script##*/}" || die
-	done
-
 	sed -i '/#include <error.h>/d' examples/cpp/KModRetExample.cc || die
 
 	use static-libs || PATCHES+=( "${FILESDIR}/bcc-0.31.0-dont-install-static-libs.patch" )
@@ -129,6 +123,10 @@ src_prepare() {
 
 	# do not install lua examples
 	sed -i -e '/add_subdirectory(lua)/d' examples/CMakeLists.txt || die
+
+	# do not install "old" tools
+	sed -i -e '/add_subdirectory(old)/d' tools/CMakeLists.txt || die
+	rm -rf tools/old
 
 	cmake_src_prepare
 	bcc_distutils_phase
