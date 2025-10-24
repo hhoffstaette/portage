@@ -13,9 +13,8 @@ if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/prometheus/node_exporter.git"
 else
 	SRC_URI="https://github.com/prometheus/node_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	SRC_URI+=" https://github.com/rahilarious/gentoo-distfiles/releases/download/${P}/deps.tar.xz -> ${P}-deps.tar.xz"
-
-	KEYWORDS="amd64 arm64 ~loong ~riscv ~x86"
+	SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+	KEYWORDS="~amd64 ~arm64 ~loong ~riscv ~x86"
 fi
 
 # main pkg
