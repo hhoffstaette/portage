@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
-inherit autotools dot-a python-single-r1 systemd
+inherit autotools dot-a flag-o-matic python-single-r1 systemd
 
 DESCRIPTION="syslog replacement with advanced filtering features"
 HOMEPAGE="https://www.syslog-ng.com/products/open-source-log-management/"
@@ -12,7 +12,7 @@ SRC_URI="https://github.com/syslog-ng/syslog-ng/releases/download/${P}/${P}.tar.
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~s390 ~sparc x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 IUSE="amqp caps dbi geoip2 grpc http json kafka mongodb mqtt pacct python redis smtp snmp test spoof-source systemd tcpd"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	test? ( python )"
@@ -113,6 +113,8 @@ src_prepare() {
 }
 
 src_configure() {
+	# Type mismatches in tests
+	filter-lto
 	lto-guarantee-fat
 
 	# Needs bison/flex.
