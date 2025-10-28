@@ -141,7 +141,7 @@ src_configure() {
 		$(meson_use test unit-tests)
 		$(meson_feature xdp xsk)
 		$(meson_feature yaml)
-    )
+	)
 
 	meson_src_configure
 }
