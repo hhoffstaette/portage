@@ -27,7 +27,7 @@ SRC_URI+="doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.t
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doc doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp yaml"
+IUSE="bpf cdb dnscrypt dnstap doc doh doh3 ipcipher ipcrypt lmdb quic regex snmp +ssl systemd test web xdp yaml"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${LUA_REQUIRED_USE}
@@ -130,6 +130,7 @@ src_configure() {
 		$(meson_feature doh nghttp2)
 		$(meson_feature doh3 dns-over-http3)
 		$(meson_feature ipcipher)
+		$(meson_feature ipcrypt ipcrypt2)
 		$(meson_feature lmdb)
 		$(meson_feature quic dns-over-quic)
 		$(meson_feature regex re2)
