@@ -25,18 +25,21 @@ RDEPEND="dev-cpp/abseil-cpp:=
 	dev-libs/uthash
 	net-misc/curl
 	sys-libs/ncurses:=
-	sys-libs/zlib:=
-	virtual/libelf:="
+	virtual/libelf:=
+	virtual/zlib:=
+"
 
 DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
-	virtual/os-headers"
+	virtual/os-headers
+"
 
 DEPEND="bpf? (
 			dev-util/bpftool
 			llvm-core/clang:*[llvm_targets_BPF]
-		)"
+		)
+"
 
 S="${WORKDIR}/libs-${PV}"
 

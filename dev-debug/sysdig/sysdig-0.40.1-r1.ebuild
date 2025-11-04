@@ -40,18 +40,21 @@ RDEPEND="${LUA_DEPS}
 	net-libs/grpc:=
 	net-misc/curl
 	sys-libs/ncurses:=
-	sys-libs/zlib:=
-	virtual/libelf:="
+	virtual/libelf:=
+	virtual/zlib:=
+"
 
 DEPEND="${RDEPEND}
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
-	virtual/os-headers"
+	virtual/os-headers
+"
 
 BDEPEND="bpf? (
 			dev-util/bpftool
 			llvm-core/clang:*[llvm_targets_BPF]
-		)"
+		)
+"
 
 # pin the driver to the falcosecurity-libs version
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"

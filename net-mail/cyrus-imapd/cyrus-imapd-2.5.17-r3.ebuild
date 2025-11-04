@@ -15,10 +15,11 @@ IUSE="afs clamav http kerberos mysql nntp pam perl postgres \
 	replication +server sieve snmp sqlite ssl static-libs tcpd"
 
 # virtual/mysql-5.5 added for the --variable= option below
-DEPEND="sys-libs/zlib
+DEPEND="
 	dev-libs/libpcre2:=
 	>=dev-libs/cyrus-sasl-2.1.13
 	dev-libs/jansson
+	virtual/zlib:=
 	afs? ( net-fs/openafs )
 	clamav? ( app-antivirus/clamav )
 	http? ( dev-libs/libxml2:= dev-libs/libical )

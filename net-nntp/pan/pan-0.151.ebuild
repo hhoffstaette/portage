@@ -18,7 +18,7 @@ RESTRICT="mirror"
 RDEPEND="
 	>=dev-libs/glib-2.26:2
 	dev-libs/gmime:3.0
-	>=sys-libs/zlib-1.2.0
+	virtual/zlib:=
 	>=x11-libs/gtk+-2.16:2
 	gnome-keyring? ( gnome-base/gnome-keyring )
 	libnotify? ( >=x11-libs/libnotify-0.4.1:0= )

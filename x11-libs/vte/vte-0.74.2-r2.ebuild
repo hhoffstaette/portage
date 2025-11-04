@@ -34,7 +34,7 @@ DEPEND="
 	>=x11-libs/pango-1.22.0
 	dev-libs/libpcre2:=
 	systemd? ( >=sys-apps/systemd-220:= )
-	sys-libs/zlib
+	virtual/zlib:=
 	introspection? ( >=dev-libs/gobject-introspection-1.56:= )
 	x11-libs/pango[introspection?]
 "

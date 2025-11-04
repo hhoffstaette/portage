@@ -19,7 +19,7 @@ COMMON_DEPEND="
 	>=x11-libs/gtk+-3.4.0:3
 
 	media-libs/libpng:0=
-	sys-libs/zlib
+	virtual/zlib:=
 	x11-libs/libICE
 	x11-libs/libSM
 

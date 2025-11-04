@@ -20,8 +20,8 @@ RESTRICT+=" test"
 DEPEND="
 	dev-libs/libbpf:=
 	net-libs/libpcap
-	sys-libs/zlib
 	virtual/libelf
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
 BDEPEND="

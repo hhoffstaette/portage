@@ -16,8 +16,8 @@ KEYWORDS="~amd64 ~arm64 ~x86"
 
 BDEPEND="
 	dev-libs/uthash
-	sys-libs/zlib:=
 	virtual/libelf:=
+	virtual/zlib:=
 "
 
 CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
