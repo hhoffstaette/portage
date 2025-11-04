@@ -1,4 +1,3 @@
-
 Sanitize the scap loader script to not attempt driver downloads or compilation
 by default, which would not work anyway as sysdig does not host prebuilt modules
 for Gentoo.
