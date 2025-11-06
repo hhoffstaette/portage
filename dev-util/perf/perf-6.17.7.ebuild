@@ -256,7 +256,7 @@ perf_make() {
 		EXTRA_LDFLAGS="${LDFLAGS}"
 		ARCH="${arch}"
 		BUILD_BPF_SKEL=$(usex bpf 1 "") \
-		BUILD_NONDISTRO=1
+		BUILD_NONDISTRO=
 		JDIR="${java_dir}"
 		CORESIGHT=
 		GTK2=$(usex gtk 1 "")
