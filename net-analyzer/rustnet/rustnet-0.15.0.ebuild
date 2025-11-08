@@ -8,7 +8,7 @@ EAPI=8
 CRATES="
 "
 
-RUST_MIN_VER="1.85.0"
+RUST_MIN_VER="1.85.1"
 
 declare -A GIT_CRATES=(
 	[vmlinux]='https://github.com/libbpf/vmlinux.h;83a228cf37fc65f2d14e4896a04922b5ee531a94;vmlinux.h-%commit%'
