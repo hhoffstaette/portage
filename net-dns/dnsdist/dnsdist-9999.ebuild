@@ -5,7 +5,7 @@ EAPI=8
 
 LUA_COMPAT=( lua5-{1..4} luajit )
 PYTHON_COMPAT=( python3_{11..14} )
-RUST_MIN_VER=1.85.1
+RUST_MIN_VER="1.85.1"
 RUST_OPTIONAL=1
 
 inherit cargo flag-o-matic lua-single meson python-any-r1 toolchain-funcs
