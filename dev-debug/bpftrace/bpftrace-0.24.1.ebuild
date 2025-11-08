@@ -4,7 +4,7 @@
 EAPI=8
 
 LLVM_COMPAT=( {17..21} )
-RUST_MIN_VER=1.85.1
+RUST_MIN_VER="1.85.1"
 RUST_OPTIONAL=1
 
 inherit cmake flag-o-matic linux-info llvm-r1 rust
