@@ -22,8 +22,8 @@ fi
 LICENSE="Apache-2.0 BSD-2 BSD MIT"
 SLOT="0"
 
-BDEPEND=">=dev-lang/go-1.23"
-RESTRICT="test" # hardcoded paths, plus go extra dependencies not included in tarball
+# hardcoded paths and extra go dependencies not included in tarball
+RESTRICT="test"
 
 DOCS=(
 	README.md
