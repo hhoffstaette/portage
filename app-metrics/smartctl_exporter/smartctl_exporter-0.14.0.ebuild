@@ -40,7 +40,6 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 BDEPEND="dev-util/promu"
-DEPEND="dev-lang/go"
 RDEPEND="sys-apps/smartmontools"
 
 src_prepare() {
