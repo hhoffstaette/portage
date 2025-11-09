@@ -20,9 +20,9 @@ DEPEND="
 		acct-group/git
 		acct-user/git[gitea] )
 	pam? ( sys-libs/pam )"
+
 RDEPEND="${DEPEND}
 	!gogit? ( dev-vcs/git )"
-BDEPEND=">=dev-lang/go-1.22:="
 
 DOCS=(
 	custom/conf/app.example.ini CHANGELOG.md CONTRIBUTING.md README.md
