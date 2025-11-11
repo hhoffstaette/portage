@@ -22,4 +22,3 @@ _xxd()
 complete -F _xxd xxd
 
 # vim: set ft=sh sw=4 et sts=4 :
-
