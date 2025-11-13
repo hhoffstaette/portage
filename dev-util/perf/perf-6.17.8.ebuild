@@ -178,6 +178,7 @@ src_prepare() {
 
 	pushd "${S_K}" >/dev/null || die
 	# Gentoo patches go here
+		eapply "${FILESDIR}/6.17-bfd-locking.patch"
 	popd || die
 
 	# Drop some upstream too-developer-oriented flags and fix the
@@ -256,7 +257,7 @@ perf_make() {
 		EXTRA_LDFLAGS="${LDFLAGS}"
 		ARCH="${arch}"
 		BUILD_BPF_SKEL=$(usex bpf 1 "") \
-		BUILD_NONDISTRO=
+		BUILD_NONDISTRO=1
 		JDIR="${java_dir}"
 		CORESIGHT=
 		GTK2=$(usex gtk 1 "")
