@@ -160,7 +160,7 @@ https://lore.kernel.org/linux-perf-users/20251112074311.1440101-1-irogers@google
  
  #ifdef HAVE_LIBBFD_BUILDID_SUPPORT
  
-+extern int libbfd_read_build_id(const char *filename, struct build_id *bid, bool block);
++int libbfd_read_build_id(const char *filename, struct build_id *bid, bool block);
 +
  static int read_build_id(const char *filename, struct build_id *bid, bool block)
  {
