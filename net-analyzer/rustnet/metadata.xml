@@ -5,6 +5,7 @@
 		<email>holger@applied-asynchrony.com</email>
 		<name>Holger Hoffstätte</name>
 	</maintainer>
+	<upstream>
 		<remote-id type="github">domcyrus/rustnet</remote-id>
 	</upstream>
 </pkgmetadata>
