@@ -115,8 +115,6 @@ src_configure() {
 		--sysconfdir="${EPREFIX}/etc/dnsdist"
 		# always use libsodium
 		-Dlibsodium=enabled
-		# currently hardcoded:
-		# https://github.com/PowerDNS/pdns/issues/16249
 		-Dlua=${ELUA}
 		# never try to build man pages (virtualenv)
 		-Dman-pages=false
