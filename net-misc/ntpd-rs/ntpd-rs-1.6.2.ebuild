@@ -10,10 +10,11 @@ CRATES="
 
 RUST_MIN_VER="1.82.0"
 
-inherit cargo systemd
+inherit cargo
 
 DESCRIPTION="Full-featured implementation of NTP with NTS support"
 HOMEPAGE="https://github.com/pendulum-project/ntpd-rs"
+
 SRC_URI="
 	https://github.com/pendulum-project/ntpd-rs/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://www.applied-asynchrony.com/distfiles/${P}-crates.tar.xz
@@ -24,32 +25,44 @@ LICENSE="|| ( Apache-2.0 MIT )"
 LICENSE+="
 	Apache-2.0 BSD CDLA-Permissive-2.0 ISC MIT openssl Unicode-3.0
 "
+
 SLOT="0"
 
-# no keywords yet
-#KEYWORDS="~amd64"
+KEYWORDS="~amd64"
+
+RDEPEND="acct-group/ntp
+	acct-user/ntp"
 
 src_install() {
 	dobin $(cargo_target_dir)/{ntp-ctl,ntp-daemon,ntp-metrics-exporter}
+
+	# set caps for running as ntp:ntp
+	setcap cap_net_bind_service,cap_sys_time=ep "${ED}"/usr/bin/ntp-daemon
+
 	dodoc CHANGELOG.md COPYRIGHT LICENSE-APACHE LICENSE-MIT README.md
 	doman docs/precompiled/man/*
 
-	# TODO: verify that these work
-    systemd_dounit docs/examples/conf/*.service
+	newinitd "${FILESDIR}"/ntp-daemon.initd ntp-daemon
+	newinitd "${FILESDIR}"/ntp-metrics-exporter.initd ntp-metrics-exporter
 
-	# TODO: openrc
-	# - create init file
-	# - run as ntp? -> RDEP on acct-{user,group}/ntp
-	# - checkpath /var/run/ntpd.rs
-	# - redirect stdout to /var/log/ntpd-rs.log
+	# TODO: systemd
+	# - inherit systemd
+	# - change user/group to ntp:ntp
+	# - need someone to verify that these work
+	# systemd_dounit docs/examples/conf/*.service
 
-	# TODO: add a logrotate file
-	# - gentle logrotate: https://github.com/pendulum-project/ntpd-rs/issues/2035
-
-	# TODO: ewarn about defaults
+	# TODO: config tweaks
+	# - add source-defaults & observability sections
+	# - ewarn about default pool
 	# - point to https://docs.ntpd-rs.pendulum-project.org/
-	# - maybe add source-defaults section
-	# - maybe dial down logging by default
 	insinto /etc/ntpd-rs
 	newins docs/examples/conf/ntp.toml.default ntp.toml
+
+	# dial down default log level
+	sed -i 's/log-level = "info"/log-level = "warn"/g' "${ED}"/etc/ntpd-rs/ntp.toml
+
+	# TODO: gentle logrotate
+	# https://github.com/pendulum-project/ntpd-rs/issues/2035
+	insinto /etc/logrotate.d
+	newins "${FILESDIR}"/ntp-daemon.logrotate ntp-daemon
 }
