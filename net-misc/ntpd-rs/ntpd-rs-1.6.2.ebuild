@@ -10,7 +10,7 @@ CRATES="
 
 RUST_MIN_VER="1.82.0"
 
-inherit cargo
+inherit cargo fcaps
 
 DESCRIPTION="Full-featured implementation of NTP with NTS support"
 HOMEPAGE="https://github.com/pendulum-project/ntpd-rs"
@@ -33,11 +33,13 @@ KEYWORDS="~amd64"
 RDEPEND="acct-group/ntp
 	acct-user/ntp"
 
+# required capabilities for running as ntp:ntp
+FILECAPS=(
+	cap_net_bind_service,cap_sys_time=ep usr/bin/ntp-daemon
+)
+
 src_install() {
 	dobin $(cargo_target_dir)/{ntp-ctl,ntp-daemon,ntp-metrics-exporter}
-
-	# set caps for running as ntp:ntp
-	setcap cap_net_bind_service,cap_sys_time=ep "${ED}"/usr/bin/ntp-daemon
 
 	dodoc CHANGELOG.md COPYRIGHT LICENSE-APACHE LICENSE-MIT README.md
 	doman docs/precompiled/man/*
@@ -51,18 +53,26 @@ src_install() {
 	# - need someone to verify that these work
 	# systemd_dounit docs/examples/conf/*.service
 
-	# TODO: config tweaks
-	# - add source-defaults & observability sections
-	# - ewarn about default pool
-	# - point to https://docs.ntpd-rs.pendulum-project.org/
 	insinto /etc/ntpd-rs
 	newins docs/examples/conf/ntp.toml.default ntp.toml
 
 	# dial down default log level
 	sed -i 's/log-level = "info"/log-level = "warn"/g' "${ED}"/etc/ntpd-rs/ntp.toml
 
-	# TODO: gentle logrotate
+	# TODO: gentle logrotate, see:
 	# https://github.com/pendulum-project/ntpd-rs/issues/2035
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/ntp-daemon.logrotate ntp-daemon
+}
+
+pkg_postinst() {
+	fcaps_pkg_postinst
+
+	ewarn "The installed configuration in /etc/ntpd-rs should work out of the box,"
+	ewarn "however it is STRONGLY recommended to consult the documentation at"
+	ewarn "https://docs.ntpd-rs.pendulum-project.org/ before running continously."
+	ewarn "Please consider setting less aggressive values for 'poll-interval-limits'"
+	ewarn "when using a public NTP pool."
+	ewarn "Also note that 'initial-poll-interval' currently has unexpected meaning:"
+	ewarn "https://github.com/pendulum-project/ntpd-rs/issues/1811"
 }
