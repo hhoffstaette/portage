@@ -6,13 +6,13 @@ EAPI=8
 inherit cmake linux-mod-r1
 
 DESCRIPTION="Kernel module for dev-debug/sysdig"
-HOMEPAGE="https://sysdig.com/"
+HOMEPAGE="https://www.sysdig.com/"
 SRC_URI="https://github.com/falcosecurity/libs/archive/${PV}.tar.gz -> falcosecurity-libs-${PV}.tar.gz"
 S="${WORKDIR}/libs-${PV}"
 
 LICENSE="Apache-2.0 GPL-2 MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~x86"
+KEYWORDS="~amd64"
 
 BDEPEND="
 	dev-libs/uthash
@@ -23,10 +23,8 @@ BDEPEND="
 CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 
 # We need to specify the driver version manually since we do not use a git tree.
-# This version can be found as git tag on the same commit as the libs version.
-DRIVER_VERSION="8.0.0+driver"
-
-PATCHES=( "${FILESDIR}/0.20.0-fix-driver-and-bpf-makefile-for-kernel-6.13.patch" )
+# This version can usually be found as git tag on the same commit as the libs version.
+DRIVER_VERSION="8.1.0+driver"
 
 src_configure() {
 	local mycmakeargs=(
