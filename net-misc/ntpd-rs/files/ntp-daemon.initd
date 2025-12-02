@@ -10,7 +10,7 @@ group=ntp
 command="/usr/bin/ntp-daemon"
 command_background="true"
 command_user="${user}:${group}"
-output_log="/var/log/${RC_SVCNAME}.log"
+output_log="/var/log/ntpd-rs/${RC_SVCNAME}.log"
 
 depend() {
 	after net net-online
@@ -18,5 +18,6 @@ depend() {
 
 start_pre() {
 	checkpath -q -d -m 0755 -o ${user}:${group} /run/ntpd-rs
+	checkpath -q -d -m 0755 -o ${user}:${group} /var/log/ntpd-rs
 	checkpath -q -f -m 0644 -o ${user}:${group} ${output_log}
 }
