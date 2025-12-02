@@ -23,7 +23,7 @@ index 5bb8648c3380..20e6d65afa98 100644
      return shared_ptr<DownstreamState>();
    }
  
-+  static unsigned int counter;
++  static std::atomic<unsigned int> counter{0};
 +
 +  size_t serverIdx = (counter++) % servers.size();
 +  shared_ptr<DownstreamState> serverState = servers.at(serverIdx).second;
@@ -38,7 +38,7 @@ index 5bb8648c3380..20e6d65afa98 100644
      }
    }
  
--  static unsigned int counter;
+-  static std::atomic<unsigned int> counter{0};
 -  return servers.at(candidates.at((counter++) % candidates.size()) - 1).second;
 +  return servers.at(candidates.at(counter % candidates.size()) - 1).second;
  }

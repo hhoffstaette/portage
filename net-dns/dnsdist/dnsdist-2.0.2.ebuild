@@ -8,17 +8,27 @@ PYTHON_COMPAT=( python3_{11..14} )
 RUST_MIN_VER="1.85.1"
 RUST_OPTIONAL=1
 
-inherit cargo flag-o-matic lua-single python-any-r1 toolchain-funcs
+inherit cargo flag-o-matic lua-single meson python-any-r1 toolchain-funcs
 
 DESCRIPTION="A highly DNS-, DoS- and abuse-aware loadbalancer"
 HOMEPAGE="https://www.dnsdist.org/index.html"
-SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz
+
+if [[ ${PV} == *9999* ]] ; then
+	EGIT_REPO_URI="https://github.com/PowerDNS/pdns"
+	EGIT_BRANCH="master"
+	inherit git-r3
+else
+	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
+	KEYWORDS="~amd64 ~x86"
+fi
+
+SRC_URI+="
 	doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )
-	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
+	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )
+"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="bpf cdb dnscrypt dnstap doc doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp yaml"
 RESTRICT="!test? ( test )"
 
@@ -56,10 +66,15 @@ BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
 	yaml? ( ${RUST_DEPEND} )
 "
 
+# special requirements for live
+if [[ ${PV} == *9999* ]] ; then
+	BDEPEND+=" dev-util/ragel"
+	S="${S}/pdns/dnsdistdist"
+fi
+
 PATCHES=(
-	"${FILESDIR}/2.0.1-speed-up-cache-hits.patch"
-	"${FILESDIR}/2.0.1-roundrobin-fast-path.patch"
-	"${FILESDIR}/2.0.1-roundrobin-atomic-counter.patch"
+	"${FILESDIR}"/2.0.2-roundrobin-fast-path.patch
+	"${FILESDIR}"/2.0.2-speed-up-cache-hits.patch
 )
 
 pkg_setup() {
@@ -70,6 +85,15 @@ pkg_setup() {
 
 python_check_deps() {
 	python_has_version "dev-python/pyyaml[${PYTHON_USEDEP}]"
+}
+
+# git-r3 overrides automatic SRC_URI unpacking
+src_unpack() {
+	default
+
+	if [[ ${PV} == *9999* ]] ; then
+		git-r3_src_unpack
+	fi
 }
 
 src_prepare() {
@@ -94,46 +118,53 @@ src_configure() {
 	! use dnstap && append-cppflags -DDISABLE_PROTOBUF
 	! use web && append-cppflags -DDISABLE_BUILTIN_HTML
 
-	local myeconfargs=(
+	local emesonargs=(
 		--sysconfdir="${EPREFIX}/etc/dnsdist"
-		--enable-tls-providers
-		--with-lua="${ELUA}"
-		--without-gnutls
-		--without-h2o
-		$(use_with bpf ebpf)
-		$(use_with cdb cdb)
-		$(use_enable doh dns-over-https)
-		$(use_enable doh3 dns-over-http3)
-		$(use_enable dnscrypt)
-		$(use_enable dnstap)
-		$(use_enable ipcipher)
-		$(use_with lmdb)
-		$(use_enable quic dns-over-quic)
-		$(use_with regex re2)
-		$(use_with snmp net-snmp)
-		$(use_enable ssl dns-over-tls)
-		$(use_enable systemd)
-		$(use_enable test unit-tests)
-		$(use_with xdp xsk)
-		$(use_enable yaml)
+		# always use libsodium
+		-Dlibsodium=enabled
+		-Dlua=${ELUA}
+		# never try to build man pages (virtualenv)
+		-Dman-pages=false
+		# never use gnutls (openssl only)
+		-Dtls-gnutls=disabled
+		$(meson_feature bpf ebpf)
+		$(meson_feature cdb)
+		$(meson_feature dnscrypt)
+		$(meson_feature dnstap)
+		$(meson_feature doh dns-over-https)
+		$(meson_feature doh nghttp2)
+		$(meson_feature doh3 dns-over-http3)
+		$(meson_feature ipcipher)
+		$(meson_feature lmdb)
+		$(meson_feature quic dns-over-quic)
+		$(meson_feature regex re2)
+		$(meson_feature snmp)
+		$(meson_feature ssl libcrypto)
+		$(meson_feature ssl tls-libssl)
+		$(meson_feature ssl dns-over-tls)
+		$(meson_feature systemd systemd-service)
+		$(meson_use test unit-tests)
+		$(meson_feature xdp xsk)
+		$(meson_feature yaml)
 	)
 
-	econf "${myeconfargs[@]}"
+	meson_src_configure
 }
 
 # explicitly implement src_compile/test to override the
 # otherwise automagic cargo_src_compile/test phases
 
 src_compile() {
-	emake
+	cargo_gen_config
+	cargo_env meson_src_compile
 }
 
 src_test() {
-	emake check
+	meson_src_test
 }
 
 src_install() {
-	default
+	meson_src_install
 
 	use doc && dodoc -r "${WORKDIR}"/html
 

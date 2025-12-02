@@ -22,8 +22,10 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-SRC_URI+="doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )
-	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )"
+SRC_URI+="
+	doc? ( https://www.applied-asynchrony.com/distfiles/${PN}-docs-${PV}.tar.xz )
+	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )
+"
 
 LICENSE="GPL-2"
 SLOT="0"
