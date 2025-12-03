@@ -17,7 +17,7 @@ LIBS="falcosecurity-libs-${LIBS_VERSION}"
 SRC_URI="
 	https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> ${LIBS}.tar.gz
-	container-plugin? ( https://download.falco.org/plugins/stable/container-0.5.0-linux-x86_64.tar.gz )
+	https://download.falco.org/plugins/stable/container-0.5.0-linux-x86_64.tar.gz
 "
 
 # The driver version as found in cmake/modules/driver.cmake or alternatively
@@ -27,7 +27,7 @@ DRIVER_VERSION="8.1.0+driver"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="bpf container-plugin +modules"
+IUSE="bpf +modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="${LUA_DEPS}
@@ -59,7 +59,6 @@ BDEPEND="bpf? (
 # pin the driver to the falcosecurity-libs version
 PDEPEND="modules? ( =dev-debug/scap-driver-${LIBS_VERSION}* )"
 
-# only with USE=container-plugin
 QA_PREBUILT="usr/share/sysdig/plugins/libcontainer.so"
 QA_PRESTRIPPED=${QA_PREBUILT}
 
@@ -169,10 +168,10 @@ src_install() {
 	# users can drop things in here
 	keepdir /usr/share/sysdig/plugins
 
-	if use container-plugin; then
-		insinto /usr/share/sysdig/plugins
-		doins "${WORKDIR}"/libcontainer.so
-	fi
+	# install container plugin
+	insinto /usr/share/sysdig/plugins
+	insopts -m0755
+	doins "${WORKDIR}"/libcontainer.so
 }
 
 pkg_postinst() {
@@ -184,12 +183,5 @@ pkg_postinst() {
 		elog
 		elog "To use it, start sysdig/csysdig with '--modern-bpf'."
 		elog
-	fi
-
-	if use container-plugin; then
-		elog "You have enabled the container plugin."
-		elog "This is a prebuilt binary plugin to aid in the collection of events"
-		elog "from containers. Please consult the documentation for details:"
-		elog "https://github.com/falcosecurity/plugins/tree/main/plugins/container"
 	fi
 }
