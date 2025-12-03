@@ -12,19 +12,19 @@ S="${WORKDIR}/libs-${PV}"
 
 LICENSE="Apache-2.0 GPL-2 MIT"
 SLOT="0"
-#KEYWORDS="~amd64"
+KEYWORDS="amd64 ~arm64 ~x86"
 
 BDEPEND="
 	dev-libs/uthash
-	virtual/libelf:=
 	virtual/zlib:=
+	virtual/libelf:=
 "
 
 CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 
 # We need to specify the driver version manually since we do not use a git tree.
-# This version can usually be found as git tag on the same commit as the libs version.
-DRIVER_VERSION="8.1.0+driver"
+# This version can be found as git tag on the same commit as the libs version.
+DRIVER_VERSION="8.0.0+driver"
 
 src_configure() {
 	local mycmakeargs=(
