@@ -48,11 +48,12 @@ src_prepare() {
 }
 
 src_configure() {
-	# filter LTO: #861587
-	filter-lto
+	# fix building with LTO: #861587
+	tc-is-lto && append-cflags $(test-flags-CC -ffat-lto-objects)
 
 	# filter LDFLAGS some more: #916591
-	filter-ldflags -Wl,--{icf,lto}*
+	# ld.lld: error: -r and --icf may not be used together
+	filter-ldflags -Wl,--icf*
 
 	export CC="$(tc-getCC)"
 	export PREFIX="${EPREFIX}/usr"
@@ -70,9 +71,11 @@ src_install() {
 
 	# To remove the scripts/testing files that are installed.
 	rm -r "${ED}/usr/share/xdp-tools" || die
+
 	# We can't control static archive generation yet.
 	rm "${ED}/usr/$(get_libdir)/libxdp.a" || die
 
+	# Only install tools when requested.
 	use tools || { rm "${ED}/usr/sbin"/* || die; }
 
 	# These are ELF objects but BPF ones.
