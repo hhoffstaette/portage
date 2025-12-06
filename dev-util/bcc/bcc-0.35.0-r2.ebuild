@@ -5,7 +5,7 @@ EAPI=8
 
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{{11..14},13t,14t}  )
+PYTHON_COMPAT=( python3_{{10..14},{13..14}t} )
 LLVM_COMPAT=( {15..21} )
 
 inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
@@ -17,7 +17,7 @@ SRC_URI="https://github.com/iovisor/bcc/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
-IUSE="lzma +python static-libs test"
+IUSE="debuginfod lzma +python static-libs test"
 
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
@@ -28,8 +28,8 @@ RESTRICT="test"
 
 RDEPEND="
 	app-arch/zstd:=
-	>=dev-libs/elfutils-0.166:=
-	>=dev-libs/libbpf-1.2.0:=
+	>=dev-libs/elfutils-0.166:=[debuginfod?]
+	dev-libs/libbpf:=
 	dev-libs/libffi:=
 	sys-kernel/linux-headers
 	sys-libs/ncurses:=[tinfo]
@@ -135,6 +135,7 @@ src_prepare() {
 src_configure() {
 	local mycmakeargs=(
 		-DREVISION=${PV%%_*}
+		-DENABLE_LIBDEBUGINFOD=$(usex debuginfod)
 		-DENABLE_LLVM_SHARED=ON
 		-DENABLE_NO_PIE=OFF
 		-DWITH_LZMA=$(usex lzma)
