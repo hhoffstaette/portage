@@ -4,7 +4,7 @@
 EAPI=8
 
 LLVM_COMPAT=( {18..21} )
-PYTHON_COMPAT=( python3_{10..14} python3_{13,14}t)
+PYTHON_COMPAT=( python3_{11..14} python3_{13,14}t)
 inherit bash-completion-r1 estack flag-o-matic linux-info llvm-r1 toolchain-funcs python-single-r1
 
 DESCRIPTION="Userland tools for Linux Performance Counters"
@@ -88,9 +88,8 @@ RDEPEND="
 	unwind? ( sys-libs/libunwind:= )
 	app-arch/zstd:=
 	dev-libs/elfutils
-	sys-libs/binutils-libs:=
-	virtual/libcrypt
 	virtual/zlib:=
+	virtual/libcrypt
 "
 
 DEPEND="${RDEPEND}
@@ -255,11 +254,13 @@ perf_make() {
 		EXTRA_CFLAGS="${CPPFLAGS} ${CFLAGS}"
 		EXTRA_LDFLAGS="${LDFLAGS}"
 		ARCH="${arch}"
-		BUILD_BPF_SKEL=$(usex bpf 1 "") \
+		BUILD_BPF_SKEL=$(usex bpf 1 "")
+		BUILD_NONDISTRO=
 		JDIR="${java_dir}"
 		CORESIGHT=
 		GTK2=$(usex gtk 1 "")
 		feature-gtk2-infobar=$(usex gtk 1 "")
+		LIBPERL=$(usex perl 1 "")
 		NO_AUXTRACE=
 		NO_BACKTRACE=
 		NO_CAPSTONE=$(puse capstone)
@@ -275,7 +276,6 @@ perf_make() {
 		NO_LIBELF=
 		NO_LIBLLVM=$(puse bpf)
 		NO_LIBNUMA=$(puse numa)
-		NO_LIBPERL=$(puse perl)
 		NO_LIBPFM4=$(puse libpfm)
 		NO_LIBPYTHON=$(puse python)
 		NO_LIBTRACEEVENT=$(puse libtraceevent)
@@ -288,9 +288,8 @@ perf_make() {
 		TCMALLOC=$(usex tcmalloc 1 "")
 		WERROR=0
 		DEBUG=$(usex debug 1 "")
-		LIBDIR="/usr/libexec/perf-core"
 		libdir="${EPREFIX}/usr/$(get_libdir)"
-		plugindir="${EPREFIX}/usr/$(get_libdir)/perf/plugins"
+		LIBDIR="${EPREFIX}/usr/libexec/perf-core"
 		"$@"
 	)
 	NO_JEVENTS=$(puse python) emake "${emakeargs[@]}"
