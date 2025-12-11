@@ -43,7 +43,6 @@ RDEPEND="acct-group/dnsdist
 	acct-user/dnsdist
 	bpf? ( dev-libs/libbpf:= )
 	cdb? ( dev-db/tinycdb:= )
-	dev-libs/boost:=
 	sys-libs/libcap
 	dev-libs/libedit
 	dev-libs/libsodium:=
@@ -62,6 +61,7 @@ RDEPEND="acct-group/dnsdist
 
 DEPEND="${RDEPEND}"
 BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
+	dev-libs/boost:=
 	virtual/pkgconfig
 	yaml? ( ${RUST_DEPEND} )
 "
