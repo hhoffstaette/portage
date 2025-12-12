@@ -15,27 +15,28 @@ KEYWORDS="amd64"
 IUSE="cdr exif http jpeg json libsecret raw slideshow svg tiff test webp"
 
 COMMON_DEPEND="
-	>=dev-libs/glib-2.34.0:2
-	>=x11-libs/gtk+-3.4.0:3
-
+	app-accessibility/at-spi2-core:2
+	dev-libs/glib:2
 	media-libs/libpng:0=
+	x11-libs/cairo
+	x11-libs/gdk-pixbuf:2
+	x11-libs/gtk+:3
+	x11-libs/pango
 	virtual/zlib:=
-	x11-libs/libICE
-	x11-libs/libSM
 
 	cdr? ( >=app-cdr/brasero-3.2 )
 	exif? ( >=media-gfx/exiv2-0.21:= )
 	http? ( >=net-libs/libsoup-gnome-2.36:2.4 )
-	jpeg? ( virtual/jpeg:0= )
+	jpeg? ( media-libs/libjpeg-turbo:= )
 	json? ( >=dev-libs/json-glib-0.15.0 )
 	libsecret? ( >=app-crypt/libsecret-0.11 )
 	slideshow? (
 		>=media-libs/clutter-1:1.0
 		>=media-libs/clutter-gtk-1:1.0 )
-	svg? ( >=gnome-base/librsvg-2.34 )
+	svg? ( >=gnome-base/librsvg-2.34:2 )
 	tiff? ( media-libs/tiff:= )
 	raw? ( >=media-libs/libopenraw-0.0.8:= )
-	webp? ( >=media-libs/libwebp-0.2.0 )
+	webp? ( media-libs/libwebp:= )
 "
 RDEPEND="${COMMON_DEPEND}
 	>=gnome-base/gsettings-desktop-schemas-0.1.4
