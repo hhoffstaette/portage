@@ -27,12 +27,9 @@ REQUIRED_USE="
 RESTRICT="test"
 
 RDEPEND="
-	app-arch/zstd:=
-	>=dev-libs/elfutils-0.166:=[debuginfod?]
+	>=dev-libs/elfutils-0.166[debuginfod?]
 	dev-libs/libbpf:=
-	dev-libs/libffi:=
 	sys-kernel/linux-headers
-	sys-libs/ncurses:=[tinfo]
 	$(llvm_gen_dep '
 		llvm-core/clang:${LLVM_SLOT}=
 		llvm-core/llvm:${LLVM_SLOT}=
