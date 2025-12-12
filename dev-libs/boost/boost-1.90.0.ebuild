@@ -60,6 +60,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.89.0-predef-include-path.patch
 	"${FILESDIR}"/${PN}-1.89.0-python-exclude-broken-tests.patch
 	"${FILESDIR}"/${PN}-1.89.0-unordered-no-tbb.patch
+	"${FILESDIR}"/${PN}-1.90.0-msm-std.patch
 )
 
 create_user-config.jam() {
@@ -243,11 +244,6 @@ multilib_src_test() {
 		"config"
 		# undefined reference to `boost::math::concepts::real_concept boost::math::bernoulli_b2n<boost::math::concepts::real_concept>(int)
 		"math"
-		# In file included from Back11OrthogonalDeferred3WithPuml.cpp:15:
-		# boost/msm/front/puml/puml.hpp: In function 'constexpr auto boost::msm::front::puml::detail::parse_guard_simple(Func)':
-		# boost/msm/front/puml/puml.hpp:511:25: error: lambda-expression in unevaluated context only available with
-		# '-std=c++20' or '-std=gnu++20' [-Wtemplate-body]
-		"msm"
 		# In function 'PyObject* boost::parameter::python::aux::unspecified_type()':
 		#  /usr/include/python3.13/object.h:339:30: error: lvalue required as left operand of assignment
 		#  #define Py_TYPE(ob) Py_TYPE(_PyObject_CAST(ob))
