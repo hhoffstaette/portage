@@ -17,8 +17,9 @@ IUSE="afs clamav http kerberos mysql nntp pam perl postgres \
 # virtual/mysql-5.5 added for the --variable= option below
 DEPEND="
 	dev-libs/libpcre2:=
-	>=dev-libs/cyrus-sasl-2.1.13
-	dev-libs/jansson
+	dev-libs/cyrus-sasl:2
+	dev-libs/jansson:=
+	sys-apps/util-linux
 	virtual/zlib:=
 	afs? ( net-fs/openafs )
 	clamav? ( app-antivirus/clamav )
@@ -34,7 +35,7 @@ DEPEND="
 	postgres? ( dev-db/postgresql:* )
 	snmp? ( >=net-analyzer/net-snmp-5.2.2-r1 )
 	sqlite? ( dev-db/sqlite:3 )
-	ssl? ( >=dev-libs/openssl-1.0.1e:0 )
+	ssl? ( dev-libs/openssl:= )
 	tcpd? ( >=sys-apps/tcp-wrappers-7.6 snmp? ( net-analyzer/net-snmp[tcpd=] ) )"
 
 # all blockers really needed?
@@ -130,6 +131,7 @@ src_install() {
 	cp doc/cyrusv2.mc "${D}/usr/share/doc/${PF}/html"
 	cp -r contrib tools "${D}/usr/share/doc/${PF}"
 	rm -f doc/text/Makefile*
+	find "${ED}" -name '*.la' -delete || die
 
 	insinto /etc
 	doins "${FILESDIR}/cyrus.conf" "${FILESDIR}/imapd.conf"
