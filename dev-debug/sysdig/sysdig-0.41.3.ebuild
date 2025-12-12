@@ -14,10 +14,13 @@ HOMEPAGE="https://www.sysdig.com/"
 LIBS_VERSION="0.21.0"
 LIBS="falcosecurity-libs-${LIBS_VERSION}"
 
+# The version of the container plugin binary
+CONTAINER_VERSION="0.6.0"
+
 SRC_URI="
 	https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> ${LIBS}.tar.gz
-	https://download.falco.org/plugins/stable/container-0.5.0-linux-x86_64.tar.gz
+	https://download.falco.org/plugins/stable/container-${CONTAINER_VERSION}-linux-x86_64.tar.gz
 "
 
 # The driver version as found in cmake/modules/driver.cmake or alternatively
