@@ -16,12 +16,15 @@ IUSE="dbus gnome-keyring libnotify spell ssl"
 RESTRICT="mirror"
 
 RDEPEND="
-	>=dev-libs/glib-2.26:2
+	dev-libs/glib:2
 	dev-libs/gmime:3.0
 	virtual/zlib:=
-	>=x11-libs/gtk+-2.16:2
+	x11-libs/cairo
+	x11-libs/gdk-pixbuf:2
+	x11-libs/gtk+:2
+	x11-libs/pango
 	gnome-keyring? ( gnome-base/gnome-keyring )
-	libnotify? ( >=x11-libs/libnotify-0.4.1:0= )
+	libnotify? ( x11-libs/libnotify )
 	spell? (
 		>=app-text/enchant-1.6:0/0
 		>=app-text/gtkspell-2.0.7:2 )
