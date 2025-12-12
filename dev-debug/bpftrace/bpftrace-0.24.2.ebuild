@@ -18,12 +18,12 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_BRANCH="release/0.24.x"
 	inherit git-r3
 	# use a released man page for git
-	MAN_V="0.24.1"
+	MAN_V="0.24.2"
 else
 	SRC_URI="https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64"
 	# the man page version may trail the release
-	#MAN_V="0.24.1"
+	#MAN_V="0.24.2"
 fi
 
 SRC_URI+=" https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.tar.xz"
@@ -40,16 +40,16 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	>=dev-libs/blazesym_c-0.1.1
 	>=dev-libs/libbpf-1.5:=
-	>=dev-util/bcc-0.25.0:=
+	>=dev-util/bcc-0.25.0
 	$(llvm_gen_dep '
 		llvm-core/clang:${LLVM_SLOT}=
 		llvm-core/llvm:${LLVM_SLOT}=[llvm_targets_BPF(+)]
 	')
-	sys-process/procps
 	sys-libs/binutils-libs:=
 	virtual/libelf:=
 	systemd? ( sys-apps/systemd:= )
 	pcap? ( net-libs/libpcap:= )
+	virtual/zlib:=
 "
 DEPEND="
 	${RDEPEND}
@@ -62,7 +62,7 @@ BDEPEND="
 	app-alternatives/yacc
 	dev-libs/cereal
 	dev-util/bpftool
-	dev-util/xxd
+	|| ( dev-util/xxd app-editors/vim-core )
 	test? (
 		${RUST_DEPEND}
 		dev-lang/go
