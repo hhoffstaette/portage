@@ -20,7 +20,7 @@ REQUIRED_USE="
 "
 
 # Upstream is hostile and refuses to upload tarballs.
-SRC_URI="https://gitlab.gnome.org/GNOME/${PN}/-/archive/${PV}/${P}.tar.bz2"
+SRC_URI="https://gitlab.gnome.org/GNOME/vte/-/archive/${PV}/${P}.tar.bz2"
 
 DEPEND="
 	app-accessibility/at-spi2-core:2
