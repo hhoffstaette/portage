@@ -8,7 +8,7 @@ inherit go-module
 DESCRIPTION="APC UPS statistics exporter for Prometheus"
 HOMEPAGE="https://github.com/mdlayher/apcupsd_exporter"
 
-SRC_URI="https://github.com/mdlayher/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/mdlayher/apcupsd_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 LICENSE="MIT"
