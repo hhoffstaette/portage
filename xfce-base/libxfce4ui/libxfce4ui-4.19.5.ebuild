@@ -10,7 +10,7 @@ HOMEPAGE="
 	https://docs.xfce.org/xfce/libxfce4ui/start
 	https://gitlab.xfce.org/xfce/libxfce4ui/
 "
-SRC_URI="https://archive.xfce.org/src/xfce/${PN}/${PV%.*}/${P}.tar.bz2"
+SRC_URI="https://archive.xfce.org/src/xfce/libxfce4ui/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="LGPL-2+ GPL-2+"
 SLOT="0"
