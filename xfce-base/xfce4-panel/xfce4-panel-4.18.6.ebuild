@@ -10,7 +10,7 @@ HOMEPAGE="
 	https://docs.xfce.org/xfce/xfce4-panel/start
 	https://gitlab.xfce.org/xfce/xfce4-panel/
 "
-SRC_URI="https://archive.xfce.org/src/xfce/${PN}/${PV%.*}/${P}.tar.bz2"
+SRC_URI="https://archive.xfce.org/src/xfce/xfce4-panel/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="0"
