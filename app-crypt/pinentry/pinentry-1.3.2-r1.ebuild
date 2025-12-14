@@ -8,8 +8,8 @@ inherit autotools qmake-utils verify-sig
 
 DESCRIPTION="Simple passphrase entry dialogs which utilize the Assuan protocol"
 HOMEPAGE="https://gnupg.org/related_software/pinentry/"
-SRC_URI="mirror://gnupg/${PN}/${P}.tar.bz2"
-SRC_URI+=" verify-sig? ( mirror://gnupg/${PN}/${P}.tar.bz2.sig )"
+SRC_URI="mirror://gnupg/pinentry/${P}.tar.bz2"
+SRC_URI+=" verify-sig? ( mirror://gnupg/pinentry/${P}.tar.bz2.sig )"
 
 LICENSE="GPL-2"
 SLOT="0"
