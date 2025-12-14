@@ -8,7 +8,7 @@ inherit go-module
 DESCRIPTION="Chrony NTP exporter for Prometheus"
 HOMEPAGE="https://github.com/SuperQ/chrony_exporter"
 
-SRC_URI="https://github.com/SuperQ/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/SuperQ/chrony_exporter/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 LICENSE="Apache-2.0"
