@@ -11,8 +11,8 @@ HOMEPAGE="https://www.pango.org/"
 
 # CLOSE YOUR EYES: PANGO IS REALLY 1.42.4++
 REAL_V="1.42.4"
-SRC_URI="http://ftp.gnome.org/pub/GNOME/sources/pango/$(ver_cut 1-2 ${REAL_V})/${PN}-${REAL_V}.tar.xz"
-SRC_URI+=" https://dev.gentoo.org/~leio/distfiles/${PN}-${REAL_V}-patchset.tar.xz"
+SRC_URI="http://ftp.gnome.org/pub/GNOME/sources/pango/$(ver_cut 1-2 ${REAL_V})/pango-${REAL_V}.tar.xz"
+SRC_URI+=" https://dev.gentoo.org/~leio/distfiles/pango-${REAL_V}-patchset.tar.xz"
 
 LICENSE="LGPL-2+ FTL"
 SLOT="0"
