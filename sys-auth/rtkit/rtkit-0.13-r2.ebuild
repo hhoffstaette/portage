@@ -7,7 +7,7 @@ inherit linux-info meson
 
 DESCRIPTION="Realtime Policy and Watchdog Daemon"
 HOMEPAGE="https://github.com/heftig/rtkit"
-SRC_URI="https://github.com/heftig/${PN}/releases/download/v${PV}/${P}.tar.xz"
+SRC_URI="https://github.com/heftig/rtkit/releases/download/v${PV}/${P}.tar.xz"
 
 LICENSE="GPL-3 BSD"
 SLOT="0"
