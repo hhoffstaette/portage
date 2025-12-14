@@ -7,7 +7,7 @@ inherit autotools
 
 DESCRIPTION="A set of eselect modules for Java"
 HOMEPAGE="https://wiki.gentoo.org/wiki/Project:Java"
-SRC_URI="https://gitweb.gentoo.org/proj/${PN}.git/snapshot/${P}.tar.bz2"
+SRC_URI="https://gitweb.gentoo.org/proj/eselect-java.git/snapshot/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
