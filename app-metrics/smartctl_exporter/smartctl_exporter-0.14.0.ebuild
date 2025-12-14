@@ -31,7 +31,7 @@ SRC_URI="
 	"
 PATCHES=()
 for p in $UPSTREAM_PATCHES; do
-	SRC_URI+=" https://github.com/prometheus-community/smartctl_exporter/commit/${p/*:}.patch -> ${PN}-${p/:/-}.patch"
+	SRC_URI+=" https://github.com/prometheus-community/smartctl_exporter/commit/${p/*:}.patch -> smartctl_exporter-${p/:/-}.patch"
 	PATCHES+=( "${DISTDIR}/${PN}-${p/:/-}.patch" )
 done
 
