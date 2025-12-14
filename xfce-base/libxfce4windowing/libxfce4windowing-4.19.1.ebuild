@@ -7,7 +7,7 @@ DESCRIPTION="Unified widget and session management libs for Xfce"
 HOMEPAGE="
 	https://gitlab.xfce.org/xfce/libxfce4windowing/
 "
-SRC_URI="https://archive.xfce.org/src/xfce/${PN}/${PV%.*}/${P}.tar.bz2"
+SRC_URI="https://archive.xfce.org/src/xfce/libxfce4windowing/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="LGPL-2.1+"
 SLOT="0"
