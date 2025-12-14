@@ -20,13 +20,13 @@ if [[ ${PV} == *9999* ]] ; then
 	# use a released man page for git
 	MAN_V="0.24.2"
 else
-	SRC_URI="https://github.com/bpftrace/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/bpftrace/bpftrace/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64"
 	# the man page version may trail the release
 	#MAN_V="0.24.2"
 fi
 
-SRC_URI+=" https://github.com/bpftrace/${PN}/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> ${PN}-${MAN_V:-${PV}}-man.tar.xz"
+SRC_URI+=" https://github.com/bpftrace/bpftrace/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> bpftrace-${MAN_V:-${PV}}-man.tar.xz"
 
 S="${WORKDIR}/${PN}-${MY_PV:-${PV}}"
 
