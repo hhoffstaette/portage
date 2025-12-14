@@ -15,7 +15,7 @@ RESTRICT="mirror"
 
 DEPEND=""
 
-SRC_URI="https://github.com/nalbury/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/nalbury/promql-cli/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 src_prepare() {
