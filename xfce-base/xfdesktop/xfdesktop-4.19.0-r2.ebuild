@@ -10,7 +10,7 @@ HOMEPAGE="
 	https://docs.xfce.org/xfce/xfdesktop/start
 	https://gitlab.xfce.org/xfce/xfdesktop/
 "
-SRC_URI="https://archive.xfce.org/src/xfce/${PN}/${PV%.*}/${P}.tar.bz2"
+SRC_URI="https://archive.xfce.org/src/xfce/xfdesktop/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2+"
 SLOT="0"
