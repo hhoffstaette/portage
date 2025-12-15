@@ -5,17 +5,16 @@ EAPI=8
 
 inherit go-module systemd
 
-GIT_COMMIT=2f0cff51fd1cc761eeb671db43736341ca2ab511
-MY_PV="${PV/_rc/-rc.}"
+GIT_COMMIT=ecda6777f8b67ba00ff40571c6a754c965fc1aaa
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
-SRC_URI="https://github.com/prometheus/alertmanager/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/prometheus/alertmanager/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
-KEYWORDS="amd64 arm64"
+KEYWORDS="~amd64 ~arm64"
 
 # tests don't work due to "missing files"
 RESTRICT+=" mirror test"
