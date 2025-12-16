@@ -42,7 +42,8 @@ RDEPEND="
 	x11-libs/libXrandr
 	x11-libs/libxcb
 	x11-libs/libxkbcommon
-	x11-libs/pango"
+	x11-libs/pango
+"
 
 QA_PREBUILT="
 	/opt/Element/chrome_crashpad_handler
@@ -54,7 +55,7 @@ QA_PREBUILT="
 	/opt/Element/libvk_swiftshader.so
 	/opt/Element/libvulkan.so.1
 	/opt/Element/resources/app.asar.unpacked/node_modules/matrix-seshat/index.node
-	/opt/Element/resources/app.asar.unpacked/node_modules/keytar-forked/build/Release/keytar.node"
+"
 
 src_prepare() {
 	default
