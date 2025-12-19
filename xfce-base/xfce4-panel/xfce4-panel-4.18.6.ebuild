@@ -14,7 +14,7 @@ SRC_URI="https://archive.xfce.org/src/xfce/xfce4-panel/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~sparc x86"
 IUSE="+dbusmenu introspection vala"
 REQUIRED_USE="vala? ( introspection )"
 
