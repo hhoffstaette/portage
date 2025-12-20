@@ -9,7 +9,8 @@ DESCRIPTION="Command-line DNS Client for Humans"
 HOMEPAGE="https://github.com/mr-karan/doggo"
 
 SRC_URI="https://github.com/mr-karan/doggo/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+	https://github.com/gentoo-golang-dist/doggo/releases/download/v${PV}/${P}-vendor.tar.xz
+"
 
 LICENSE="GPL-3"
 SLOT="0"
