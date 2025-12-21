@@ -5,7 +5,7 @@ EAPI=8
 
 # Keep an eye on releases: https://www.boost.org/releases/
 
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{12..14} )
 
 inherit dot-a edo flag-o-matic multiprocessing python-r1 toolchain-funcs multilib-minimal
 
