@@ -14,23 +14,18 @@ SLOT="0"
 #KEYWORDS="~amd64"
 IUSE="bpf"
 
-RDEPEND="dev-cpp/abseil-cpp:=
-	dev-cpp/tbb:=
-	dev-cpp/yaml-cpp:=
+RDEPEND="dev-cpp/tbb:=
 	dev-libs/jsoncpp:=
-	dev-libs/libb64:=
 	bpf? ( >=dev-libs/libbpf-1.1:= )
 	dev-libs/protobuf:=
 	dev-libs/re2:=
 	dev-libs/uthash
 	net-misc/curl
-	sys-libs/ncurses:=
 	virtual/libelf:=
 	virtual/zlib:=
 "
 
 DEPEND="${RDEPEND}
-	dev-cpp/nlohmann_json
 	dev-cpp/valijson
 	virtual/os-headers
 "
