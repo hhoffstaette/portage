@@ -1,11 +1,11 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit go-module systemd
 
-GIT_COMMIT=ecda6777f8b67ba00ff40571c6a754c965fc1aaa
+GIT_COMMIT=0ded3cbb049256f9ebe5c269020a6c883e17b78f
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
