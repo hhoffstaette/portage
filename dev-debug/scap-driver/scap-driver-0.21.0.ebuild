@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -25,6 +25,10 @@ CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 # We need to specify the driver version manually since we do not use a git tree.
 # This version can usually be found as git tag on the same commit as the libs version.
 DRIVER_VERSION="8.1.0+driver"
+
+PATCHES=(
+    "${FILESDIR}"/libs-0.20.0-properly-use-LD.patch
+)
 
 src_configure() {
 	local mycmakeargs=(
