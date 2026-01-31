@@ -167,9 +167,6 @@ src_install() {
 	insinto /etc/dnsdist
 	doins "${FILESDIR}"/dnsdist.conf.example
 
-	# do not install yaml sample config without yaml support
-	! use yaml && rm "${ED}"/etc/dnsdist/dnsdist.yml-dist || die
-
 	newconfd "${FILESDIR}"/dnsdist.confd ${PN}
 	newinitd "${FILESDIR}"/dnsdist.initd ${PN}
 }
