@@ -5,7 +5,7 @@ EAPI=8
 
 inherit go-module systemd
 
-GIT_COMMIT=0ded3cbb049256f9ebe5c269020a6c883e17b78f
+GIT_COMMIT=0ae07a09fbb26a7738c867306f32b5f42583a7d2
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
