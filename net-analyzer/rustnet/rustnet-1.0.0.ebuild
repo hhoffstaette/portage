@@ -28,4 +28,6 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
-FILECAPS=( cap_net_raw,cap_net_admin=eip usr/bin/rustnet )
+RESTRICT="mirror"
+
+FILECAPS=( cap_bpf,cap_perfmon,cap_net_raw,cap_net_admin=eip usr/bin/rustnet )
