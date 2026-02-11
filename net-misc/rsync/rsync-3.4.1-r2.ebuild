@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -38,7 +38,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="acl examples iconv lz4 rrsync ssl stunnel system-zlib xattr xxhash zstd"
+IUSE="acl examples iconv lz4 rrsync ssl stunnel system-zlib xattr +xxhash zstd"
 REQUIRED_USE+=" examples? ( ${PYTHON_REQUIRED_USE} )"
 REQUIRED_USE+=" rrsync? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -85,6 +85,8 @@ fi
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
 	"${FILESDIR}"/3.4.1-c23.patch
 	"${FILESDIR}"/3.4.1-fallocate-nfs-compat.patch
+	"${FILESDIR}"/3.4.1-CVE-2025-10158.patch
+
 )
 
 pkg_setup() {
