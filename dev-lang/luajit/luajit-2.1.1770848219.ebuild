@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -32,17 +32,19 @@ if [[ ${VER_RELVER} == 9999999999 ]]; then
 	inherit git-r3
 else
 	# Update this commit hash to bump a pinned-commit ebuild.
-	GIT_COMMIT=8518c0b40b1734901de888a0a363450c0709d3f8
+	GIT_COMMIT=233ad24035944ece5367157e824e8357df3417d9
 	SRC_URI="https://github.com/LuaJIT/LuaJIT/archive/${GIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/LuaJIT-${GIT_COMMIT}"
 
-	KEYWORDS="amd64 arm arm64 -hppa ~mips ppc -riscv -sparc x86"
+	KEYWORDS="~amd64 ~arm ~arm64 -hppa ~mips ~ppc -riscv -sparc ~x86"
 fi
 
 LICENSE="MIT"
 # this should probably be pkgmoved to 2.1 for sake of consistency.
 SLOT="2/${PV}"
 IUSE="lua52compat static-libs"
+
+PATCHES=( "${FILESDIR}/const.patch" )
 
 _emake() {
 	emake \
