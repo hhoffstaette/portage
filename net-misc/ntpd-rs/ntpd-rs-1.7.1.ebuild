@@ -8,7 +8,7 @@ EAPI=8
 CRATES="
 "
 
-RUST_MIN_VER="1.85.0"
+RUST_MIN_VER="1.88.0"
 
 inherit cargo fcaps
 
@@ -32,6 +32,8 @@ KEYWORDS="~amd64"
 
 RDEPEND="acct-group/ntp
 	acct-user/ntp"
+
+RESTRICT="mirror"
 
 # required capabilities for running as ntp:ntp
 FILECAPS=(
