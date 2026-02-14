@@ -8,7 +8,7 @@ Simply paste the following to `/etc/portage/repos.conf/hhoffstaette.conf`:
 ```
 location = /var/db/repos/hhoffstaette
 sync-type = git
-sync-uri = https://github.com/hhoffstaette/portage.git
+sync-uri = https://codeberg.org/hhoffstaette/portage.git
 ```
 If you don't want to update the repository on every `emerge --sync` simply add
 

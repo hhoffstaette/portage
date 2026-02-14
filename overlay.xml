@@ -3,11 +3,11 @@
 	<repo priority="50" quality="experimental" status="unofficial">
 		<name>hhoffstaette</name>
 		<description>Holgers portage overlay</description>
-		<homepage>https://github.com/hhoffstaette/portage</homepage>
+		<homepage>https://codeberg.org/hhoffstaette/portage</homepage>
 		<owner>
 			<email>holger@applied-asynchrony.com</email>
 		</owner>
-		<source type="git">https://github.com/hhoffstaette/portage.git</source>
-		<feed>https://github.com/hhoffstaette/portage/commits/master.atom</feed>
+		<source type="git">https://codeberg.org/hhoffstaette/portage.git</source>
+		<feed>https://codeberg.org/hhoffstaette/portage.rss</feed>
 	</repo>
 </repositories>
