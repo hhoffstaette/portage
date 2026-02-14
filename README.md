@@ -1,3 +1,6 @@
+
+**This project moved to: https://codeberg.org/hhoffstaette/portage**
+
 portage
 =======
 
