@@ -1,19 +1,36 @@
 --[[
 This is an example dnsdist configuration file.
 Please refer to the dnsdist documentation
-at http://dnsdist.org/README/ for more information.
+at https://www.dnsdist.org/ for more information.
 ]]--
 
--- Listen on 192.0.2.1 on port 53.
-setLocal("192.0.2.1:53")
+-- Listen on the local loopback interface on port 53.
+-- The port is optional here but useful e.g. when running multiple instances.
+-- setLocal() clears the existing default list of listening addresses,
+-- whereas addLocal() simply adds to it.
+setLocal("127.0.0.1:53")
 
--- Add 2001:db8::2:1 to the list of adresses dnsdist should listen on
-addLocal("2001:db8::2:1")
+-- Also listen on the IPv6 loopback address.
+addLocal("[::1]")
 
--- Add to the ACL set who can use this server
-addACL("192.0.2.0/24")
-addACL("2001:db8::/32")
+-- Configure a response cache with 1024 entries.
+-- "" refers to the unnamed global default pool of servers.
+cache = newPacketCache(1024)
+getPool(""):setCache(cache)
 
--- Instantiate two new downstram server with their default settings
-newServer("198.51.100.1")
-newServer("198.51.100.2")
+-- Set a simple load balancing policy.
+-- The default policy 'leastOutstanding' unfortunately leads to a very
+-- top-heavy request distribution when there is not a lot of traffic.
+setServerPolicy(roundrobin)
+
+-- You can restrict who can use this server when listening on a network address
+-- addACL("192.0.2.0/24")
+-- addACL("2001:db8::/32")
+
+-- Instantiate three new downstream servers with default settings
+newServer("1.1.1.1")
+newServer("8.8.8.8")
+newServer("9.9.9.9")
+
+-- At this point you should be able to use e.g. dig or doggo to query dnsdist
+-- and resolve hosts from your downstream servers.
