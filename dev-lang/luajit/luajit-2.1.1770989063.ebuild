@@ -44,8 +44,6 @@ LICENSE="MIT"
 SLOT="2/${PV}"
 IUSE="lua52compat static-libs"
 
-PATCHES=( "${FILESDIR}/const.patch" )
-
 _emake() {
 	emake \
 		Q= \
