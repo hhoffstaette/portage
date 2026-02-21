@@ -12,7 +12,8 @@ inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
 DESCRIPTION="Tools for BPF-based Linux IO analysis, networking, monitoring, and more"
 HOMEPAGE="https://iovisor.github.io/bcc/"
-SRC_URI="https://github.com/iovisor/bcc/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/iovisor/bcc/releases/download/v${PV}/bcc-src-with-submodule-${PV}.tar.gz"
+S="${WORKDIR}/bcc-src-with-submodule-${PV}/bcc"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -28,7 +29,6 @@ RESTRICT="test"
 
 RDEPEND="
 	>=dev-libs/elfutils-0.166[debuginfod?]
-	dev-libs/libbpf:=
 	sys-kernel/linux-headers
 	$(llvm_gen_dep '
 		llvm-core/clang:${LLVM_SLOT}=
@@ -64,6 +64,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.25.0-cmakelists.patch"
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
+	"${FILESDIR}/bcc-0.36.1-const.patch"
 )
 
 pkg_pretend() {
@@ -94,12 +95,6 @@ bcc_distutils_phase() {
 }
 
 src_prepare() {
-	local bpf_link_path
-
-	# this avoids bundling
-	bpf_link_path="$(realpath --relative-to="${S}/src/cc/libbpf" /usr/include/bpf)" || die
-	ln -sfn "${bpf_link_path}" src/cc/libbpf/include || die
-
 	use static-libs || PATCHES+=( "${FILESDIR}/bcc-0.31.0-dont-install-static-libs.patch" )
 
 	# use distutils-r1 eclass funcs rather than letting upstream handle python
@@ -136,8 +131,7 @@ src_configure() {
 		-DENABLE_NO_PIE=OFF
 		-DWITH_LUAJIT=OFF
 		-DWITH_LZMA=$(usex lzma)
-		-DCMAKE_USE_LIBBPF_PACKAGE=ON
-		-DLIBBPF_INCLUDE_DIRS="$($(tc-getPKG_CONFIG) --cflags-only-I libbpf | sed 's:-I::g')"
+		-DCMAKE_USE_LIBBPF_PACKAGE=OFF
 		-DKERNEL_INCLUDE_DIRS="${KERNEL_DIR}"
 		-DNO_BLAZESYM=ON
 		-Wno-dev
