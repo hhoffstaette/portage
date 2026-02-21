@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{{10..14},{13..14}t} )
-LLVM_COMPAT=( {15..21} )
+LLVM_COMPAT=( {16..21} )
 
 inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
@@ -64,7 +64,6 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.25.0-cmakelists.patch"
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
-	"${FILESDIR}/bcc-0.31.0-no-uapi-for-external-libbpf.patch"
 )
 
 pkg_pretend() {
@@ -101,8 +100,6 @@ src_prepare() {
 	bpf_link_path="$(realpath --relative-to="${S}/src/cc/libbpf" /usr/include/bpf)" || die
 	ln -sfn "${bpf_link_path}" src/cc/libbpf/include || die
 
-	sed -i '/#include <error.h>/d' examples/cpp/KModRetExample.cc || die
-
 	use static-libs || PATCHES+=( "${FILESDIR}/bcc-0.31.0-dont-install-static-libs.patch" )
 
 	# use distutils-r1 eclass funcs rather than letting upstream handle python
@@ -129,11 +126,15 @@ src_prepare() {
 }
 
 src_configure() {
+	# ODR violations: bgo#938491
+	filter-lto
+
 	local mycmakeargs=(
 		-DREVISION=${PV%%_*}
 		-DENABLE_LIBDEBUGINFOD=$(usex debuginfod)
 		-DENABLE_LLVM_SHARED=ON
 		-DENABLE_NO_PIE=OFF
+		-DWITH_LUAJIT=OFF
 		-DWITH_LZMA=$(usex lzma)
 		-DCMAKE_USE_LIBBPF_PACKAGE=ON
 		-DLIBBPF_INCLUDE_DIRS="$($(tc-getPKG_CONFIG) --cflags-only-I libbpf | sed 's:-I::g')"
