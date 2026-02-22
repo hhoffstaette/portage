@@ -65,6 +65,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
 	"${FILESDIR}/bcc-0.36.1-const.patch"
+	"${FILESDIR}/bcc-0.36.1-getUnqual.patch"
 )
 
 pkg_pretend() {
@@ -121,9 +122,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# ODR violations: bgo#938491
-	filter-lto
-
 	local mycmakeargs=(
 		-DREVISION=${PV%%_*}
 		-DENABLE_LIBDEBUGINFOD=$(usex debuginfod)
