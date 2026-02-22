@@ -1,4 +1,4 @@
-https://github.com/llvm/llvm-project/issues/123569
+https://github.com/iovisor/bcc/issues/5472
 
 --- bcc/src/cc/bpf_module_rw_engine.cc
 +++ bcc/src/cc/bpf_module_rw_engine.cc

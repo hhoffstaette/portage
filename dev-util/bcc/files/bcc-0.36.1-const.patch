@@ -1,3 +1,5 @@
+https://github.com/iovisor/bcc/issues/5471
+
 --- bcc/src/cc/bcc_perf_map.c
 +++ bcc/src/cc/bcc_perf_map.c
 @@ -23,7 +23,7 @@
