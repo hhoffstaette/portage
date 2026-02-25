@@ -22,7 +22,6 @@ BDEPEND="dev-util/promu"
 
 PATCHES=(
 	"${FILESDIR}/0.12.1-binary-name.patch"
-	"${FILESDIR}/0.13.0-nil-ipaddress-check.patch"
 )
 
 src_prepare() {
