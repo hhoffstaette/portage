@@ -9,7 +9,7 @@ DESCRIPTION="Chrony NTP exporter for Prometheus"
 HOMEPAGE="https://github.com/SuperQ/chrony_exporter"
 
 SRC_URI="https://github.com/SuperQ/chrony_exporter/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+	https://github.com/gentoo-golang-dist/chrony_exporter/releases/download/v${PV}/${P}-vendor.tar.xz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
