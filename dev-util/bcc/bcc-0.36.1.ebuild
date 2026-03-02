@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{{10..14},{13..14}t} )
-LLVM_COMPAT=( {16..21} )
+LLVM_COMPAT=( {16..22} )
 
 inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
 
@@ -66,6 +66,8 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
 	"${FILESDIR}/bcc-0.36.1-const.patch"
 	"${FILESDIR}/bcc-0.36.1-getUnqual.patch"
+	"${FILESDIR}/bcc-0.36.1-llvm22.patch"
+	"${FILESDIR}/bcc-0.36.1-no-libbpf-git.patch"
 )
 
 pkg_pretend() {
