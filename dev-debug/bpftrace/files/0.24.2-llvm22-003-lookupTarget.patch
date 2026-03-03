@@ -1,0 +1,32 @@
+From: Aiden Grossman <agrossman154@yahoo.com>
+Date: Mon, 13 Oct 2025 03:44:59 -0700
+Subject: [PATCH] Use Overload of lookupTarget Accepting Triple (#4720)
+
+The overload accepting a llvm::StringRef is deprecated and will be
+removed when LLVM 22 branches.
+
+Signed-off-by: Aiden Grossman <aidengrossman@google.com>
+---
+ src/ast/passes/codegen_llvm.cpp | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/ast/passes/codegen_llvm.cpp b/src/ast/passes/codegen_llvm.cpp
+index e3114ee1c4cf..6a955298ec28 100644
+--- a/src/ast/passes/codegen_llvm.cpp
++++ b/src/ast/passes/codegen_llvm.cpp
+@@ -74,8 +74,13 @@ static auto getTargetMachine()
+ {
+   static auto *target = []() {
+     std::string error_str;
+-    const auto *target = llvm::TargetRegistry::lookupTarget(LLVMTargetTriple,
+-                                                            error_str);
++    const auto *target = llvm::TargetRegistry::lookupTarget(
++#if LLVM_VERSION_MAJOR >= 22
++        Triple(LLVMTargetTriple),
++#else
++        LLVMTargetTriple,
++#endif
++        error_str);
+     if (!target) {
+       throw util::FatalUserException(
+           "Could not find bpf llvm target, does your llvm support it?");

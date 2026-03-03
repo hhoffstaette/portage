@@ -1,0 +1,37 @@
+From: Frank van der Linden <fvdl@google.com>
+Date: Wed, 3 Dec 2025 05:18:33 +0000
+Subject: [PATCH] ast: adapt to LLVM setFileManager change
+
+llvm-project commit 866879f80342 ("[clang] Don't silently
+inherit the VFS from `FileManager` (#164323)") enforces
+the explicit setting of the VFS for the instance before
+FileManager is created.
+
+This change triggers an LLVM assert with the current
+ast/passes code, and will be in LLVM 22. So, add a conditional
+for LLVM >= 22 to use the new behavior.
+
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+---
+ src/ast/passes/clang_build.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/ast/passes/clang_build.cpp b/src/ast/passes/clang_build.cpp
+index 5bc08da87e57..9892dd1dd576 100644
+--- a/src/ast/passes/clang_build.cpp
++++ b/src/ast/passes/clang_build.cpp
+@@ -129,10 +129,13 @@ static Result<BitcodeModules::Result> build(
+   // (works across modern Clang majors, including 21)
+   ci.getInvocation() = *inv;
+   ci.setDiagnostics(diags.release());
+-  ci.setFileManager(new clang::FileManager(clang::FileSystemOptions(), vfs));
++
+ #if LLVM_VERSION_MAJOR >= 22
++  ci.setVirtualFileSystem(vfs);
++  ci.createFileManager();
+   ci.createSourceManager();
+ #else
++  ci.setFileManager(new clang::FileManager(clang::FileSystemOptions(), vfs));
+   ci.createSourceManager(ci.getFileManager());
+ #endif
+ 

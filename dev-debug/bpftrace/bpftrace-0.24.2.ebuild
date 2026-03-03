@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {17..21} )
+LLVM_COMPAT=( {17..22} )
 RUST_MIN_VER="1.85.0"
 RUST_OPTIONAL=1
 
@@ -72,9 +72,13 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/bpftrace-0.11.4-old-kernels.patch"
-	"${FILESDIR}/bpftrace-0.21.0-dont-compress-man.patch"
-	"${FILESDIR}/bpftrace-0.24.1-enable-ubsan.patch"
+	"${FILESDIR}/0.11.4-old-kernels.patch"
+	"${FILESDIR}/0.21.0-dont-compress-man.patch"
+	"${FILESDIR}/0.24.1-enable-ubsan.patch"
+	"${FILESDIR}/0.24.2-llvm22-001-createSourceManager.patch"
+	"${FILESDIR}/0.24.2-llvm22-002-setFileManager.patch"
+	"${FILESDIR}/0.24.2-llvm22-003-lookupTarget.patch"
+	"${FILESDIR}/0.24.2-llvm22-004-max-version.patch"
 )
 
 pkg_pretend() {

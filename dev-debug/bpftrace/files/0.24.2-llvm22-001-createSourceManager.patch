@@ -1,0 +1,31 @@
+From: Frank van der Linden <fvdl@google.com>
+Date: Tue, 7 Oct 2025 00:54:02 +0000
+Subject: [PATCH] update for upstream LLVM argument removal to createSourceManager
+
+clang::CompilerInstance.createSourceManager lost its FileManager
+argument upstream, as it wasn't needed (llvm-project commit
+b86ddae1da65).
+
+This change will appear in LLVM 22. Adjust the code to match.
+
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+---
+ src/ast/passes/clang_build.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/ast/passes/clang_build.cpp b/src/ast/passes/clang_build.cpp
+index bbdd43a87137..dbba99bd94b8 100644
+--- a/src/ast/passes/clang_build.cpp
++++ b/src/ast/passes/clang_build.cpp
+@@ -132,7 +132,11 @@ static Result<> build(CompileContext &ctx,
+   ci.getInvocation() = *inv;
+   ci.setDiagnostics(diags.release());
+   ci.setFileManager(new clang::FileManager(clang::FileSystemOptions(), vfs));
++#if LLVM_VERSION_MAJOR >= 22
++  ci.createSourceManager();
++#else
+   ci.createSourceManager(ci.getFileManager());
++#endif
+ 
+   // Generate the object file, which should include the required BTF
+   // debug information. This also generates the module as a
