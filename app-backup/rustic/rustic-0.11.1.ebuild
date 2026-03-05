@@ -33,13 +33,13 @@ src_prepare() {
 
 	# reduce threading: 20 concurrent readers for restore is way too high
 	# use sed because patches break with every release
-	CORE_VERSION="0.10.0"
+	CORE_VERSION="0.10.1"
 	CORE_DIR="${WORKDIR}/cargo_home/gentoo/rustic_core-${CORE_VERSION}/src"
 
-	pushd "${CORE_DIR}" 2>/dev/null || die
-		sed -i "s/check_cache_files(20/check_cache_files(2/g" commands/check.rs
-		sed -i "s/check_cache_files(5/check_cache_files(2/g" commands/check.rs
-		sed -i "s/MAX_READER_THREADS_NUM: usize = 20/MAX_READER_THREADS_NUM: usize = 1/g" commands/restore.rs
-		sed -i "s/MAX_READER_THREADS_NUM: usize = 20/MAX_READER_THREADS_NUM: usize = 2/g" repository/warm_up.rs
-	popd 2>/dev/null
+	pushd "${CORE_DIR}" >/dev/null || die
+		sed -i "s/check_cache_files(20/check_cache_files(2/g" commands/check.rs || die
+		sed -i "s/check_cache_files(5/check_cache_files(2/g" commands/check.rs || die
+		sed -i "s/MAX_READER_THREADS_NUM: usize = 20/MAX_READER_THREADS_NUM: usize = 1/g" commands/restore.rs || die
+		sed -i "s/MAX_READER_THREADS_NUM: usize = 20/MAX_READER_THREADS_NUM: usize = 2/g" repository/warm_up.rs || die
+	popd >/dev/null
 }
