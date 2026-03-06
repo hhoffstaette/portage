@@ -7,7 +7,7 @@ export CBUILD=${CBUILD:-${CHOST}}
 export CTARGET=${CTARGET:-${CHOST}}
 
 # See "Bootstrap" in release notes
-GO_BOOTSTRAP_MIN=1.22.12
+GO_BOOTSTRAP_MIN=1.24.6
 MY_PV=${PV/_/}
 
 inherit go-env toolchain-funcs
