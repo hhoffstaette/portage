@@ -18,12 +18,12 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_BRANCH="master"
 	inherit git-r3
 	# use a released man page for git
-	MAN_V="0.24.2"
+	MAN_V="0.25.0"
 else
 	SRC_URI="https://github.com/bpftrace/bpftrace/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64"
 	# the man page version may trail the release
-	#MAN_V="0.24.2"
+	#MAN_V="0.25.0"
 fi
 
 SRC_URI+=" https://github.com/bpftrace/bpftrace/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> bpftrace-${MAN_V:-${PV}}-man.tar.xz"

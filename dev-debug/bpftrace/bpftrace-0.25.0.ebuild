@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {17..22} )
+LLVM_COMPAT=( {18..22} )
 RUST_MIN_VER="1.85.0"
 RUST_OPTIONAL=1
 
@@ -18,12 +18,12 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_BRANCH="master"
 	inherit git-r3
 	# use a released man page for git
-	MAN_V="0.24.2"
+	MAN_V="0.25.0"
 else
 	SRC_URI="https://github.com/bpftrace/bpftrace/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64"
 	# the man page version may trail the release
-	#MAN_V="0.24.2"
+	#MAN_V="0.25.0"
 fi
 
 SRC_URI+=" https://github.com/bpftrace/bpftrace/releases/download/v${MAN_V:-${PV}}/man.tar.xz -> bpftrace-${MAN_V:-${PV}}-man.tar.xz"
@@ -39,7 +39,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-libs/blazesym_c-0.1.1
-	>=dev-libs/libbpf-1.5:=
+	>=dev-libs/libbpf-1.6:=[static-libs]
 	>=dev-util/bcc-0.25.0
 	$(llvm_gen_dep '
 		llvm-core/clang:${LLVM_SLOT}=
@@ -74,11 +74,6 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/0.11.4-old-kernels.patch"
 	"${FILESDIR}/0.21.0-dont-compress-man.patch"
-	"${FILESDIR}/0.24.1-enable-ubsan.patch"
-	"${FILESDIR}/0.24.2-llvm22-001-createSourceManager.patch"
-	"${FILESDIR}/0.24.2-llvm22-002-setFileManager.patch"
-	"${FILESDIR}/0.24.2-llvm22-003-lookupTarget.patch"
-	"${FILESDIR}/0.24.2-llvm22-004-max-version.patch"
 )
 
 pkg_pretend() {
@@ -144,6 +139,8 @@ src_configure() {
 		-DENABLE_MAN=OFF
 		-DENABLE_SKB_OUTPUT=$(usex pcap)
 		-DENABLE_SYSTEMD=$(usex systemd)
+		# always use system libbpf
+		-DUSE_SYSTEM_LIBBPF=ON
 	)
 
 	# enable UBSAN only when enabled in the toolchain
