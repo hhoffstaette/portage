@@ -5,8 +5,6 @@ EAPI=8
 
 inherit go-module systemd
 
-GIT_COMMIT=7a639ba087d6e877038cabfdaa645230f79001b8
-
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
 SRC_URI="https://github.com/prometheus/alertmanager/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -23,18 +21,14 @@ BDEPEND="dev-util/promu"
 
 DEPEND="
 	acct-group/alertmanager
-	acct-user/alertmanager"
-	RDEPEND="${DEPEND}"
+	acct-user/alertmanager
+"
+RDEPEND="${DEPEND}"
 
-src_prepare() {
-	default
-
-	# use our git commit
-	sed -i -e "s/{{.Revision}}/${GIT_COMMIT}/" .promu.yml || die
-}
+PATCHES=( "${FILESDIR}/0.31.1-promu-config.patch" )
 
 src_compile() {
-	promu build --cgo -v --prefix bin || die
+	promu build -v --prefix bin || die
 }
 
 src_install() {
