@@ -20,7 +20,7 @@ DEPEND="acct-group/chrony_exporter
 
 BDEPEND="dev-util/promu"
 
-PATCHES=( "${FILESDIR}/0.12.1-binary-name.patch" )
+PATCHES=( "${FILESDIR}/0.13.3-promu-config.patch" )
 
 src_prepare() {
 	default
@@ -29,7 +29,7 @@ src_prepare() {
 }
 
 src_compile() {
-	promu build -v --cgo || die
+	promu build -v || die
 }
 
 src_install() {
