@@ -21,17 +21,22 @@ else
 	SMARTCTL_EXPORTER_COMMIT=
 	SRC_URI_UPSTREAM="${HOMEPAGE}/archive/refs/tags/v${PV}.tar.gz"
 fi
+
 MY_P=${PN}-${MY_PV}
 SRC_URI_VENDOR="https://nhorus.no-ip.biz/sharables/${MY_P}-vendor.tar.xz"
+
 UPSTREAM_PATCHES=(
 )
+
 SRC_URI="
 	${SRC_URI_UPSTREAM} -> ${P}.tar.gz
 	 ${SRC_URI_VENDOR}
-	"
-PATCHES=()
+"
+
+PATCHES=( "${FILESDIR}/0.14.0-promu-config.patch" )
+
 for p in $UPSTREAM_PATCHES; do
-	SRC_URI+=" https://github.com/prometheus-community/smartctl_exporter/commit/${p/*:}.patch -> smartctl_exporter-${p/:/-}.patch"
+	SRC_URI+=" https://github.com/prometheus-community/smartctl_exporter/commit/${p/*:}.patch -> ${PN}-${p/:/-}.patch"
 	PATCHES+=( "${DISTDIR}/${PN}-${p/:/-}.patch" )
 done
 
@@ -52,7 +57,7 @@ src_prepare() {
 }
 
 src_compile() {
-	emake build PROMU='/usr/bin/promu'
+	promu build -v || die
 }
 
 src_install() {
@@ -61,5 +66,4 @@ src_install() {
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 	systemd_dounit "${FILESDIR}/${PN}.service"
-
 }

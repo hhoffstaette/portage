@@ -1,0 +1,18 @@
+--- a/.promu.yml
++++ b/.promu.yml
+@@ -1,6 +1,7 @@
+ go:
+     # This must match .circle/config.yml.
+     version: 1.23
++    cgo: true
+ repository:
+     path: github.com/prometheus-community/smartctl_exporter
+ build:
+@@ -12,6 +13,7 @@ build:
+         -X github.com/prometheus/common/version.Branch={{.Branch}}
+         -X github.com/prometheus/common/version.BuildUser={{user}}@{{host}}
+         -X github.com/prometheus/common/version.BuildDate={{date "20060102-15:04:05"}}
++    static: false
+ tarball:
+     files:
+         - LICENSE
