@@ -22,8 +22,9 @@ SRC_URI="
 LICENSE="Apache-2.0"
 # Dependent crate licenses
 LICENSE+="
-	Apache-2.0 BSD-2 BSD Boost-1.0 CC0-1.0 ISC MIT Unicode-3.0
-	Unicode-DFS-2016 WTFPL-2 ZLIB BZIP2
+	Apache-2.0 BSD-2 BSD Boost-1.0 ISC MIT Unicode-3.0 Unicode-DFS-2016
+	WTFPL-2 ZLIB BZIP2
+	|| ( CC0-1.0 MIT-0 )
 "
 SLOT="0"
 KEYWORDS="~amd64"
