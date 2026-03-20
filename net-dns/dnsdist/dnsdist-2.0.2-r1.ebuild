@@ -75,6 +75,7 @@ fi
 PATCHES=(
 	"${FILESDIR}"/2.0.2-roundrobin-fast-path.patch
 	"${FILESDIR}"/2.0.2-speed-up-cache-hits.patch
+	"${FILESDIR}"/2.0.2-quiche-bbr.patch
 )
 
 pkg_setup() {
