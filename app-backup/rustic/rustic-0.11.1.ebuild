@@ -43,3 +43,8 @@ src_prepare() {
 		sed -i "s/MAX_READER_THREADS_NUM: usize = 20/MAX_READER_THREADS_NUM: usize = 2/g" repository/warm_up.rs || die
 	popd >/dev/null
 }
+
+src_configure() {
+	# enable mount feature
+	cargo_src_configure --features mount
+}
