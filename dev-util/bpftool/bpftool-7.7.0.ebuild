@@ -24,7 +24,7 @@ else
 	# This allows us to quickly update the vendored lib with a revbump.
 	# Currently bpftool-x.y vendors libbpf-1.y; DO NOT mix different y versions.
 	# See the libbpf repo (https://github.com/libbpf/libbpf) for possible updates.
-	# LIBBPF_VERSION=1.5.0
+	# LIBBPF_VERSION=1.7.0
 
 	if [[ ! -z ${LIBBPF_VERSION} ]] ; then
 		SRC_URI="https://github.com/libbpf/bpftool/archive/refs/tags/v${PV}.tar.gz -> bpftool-${PV}.tar.gz
@@ -36,7 +36,7 @@ else
 		S="${WORKDIR}/bpftool-libbpf-v${PV}-sources"
 	fi
 
-	KEYWORDS="amd64 arm arm64 ~loong ppc ppc64 ~riscv x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 fi
 
 LICENSE="|| ( GPL-2 BSD-2 )"
