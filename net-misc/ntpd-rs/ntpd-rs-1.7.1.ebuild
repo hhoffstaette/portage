@@ -59,7 +59,7 @@ src_install() {
 	newins docs/examples/conf/ntp.toml.default ntp.toml
 
 	# dial down default log level
-	sed -i 's/log-level = "info"/log-level = "warn"/g' "${ED}"/etc/ntpd-rs/ntp.toml
+	sed -i 's/log-level = "info"/log-level = "warn"/g' "${ED}"/etc/ntpd-rs/ntp.toml || die
 
 	# TODO: gentle logrotate, see:
 	# https://github.com/pendulum-project/ntpd-rs/issues/2035
