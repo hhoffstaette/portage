@@ -62,13 +62,13 @@ BDEPEND="
 	app-alternatives/yacc
 	dev-libs/cereal
 	dev-util/bpftool
-	|| ( dev-util/xxd app-editors/vim-core )
 	test? (
 		${RUST_DEPEND}
 		dev-lang/go
 		dev-util/pahole
 	)
 	virtual/pkgconfig
+	virtual/xxd
 "
 
 PATCHES=(
