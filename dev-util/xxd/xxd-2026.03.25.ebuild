@@ -5,7 +5,7 @@ EAPI=8
 
 inherit bash-completion-r1 toolchain-funcs
 
-VIM_VERSION="9.1.1683"
+VIM_VERSION="9.2.0245"
 
 DESCRIPTION="Standalone version of Vim's xxd"
 HOMEPAGE="
