@@ -58,9 +58,10 @@ RDEPEND="acct-group/dnsdist
 	${LUA_DEPS}
 "
 
-DEPEND="${RDEPEND}"
-BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
+DEPEND="${RDEPEND}
 	dev-libs/boost:=
+"
+BDEPEND="$(python_gen_any_dep 'dev-python/pyyaml[${PYTHON_USEDEP}]')
 	virtual/pkgconfig
 	yaml? ( ${RUST_DEPEND} )
 "
