@@ -17,4 +17,5 @@ depend() {
 
 start_pre() {
 	checkpath -q -d -m 0755 -o ${user}:${group} /run/ntpd-rs
+	checkpath -q -d -m 0755 -o ${user}:${group} /var/log/ntpd-rs
 }

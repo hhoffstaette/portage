@@ -1,0 +1,21 @@
+Dial down the log level and configure log file paths to match the installed
+logrotate configurations.
+
+--- a/docs/examples/conf/ntp.toml.default
++++ b/docs/examples/conf/ntp.toml.default
+@@ -1,7 +1,14 @@
+ [observability]
+ # You can configure ntpd-rs with different output levels of logging information
+ # Basic values for this are `trace`, `debug`, `info`, `warn` and `error`.
+-log-level = "info"
++log-level = "warn"
++
++## Paths to which the daemons should direct their log output.
++## The file at this location is reopened on SIGHUP.
++## When not present, log output will be directed to stdout.
++log-path = /var/log/ntpd-rs/ntp-daemon.log
++log-path-metrics-exporter = /var/log/ntpd-rs/ntp-metrics-exporter.log
++
+ ## Using the observe socket you can retrieve statistical information about the
+ ## daemon while it is running. You can use the `ntp-ctl` or prometheus based
+ ## `ntp-metrics-exporter` binaries for some default options to read from the

@@ -40,6 +40,8 @@ FILECAPS=(
 	cap_net_bind_service,cap_sys_time=ep usr/bin/ntp-daemon
 )
 
+PATCHES=( "${FILESDIR}"/1.7.2-adjust-config.patch )
+
 src_install() {
 	dobin $(cargo_target_dir)/{ntp-ctl,ntp-daemon,ntp-metrics-exporter}
 
@@ -58,13 +60,9 @@ src_install() {
 	insinto /etc/ntpd-rs
 	newins docs/examples/conf/ntp.toml.default ntp.toml
 
-	# dial down default log level
-	sed -i 's/log-level = "info"/log-level = "warn"/g' "${ED}"/etc/ntpd-rs/ntp.toml || die
-
-	# TODO: gentle logrotate, see:
-	# https://github.com/pendulum-project/ntpd-rs/issues/2035
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/ntp-daemon.logrotate ntp-daemon
+	newins "${FILESDIR}"/ntp-metrics-exporter.logrotate ntp-metrics-exporter
 }
 
 pkg_postinst() {
