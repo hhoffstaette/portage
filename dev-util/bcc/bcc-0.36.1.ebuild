@@ -8,7 +8,7 @@ DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{{10..14},{13..14}t} )
 LLVM_COMPAT=( {16..22} )
 
-inherit cmake linux-info llvm-r1 distutils-r1 toolchain-funcs
+inherit cmake linux-info llvm-r2 distutils-r1 toolchain-funcs
 
 DESCRIPTION="Tools for BPF-based Linux IO analysis, networking, monitoring, and more"
 HOMEPAGE="https://iovisor.github.io/bcc/"
@@ -79,7 +79,7 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	llvm-r1_pkg_setup
+	llvm-r2_pkg_setup
 	use python && python_setup
 }
 
