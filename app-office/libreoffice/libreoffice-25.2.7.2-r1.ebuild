@@ -51,7 +51,7 @@ ADDONS_SRC=(
 	# not packaged in Gentoo, https://github.com/serge-sans-paille/frozen
 	"${ADDONS_URI}/frozen-1.2.0.tar.gz"
 	# not packaged in Gentoo, https://skia.org/
-	"${ADDONS_URI}/skia-m130-3c64459d5df2fa9794b277f0959ed8a92552bf4c.tar.xz"
+	"https://www.applied-asynchrony.com/distfiles/skia-m130-3c64459d5df2fa9794b277f0959ed8a92552bf4c-r1.tar.xz"
 
 	"base? (
 		${ADDONS_URI}/ba2930200c9f019c2d93a8c88c651a0f-flow-engine-0.9.4.zip
@@ -305,6 +305,10 @@ PATCHES=(
 	# add qt6 backend as possible fallback for gtk-based desktop environments:
 	# https://bugs.gentoo.org/950170
 	"${FILESDIR}/${PN}-25.2-vcl-backend-fallback.patch"
+
+	# fix name of skia tarball with clang-22 patch:
+	# https://bugs.gentoo.org/971474
+	"${FILESDIR}/${PN}-25.2.7.2-skia-tarball.patch"
 )
 
 _check_reqs() {

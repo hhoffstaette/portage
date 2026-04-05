@@ -1,0 +1,14 @@
+Use patched tarball with fix for clang-22
+https://bugs.gentoo.org/971474
+
+--- a/download.lst
++++ b/download.lst
+@@ -627,7 +627,7 @@ RHINO_TARBALL := rhino-1.7.15.zip
+ # so that git cherry-pick
+ # will not run into conflicts
+ SKIA_SHA256SUM := 53f55303821158b6de9e6b90f1cc3a548611a7e430c1a0883ff159a8db89677d
+-SKIA_TARBALL := skia-m130-3c64459d5df2fa9794b277f0959ed8a92552bf4c.tar.xz
++SKIA_TARBALL := skia-m130-3c64459d5df2fa9794b277f0959ed8a92552bf4c-r1.tar.xz
+ # three static lines
+ # so that git cherry-pick
+ # will not run into conflicts
