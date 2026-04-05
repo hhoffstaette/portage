@@ -33,8 +33,7 @@ src_prepare() {
 
 	# reduce threading: 20 concurrent readers for restore is way too high
 	# use sed because patches break with every release
-	CORE_VERSION="0.10.1"
-	CORE_DIR="${WORKDIR}/cargo_home/gentoo/rustic_core-${CORE_VERSION}/src"
+	CORE_DIR="${WORKDIR}/cargo_home/gentoo/rustic_core-0.11.0/src"
 
 	pushd "${CORE_DIR}" >/dev/null || die
 		sed -i "s/check_cache_files(20/check_cache_files(2/g" commands/check.rs || die
