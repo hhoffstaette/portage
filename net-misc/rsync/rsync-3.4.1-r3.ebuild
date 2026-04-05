@@ -86,7 +86,8 @@ fi
 	"${FILESDIR}"/3.4.1-c23.patch
 	"${FILESDIR}"/3.4.1-fallocate-nfs-compat.patch
 	"${FILESDIR}"/3.4.1-CVE-2025-10158.patch
-
+	"${FILESDIR}"/3.4.1-glibc-2.43.patch
+	"${FILESDIR}"/3.4.1-fix-uninitialized-mul_one.patch
 )
 
 pkg_setup() {
