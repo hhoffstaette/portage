@@ -3,21 +3,18 @@
 
 EAPI=8
 
-inherit go-module systemd
+inherit systemd
 
 DESCRIPTION="Alertmanager for alerts sent by client applications such as Prometheus"
 HOMEPAGE="https://github.com/prometheus/alertmanager"
-SRC_URI="https://github.com/prometheus/alertmanager/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+SRC_URI="https://github.com/prometheus/alertmanager/releases/download/v${PV}/alertmanager-${PV}.linux-amd64.tar.gz"
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64"
+KEYWORDS="~amd64"
 
 # tests don't work due to "missing files"
 RESTRICT+=" mirror test"
-
-BDEPEND="dev-util/promu"
 
 DEPEND="
 	acct-group/alertmanager
@@ -25,20 +22,16 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 
-PATCHES=( "${FILESDIR}/0.31.1-promu-config.patch" )
-
-src_compile() {
-	promu build -v --prefix bin || die
-}
+S="${WORKDIR}/alertmanager-${PV}.linux-amd64"
 
 src_install() {
-	dobin bin/*
-	dodoc {README,CHANGELOG}.md
+	dobin alertmanager amtool
+	dodoc LICENSE NOTICE
 	insinto /etc/alertmanager/
-	newins doc/examples/simple.yml config.yml
+	newins alertmanager.yml config.yml
 	keepdir /var/lib/alertmanager /var/log/alertmanager
 	systemd_dounit "${FILESDIR}"/alertmanager.service
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	fowners ${PN}:${PN} /etc/alertmanager /var/lib/alertmanager /var/log/alertmanager
+	newinitd "${FILESDIR}"/alertmanager.initd alertmanager
+	newconfd "${FILESDIR}"/alertmanager.confd alertmanager
+	fowners alertmanager:alertmanager /etc/alertmanager /var/lib/alertmanager /var/log/alertmanager
 }
