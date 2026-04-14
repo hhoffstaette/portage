@@ -35,7 +35,7 @@ S="${S_K}/tools/perf"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
-IUSE="abi_mips_o32 abi_mips_n32 abi_mips_n64 babeltrace capstone big-endian bpf caps crypt debug gtk java libpfm +libtraceevent +libtracefs lzma numa perl +python +slang systemtap tcmalloc unwind"
+IUSE="abi_mips_o32 abi_mips_n32 abi_mips_n64 babeltrace capstone big-endian bpf caps crypt debug gtk java libpfm +libtraceevent +libtracefs lzma numa perl +python +slang systemtap tcmalloc"
 
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
@@ -85,7 +85,6 @@ RDEPEND="
 	slang? ( sys-libs/slang )
 	systemtap? ( dev-debug/systemtap )
 	tcmalloc? ( dev-util/google-perftools )
-	unwind? ( sys-libs/libunwind:= )
 	app-arch/zstd:=
 	dev-libs/elfutils
 	virtual/zlib:=
@@ -279,7 +278,7 @@ perf_make() {
 		NO_LIBPFM4=$(puse libpfm)
 		NO_LIBPYTHON=$(puse python)
 		NO_LIBTRACEEVENT=$(puse libtraceevent)
-		NO_LIBUNWIND=$(puse unwind)
+		NO_LIBUNWIND=1
 		NO_SDT=$(puse systemtap)
 		NO_SHELLCHECK=1
 		NO_SLANG=$(puse slang)

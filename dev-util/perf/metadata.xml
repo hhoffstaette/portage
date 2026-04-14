@@ -30,8 +30,5 @@
     <flag name="systemtap">
       Add support to define SDT event in perf tools.
     </flag>
-    <flag name="unwind">
-      Use <pkg>sys-libs/libunwind</pkg> for frame unwinding support.
-    </flag>
   </use>
 </pkgmetadata>
