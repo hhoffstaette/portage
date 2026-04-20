@@ -27,6 +27,7 @@ RDEPEND="dev-cpp/tbb:=
 
 DEPEND="${RDEPEND}
 	dev-cpp/valijson
+	dev-libs/cxxopts
 	virtual/os-headers
 "
 
@@ -89,11 +90,4 @@ src_configure() {
 	)
 
 	cmake_src_configure
-}
-
-src_install() {
-	cmake_src_install
-
-	# remove driver headers
-	rm -r "${ED}"/usr/src || die
 }
