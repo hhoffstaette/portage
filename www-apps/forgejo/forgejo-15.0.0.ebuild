@@ -41,7 +41,8 @@ src_prepare() {
 	default
 
 	local sedcmds=(
-		-e "s#^ROOT =#ROOT = ${EPREFIX}/var/lib/forgejo/forgejo-repositories#"
+		-e "s#^;\[repository]#[repository]#"
+		-e "s#^ROOT =#ROOT = ${EPREFIX}/var/lib/forgejo/repositories#"
 		-e "s#^ROOT_PATH =#ROOT_PATH = ${EPREFIX}/var/log/forgejo#"
 		-e "s#^APP_DATA_PATH = data#APP_DATA_PATH =	${EPREFIX}/var/lib/forgejo/data#"
 		-e "s#^HTTP_ADDR = 0.0.0.0#HTTP_ADDR = 127.0.0.1#"
