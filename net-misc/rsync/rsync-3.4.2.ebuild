@@ -83,11 +83,7 @@ fi
 	"${FILESDIR}"/3.2.7-fix-runtime-AVX2-detection.patch
 	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
-	"${FILESDIR}"/3.4.1-c23.patch
 	"${FILESDIR}"/3.4.1-fallocate-nfs-compat.patch
-	"${FILESDIR}"/3.4.1-CVE-2025-10158.patch
-	"${FILESDIR}"/3.4.1-glibc-2.43.patch
-	"${FILESDIR}"/3.4.1-fix-uninitialized-mul_one.patch
 )
 
 pkg_setup() {
@@ -144,10 +140,6 @@ src_configure() {
 			byteorder.h || die
 		append-flags -DCAREFUL_ALIGNMENT
 	fi
-
-	# workaround for autoconf-2.73 using C23:
-	# https://bugs.gentoo.org/972320
-	append-cflags -std=gnu17
 
 	econf "${myeconfargs[@]}"
 }
