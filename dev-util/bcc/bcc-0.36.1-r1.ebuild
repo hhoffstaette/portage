@@ -68,6 +68,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.36.1-getUnqual.patch"
 	"${FILESDIR}/bcc-0.36.1-llvm22.patch"
 	"${FILESDIR}/bcc-0.36.1-no-libbpf-git.patch"
+	"${FILESDIR}/bcc-0.36.1-enable-ms-extensions.patch"
 )
 
 pkg_pretend() {

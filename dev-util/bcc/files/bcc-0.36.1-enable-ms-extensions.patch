@@ -1,0 +1,56 @@
+From c3f35ecca18b1ce926bd272f60f6d4465656a80b Mon Sep 17 00:00:00 2001
+From: Avinesh Kumar <avinesh.kumar@suse.com>
+Date: Fri, 6 Mar 2026 16:00:01 +0100
+Subject: [PATCH] clang: Add microsoft extensions build flags
+
+Starting in Linux 6.19, `struct ns_common` fields were moved into an
+anonymous nested forward declaration (`struct ns_tree;`) within a
+union.[1]
+This causes Clang to throw a `[-Wmissing-declarations]` warning and
+fail with missing member errors.
+
+This affects tools pulling in `<linux/pid_namespace.h>` directly or
+transitively (e.g. filetop, runqlat)
+
+Errors encountered:
+include/linux/ns/ns_common_types.h:117:3: warning: declaration does not declare anything [-Wmissing-declarations]
+  117 |                 struct ns_tree;
+      |                 ^~~~~~~~~~~~~~
+In file included from /virtual/main.c:5:
+In file included from include/linux/pid_namespace.h:11:
+include/linux/ns_common.h:25:23: error: no member named 'ns_id' in 'struct ns_common'
+   25 |         VFS_WARN_ON_ONCE(ns->ns_id == 0);
+      |                          ~~  ^
+include/linux/ns_common.h:26:13: error: no member named 'ns_id' in 'struct ns_common'
+   26 |         return ns->ns_id <= NS_LAST_INIT_ID;
+      |                ~~  ^
+include/linux/ns_common.h:60:26: error: no member named '__ns_ref_active' in 'struct ns_common'
+   60 |         return atomic_read(&ns->__ns_ref_active);
+
+This patch fixes the issue globally by turning on microsoft extensions
+flags. These flags have already been in the linux kernel. [2]
+
+[1] https://github.com/torvalds/linux/commit/a657bc8a75cf40c3d0814fe6488ba4af56528f42
+[2] https://github.com/torvalds/linux/commit/c4781dc3d1cf0e017e1f290607ddc56cfe187afc
+
+Signed-off-by: Avinesh Kumar <avinesh.kumar@suse.com>
+Fixes: #5488
+---
+ src/cc/frontends/clang/kbuild_helper.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/cc/frontends/clang/kbuild_helper.cc b/src/cc/frontends/clang/kbuild_helper.cc
+index 4f09a398e5f3..b5d6a55ec65f 100644
+--- a/src/cc/frontends/clang/kbuild_helper.cc
++++ b/src/cc/frontends/clang/kbuild_helper.cc
+@@ -137,6 +137,10 @@ int KBuildHelper::get_flags(const char *uname_machine, vector<string> *cflags) {
+   cflags->push_back("-Wno-pointer-sign");
+   cflags->push_back("-fno-stack-protector");
+ 
++  // Align with Linux kernel's -fms-extensions flags adopted since v6.19
++  cflags->push_back("-fms-extensions");
++  cflags->push_back("-Wno-microsoft-anon-tag");
++
+   /*
+    * kernel is usually build with gcc and the kernel devel header
+    * reflects that fact. However we build with clang and this must be
