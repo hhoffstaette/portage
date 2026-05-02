@@ -9,7 +9,7 @@ DESCRIPTION="Tool for quick, precise testing of entire TCP/UDP/IPv4/IPv6 network
 HOMEPAGE="https://github.com/google/packetdrill"
 
 # no up-to-date releases or tags
-COMMIT="1866fd111a6197f83f7fcdbb58dbe63936e2dad2"
+COMMIT="faa0dfb54065118625e169d3111ce09c65b20229"
 SRC_URI="https://github.com/google/packetdrill/archive/${COMMIT}.tar.gz -> packetdrill-${PV}.tar.gz"
 S="${WORKDIR}/${PN}-${COMMIT}/gtests/net/packetdrill"
 
