@@ -1,3 +1,5 @@
+https://bugs.gentoo.org/959774
+
 --- a/configure.ac
 +++ b/configure.ac
 @@ -244,6 +244,8 @@ AM_PATH_GPG_ERROR("$NEED_GPG_ERROR_VERSION",
