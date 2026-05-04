@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit gnome2
+inherit flag-o-matic gnome2
 
 DESCRIPTION="A newsreader for GNOME"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/pan"
@@ -54,6 +54,9 @@ src_prepare() {
 }
 
 src_configure() {
+	# build with gcc-16
+	append-cxxflags -std=gnu++17
+
 	# Wait for webkitgtk4 support
 	# gtk3 support is still not ready (follow what Fedora does)
 	NOCONFIGURE=1 ./autogen.sh
