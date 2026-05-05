@@ -55,6 +55,7 @@ src_prepare() {
 
 src_configure() {
 	# build with gcc-16
+	append-cflags -std=gnu17
 	append-cxxflags -std=gnu++17
 
 	# Wait for webkitgtk4 support
