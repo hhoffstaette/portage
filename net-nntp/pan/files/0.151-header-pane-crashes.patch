@@ -1,0 +1,61 @@
+Backport of https://gitlab.gnome.org/GNOME/pan/-/commit/1ed3ebbc8fd715d1d3e8f5c72d8b74ea5ff840ef
+
+--- a/pan/gui/header-pane.cc
++++ b/pan/gui/header-pane.cc
+@@ -2378,19 +2378,22 @@ HeaderPane :: select_prev_if (const ArticleTester& test)
+ void
+ HeaderPane :: read_next_unread_article ()
+ {
+-  read_next_if (ArticleIsUnread(_data));
++  if (_atree && _atree->size() > 0)
++    read_next_if (ArticleIsUnread(_data));
+ }
+ 
+ void
+ HeaderPane :: read_previous_article ()
+ {
+-  read_prev_if (ArticleExists());
++  if (_atree && _atree->size() > 0)
++    read_prev_if (ArticleExists());
+ }
+ 
+ void
+ HeaderPane :: read_next_article ()
+ {
+-  read_next_if (ArticleExists());
++  if (_atree && _atree->size() > 0)
++    read_next_if (ArticleExists());
+ }
+ 
+ void
+ HeaderPane :: read_next_thread ()
+ {
+-  if (_atree)
++  if (_atree && _atree->size() > 0)
+     read_next_if (ArticleIsNotInThread(*_atree, get_first_selected_article()));
+ }
+ 
+ void
+ HeaderPane :: read_next_unread_thread ()
+ {
+-  if (_atree)
++  if (_atree && _atree->size() > 0)
+     read_next_if (ArticleIsUnreadAndNotInThread(_data, *_atree, get_first_selected_article()));
+ }
+ 
+ void
+ HeaderPane :: read_previous_thread ()
+ {
+-  if (_atree)
++  if (_atree && _atree->size() > 0)
+     read_prev_if (ArticleIsNotInThread(*_atree, get_first_selected_article()));
+ }
+ 
+ void
+ HeaderPane :: read_parent_article ()
+ {
+-  if (_atree)
++  if (_atree && _atree->size() > 0)
+     read_prev_if (ArticleIsParentOf(*_atree, get_first_selected_article()));
+ }
+ 

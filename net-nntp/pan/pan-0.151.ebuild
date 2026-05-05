@@ -41,6 +41,7 @@ PATCHES=(
 	"${FILESDIR}/0.151-fix-C++11-deprecation-warnings.patch"
 	"${FILESDIR}/0.151-prototypes.patch"
 	"${FILESDIR}/0.151-version.patch"
+	"${FILESDIR}/0.151-header-pane-crashes.patch"
 )
 
 src_prepare() {
