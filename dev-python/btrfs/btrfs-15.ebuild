@@ -25,6 +25,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="examples"
 
+PATCHES=( "${FILESDIR}"/15-setup.patch )
+
 python_install_all() {
 	if use examples; then
 		# skip symlink meant for development
