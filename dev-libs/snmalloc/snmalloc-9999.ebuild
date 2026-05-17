@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake toolchain-funcs
 
 DESCRIPTION="Message passing based allocator"
 HOMEPAGE="https://github.com/microsoft/snmalloc"
@@ -18,7 +18,7 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE="test"
+IUSE="static-libs test"
 RESTRICT="!test? ( test )"
 
 RDEPEND=""
@@ -27,6 +27,10 @@ DEPEND="${RDEPEND}"
 src_configure() {
 	local mycmakeargs=(
 		-DSNMALLOC_BUILD_TESTING=$(usex test)
+		-DSNMALLOC_HEADER_ONLY_LIBRARY=OFF
+		-DSNMALLOC_LINKER_FLAVOUR=$(tc-getLD)
+		-DSNMALLOC_MEMCPY_OVERRIDE=OFF
+		-DSNMALLOC_STATIC_LIBRARY=$(usex static-libs ON OFF)
 	)
 
 	cmake_src_configure
@@ -34,4 +38,7 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
+
+	# always installs libsnmalloc-new-override.a
+	use static-libs || rm -f "${ED}"/usr/$(get_libdir)/*.a
 }
