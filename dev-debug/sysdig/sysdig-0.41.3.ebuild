@@ -70,7 +70,7 @@ PATCHES=(
 )
 
 pkg_pretend() {
-	if use bpf; then
+	if use bpf && [[ ${MERGE_TYPE} != binary ]] ; then
 		local CONFIG_CHECK="
 			~BPF
 			~BPF_EVENTS
