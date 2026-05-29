@@ -30,7 +30,8 @@ IUSE="symlink"
 RDEPEND="symlink? ( !sys-process/parallel )"
 
 src_install() {
-	cargo_src_install
+	dobin $(cargo_target_dir)/rust-parallel
+
 	if use symlink ; then
 		ln -s "rust-parallel" "${ED}/usr/bin/parallel"
 	fi
