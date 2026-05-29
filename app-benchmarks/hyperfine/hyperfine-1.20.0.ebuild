@@ -204,7 +204,7 @@ src_prepare() {
 }
 
 src_install() {
-	cargo_src_install
+	dobin $(cargo_target_dir)/hyperfine
 
 	local build_dir="$(dirname $(find "$(cargo_target_dir)" -name ${PN}.bash -print -quit))"
 	newbashcomp "${build_dir}/${PN}.bash" "${PN}"
