@@ -80,7 +80,6 @@ fi
 
  PATCHES=(
 	"${FILESDIR}"/3.2.7-buffer-size.patch
-	"${FILESDIR}"/3.2.7-fix-runtime-AVX2-detection.patch
 	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
 	"${FILESDIR}"/3.4.1-fallocate-nfs-compat.patch
