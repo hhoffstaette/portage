@@ -5,7 +5,7 @@ EAPI=8
 
 LLVM_COMPAT=( {15..22} )
 LLVM_OPTIONAL=1
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{12..14} )
 
 inherit bash-completion-r1 flag-o-matic linux-info llvm-r2 python-any-r1 toolchain-funcs
 
