@@ -31,10 +31,12 @@ KEYWORDS="~amd64"
 src_prepare() {
 	default
 
+	# find directory of our core lib
+	CORE_VER=$(grep -A1 "name = \"rustic_core\"" Cargo.lock | grep version | cut -d ' ' -f 3 | sed 's/"//g')
+	CORE_DIR="${WORKDIR}/cargo_home/gentoo/rustic_core-${CORE_VER}/src"
+
 	# reduce threading: 20 concurrent readers for restore is way too high
 	# use sed because patches break with every release
-	CORE_DIR="${WORKDIR}/cargo_home/gentoo/rustic_core-0.11.0/src"
-
 	pushd "${CORE_DIR}" >/dev/null || die
 		sed -i "s/check_cache_files(20/check_cache_files(2/g" commands/check.rs || die
 		sed -i "s/check_cache_files(5/check_cache_files(2/g" commands/check.rs || die
