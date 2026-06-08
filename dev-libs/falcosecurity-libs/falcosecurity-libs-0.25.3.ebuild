@@ -14,6 +14,10 @@ SLOT="0"
 #KEYWORDS="~amd64"
 IUSE="bpf"
 
+BDEPEND="dev-cpp/valijson
+	dev-libs/cxxopts
+"
+
 RDEPEND="dev-cpp/tbb:=
 	dev-libs/jsoncpp:=
 	bpf? ( >=dev-libs/libbpf-1.1:= )
@@ -26,8 +30,6 @@ RDEPEND="dev-cpp/tbb:=
 "
 
 DEPEND="${RDEPEND}
-	dev-cpp/valijson
-	dev-libs/cxxopts
 	virtual/os-headers
 "
 
