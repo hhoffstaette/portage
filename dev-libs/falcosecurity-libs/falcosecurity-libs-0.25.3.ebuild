@@ -11,12 +11,8 @@ SRC_URI="https://github.com/falcosecurity/libs/archive/refs/tags/${PV}.tar.gz ->
 
 LICENSE="Apache-2.0"
 SLOT="0"
-#KEYWORDS="~amd64"
+KEYWORDS="~amd64"
 IUSE="bpf"
-
-BDEPEND="dev-cpp/valijson
-	dev-libs/cxxopts
-"
 
 RDEPEND="dev-cpp/tbb:=
 	dev-libs/jsoncpp:=
@@ -30,13 +26,13 @@ RDEPEND="dev-cpp/tbb:=
 "
 
 DEPEND="${RDEPEND}
+	bpf? (
+		dev-util/bpftool
+		llvm-core/clang:*[llvm_targets_BPF]
+	)
+	dev-cpp/valijson
+	dev-libs/cxxopts
 	virtual/os-headers
-"
-
-DEPEND="bpf? (
-			dev-util/bpftool
-			llvm-core/clang:*[llvm_targets_BPF]
-		)
 "
 
 S="${WORKDIR}/libs-${PV}"
