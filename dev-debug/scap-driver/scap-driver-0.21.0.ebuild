@@ -12,7 +12,7 @@ S="${WORKDIR}/libs-${PV}"
 
 LICENSE="Apache-2.0 GPL-2 MIT"
 SLOT="0"
-#KEYWORDS="~amd64"
+KEYWORDS="~amd64"
 
 BDEPEND="
 	dev-libs/uthash
@@ -27,7 +27,7 @@ CONFIG_CHECK="HAVE_SYSCALL_TRACEPOINTS ~TRACEPOINTS"
 DRIVER_VERSION="8.1.0+driver"
 
 PATCHES=(
-    "${FILESDIR}"/libs-0.20.0-properly-use-LD.patch
+	"${FILESDIR}"/libs-0.20.0-properly-use-LD.patch
 )
 
 src_configure() {
