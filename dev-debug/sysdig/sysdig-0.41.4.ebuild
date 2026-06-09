@@ -29,7 +29,7 @@ DRIVER_VERSION="8.1.0+driver"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-#KEYWORDS="~amd64"
+KEYWORDS="~amd64"
 IUSE="bpf +modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
@@ -48,15 +48,13 @@ RDEPEND="${LUA_DEPS}
 "
 
 DEPEND="${RDEPEND}
+	bpf? (
+		dev-util/bpftool
+		llvm-core/clang:*[llvm_targets_BPF]
+	)
 	dev-cpp/nlohmann_json
 	dev-cpp/valijson
 	virtual/os-headers
-"
-
-BDEPEND="bpf? (
-			dev-util/bpftool
-			llvm-core/clang:*[llvm_targets_BPF]
-		)
 "
 
 # pin the driver to the falcosecurity-libs version
