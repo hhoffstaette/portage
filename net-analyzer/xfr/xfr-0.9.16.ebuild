@@ -10,7 +10,7 @@ CRATES="
 
 RUST_MIN_VER="1.88.0"
 
-inherit cargo
+inherit cargo shell-completion
 
 DESCRIPTION="Modern iperf3 alternative with a live TUI, multi-client server, and QUIC support"
 HOMEPAGE="https://github.com/lance0/xfr"
@@ -39,5 +39,14 @@ DOCS=(
 src_install() {
 	default
 
-	cargo_src_install
+	dobin $(cargo_target_dir)/xfr
+
+	local comp
+	for comp in bash fish zsh; do
+		$(cargo_target_dir)/xfr --completions $comp > "${WORKDIR}"/${PN}.$comp || die
+	done
+
+	newbashcomp "${WORKDIR}"/${PN}.bash ${PN}
+	newfishcomp "${WORKDIR}"/${PN}.fish ${PN}.fish
+	newzshcomp "${WORKDIR}"/${PN}.zsh _${PN}
 }
