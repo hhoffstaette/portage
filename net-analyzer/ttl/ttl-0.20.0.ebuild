@@ -48,10 +48,10 @@ src_install() {
 
 	local comp
 	for comp in bash fish zsh; do
-		$(cargo_target_dir)/ttl --completions $comp > "${WORKDIR}"/${PN}.$comp || die
+		$(cargo_target_dir)/ttl --completions $comp > "${WORKDIR}"/ttl.$comp || die
 	done
 
-	newbashcomp "${WORKDIR}"/${PN}.bash ${PN}
-	newfishcomp "${WORKDIR}"/${PN}.fish ${PN}.fish
-	newzshcomp "${WORKDIR}"/${PN}.zsh _${PN}
+	newbashcomp "${WORKDIR}"/ttl.bash ttl
+	newfishcomp "${WORKDIR}"/ttl.fish ttl.fish
+	newzshcomp "${WORKDIR}"/ttl.zsh _ttl
 }
