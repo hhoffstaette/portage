@@ -43,10 +43,10 @@ src_install() {
 
 	local comp
 	for comp in bash fish zsh; do
-		$(cargo_target_dir)/xfr --completions $comp > "${WORKDIR}"/${PN}.$comp || die
+		$(cargo_target_dir)/xfr --completions $comp > "${WORKDIR}"/xfr.$comp || die
 	done
 
-	newbashcomp "${WORKDIR}"/${PN}.bash ${PN}
-	newfishcomp "${WORKDIR}"/${PN}.fish ${PN}.fish
-	newzshcomp "${WORKDIR}"/${PN}.zsh _${PN}
+	newbashcomp "${WORKDIR}"/xfr.bash xfr
+	newfishcomp "${WORKDIR}"/xfr.fish xfr.fish
+	newzshcomp "${WORKDIR}"/xfr.zsh _xfr
 }
