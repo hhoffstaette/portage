@@ -51,11 +51,13 @@ DOCS=( AUTHORS ChangeLog NEWS README THANKS TODO )
 PATCHES=(
 	"${FILESDIR}/${PN}-1.0.0-AR.patch"
 	"${FILESDIR}/${PN}-1.3.0-automagic.patch" # bug #819939, bug #837719
-	"${FILESDIR}/${PN}-1.3.2-gettext-0.24.patch" # bug #959774
 )
 
 src_prepare() {
 	default
+
+	# https://bugs.gentoo.org/959774
+	autopoint --force
 
 	eautoreconf
 }
