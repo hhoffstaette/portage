@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/prometheus/alertmanager"
 SRC_URI="
 	https://github.com/prometheus/alertmanager/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/prometheus/alertmanager/releases/download/v${PV}/${PN}-web-ui-${PV}.tar.gz
-	https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz
+	https://github.com/gentoo-golang-dist/alertmanager/releases/download/v${PV}/${P}-vendor.tar.xz
 "
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
