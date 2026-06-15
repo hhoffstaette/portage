@@ -6,13 +6,12 @@ EAPI=8
 # Uncomment when introducing a patch which touches configure
 RSYNC_NEEDS_AUTOCONF=1
 PYTHON_COMPAT=( python3_{12..14} )
-
 inherit flag-o-matic prefix python-single-r1 systemd
 
 DESCRIPTION="File transfer program to keep remote files into sync"
 HOMEPAGE="https://rsync.samba.org/"
 if [[ ${PV} == *9999 ]] ; then
-	EGIT_REPO_URI="https://github.com/WayneD/rsync.git"
+	EGIT_REPO_URI="https://github.com/RsyncProject/rsync.git"
 	inherit autotools git-r3
 
 	REQUIRED_USE="${PYTHON_REQUIRED_USE}"
@@ -38,12 +37,14 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="acl examples iconv lz4 rrsync ssl stunnel system-zlib xattr +xxhash zstd"
-REQUIRED_USE+=" examples? ( ${PYTHON_REQUIRED_USE} )"
-REQUIRED_USE+=" rrsync? ( ${PYTHON_REQUIRED_USE} )"
+IUSE="acl examples iconv lz4 rrsync ssl stunnel system-zlib test xattr +xxhash zstd"
+RESTRICT="!test? ( test )"
+REQUIRED_USE+="
+	examples? ( ${PYTHON_REQUIRED_USE} )
+	rrsync? ( ${PYTHON_REQUIRED_USE} )
+	test? ( ${PYTHON_REQUIRED_USE} )
+"
 
-# attr is autodetected and then dropped by -Wl,--as-needed:
-# https://github.com/RsyncProject/rsync/pull/753
 RDEPEND="
 	>=dev-libs/popt-1.19
 	acl? ( virtual/acl )
@@ -67,18 +68,21 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	examples? ( ${PYTHON_DEPS} )
 	rrsync? ( ${PYTHON_DEPS} )
+	test? ( ${PYTHON_DEPS} )
 "
 
 if [[ ${PV} == *9999 ]] ; then
-	BDEPEND+=" ${PYTHON_DEPS}
+	BDEPEND+="
+		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
 			dev-python/commonmark[${PYTHON_USEDEP}]
-		')"
+		')
+	"
 else
 	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-andrewtridgell )"
 fi
 
- PATCHES=(
+PATCHES=(
 	"${FILESDIR}"/3.2.7-buffer-size.patch
 	"${FILESDIR}"/3.2.7-prealloc-min-size.patch
 	"${FILESDIR}"/3.2.7-checksum-opt.patch
@@ -88,7 +92,7 @@ fi
 pkg_setup() {
 	# - USE=examples needs Python itself at runtime, but nothing else
 	# - 9999 needs commonmark at build time
-	if [[ ${PV} == *9999 ]] || use examples || use rrsync; then
+	if [[ ${PV} == *9999 ]] || use examples || use rrsync || use test ; then
 		python-single-r1_pkg_setup
 	fi
 }
@@ -132,7 +136,7 @@ src_configure() {
 		$(use_enable zstd)
 	)
 
-	# https://github.com/WayneD/rsync/pull/428
+	# https://github.com/RsyncProject/rsync/pull/428
 	if is-flagq -fsanitize=undefined ; then
 		sed -E -i \
 			-e 's:#define CAREFUL_ALIGNMENT (0|1):#define CAREFUL_ALIGNMENT 1:' \
