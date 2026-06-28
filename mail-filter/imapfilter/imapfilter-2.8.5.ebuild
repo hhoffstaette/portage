@@ -9,7 +9,7 @@ inherit lua-single toolchain-funcs
 
 DESCRIPTION="An IMAP mail filtering utility"
 HOMEPAGE="https://github.com/lefcha/imapfilter"
-SRC_URI="https://github.com/lefcha/imapfilter/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/lefcha/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -19,7 +19,7 @@ REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="
 	dev-libs/openssl:=
-	dev-libs/libpcre2:=
+	dev-libs/libpcre2
 	${LUA_DEPS}"
 DEPEND="${RDEPEND}"
 
