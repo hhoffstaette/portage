@@ -64,11 +64,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.25.0-cmakelists.patch"
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
-	"${FILESDIR}/bcc-0.36.1-const.patch"
-	"${FILESDIR}/bcc-0.36.1-getUnqual.patch"
-	"${FILESDIR}/bcc-0.36.1-llvm22.patch"
 	"${FILESDIR}/bcc-0.36.1-no-libbpf-git.patch"
-	"${FILESDIR}/bcc-0.36.1-enable-ms-extensions.patch"
 )
 
 pkg_pretend() {
