@@ -15,20 +15,24 @@ HOMEPAGE="https://www.dnsdist.org/index.html"
 
 if [[ ${PV} == *9999* ]] ; then
 	EGIT_REPO_URI="https://github.com/PowerDNS/pdns"
-	EGIT_BRANCH="master"
+	EGIT_BRANCH="rel/dnsdist-2.1.x"
 	inherit git-r3
+	# the first 8 digits of the sha256sum of the 9999 crates tarball
+	CRATES_HASH=630a017b
+	CRATES_PV="${PV}"-"${CRATES_HASH}"
 else
 	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
 	KEYWORDS="~amd64 ~x86"
+	CRATES_PV="${PV}"
 fi
 
 SRC_URI+="
-	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${PV}-crates.tar.xz )
+	yaml? ( https://www.applied-asynchrony.com/distfiles/${PN}-rust-${CRATES_PV}-crates.tar.xz )
 "
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher lmdb quic regex snmp +ssl systemd test web xdp yaml"
+IUSE="bpf cdb dnscrypt dnstap doh doh3 ipcipher ipcrypt lmdb quic regex snmp +ssl systemd test web xdp yaml"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${LUA_REQUIRED_USE}
@@ -73,8 +77,7 @@ if [[ ${PV} == *9999* ]] ; then
 fi
 
 PATCHES=(
-	"${FILESDIR}"/2.0.2-roundrobin-fast-path.patch
-	"${FILESDIR}"/2.0.2-speed-up-cache-hits.patch
+	"${FILESDIR}"/2.1.0-comboaddress-missing-lua-methods.patch
 )
 
 pkg_setup() {
@@ -135,6 +138,7 @@ src_configure() {
 		$(meson_feature doh nghttp2)
 		$(meson_feature doh3 dns-over-http3)
 		$(meson_feature ipcipher)
+		$(meson_feature ipcrypt ipcrypt2)
 		$(meson_feature lmdb)
 		$(meson_feature quic dns-over-quic)
 		$(meson_feature regex re2)
