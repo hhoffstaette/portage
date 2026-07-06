@@ -14,6 +14,7 @@ SRC_URI="https://github.com/SuperQ/chrony_exporter/archive/refs/tags/v${PV}.tar.
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="static"
 
 DEPEND="acct-group/chrony_exporter
 		acct-user/chrony_exporter"
@@ -23,10 +24,14 @@ BDEPEND="
 	dev-util/promu
 "
 
-PATCHES=( "${FILESDIR}/0.13.3-promu-config.patch" )
 
 src_prepare() {
 	default
+
+	if ! use static; then
+		eapply "${FILESDIR}/0.13.3-promu-config.patch"
+	fi
+
 	# No need to enable the race detector for tests (#935442)
 	sed -i -e '/test-flags := -race/d' Makefile.common || die
 }
@@ -36,7 +41,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin ${PN}
+	newbin ${P} ${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
