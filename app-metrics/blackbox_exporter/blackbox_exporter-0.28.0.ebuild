@@ -14,6 +14,7 @@ SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
 KEYWORDS="amd64"
+IUSE="static"
 
 COMMON_DEPEND="acct-group/blackbox_exporter
 	acct-user/blackbox_exporter"
@@ -28,7 +29,13 @@ FILECAPS=(
 # tests require the network
 RESTRICT+=" mirror test "
 
-PATCHES=( "${FILESDIR}/0.28.0-promu-config.patch" )
+src_prepare() {
+	default
+
+	if ! use static; then
+		eapply "${FILESDIR}/0.28.0-promu-config.patch"
+	fi
+}
 
 src_compile() {
 	promu build -v --prefix bin || die
