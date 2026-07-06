@@ -33,8 +33,6 @@ SRC_URI="
 	 ${SRC_URI_VENDOR}
 "
 
-PATCHES=( "${FILESDIR}/0.14.0-promu-config.patch" )
-
 for p in $UPSTREAM_PATCHES; do
 	SRC_URI+=" https://github.com/prometheus-community/smartctl_exporter/commit/${p/*:}.patch -> ${PN}-${p/:/-}.patch"
 	PATCHES+=( "${DISTDIR}/${PN}-${p/:/-}.patch" )
@@ -44,14 +42,21 @@ done
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="static"
 BDEPEND="dev-util/promu"
 RDEPEND="sys-apps/smartmontools"
 
 src_prepare() {
 	default
+
+	if ! use static; then
+		eapply "${FILESDIR}/0.14.0-promu-config.patch"
+	fi
+
 	if [[ -n $SMARTCTL_EXPORTER_COMMIT ]]; then
 		sed -i -e "s/{{.Revision}}/${SMARTCTL_EXPORTER_COMMIT}/" .promu.yml || die
 	fi
+
 	# No need to enable the race detector for tests (#932772)
 	sed -i -e '/test-flags := -race/d' Makefile.common || die
 }
