@@ -23,7 +23,7 @@ LICENSE="Apache-2.0"
 # Dependent licenses
 LICENSE+=" Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
-IUSE="selinux"
+IUSE="selinux static"
 
 DEPEND="
 	acct-group/node_exporter
@@ -43,10 +43,15 @@ src_unpack() {
 }
 
 src_compile() {
+	if use static; then
+		export CGO_ENABLED=0
+	fi
+
 	if use x86; then
 		#917577 pie breaks build on x86
 		GOFLAGS=${GOFLAGS//-buildmode=pie}
 	fi
+
 	local go_ldflags=(
 		-X github.com/prometheus/common/version.Version=${PV}
 		-X github.com/prometheus/common/version.Revision=${GIT_COMMIT}
@@ -54,7 +59,9 @@ src_compile() {
 		-X github.com/prometheus/common/version.BuildUser=gentoo
 		-X github.com/prometheus/common/version.BuildDate="$(date +%F-%T)"
 	)
+
 	ego build -mod=vendor -ldflags "${go_ldflags[*]}" -o ${PN} .
+
 	./"${PN}" --help-man > "${PN}".1 || die
 }
 
