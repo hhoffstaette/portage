@@ -14,12 +14,18 @@ SRC_URI="https://github.com/ndecker/fritzbox_exporter/archive/refs/tags/v${PV}.t
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64 arm64"
+IUSE="static"
 
 DEPEND="acct-group/fritzbox_exporter
 	acct-user/fritzbox_exporter"
 
 src_compile() {
 	cd "${S}"
+
+	if use static; then
+		export CGO_ENABLED=0
+	fi
+
 	ego build
 }
 
