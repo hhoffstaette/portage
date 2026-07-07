@@ -9,7 +9,7 @@ DESCRIPTION="Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP 
 HOMEPAGE="https://github.com/prometheus/blackbox_exporter"
 
 SRC_URI="https://github.com/prometheus/blackbox_exporter/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${P}-deps.tar.xz"
+SRC_URI+=" https://github.com/gentoo-golang-dist/blackbox_exporter/releases/download/v${PV}/${P}-vendor.tar.xz"
 
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
