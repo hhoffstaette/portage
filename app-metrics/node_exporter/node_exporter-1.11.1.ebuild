@@ -23,7 +23,7 @@ LICENSE="Apache-2.0"
 # Dependent licenses
 LICENSE+=" Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
-IUSE="selinux static"
+IUSE="selinux"
 
 DEPEND="
 	acct-group/node_exporter
@@ -43,10 +43,6 @@ src_unpack() {
 }
 
 src_compile() {
-	if use static; then
-		export CGO_ENABLED=0
-	fi
-
 	if use x86; then
 		#917577 pie breaks build on x86
 		GOFLAGS=${GOFLAGS//-buildmode=pie}
