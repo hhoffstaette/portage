@@ -33,6 +33,6 @@ src_install() {
 	dobin $(cargo_target_dir)/rust-parallel
 
 	if use symlink ; then
-		ln -s "rust-parallel" "${ED}/usr/bin/parallel"
+		dosym rust-parallel /usr/bin/parallel
 	fi
 }
