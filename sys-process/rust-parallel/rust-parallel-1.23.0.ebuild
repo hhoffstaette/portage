@@ -12,7 +12,7 @@ CRATES="
 
 inherit cargo
 
-DESCRIPTION="Fast command line app to run commands in parallel."
+DESCRIPTION="Fast command line app to run commands in parallel"
 HOMEPAGE="https://github.com/aaronriekenberg/rust-parallel"
 
 SRC_URI="
