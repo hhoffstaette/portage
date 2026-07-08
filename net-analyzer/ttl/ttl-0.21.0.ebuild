@@ -10,7 +10,7 @@ CRATES="
 
 RUST_MIN_VER="1.88.0"
 
-inherit cargo fcaps shell-completion
+inherit cargo desktop fcaps shell-completion
 
 DESCRIPTION="Modern traceroute/mtr-style TUI with hop stats and optional ASN/geo enrichment"
 HOMEPAGE="https://github.com/lance0/ttl"
@@ -42,6 +42,9 @@ src_install() {
 	default
 
 	dobin $(cargo_target_dir)/ttl
+
+	doicon ttl.png
+	make_desktop_entry /usr/bin/ttl ttl ttl Network "Terminal=true"
 
 	local comp
 	for comp in bash fish zsh; do
