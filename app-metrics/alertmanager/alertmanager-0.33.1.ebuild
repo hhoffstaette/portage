@@ -15,7 +15,6 @@ SRC_URI="
 LICENSE="Apache-2.0 BSD BSD-2 MIT MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
-IUSE="static"
 
 # tests don't work due to "missing files"
 RESTRICT+=" test"
@@ -28,12 +27,10 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 
+PATCHES=( "${FILESDIR}/0.33.0-promu-config.patch" )
+
 src_prepare() {
 	default
-
-	if ! use static; then
-		eapply "${FILESDIR}/0.33.0-promu-config.patch"
-	fi
 
 	# put UI assets in place
 	cp -a "${WORKDIR}"/dist ui/app || die
