@@ -18,7 +18,7 @@ KEYWORDS="~amd64 ~arm64"
 IUSE="static"
 
 # tests don't work due to "missing files"
-RESTRICT+=" mirror test"
+RESTRICT+=" test"
 
 BDEPEND="dev-util/promu"
 
