@@ -14,7 +14,7 @@ SRC_URI="https://github.com/mdlayher/apcupsd_exporter/archive/v${PV}.tar.gz -> $
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE="static test"
+IUSE="test"
 
 DEPEND="acct-group/apcupsd_exporter
 		acct-user/apcupsd_exporter"
@@ -22,10 +22,6 @@ DEPEND="acct-group/apcupsd_exporter
 RESTRICT="!test? ( test )"
 
 src_compile() {
-	if use static; then
-		export CGO_ENABLED=0
-	fi
-
 	# the binary resides in the cmd subdirectory
 	cd cmd/${PN} || die
 
