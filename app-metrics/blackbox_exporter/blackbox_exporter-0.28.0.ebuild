@@ -14,7 +14,6 @@ SRC_URI+=" https://github.com/gentoo-golang-dist/blackbox_exporter/releases/down
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="static"
 
 COMMON_DEPEND="acct-group/blackbox_exporter
 	acct-user/blackbox_exporter"
@@ -29,13 +28,7 @@ FILECAPS=(
 # tests require the network
 RESTRICT+=" test "
 
-src_prepare() {
-	default
-
-	if ! use static; then
-		eapply "${FILESDIR}/0.28.0-promu-config.patch"
-	fi
-}
+PATCHES=( "${FILESDIR}/0.28.0-promu-config.patch" )
 
 src_compile() {
 	promu build -v --prefix bin || die
