@@ -3,7 +3,6 @@
 
 EAPI=8
 inherit fcaps go-module systemd
-MY_PV="v${PV/_rc/-rc.}"
 
 DESCRIPTION="Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP and ICMP"
 HOMEPAGE="https://github.com/prometheus/blackbox_exporter"
@@ -19,7 +18,10 @@ COMMON_DEPEND="acct-group/blackbox_exporter
 	acct-user/blackbox_exporter"
 DEPEND="${COMMON_DEPEND}"
 RDEPEND="${COMMON_DEPEND}"
-BDEPEND="dev-util/promu"
+BDEPEND="
+	>=dev-lang/go-1.25.0
+	dev-util/promu
+"
 
 FILECAPS=(
 	cap_net_raw usr/bin/blackbox_exporter
