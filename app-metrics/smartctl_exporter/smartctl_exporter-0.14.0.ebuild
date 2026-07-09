@@ -42,7 +42,10 @@ done
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-BDEPEND="dev-util/promu"
+BDEPEND="
+	>=dev-lang/go-1.25.0
+	dev-util/promu
+"
 RDEPEND="sys-apps/smartmontools"
 
 PATCHES=( "${FILESDIR}/0.14.0-promu-config.patch" )
