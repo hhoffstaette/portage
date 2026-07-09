@@ -17,6 +17,7 @@ KEYWORDS="~amd64 ~arm64"
 
 DEPEND="acct-group/fritzbox_exporter
 	acct-user/fritzbox_exporter"
+BDEPEND=">=dev-lang/go-1.18"
 
 src_compile() {
 	ego build
