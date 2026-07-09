@@ -18,13 +18,13 @@ IUSE="test"
 
 DEPEND="acct-group/apcupsd_exporter
 		acct-user/apcupsd_exporter"
+BDEPEND=">=dev-lang/go-1.17"
 
 RESTRICT="!test? ( test )"
 
 src_compile() {
 	# the binary resides in the cmd subdirectory
 	cd cmd/${PN} || die
-
 	ego build
 }
 
