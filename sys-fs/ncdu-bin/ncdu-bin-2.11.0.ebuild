@@ -10,6 +10,7 @@ SRC_URI="
 	arm? ( https://github.com/BratishkaErik/ncdu/releases/download/v${PV}/ncdu-${PV}-linux-arm.tar.gz )
 	arm64? ( https://github.com/BratishkaErik/ncdu/releases/download/v${PV}/ncdu-${PV}-linux-aarch64.tar.gz )
 	x86? ( https://github.com/BratishkaErik/ncdu/releases/download/v${PV}/ncdu-${PV}-linux-x86.tar.gz )
+	https://raw.githubusercontent.com/BratishkaErik/ncdu/refs/heads/zig-version/ncdu.1
 "
 S="${WORKDIR}"
 
@@ -24,6 +25,7 @@ QA_PREBUILT="usr/bin/ncdu-bin"
 
 src_install() {
 	newbin ncdu ncdu-bin
+	doman "${DISTDIR}"/ncdu.1
 
     if use symlink ; then
         dosym ncdu-bin /usr/bin/ncdu
