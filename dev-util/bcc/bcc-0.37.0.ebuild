@@ -65,6 +65,7 @@ PATCHES=(
 	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
 	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
 	"${FILESDIR}/bcc-0.36.1-no-libbpf-git.patch"
+	"${FILESDIR}/bcc-0.37.0-init-nowarn.patch"
 )
 
 pkg_pretend() {
