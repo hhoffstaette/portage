@@ -51,7 +51,9 @@ src_prepare() {
 
 src_install() {
 	dodoc *.change*
-	rm -rf *.change* license || die
+
+	# remove stale module list: https://bugs.gentoo.org/979340
+	rm -rf *.change* license popfile.pck || die
 
 	insinto /usr/share/${PN}
 	doins -r * || die
