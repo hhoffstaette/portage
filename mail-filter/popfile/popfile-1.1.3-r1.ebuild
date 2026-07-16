@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Foundation
+# Copyright 1999-2026 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DESCRIPTION="Anti-spam bayesian filter"
-HOMEPAGE="http://getpopfile.org"
-SRC_URI="http://getpopfile.org/downloads/${P}.zip"
+HOMEPAGE="https://getpopfile.org"
+SRC_URI="https://getpopfile.org/downloads/${P}.zip"
 S="${WORKDIR}"
 
 LICENSE="GPL-2"
