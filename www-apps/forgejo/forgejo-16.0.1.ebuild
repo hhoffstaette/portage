@@ -77,6 +77,7 @@ src_compile() {
 	local makeenv=(
 		DRONE_TAG="${PV}"
 		LDFLAGS="-extldflags \"${LDFLAGS}\" ${forgejo_settings[*]}"
+		STRIP=0
 		TAGS="${forgejo_tags[*]}"
 	)
 
