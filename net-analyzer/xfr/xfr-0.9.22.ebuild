@@ -40,6 +40,7 @@ src_install() {
 	default
 
 	dobin $(cargo_target_dir)/xfr
+	doman docs/xfr.1
 
 	local comp
 	for comp in bash fish zsh; do
