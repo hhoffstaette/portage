@@ -8,7 +8,7 @@ inherit fcaps go-module tmpfiles systemd flag-o-matic eapi9-ver
 DESCRIPTION="A self-hosted lightweight software forge"
 HOMEPAGE="https://forgejo.org/ https://codeberg.org/forgejo/forgejo"
 
-SRC_URI="https://codeberg.org/forgejo/forgejo/releases/download/v${PV}/forgejo-src-${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://code.forgejo.org/forgejo/forgejo/releases/download/v${PV}/forgejo-src-${PV}.tar.gz -> ${P}.tar.gz"
 S="${WORKDIR}/${PN}-src-${PV}"
 LICENSE="Apache-2.0 BSD BSD-2 ISC MIT MPL-2.0"
 SLOT="0"
