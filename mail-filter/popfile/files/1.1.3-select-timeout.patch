@@ -1,5 +1,7 @@
---- a/POPFile/Loader.pm~	2013-11-02 19:26:30.000000000 +0100
-+++ b/POPFile/Loader.pm	2013-11-02 19:26:46.141161949 +0100
+Increase select() timeout from 5 to 25 ms to reduce CPU overhead. 
+
+--- a/POPFile/Loader.pm
++++ b/POPFile/Loader.pm
 @@ -794,10 +794,10 @@
              }
          }

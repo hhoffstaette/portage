@@ -33,8 +33,8 @@ RDEPEND="virtual/perl-Digest-MD5
 BDEPEND="app-arch/unzip"
 
 PATCHES=(
-	# increase select timeout
-	"${FILESDIR}"/${P}-select-timeout.patch
+	"${FILESDIR}"/1.1.3-piddir.patch
+	"${FILESDIR}"/1.1.3-select-timeout.patch
 )
 
 src_prepare() {

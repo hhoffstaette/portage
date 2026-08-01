@@ -1,0 +1,13 @@
+Set sane default directory for generated pid file.
+
+--- a/POPFile/Configuration.pm
++++ b/POPFile/Configuration.pm
+@@ -97,7 +97,7 @@ sub initialize
+     # This is the location where we store the PID of POPFile in a file
+     # called popfile.pid
+ 
+-    $self->config_( 'piddir', './' );
++    $self->config_( 'piddir', '/run/' );
+ 
+     # The default interval of checking pid file in seconds
+     # To turn off checking, set this option to 0
