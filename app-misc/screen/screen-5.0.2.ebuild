@@ -35,7 +35,6 @@ BDEPEND="sys-apps/texinfo"
 
 PATCHES=(
 	"${FILESDIR}"/5.0.0-utmp-musl.patch
-	"${FILESDIR}"/5.0.1-texinfo.patch
 )
 
 src_prepare() {
