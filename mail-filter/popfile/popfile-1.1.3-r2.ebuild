@@ -35,6 +35,7 @@ BDEPEND="app-arch/unzip"
 PATCHES=(
 	"${FILESDIR}"/1.1.3-piddir.patch
 	"${FILESDIR}"/1.1.3-select-timeout.patch
+	"${FILESDIR}"/1.1.3-osx-sans.patch
 )
 
 src_prepare() {
