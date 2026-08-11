@@ -17,6 +17,7 @@ S="${S}/cmd/pdfcpu"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
+BDEPEND=">=dev-lang/go-1.25.0"
 
 src_compile() {
 	ego build
