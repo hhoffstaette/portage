@@ -37,7 +37,7 @@ src_compile() {
 }
 
 src_install() {
-	newbin ${P} ${PN}
+	dobin ${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
