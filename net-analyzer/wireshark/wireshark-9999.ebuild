@@ -44,6 +44,7 @@ RESTRICT="!test? ( test )"
 # bug #753062 for speexdsp
 RDEPEND="
 	acct-group/pcap
+	dev-libs/cpuinfo
 	>=dev-libs/glib-2.50.0:2
 	dev-libs/libpcre2:=
 	dev-libs/libxml2:=
@@ -202,7 +203,6 @@ src_configure() {
 		-DBUILD_udpdump=$(usex udpdump)
 
 		-DBUILD_wireshark=$(usex gui)
-		-DUSE_qt6=$(usex gui)
 
 		-DENABLE_WERROR=OFF
 		-DENABLE_BCG729=$(usex bcg729)
