@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit bash-completion-r1 toolchain-funcs
+inherit shell-completion toolchain-funcs
 
 VIM_VERSION="9.2.0245"
 
