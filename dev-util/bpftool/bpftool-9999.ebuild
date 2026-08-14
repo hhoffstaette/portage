@@ -7,7 +7,7 @@ LLVM_COMPAT=( {17..22} )
 LLVM_OPTIONAL=1
 PYTHON_COMPAT=( python3_{12..14} )
 
-inherit bash-completion-r1 flag-o-matic linux-info llvm-r2 python-any-r1 toolchain-funcs
+inherit flag-o-matic linux-info llvm-r2 python-any-r1 shell-completion toolchain-funcs
 
 DESCRIPTION="Tool for inspection and simple manipulation of eBPF programs and maps"
 HOMEPAGE="https://github.com/libbpf/bpftool"
