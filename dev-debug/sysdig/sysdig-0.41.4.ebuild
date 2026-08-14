@@ -5,7 +5,7 @@ EAPI=8
 
 LUA_COMPAT=( luajit )
 
-inherit bash-completion-r1 cmake flag-o-matic linux-info lua-single
+inherit cmake flag-o-matic linux-info lua-single shell-completion
 
 DESCRIPTION="A system exploration and troubleshooting tool"
 HOMEPAGE="https://www.sysdig.com/"
@@ -39,22 +39,22 @@ RDEPEND="${LUA_DEPS}
 	dev-cpp/yaml-cpp:=
 	dev-libs/jsoncpp:=
 	dev-libs/libb64:=
-	bpf? ( >=dev-libs/libbpf-1.5:= )
 	dev-libs/re2:=
 	dev-libs/uthash
 	sys-libs/ncurses:=
 	virtual/libelf:=
 	virtual/zlib:=
+	bpf? ( >=dev-libs/libbpf-1.5:= )
 "
 
 DEPEND="${RDEPEND}
+	dev-cpp/nlohmann_json
+	dev-cpp/valijson
+	virtual/os-headers
 	bpf? (
 		dev-util/bpftool
 		llvm-core/clang:*[llvm_targets_BPF]
 	)
-	dev-cpp/nlohmann_json
-	dev-cpp/valijson
-	virtual/os-headers
 "
 
 # pin the driver to the falcosecurity-libs version
