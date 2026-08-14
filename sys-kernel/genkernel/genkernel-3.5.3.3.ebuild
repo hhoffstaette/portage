@@ -6,7 +6,7 @@
 
 EAPI=8
 
-inherit bash-completion-r1
+inherit shell-completion
 
 VERSION_BUSYBOX='1.36.1' # warning, be sure to bump patches
 VERSION_DMRAID='1.0.0.rc16-3' # warning, be sure to bump patches
