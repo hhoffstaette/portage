@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit bash-completion-r1 cmake flag-o-matic linux-info
+inherit cmake flag-o-matic linux-info
 
 DESCRIPTION="libsinsp, libscap, and the scap kernel driver for sysdig"
 HOMEPAGE="https://falcosecurity.github.io/libs/"
