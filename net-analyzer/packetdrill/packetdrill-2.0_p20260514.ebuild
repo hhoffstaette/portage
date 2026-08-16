@@ -3,13 +3,13 @@
 
 EAPI=8
 
-inherit toolchain-funcs
+inherit flag-o-matic  toolchain-funcs
 
 DESCRIPTION="Tool for quick, precise testing of entire TCP/UDP/IPv4/IPv6 network stacks"
 HOMEPAGE="https://github.com/google/packetdrill"
 
 # no up-to-date releases or tags
-COMMIT="faa0dfb54065118625e169d3111ce09c65b20229"
+COMMIT="2c4001c4d6fc04a3bbd01d4b92be62717a37648a"
 SRC_URI="https://github.com/google/packetdrill/archive/${COMMIT}.tar.gz -> packetdrill-${PV}.tar.gz"
 S="${WORKDIR}/${PN}-${COMMIT}/gtests/net/packetdrill"
 
@@ -27,15 +27,12 @@ BDEPEND="
 
 DOCS=( README.md syntax.md )
 
-PATCHES=(
-	"${FILESDIR}/20250604-no-static-linking.patch"
-)
-
 src_compile() {
 	# remove homegrown duplicate
 	rm assert.h || die
 
 	# build with proper flags
+	append-flags -Wno-unused-result
 	emake CC="$(tc-getCC)" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 }
 
