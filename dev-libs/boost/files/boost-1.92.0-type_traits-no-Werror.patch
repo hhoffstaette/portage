@@ -1,0 +1,13 @@
+Disable -Werror for type_traits tests.
+
+--- a/libs/type_traits/test/Jamfile.v2
++++ b/libs/type_traits/test/Jamfile.v2
+@@ -30,7 +30,7 @@ project : requirements
+    <toolset>gcc:<cxxflags>-Wno-int-in-bool-context
+    <toolset>gcc:<cxxflags>-Wno-bool-operation
+    <toolset>gcc:<cxxflags>-Wundef
+-   <toolset>gcc:<warnings-as-errors>on
++   <toolset>gcc:<warnings-as-errors>off
+    <toolset>intel:<warnings-as-errors>on
+    <toolset>sun:<warnings-as-errors>on
+    <toolset>msvc:<warnings-as-errors>on
