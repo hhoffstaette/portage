@@ -5,12 +5,12 @@
 
 EAPI=8
 
-RUST_MIN_VER="1.88.0"
+RUST_MIN_VER="1.91.0"
 
 CRATES="
 "
 
-inherit cargo
+inherit  cargo shell-completion
 
 DESCRIPTION="Fast, encrypted, deduplicated backups powered by pure Rust"
 HOMEPAGE="https://github.com/rustic-rs/rustic"
@@ -48,4 +48,19 @@ src_prepare() {
 src_configure() {
 	# enable mount feature
 	cargo_src_configure --features mount
+}
+
+src_install() {
+	default
+
+	dobin $(cargo_target_dir)/rustic
+
+	local comp
+	for comp in bash fish zsh; do
+		$(cargo_target_dir)/rustic completions $comp > "${WORKDIR}"/rustic.$comp || die
+	done
+
+	newbashcomp "${WORKDIR}"/rustic.bash rustic
+	newfishcomp "${WORKDIR}"/rustic.fish rustic.fish
+	newzshcomp "${WORKDIR}"/rustic.zsh _rustic
 }
