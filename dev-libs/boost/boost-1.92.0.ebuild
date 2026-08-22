@@ -43,7 +43,6 @@ BDEPEND=">=dev-build/b2-5.1.0"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.88.0-beast-network-sandbox.patch
-	"${FILESDIR}"/${PN}-1.88.0-bind-no-Werror.patch
 	"${FILESDIR}"/${PN}-1.88.0-build-auto_index-tool.patch
 	"${FILESDIR}"/${PN}-1.88.0-system-crashing-test.patch
 	"${FILESDIR}"/${PN}-1.88.0-yap-cstdint.patch
@@ -58,9 +57,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.91.0-uninitialised-buffer.patch
 	"${FILESDIR}"/${PN}-1.91.0-wave-test-cfg.patch
 	"${FILESDIR}"/${PN}-1.92.0-disable_icu_rpath.patch
-	"${FILESDIR}"/${PN}-1.92.0-endian-no-Werror.patch
 	"${FILESDIR}"/${PN}-1.92.0-msm-std.patch
-	"${FILESDIR}"/${PN}-1.92.0-type_traits-no-Werror.patch
 )
 
 create_user-config.jam() {
@@ -126,6 +123,16 @@ pkg_setup() {
 
 src_prepare() {
 	default
+
+	if use test; then
+		# Many libs unfortunately hardcode b2's equivalent of -Werror, so undo
+		# it everywhere instead of patching every maybe-failing subproject.
+		# Do this before the sources are copied into the multilib build dir.
+		for f in $(grep -lr 'warnings-as-errors>on' libs) ; do
+			sed -i "s/warnings-as-errors>on/warnings-as-errors>off/g" "$f" || die
+		done
+	fi
+
 	multilib_copy_sources
 }
 
@@ -266,6 +273,37 @@ multilib_src_test() {
 		#   std::runtime_error: Event was not consumed!
 		"statechart"
 	)
+
+	# clang-specific exclusions
+	if tc-is-clang; then
+		# clang crashes due to unsupported varargs with segmented stacks:
+		# https://github.com/llvm/llvm-project/issues/73797
+		local no_clang=( "context" )
+
+		# clang does not automatically link to libatomic:
+		# https://github.com/llvm/llvm-project/issues/73361
+		no_clang+=( "lockfree" )
+
+		# integral_wrapper.hpp:63:51: error: in-class initializer for static data member is not a constant expression
+		no_clang+=( "mpl" )
+
+		# rule.hpp:291:18: error: static assertion failed due to requirement
+		# 'boost::is_convertible<const boost::spirit::qi::alternative<boost::fusion::cons..<snip>:
+		# The passed skipper is not compatible/convertible to one that the rule was instantiated with
+		no_clang+=( "spirit" )
+
+		# mismatched stack traces
+		no_clang+=( "stacktrace" )
+
+		# is_unsigned.hpp:38:25: error: in-class initializer for static data member is not a constant expression
+		no_clang+=( "type_traits" )
+
+		# test_assert_fail.cxx:15:3: error: too few arguments provided to function-like macro invocation
+		no_clang+=( "vmd" )
+
+		einfo "Disabling tests due to clang: ${no_clang[@]}"
+		libs_excluded+=( ${no_clang[@]} )
+	fi
 
 	if ! use mpi; then
 		# graph_parallel tries to use MPI even with use=-mpi
