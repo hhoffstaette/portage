@@ -124,14 +124,12 @@ pkg_setup() {
 src_prepare() {
 	default
 
-	if use test; then
-		# Many libs unfortunately hardcode b2's equivalent of -Werror, so undo
-		# it everywhere instead of patching every maybe-failing subproject.
-		# Do this before the sources are copied into the multilib build dir.
-		for f in $(grep -lr 'warnings-as-errors>on' libs) ; do
-			sed -i "s/warnings-as-errors>on/warnings-as-errors>off/g" "$f" || die
-		done
-	fi
+	# Many libs unfortunately hardcode b2's equivalent of -Werror, so undo
+	# it everywhere instead of patching every maybe-failing subproject.
+	# Do this before the sources are copied into the multilib build dir.
+	for f in $(grep -lr 'warnings-as-errors>on' libs) ; do
+		sed -i "s/warnings-as-errors>on/warnings-as-errors>off/g" "$f" || die
+	done
 
 	multilib_copy_sources
 }
