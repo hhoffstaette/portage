@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{{10..14},{13..14}t} )
-LLVM_COMPAT=( {17..22} )
+LLVM_COMPAT=( {17..23} )
 
 inherit cmake linux-info llvm-r2 distutils-r1 toolchain-funcs
 
@@ -60,12 +60,13 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/bcc-0.9.0-no-luajit-automagic-dep.patch"
-	"${FILESDIR}/bcc-0.25.0-cmakelists.patch"
-	"${FILESDIR}/bcc-0.23.0-man-compress.patch"
-	"${FILESDIR}/bcc-0.31.0-no-automagic-deps.patch"
-	"${FILESDIR}/bcc-0.36.1-no-libbpf-git.patch"
-	"${FILESDIR}/bcc-0.37.0-init-nowarn.patch"
+	"${FILESDIR}/0.9.0-no-luajit-automagic-dep.patch"
+	"${FILESDIR}/0.25.0-cmakelists.patch"
+	"${FILESDIR}/0.23.0-man-compress.patch"
+	"${FILESDIR}/0.31.0-no-automagic-deps.patch"
+	"${FILESDIR}/0.36.1-no-libbpf-git.patch"
+	"${FILESDIR}/0.37.0-init-nowarn.patch"
+	"${FILESDIR}/0.37.0-llvm23.patch"
 )
 
 pkg_pretend() {
@@ -96,7 +97,7 @@ bcc_distutils_phase() {
 }
 
 src_prepare() {
-	use static-libs || PATCHES+=( "${FILESDIR}/bcc-0.31.0-dont-install-static-libs.patch" )
+	use static-libs || PATCHES+=( "${FILESDIR}/0.31.0-dont-install-static-libs.patch" )
 
 	# use distutils-r1 eclass funcs rather than letting upstream handle python
 	printf '\n' > src/python/CMakeLists.txt || die
