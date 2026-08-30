@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {18..22} )
+LLVM_COMPAT=( {18..23} )
 RUST_MIN_VER="1.85.0"
 RUST_OPTIONAL=1
 
@@ -74,6 +74,8 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}/0.11.4-old-kernels.patch"
 	"${FILESDIR}/0.21.0-dont-compress-man.patch"
+	"${FILESDIR}/0.26.1-llvm23.patch"
+	"${FILESDIR}/0.26.1-fix-HasTerminator-on-llvm23.patch"
 )
 
 pkg_pretend() {
