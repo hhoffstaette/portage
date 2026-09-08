@@ -18,7 +18,7 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_BRANCH="master"
 	inherit git-r3
 	# the first 8 digits of the sha256sum of the 9999 crates tarball
-	CRATES_HASH=630a017b
+	CRATES_HASH=d7740dcd
 	CRATES_PV="${PV}"-"${CRATES_HASH}"
 else
 	SRC_URI="https://downloads.powerdns.com/releases/${P}.tar.xz"
