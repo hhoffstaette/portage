@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{12..14} )
 inherit autotools dot-a flag-o-matic python-single-r1 systemd
 
 DESCRIPTION="syslog replacement with advanced filtering features"
