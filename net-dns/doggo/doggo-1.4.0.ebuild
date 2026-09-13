@@ -16,7 +16,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
 
-BDEPEND=">=dev-lang/go-1.26.5"
+BDEPEND=">=dev-lang/go-1.26.6"
 
 src_compile() {
 	emake build-cli VERSION=${PV}
