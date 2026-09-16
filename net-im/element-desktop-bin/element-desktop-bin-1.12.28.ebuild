@@ -49,8 +49,6 @@ QA_PREBUILT="
 	/opt/Element/chrome_crashpad_handler
 	/opt/Element/chrome-sandbox
 	/opt/Element/element-desktop
-	/opt/Element/libEGL.so
-	/opt/Element/libGLESv2.so
 	/opt/Element/libffmpeg.so
 	/opt/Element/libvk_swiftshader.so
 	/opt/Element/libvulkan.so.1
