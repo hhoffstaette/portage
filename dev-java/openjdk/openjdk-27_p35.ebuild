@@ -34,7 +34,7 @@ elif [[ "${PV%_beta*}" != "${PV}" ]]; then # version string contains "_beta"
 	MY_VERSION_STRING="${PV%_beta*}"
 	MY_VERSION_BUILD="${PV#*_beta}"
 else
-	MY_PV="${PV/_p/+}"
+	MY_PV="${PV%_p*}-ga"
 	JDK_REPO="jdk$(ver_cut 1)u"
 	MY_VERSION_STRING="${PV%_p*}"
 	MY_VERSION_BUILD="${PV#*_p}"
@@ -130,22 +130,6 @@ pkg_setup() {
 	JAVA_PKG_WANT_BUILD_VM="openjdk-26 openjdk-${SLOT} openjdk-bin-${SLOT}"
 	JAVA_PKG_WANT_SOURCE="${SLOT}"
 	JAVA_PKG_WANT_TARGET="${SLOT}"
-
-	# The nastiness below is necessary while the gentoo-vm USE flag is
-	# masked. First we call java-pkg-2_pkg_setup if it looks like the
-	# flag was unmasked against one of the possible build VMs. If not,
-	# we try finding one of them in their expected locations. This would
-	# have been slightly less messy if openjdk-bin had been installed to
-	# /opt/${PN}-${SLOT} or if there was a mechanism to install a VM env
-	# file but disable it so that it would not normally be selectable.
-
-	local vm
-	for vm in ${JAVA_PKG_WANT_BUILD_VM}; do
-		if [[ -d ${BROOT}/usr/lib/jvm/${vm} ]]; then
-			java-pkg-2_pkg_setup
-			return
-		fi
-	done
 }
 
 src_prepare() {
