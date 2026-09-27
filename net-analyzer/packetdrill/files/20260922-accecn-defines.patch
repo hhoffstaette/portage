@@ -1,0 +1,21 @@
+--- a/tcp.h
++++ b/tcp.h
+@@ -146,10 +146,18 @@
+ #define TCP_ACCECN_OPT_FAIL_SEEN	0x3
+ 
+ /* Values for accecn_fail_mode */
++#ifndef TCP_ACCECN_ACE_FAIL_SEND
+ #define TCP_ACCECN_ACE_FAIL_SEND	BIT(0)
++#endif
++#ifndef TCP_ACCECN_ACE_FAIL_RECV
+ #define TCP_ACCECN_ACE_FAIL_RECV	BIT(1)
++#endif
++#ifndef TCP_ACCECN_OPT_FAIL_SEND
+ #define TCP_ACCECN_OPT_FAIL_SEND	BIT(2)
++#endif
++#ifndef TCP_ACCECN_OPT_FAIL_RECV
+ #define TCP_ACCECN_OPT_FAIL_RECV	BIT(3)
++#endif
+ 
+ /* A portable TCP header definition (Linux and *BSD use different names). */
+ struct tcp {
