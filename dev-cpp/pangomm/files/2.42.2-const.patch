@@ -1,0 +1,427 @@
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/attributes.h pangomm-2.42.2-const/untracked/pango/pangomm/attributes.h
+--- pangomm-2.42.2/untracked/pango/pangomm/attributes.h	2020-12-13 15:11:13.689664100 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/attributes.h	2026-06-29 10:58:42.277159063 +0200
+@@ -172,7 +172,7 @@ template <>
+ class PANGOMM_API Value<Pango::AttrType> : public Glib::Value_Enum<Pango::AttrType>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -234,7 +234,7 @@ template <>
+ class PANGOMM_API Value<Pango::Underline> : public Glib::Value_Enum<Pango::Underline>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/attrlist.h pangomm-2.42.2-const/untracked/pango/pangomm/attrlist.h
+--- pangomm-2.42.2/untracked/pango/pangomm/attrlist.h	2020-12-13 15:11:13.689664100 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/attrlist.h	2026-06-29 10:58:42.277443990 +0200
+@@ -57,7 +57,7 @@ class PANGOMM_API AttrList
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   AttrList();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/cairofontmap.h pangomm-2.42.2-const/untracked/pango/pangomm/cairofontmap.h
+--- pangomm-2.42.2/untracked/pango/pangomm/cairofontmap.h	2020-12-13 15:11:13.689664100 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/cairofontmap.h	2026-06-29 10:58:42.277504372 +0200
+@@ -113,10 +113,10 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/color.h pangomm-2.42.2-const/untracked/pango/pangomm/color.h
+--- pangomm-2.42.2/untracked/pango/pangomm/color.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/color.h	2026-06-29 10:58:42.277558647 +0200
+@@ -52,7 +52,7 @@ class PANGOMM_API Color
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   Color();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/context.h pangomm-2.42.2-const/untracked/pango/pangomm/context.h
+--- pangomm-2.42.2/untracked/pango/pangomm/context.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/context.h	2026-06-29 10:58:42.277607607 +0200
+@@ -125,7 +125,7 @@ template <>
+ class PANGOMM_API Value<Pango::Direction> : public Glib::Value_Enum<Pango::Direction>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -178,7 +178,7 @@ template <>
+ class PANGOMM_API Value<Pango::GravityHint> : public Glib::Value_Enum<Pango::GravityHint>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -247,12 +247,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/coverage.h pangomm-2.42.2-const/untracked/pango/pangomm/coverage.h
+--- pangomm-2.42.2/untracked/pango/pangomm/coverage.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/coverage.h	2026-06-29 10:58:42.277731708 +0200
+@@ -81,7 +81,7 @@ template <>
+ class PANGOMM_API Value<Pango::CoverageLevel> : public Glib::Value_Enum<Pango::CoverageLevel>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/font.h pangomm-2.42.2-const/untracked/pango/pangomm/font.h
+--- pangomm-2.42.2/untracked/pango/pangomm/font.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/font.h	2026-06-29 10:58:42.277787924 +0200
+@@ -101,12 +101,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontdescription.h pangomm-2.42.2-const/untracked/pango/pangomm/fontdescription.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontdescription.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontdescription.h	2026-06-29 10:58:42.277865446 +0200
+@@ -77,7 +77,7 @@ template <>
+ class PANGOMM_API Value<Pango::Style> : public Glib::Value_Enum<Pango::Style>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -116,7 +116,7 @@ template <>
+ class PANGOMM_API Value<Pango::Variant> : public Glib::Value_Enum<Pango::Variant>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -183,7 +183,7 @@ template <>
+ class PANGOMM_API Value<Pango::Stretch> : public Glib::Value_Enum<Pango::Stretch>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -262,7 +262,7 @@ template <>
+ class PANGOMM_API Value<Pango::Weight> : public Glib::Value_Enum<Pango::Weight>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -361,7 +361,7 @@ template <>
+ class PANGOMM_API Value<Pango::FontMask> : public Glib::Value_Flags<Pango::FontMask>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -422,7 +422,7 @@ template <>
+ class PANGOMM_API Value<Pango::Gravity> : public Glib::Value_Enum<Pango::Gravity>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -445,7 +445,7 @@ class PANGOMM_API FontDescription
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   FontDescription();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontface.h pangomm-2.42.2-const/untracked/pango/pangomm/fontface.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontface.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontface.h	2026-06-29 10:58:42.278021796 +0200
+@@ -84,12 +84,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontfamily.h pangomm-2.42.2-const/untracked/pango/pangomm/fontfamily.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontfamily.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontfamily.h	2026-06-29 10:58:42.278071750 +0200
+@@ -85,12 +85,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontmap.h pangomm-2.42.2-const/untracked/pango/pangomm/fontmap.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontmap.h	2020-12-13 15:11:13.693664000 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontmap.h	2026-06-29 10:58:42.278124472 +0200
+@@ -88,12 +88,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontmetrics.h pangomm-2.42.2-const/untracked/pango/pangomm/fontmetrics.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontmetrics.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontmetrics.h	2026-06-29 10:58:42.278175712 +0200
+@@ -53,7 +53,7 @@ class PANGOMM_API FontMetrics
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   FontMetrics();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/fontset.h pangomm-2.42.2-const/untracked/pango/pangomm/fontset.h
+--- pangomm-2.42.2/untracked/pango/pangomm/fontset.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/fontset.h	2026-06-29 10:58:42.278231929 +0200
+@@ -84,12 +84,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/glyphstring.h pangomm-2.42.2-const/untracked/pango/pangomm/glyphstring.h
+--- pangomm-2.42.2/untracked/pango/pangomm/glyphstring.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/glyphstring.h	2026-06-29 10:58:42.278331766 +0200
+@@ -53,7 +53,7 @@ class PANGOMM_API GlyphString
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   GlyphString();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/language.h pangomm-2.42.2-const/untracked/pango/pangomm/language.h
+--- pangomm-2.42.2/untracked/pango/pangomm/language.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/language.h	2026-06-29 10:58:42.278468108 +0200
+@@ -540,7 +540,7 @@ template <>
+ class PANGOMM_API Value<Pango::Script> : public Glib::Value_Enum<Pango::Script>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -562,7 +562,7 @@ class PANGOMM_API Language
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+ 
+   explicit Language(PangoLanguage* gobject, bool make_a_copy = true);
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/layout.h pangomm-2.42.2-const/untracked/pango/pangomm/layout.h
+--- pangomm-2.42.2/untracked/pango/pangomm/layout.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/layout.h	2026-06-29 10:58:42.278590730 +0200
+@@ -89,7 +89,7 @@ template <>
+ class PANGOMM_API Value<Pango::Alignment> : public Glib::Value_Enum<Pango::Alignment>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -132,7 +132,7 @@ template <>
+ class PANGOMM_API Value<Pango::WrapMode> : public Glib::Value_Enum<Pango::WrapMode>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -182,7 +182,7 @@ template <>
+ class PANGOMM_API Value<Pango::EllipsizeMode> : public Glib::Value_Enum<Pango::EllipsizeMode>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -232,12 +232,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/layoutiter.h pangomm-2.42.2-const/untracked/pango/pangomm/layoutiter.h
+--- pangomm-2.42.2/untracked/pango/pangomm/layoutiter.h	2020-12-13 15:11:13.697664300 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/layoutiter.h	2026-06-29 10:58:42.278774203 +0200
+@@ -51,7 +51,7 @@ class PANGOMM_API LayoutIter
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   LayoutIter();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/layoutrun.h pangomm-2.42.2-const/untracked/pango/pangomm/layoutrun.h
+--- pangomm-2.42.2/untracked/pango/pangomm/layoutrun.h	2020-12-13 15:11:13.701664200 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/layoutrun.h	2026-06-29 10:58:42.278911492 +0200
+@@ -61,7 +61,7 @@ class PANGOMM_API LayoutRun
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   LayoutRun();
+ 
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/renderer.h pangomm-2.42.2-const/untracked/pango/pangomm/renderer.h
+--- pangomm-2.42.2/untracked/pango/pangomm/renderer.h	2020-12-13 15:11:13.701664200 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/renderer.h	2026-06-29 10:58:42.279011124 +0200
+@@ -93,7 +93,7 @@ template <>
+ class PANGOMM_API Value<Pango::RenderPart> : public Glib::Value_Enum<Pango::RenderPart>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -141,12 +141,12 @@ public:
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type()      G_GNUC_CONST;
++  static GType get_type();
+ 
+ #ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 
+-  static GType get_base_type() G_GNUC_CONST;
++  static GType get_base_type();
+ #endif
+ 
+   ///Provides access to the underlying C GObject.
+diff -rup pangomm-2.42.2/untracked/pango/pangomm/tabarray.h pangomm-2.42.2-const/untracked/pango/pangomm/tabarray.h
+--- pangomm-2.42.2/untracked/pango/pangomm/tabarray.h	2020-12-13 15:11:13.701664200 +0100
++++ pangomm-2.42.2-const/untracked/pango/pangomm/tabarray.h	2026-06-29 10:58:42.279104916 +0200
+@@ -66,7 +66,7 @@ template <>
+ class PANGOMM_API Value<Pango::TabAlign> : public Glib::Value_Enum<Pango::TabAlign>
+ {
+ public:
+-  static GType value_type() G_GNUC_CONST;
++  static GType value_type();
+ };
+ 
+ } // namespace Glib
+@@ -89,7 +89,7 @@ class PANGOMM_API TabArray
+ 
+   /** Get the GType for this class, for use with the underlying GObject type system.
+    */
+-  static GType get_type() G_GNUC_CONST;
++  static GType get_type();
+ 
+   TabArray();
+ 

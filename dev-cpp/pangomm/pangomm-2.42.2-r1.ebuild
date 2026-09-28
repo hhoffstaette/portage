@@ -34,6 +34,8 @@ BDEPEND="
 	${PYTHON_DEPS}
 "
 
+PATCHES=( "${FILESDIR}"/2.42.2-const.patch )
+
 multilib_src_configure() {
 	local emesonargs=(
 		-Dmaintainer-mode=false
