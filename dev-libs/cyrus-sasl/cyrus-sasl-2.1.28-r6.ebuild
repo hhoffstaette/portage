@@ -15,7 +15,7 @@ SRC_URI+=" https://www.applied-asynchrony.com/distfiles/${MY_PATCH_VER}.tar.xz"
 LICENSE="BSD-with-attribution"
 SLOT="2"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~arm64-macos ~x64-macos ~x64-solaris"
-IUSE="authdaemond berkdb gdbm kerberos ldapdb openldap mysql pam postgres selinux sqlite srp ssl static-libs urandom"
+IUSE="authdaemond berkdb gdbm kerberos ldapdb openldap mysql ntlm pam postgres selinux sqlite srp ssl static-libs urandom"
 REQUIRED_USE="ldapdb? ( openldap )"
 
 # See bug #855890 for sys-libs/db slot
@@ -47,11 +47,6 @@ PATCHES=(
 
 src_prepare() {
 	default
-
-	# Use plugindir for sasldir
-	# https://github.com/cyrusimap/cyrus-sasl/issues/339 (I think)
-	sed -i '/^sasldir =/s:=.*:= $(plugindir):' \
-		"${S}"/plugins/Makefile.{am,in} || die "sed failed"
 
 	# bug #486740 and bug #468556 (dropped AM_CONFIG_HEADER sed in 2.1.28)
 	sed -i -e 's:AC_CONFIG_MACRO_DIR:AC_CONFIG_MACRO_DIRS:g' configure.ac || die
@@ -97,7 +92,6 @@ src_configure() {
 multilib_src_configure() {
 	local myeconfargs=(
 		--enable-login
-		--enable-ntlm
 		--enable-auth-sasldb
 		--disable-cmulocal
 		--disable-krb4
@@ -114,6 +108,7 @@ multilib_src_configure() {
 		$(use_with pam)
 		$(use_with openldap ldap)
 		$(use_enable ldapdb)
+		$(use_enable ntlm)
 		$(use_enable kerberos gssapi)
 		$(multilib_native_use_with mysql mysql "${EPREFIX}/usr/$(get_libdir)")
 		$(multilib_native_use_with postgres pgsql "${EPREFIX}/usr/$(get_libdir)/postgresql")
