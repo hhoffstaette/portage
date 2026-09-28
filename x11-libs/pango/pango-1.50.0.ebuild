@@ -52,6 +52,8 @@ PATCHES=(
 	"${FILESDIR}"/${REAL_V}-CVE-2019-1010238.patch
 	# Compatibility hacks
 	"${FILESDIR}"/${REAL_V}-pango_font_metrics_get_height.patch
+	# remove bogus G_GNUC_CONST
+	"${FILESDIR}"/${REAL_V}-const.patch
 )
 
 S="${WORKDIR}/${PN}-${REAL_V}"

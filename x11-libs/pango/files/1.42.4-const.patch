@@ -1,0 +1,760 @@
+diff -rup pango-1.42.4/pango/pango-attributes.h pango-1.42.4-const/pango/pango-attributes.h
+--- pango-1.42.4/pango/pango-attributes.h	2017-12-30 17:17:26.000000000 +0100
++++ pango-1.42.4-const/pango/pango-attributes.h	2026-06-29 10:54:19.599937554 +0200
+@@ -54,7 +54,7 @@ struct _PangoColor
+  */
+ #define PANGO_TYPE_COLOR pango_color_get_type ()
+ PANGO_AVAILABLE_IN_ALL
+-GType       pango_color_get_type (void) G_GNUC_CONST;
++GType       pango_color_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoColor *pango_color_copy     (const PangoColor *src);
+@@ -437,7 +437,7 @@ struct _PangoAttrFontFeatures
+ PANGO_AVAILABLE_IN_ALL
+ PangoAttrType         pango_attr_type_register (const gchar        *name);
+ PANGO_AVAILABLE_IN_1_22
+-const char *          pango_attr_type_get_name (PangoAttrType       type) G_GNUC_CONST;
++const char *          pango_attr_type_get_name (PangoAttrType       type);
+ 
+ PANGO_AVAILABLE_IN_1_20
+ void             pango_attribute_init        (PangoAttribute       *attr,
+@@ -521,7 +521,7 @@ PANGO_AVAILABLE_IN_1_38
+ PangoAttribute *pango_attr_background_alpha_new (guint16 alpha);
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType              pango_attr_list_get_type      (void) G_GNUC_CONST;
++GType              pango_attr_list_get_type      (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoAttrList *    pango_attr_list_new           (void);
+ PANGO_AVAILABLE_IN_1_10
+diff -rup pango-1.42.4/pango/pango-bidi-type.h pango-1.42.4-const/pango/pango-bidi-type.h
+--- pango-1.42.4/pango/pango-bidi-type.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pango-bidi-type.h	2026-06-29 10:54:19.601011890 +0200
+@@ -83,7 +83,7 @@ typedef enum {
+ } PangoBidiType;
+ 
+ PANGO_AVAILABLE_IN_1_22
+-PangoBidiType pango_bidi_type_for_unichar (gunichar ch) G_GNUC_CONST;
++PangoBidiType pango_bidi_type_for_unichar (gunichar ch);
+ 
+ /**
+  * PangoDirection:
+@@ -124,7 +124,7 @@ typedef enum {
+ } PangoDirection;
+ 
+ PANGO_AVAILABLE_IN_ALL
+-PangoDirection pango_unichar_direction      (gunichar     ch) G_GNUC_CONST;
++PangoDirection pango_unichar_direction      (gunichar     ch);
+ PANGO_AVAILABLE_IN_1_4
+ PangoDirection pango_find_base_dir          (const gchar *text,
+ 					     gint         length);
+diff -rup pango-1.42.4/pango/pango-context.h pango-1.42.4-const/pango/pango-context.h
+--- pango-1.42.4/pango/pango-context.h	2016-10-22 07:00:39.000000000 +0200
++++ pango-1.42.4-const/pango/pango-context.h	2026-06-29 10:54:19.601295791 +0200
+@@ -48,7 +48,7 @@ typedef struct _PangoContextClass PangoC
+  */
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType         pango_context_get_type      (void) G_GNUC_CONST;
++GType         pango_context_get_type      (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoContext *pango_context_new           (void);
+diff -rup pango-1.42.4/pango/pango-engine.h pango-1.42.4-const/pango/pango-engine.h
+--- pango-1.42.4/pango/pango-engine.h	2017-04-08 06:57:28.000000000 +0200
++++ pango-1.42.4-const/pango/pango-engine.h	2026-06-29 10:54:19.601492865 +0200
+@@ -80,7 +80,7 @@ struct _PangoEngineClass
+ };
+ 
+ PANGO_DEPRECATED_IN_1_38
+-GType pango_engine_get_type (void) G_GNUC_CONST;
++GType pango_engine_get_type (void);
+ 
+ /**
+  * PANGO_ENGINE_TYPE_LANG:
+@@ -147,7 +147,7 @@ struct _PangoEngineLangClass
+ };
+ 
+ PANGO_DEPRECATED_IN_1_38
+-GType pango_engine_lang_get_type (void) G_GNUC_CONST;
++GType pango_engine_lang_get_type (void);
+ 
+ /**
+  * PANGO_ENGINE_TYPE_SHAPE:
+@@ -235,7 +235,7 @@ struct _PangoEngineShapeClass
+ };
+ 
+ PANGO_DEPRECATED_IN_1_38
+-GType pango_engine_shape_get_type (void) G_GNUC_CONST;
++GType pango_engine_shape_get_type (void);
+ 
+ typedef struct _PangoEngineInfo PangoEngineInfo;
+ typedef struct _PangoEngineScriptInfo PangoEngineScriptInfo;
+diff -rup pango-1.42.4/pango/pango-enum-types.h pango-1.42.4-const/pango/pango-enum-types.h
+--- pango-1.42.4/pango/pango-enum-types.h	2018-08-20 17:07:33.000000000 +0200
++++ pango-1.42.4-const/pango/pango-enum-types.h	2026-06-29 10:54:19.601620010 +0200
+@@ -12,74 +12,74 @@ G_BEGIN_DECLS
+ 
+ /* enumerations from "pango-attributes.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_attr_type_get_type (void) G_GNUC_CONST;
++GType pango_attr_type_get_type (void);
+ #define PANGO_TYPE_ATTR_TYPE (pango_attr_type_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_underline_get_type (void) G_GNUC_CONST;
++GType pango_underline_get_type (void);
+ #define PANGO_TYPE_UNDERLINE (pango_underline_get_type ())
+ 
+ /* enumerations from "pango-bidi-type.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_bidi_type_get_type (void) G_GNUC_CONST;
++GType pango_bidi_type_get_type (void);
+ #define PANGO_TYPE_BIDI_TYPE (pango_bidi_type_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_direction_get_type (void) G_GNUC_CONST;
++GType pango_direction_get_type (void);
+ #define PANGO_TYPE_DIRECTION (pango_direction_get_type ())
+ 
+ /* enumerations from "pango-coverage.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_coverage_level_get_type (void) G_GNUC_CONST;
++GType pango_coverage_level_get_type (void);
+ #define PANGO_TYPE_COVERAGE_LEVEL (pango_coverage_level_get_type ())
+ 
+ /* enumerations from "pango-font.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_style_get_type (void) G_GNUC_CONST;
++GType pango_style_get_type (void);
+ #define PANGO_TYPE_STYLE (pango_style_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_variant_get_type (void) G_GNUC_CONST;
++GType pango_variant_get_type (void);
+ #define PANGO_TYPE_VARIANT (pango_variant_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_weight_get_type (void) G_GNUC_CONST;
++GType pango_weight_get_type (void);
+ #define PANGO_TYPE_WEIGHT (pango_weight_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_stretch_get_type (void) G_GNUC_CONST;
++GType pango_stretch_get_type (void);
+ #define PANGO_TYPE_STRETCH (pango_stretch_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_font_mask_get_type (void) G_GNUC_CONST;
++GType pango_font_mask_get_type (void);
+ #define PANGO_TYPE_FONT_MASK (pango_font_mask_get_type ())
+ 
+ /* enumerations from "pango-gravity.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_gravity_get_type (void) G_GNUC_CONST;
++GType pango_gravity_get_type (void);
+ #define PANGO_TYPE_GRAVITY (pango_gravity_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_gravity_hint_get_type (void) G_GNUC_CONST;
++GType pango_gravity_hint_get_type (void);
+ #define PANGO_TYPE_GRAVITY_HINT (pango_gravity_hint_get_type ())
+ 
+ /* enumerations from "pango-layout.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_alignment_get_type (void) G_GNUC_CONST;
++GType pango_alignment_get_type (void);
+ #define PANGO_TYPE_ALIGNMENT (pango_alignment_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_wrap_mode_get_type (void) G_GNUC_CONST;
++GType pango_wrap_mode_get_type (void);
+ #define PANGO_TYPE_WRAP_MODE (pango_wrap_mode_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_ellipsize_mode_get_type (void) G_GNUC_CONST;
++GType pango_ellipsize_mode_get_type (void);
+ #define PANGO_TYPE_ELLIPSIZE_MODE (pango_ellipsize_mode_get_type ())
+ 
+ /* enumerations from "pango-renderer.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_render_part_get_type (void) G_GNUC_CONST;
++GType pango_render_part_get_type (void);
+ #define PANGO_TYPE_RENDER_PART (pango_render_part_get_type ())
+ 
+ /* enumerations from "pango-script.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_script_get_type (void) G_GNUC_CONST;
++GType pango_script_get_type (void);
+ #define PANGO_TYPE_SCRIPT (pango_script_get_type ())
+ 
+ /* enumerations from "pango-tabs.h" */
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_tab_align_get_type (void) G_GNUC_CONST;
++GType pango_tab_align_get_type (void);
+ #define PANGO_TYPE_TAB_ALIGN (pango_tab_align_get_type ())
+ G_END_DECLS
+ 
+diff -rup pango-1.42.4/pango/pango-font.h pango-1.42.4-const/pango/pango-font.h
+--- pango-1.42.4/pango/pango-font.h	2026-06-29 10:55:05.587536781 +0200
++++ pango-1.42.4-const/pango/pango-font.h	2026-06-29 10:54:19.601673971 +0200
+@@ -217,7 +217,7 @@ typedef enum {
+ #define PANGO_TYPE_FONT_DESCRIPTION (pango_font_description_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType                 pango_font_description_get_type    (void) G_GNUC_CONST;
++GType                 pango_font_description_get_type    (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoFontDescription *pango_font_description_new         (void);
+ PANGO_AVAILABLE_IN_ALL
+@@ -326,7 +326,7 @@ char *                pango_font_descrip
+  */
+ #define PANGO_TYPE_FONT_METRICS  (pango_font_metrics_get_type ())
+ PANGO_AVAILABLE_IN_ALL
+-GType             pango_font_metrics_get_type                    (void) G_GNUC_CONST;
++GType             pango_font_metrics_get_type                    (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoFontMetrics *pango_font_metrics_ref                         (PangoFontMetrics *metrics);
+ PANGO_AVAILABLE_IN_ALL
+@@ -399,7 +399,7 @@ typedef struct _PangoFontFamily      Pan
+ typedef struct _PangoFontFace        PangoFontFace;
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType      pango_font_family_get_type       (void) G_GNUC_CONST;
++GType      pango_font_family_get_type       (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ void                 pango_font_family_list_faces (PangoFontFamily  *family,
+@@ -479,7 +479,7 @@ struct _PangoFontFamilyClass
+ #define PANGO_IS_FONT_FACE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FONT_FACE))
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType      pango_font_face_get_type       (void) G_GNUC_CONST;
++GType      pango_font_face_get_type       (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoFontDescription *pango_font_face_describe       (PangoFontFace  *face);
+@@ -559,7 +559,7 @@ struct _PangoFontFaceClass
+ #define PANGO_IS_FONT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FONT))
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType                 pango_font_get_type          (void) G_GNUC_CONST;
++GType                 pango_font_get_type          (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoFontDescription *pango_font_describe          (PangoFont        *font);
+diff -rup pango-1.42.4/pango/pango-fontmap.h pango-1.42.4-const/pango/pango-fontmap.h
+--- pango-1.42.4/pango/pango-fontmap.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pango-fontmap.h	2026-06-29 10:54:19.601858746 +0200
+@@ -51,7 +51,7 @@ G_BEGIN_DECLS
+ typedef struct _PangoContext PangoContext;
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType         pango_font_map_get_type       (void) G_GNUC_CONST;
++GType         pango_font_map_get_type       (void);
+ PANGO_AVAILABLE_IN_1_22
+ PangoContext * pango_font_map_create_context (PangoFontMap               *fontmap);
+ PANGO_AVAILABLE_IN_ALL
+diff -rup pango-1.42.4/pango/pango-fontset.h pango-1.42.4-const/pango/pango-fontset.h
+--- pango-1.42.4/pango/pango-fontset.h	2016-10-22 07:00:37.000000000 +0200
++++ pango-1.42.4-const/pango/pango-fontset.h	2026-06-29 10:54:19.601907294 +0200
+@@ -43,7 +43,7 @@ G_BEGIN_DECLS
+ #define PANGO_IS_FONTSET(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FONTSET))
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_fontset_get_type (void) G_GNUC_CONST;
++GType pango_fontset_get_type (void);
+ 
+ typedef struct _PangoFontset        PangoFontset;
+ 
+@@ -160,7 +160,7 @@ typedef struct _PangoFontsetSimple  Pang
+ typedef struct _PangoFontsetSimpleClass  PangoFontsetSimpleClass;
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_fontset_simple_get_type (void) G_GNUC_CONST;
++GType pango_fontset_simple_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoFontsetSimple * pango_fontset_simple_new    (PangoLanguage      *language);
+diff -rup pango-1.42.4/pango/pango-glyph-item.h pango-1.42.4-const/pango/pango-glyph-item.h
+--- pango-1.42.4/pango/pango-glyph-item.h	2016-10-22 07:00:37.000000000 +0200
++++ pango-1.42.4-const/pango/pango-glyph-item.h	2026-06-29 10:54:19.601957439 +0200
+@@ -56,7 +56,7 @@ struct _PangoGlyphItem
+ #define PANGO_TYPE_GLYPH_ITEM (pango_glyph_item_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_glyph_item_get_type (void) G_GNUC_CONST;
++GType pango_glyph_item_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_1_2
+ PangoGlyphItem *pango_glyph_item_split        (PangoGlyphItem *orig,
+@@ -150,7 +150,7 @@ struct _PangoGlyphItemIter
+ #define PANGO_TYPE_GLYPH_ITEM_ITER (pango_glyph_item_iter_get_type ())
+ 
+ PANGO_AVAILABLE_IN_1_22
+-GType               pango_glyph_item_iter_get_type (void) G_GNUC_CONST;
++GType               pango_glyph_item_iter_get_type (void);
+ PANGO_AVAILABLE_IN_1_22
+ PangoGlyphItemIter *pango_glyph_item_iter_copy (PangoGlyphItemIter *orig);
+ PANGO_AVAILABLE_IN_1_22
+diff -rup pango-1.42.4/pango/pango-glyph.h pango-1.42.4-const/pango/pango-glyph.h
+--- pango-1.42.4/pango/pango-glyph.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pango-glyph.h	2026-06-29 10:54:19.602009683 +0200
+@@ -147,7 +147,7 @@ PANGO_AVAILABLE_IN_ALL
+ void              pango_glyph_string_set_size (PangoGlyphString *string,
+ 					       gint              new_len);
+ PANGO_AVAILABLE_IN_ALL
+-GType             pango_glyph_string_get_type (void) G_GNUC_CONST;
++GType             pango_glyph_string_get_type (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoGlyphString *pango_glyph_string_copy     (PangoGlyphString *string);
+ PANGO_AVAILABLE_IN_ALL
+diff -rup pango-1.42.4/pango/pango-gravity.h pango-1.42.4-const/pango/pango-gravity.h
+--- pango-1.42.4/pango/pango-gravity.h	2016-10-22 07:00:36.000000000 +0200
++++ pango-1.42.4-const/pango/pango-gravity.h	2026-06-29 10:54:19.602076239 +0200
+@@ -112,19 +112,19 @@ typedef enum {
+ #include <pango/pango-script.h>
+ 
+ PANGO_AVAILABLE_IN_1_16
+-double       pango_gravity_to_rotation    (PangoGravity       gravity) G_GNUC_CONST;
++double       pango_gravity_to_rotation    (PangoGravity       gravity);
+ PANGO_AVAILABLE_IN_1_16
+ PangoGravity pango_gravity_get_for_matrix (const PangoMatrix *matrix) G_GNUC_PURE;
+ PANGO_AVAILABLE_IN_1_16
+ PangoGravity pango_gravity_get_for_script (PangoScript        script,
+ 					   PangoGravity       base_gravity,
+-					   PangoGravityHint   hint) G_GNUC_CONST;
++					   PangoGravityHint   hint);
+ PANGO_AVAILABLE_IN_1_26
+ PangoGravity pango_gravity_get_for_script_and_width
+ 					  (PangoScript        script,
+ 					   gboolean           wide,
+ 					   PangoGravity       base_gravity,
+-					   PangoGravityHint   hint) G_GNUC_CONST;
++					   PangoGravityHint   hint);
+ 
+ 
+ G_END_DECLS
+diff -rup pango-1.42.4/pango/pango-item.h pango-1.42.4-const/pango/pango-item.h
+--- pango-1.42.4/pango/pango-item.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pango-item.h	2026-06-29 10:54:19.602153240 +0200
+@@ -100,7 +100,7 @@ struct _PangoItem
+ #define PANGO_TYPE_ITEM (pango_item_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_item_get_type (void) G_GNUC_CONST;
++GType pango_item_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoItem *pango_item_new   (void);
+diff -rup pango-1.42.4/pango/pango-language.h pango-1.42.4-const/pango/pango-language.h
+--- pango-1.42.4/pango/pango-language.h	2017-12-23 20:28:29.000000000 +0100
++++ pango-1.42.4-const/pango/pango-language.h	2026-06-29 10:54:19.602303937 +0200
+@@ -39,19 +39,19 @@ typedef struct _PangoLanguage PangoLangu
+ #define PANGO_TYPE_LANGUAGE (pango_language_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType          pango_language_get_type    (void) G_GNUC_CONST;
++GType          pango_language_get_type    (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoLanguage *pango_language_from_string (const char *language);
+ 
+ PANGO_AVAILABLE_IN_ALL
+-const char    *pango_language_to_string   (PangoLanguage *language) G_GNUC_CONST;
++const char    *pango_language_to_string   (PangoLanguage *language);
+ /* For back compat.  Will have to keep indefinitely. */
+ #define pango_language_to_string(language) ((const char *)language)
+ 
+ PANGO_AVAILABLE_IN_ALL
+-const char    *pango_language_get_sample_string (PangoLanguage *language) G_GNUC_CONST;
++const char    *pango_language_get_sample_string (PangoLanguage *language);
+ PANGO_AVAILABLE_IN_1_16
+-PangoLanguage *pango_language_get_default (void) G_GNUC_CONST;
++PangoLanguage *pango_language_get_default (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ gboolean      pango_language_matches  (PangoLanguage *language,
+diff -rup pango-1.42.4/pango/pango-layout.h pango-1.42.4-const/pango/pango-layout.h
+--- pango-1.42.4/pango/pango-layout.h	2017-04-08 06:57:28.000000000 +0200
++++ pango-1.42.4-const/pango/pango-layout.h	2026-06-29 10:54:19.602376348 +0200
+@@ -135,7 +135,7 @@ struct _PangoLayoutLine
+  */
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType        pango_layout_get_type       (void) G_GNUC_CONST;
++GType        pango_layout_get_type       (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoLayout *pango_layout_new            (PangoContext   *context);
+ PANGO_AVAILABLE_IN_ALL
+@@ -325,7 +325,7 @@ GSList *         pango_layout_get_lines_
+ #define PANGO_TYPE_LAYOUT_LINE (pango_layout_line_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType    pango_layout_line_get_type     (void) G_GNUC_CONST;
++GType    pango_layout_line_get_type     (void);
+ 
+ PANGO_AVAILABLE_IN_1_10
+ PangoLayoutLine *pango_layout_line_ref   (PangoLayoutLine *line);
+@@ -362,7 +362,7 @@ typedef struct _PangoLayoutIter PangoLay
+ #define PANGO_TYPE_LAYOUT_ITER         (pango_layout_iter_get_type ())
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType            pango_layout_iter_get_type (void) G_GNUC_CONST;
++GType            pango_layout_iter_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_ALL
+ PangoLayoutIter *pango_layout_get_iter  (PangoLayout     *layout);
+diff -rup pango-1.42.4/pango/pango-matrix.h pango-1.42.4-const/pango/pango-matrix.h
+--- pango-1.42.4/pango/pango-matrix.h	2016-10-22 07:00:36.000000000 +0200
++++ pango-1.42.4-const/pango/pango-matrix.h	2026-06-29 10:54:19.602483238 +0200
+@@ -85,7 +85,7 @@ struct _PangoMatrix
+ #include <pango/pango-types.h>
+ 
+ PANGO_AVAILABLE_IN_1_6
+-GType pango_matrix_get_type (void) G_GNUC_CONST;
++GType pango_matrix_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_1_6
+ PangoMatrix *pango_matrix_copy   (const PangoMatrix *matrix);
+diff -rup pango-1.42.4/pango/pango-ot.h pango-1.42.4-const/pango/pango-ot.h
+--- pango-1.42.4/pango/pango-ot.h	2016-10-22 07:00:39.000000000 +0200
++++ pango-1.42.4-const/pango/pango-ot.h	2026-06-29 10:54:19.602569696 +0200
+@@ -249,13 +249,13 @@ struct _PangoOTRulesetDescription {
+ #define PANGO_OT_INFO(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), PANGO_TYPE_OT_INFO, PangoOTInfo))
+ #define PANGO_IS_OT_INFO(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_OT_INFO))
+ PANGO_DEPRECATED
+-GType pango_ot_info_get_type (void) G_GNUC_CONST;
++GType pango_ot_info_get_type (void);
+ 
+ #define PANGO_TYPE_OT_RULESET           (pango_ot_ruleset_get_type ())
+ #define PANGO_OT_RULESET(object)        (G_TYPE_CHECK_INSTANCE_CAST ((object), PANGO_TYPE_OT_RULESET, PangoOTRuleset))
+ #define PANGO_IS_OT_RULESET(object)     (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_OT_RULESET))
+ PANGO_DEPRECATED
+-GType pango_ot_ruleset_get_type (void) G_GNUC_CONST;
++GType pango_ot_ruleset_get_type (void);
+ 
+ 
+ PANGO_DEPRECATED
+@@ -364,16 +364,16 @@ void            pango_ot_ruleset_positio
+ 					      PangoOTBuffer          *buffer);
+ 
+ PANGO_DEPRECATED
+-PangoScript     pango_ot_tag_to_script     (PangoOTTag     script_tag) G_GNUC_CONST;
++PangoScript     pango_ot_tag_to_script     (PangoOTTag     script_tag);
+ 
+ PANGO_DEPRECATED
+-PangoOTTag      pango_ot_tag_from_script   (PangoScript    script) G_GNUC_CONST;
++PangoOTTag      pango_ot_tag_from_script   (PangoScript    script);
+ 
+ PANGO_DEPRECATED
+-PangoLanguage  *pango_ot_tag_to_language   (PangoOTTag     language_tag) G_GNUC_CONST;
++PangoLanguage  *pango_ot_tag_to_language   (PangoOTTag     language_tag);
+ 
+ PANGO_DEPRECATED
+-PangoOTTag      pango_ot_tag_from_language (PangoLanguage *language) G_GNUC_CONST;
++PangoOTTag      pango_ot_tag_from_language (PangoLanguage *language);
+ 
+ PANGO_DEPRECATED
+ guint           pango_ot_ruleset_description_hash  (const PangoOTRulesetDescription *desc) G_GNUC_PURE;
+diff -rup pango-1.42.4/pango/pango-renderer.h pango-1.42.4-const/pango/pango-renderer.h
+--- pango-1.42.4/pango/pango-renderer.h	2016-10-22 07:00:37.000000000 +0200
++++ pango-1.42.4-const/pango/pango-renderer.h	2026-06-29 10:54:19.602674199 +0200
+@@ -192,7 +192,7 @@ struct _PangoRendererClass
+ };
+ 
+ PANGO_AVAILABLE_IN_1_8
+-GType pango_renderer_get_type    (void) G_GNUC_CONST;
++GType pango_renderer_get_type    (void);
+ 
+ PANGO_AVAILABLE_IN_1_8
+ void pango_renderer_draw_layout          (PangoRenderer    *renderer,
+diff -rup pango-1.42.4/pango/pango-script.h pango-1.42.4-const/pango/pango-script.h
+--- pango-1.42.4/pango/pango-script.h	2017-12-21 19:46:54.000000000 +0100
++++ pango-1.42.4-const/pango/pango-script.h	2026-06-29 10:54:19.602838787 +0200
+@@ -305,7 +305,7 @@ typedef enum {                         /
+ #include <pango/pango-version-macros.h>
+ 
+ PANGO_AVAILABLE_IN_1_4
+-PangoScript pango_script_for_unichar         (gunichar             ch) G_GNUC_CONST;
++PangoScript pango_script_for_unichar         (gunichar             ch);
+ 
+ PANGO_AVAILABLE_IN_1_4
+ PangoScriptIter *pango_script_iter_new       (const char          *text,
+diff -rup pango-1.42.4/pango/pango-tabs.h pango-1.42.4-const/pango/pango-tabs.h
+--- pango-1.42.4/pango/pango-tabs.h	2016-10-22 07:00:47.000000000 +0200
++++ pango-1.42.4-const/pango/pango-tabs.h	2026-06-29 10:54:19.602940642 +0200
+@@ -64,7 +64,7 @@ PangoTabArray  *pango_tab_array_new_with
+ 						     gint           first_position,
+ 						     ...);
+ PANGO_AVAILABLE_IN_ALL
+-GType           pango_tab_array_get_type            (void) G_GNUC_CONST;
++GType           pango_tab_array_get_type            (void);
+ PANGO_AVAILABLE_IN_ALL
+ PangoTabArray  *pango_tab_array_copy                (PangoTabArray *src);
+ PANGO_AVAILABLE_IN_ALL
+diff -rup pango-1.42.4/pango/pango-types.h pango-1.42.4-const/pango/pango-types.h
+--- pango-1.42.4/pango/pango-types.h	2016-10-22 07:00:37.000000000 +0200
++++ pango-1.42.4-const/pango/pango-types.h	2026-06-29 10:54:19.602982865 +0200
+@@ -117,9 +117,9 @@ typedef guint32 PangoGlyph;
+ 
+ 
+ PANGO_AVAILABLE_IN_1_16
+-int    pango_units_from_double (double d) G_GNUC_CONST;
++int    pango_units_from_double (double d);
+ PANGO_AVAILABLE_IN_1_16
+-double pango_units_to_double (int i) G_GNUC_CONST;
++double pango_units_to_double (int i);
+ 
+ 
+ 
+diff -rup pango-1.42.4/pango/pango-utils.h pango-1.42.4-const/pango/pango-utils.h
+--- pango-1.42.4/pango/pango-utils.h	2016-10-22 07:00:36.000000000 +0200
++++ pango-1.42.4-const/pango/pango-utils.h	2026-06-29 10:54:19.603048554 +0200
+@@ -127,7 +127,7 @@ guint8 * pango_log2vis_get_embedding_lev
+  * normally.
+  */
+ PANGO_AVAILABLE_IN_1_10
+-gboolean pango_is_zero_width (gunichar ch) G_GNUC_CONST;
++gboolean pango_is_zero_width (gunichar ch);
+ 
+ /* Pango version checking */
+ 
+@@ -194,17 +194,17 @@ gboolean pango_is_zero_width (gunichar c
+ 
+ /* Return encoded version of Pango at run-time */
+ PANGO_AVAILABLE_IN_1_16
+-int pango_version (void) G_GNUC_CONST;
++int pango_version (void);
+ 
+ /* Return run-time Pango version as an string */
+ PANGO_AVAILABLE_IN_1_16
+-const char * pango_version_string (void) G_GNUC_CONST;
++const char * pango_version_string (void);
+ 
+ /* Check that run-time Pango is as new as required */
+ PANGO_AVAILABLE_IN_1_16
+ const char * pango_version_check (int required_major,
+                                   int required_minor,
+-                                  int required_micro) G_GNUC_CONST;
++                                  int required_micro);
+ 
+ G_END_DECLS
+ 
+diff -rup pango-1.42.4/pango/pangocairo-coretext.h pango-1.42.4-const/pango/pangocairo-coretext.h
+--- pango-1.42.4/pango/pangocairo-coretext.h	2016-10-22 07:00:39.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo-coretext.h	2026-06-29 10:54:19.603272452 +0200
+@@ -44,7 +44,7 @@ struct _PangoCairoCoreTextFontMap
+ };
+ 
+ _PANGO_EXTERN
+-GType pango_cairo_core_text_font_map_get_type (void) G_GNUC_CONST;
++GType pango_cairo_core_text_font_map_get_type (void);
+ 
+ PangoCoreTextFont *
+ _pango_cairo_core_text_font_new (PangoCairoCoreTextFontMap  *cafontmap,
+diff -rup pango-1.42.4/pango/pangocairo-coretextfont.h pango-1.42.4-const/pango/pangocairo-coretextfont.h
+--- pango-1.42.4/pango/pangocairo-coretextfont.h	2016-10-22 07:00:47.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo-coretextfont.h	2026-06-29 10:54:19.603297780 +0200
+@@ -33,6 +33,6 @@ typedef struct _PangoCairoCoreTextFont
+ typedef struct _PangoCairoCoreTextFontClass PangoCairoCoreTextFontClass;
+ 
+ _PANGO_EXTERN
+-GType pango_cairo_core_text_font_get_type (void) G_GNUC_CONST;
++GType pango_cairo_core_text_font_get_type (void);
+ 
+ #endif /* __PANGOCAIRO_CORETEXTFONT_H__ */
+diff -rup pango-1.42.4/pango/pangocairo-fc.h pango-1.42.4-const/pango/pangocairo-fc.h
+--- pango-1.42.4/pango/pangocairo-fc.h	2017-06-30 12:05:54.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo-fc.h	2026-06-29 10:54:19.603324203 +0200
+@@ -44,7 +44,7 @@ struct _PangoCairoFcFontMap
+ };
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_cairo_fc_font_map_get_type (void) G_GNUC_CONST;
++GType pango_cairo_fc_font_map_get_type (void);
+ 
+ PangoFcFont *_pango_cairo_fc_font_new (PangoCairoFcFontMap *cffontmap,
+ 				       PangoFcFontKey      *key);
+diff -rup pango-1.42.4/pango/pangocairo-private.h pango-1.42.4-const/pango/pangocairo-private.h
+--- pango-1.42.4/pango/pangocairo-private.h	2017-09-13 05:29:47.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo-private.h	2026-06-29 10:54:19.603367866 +0200
+@@ -128,7 +128,7 @@ void _pango_cairo_font_private_get_glyph
+ typedef struct _PangoCairoRenderer PangoCairoRenderer;
+ 
+ _PANGO_EXTERN
+-GType pango_cairo_renderer_get_type    (void) G_GNUC_CONST;
++GType pango_cairo_renderer_get_type    (void);
+ 
+ 
+ const cairo_font_options_t *_pango_cairo_context_get_merged_font_options (PangoContext *context);
+diff -rup pango-1.42.4/pango/pangocairo-win32.h pango-1.42.4-const/pango/pangocairo-win32.h
+--- pango-1.42.4/pango/pangocairo-win32.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo-win32.h	2026-06-29 10:54:19.603402099 +0200
+@@ -43,7 +43,7 @@ struct _PangoCairoWin32FontMap
+ };
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_cairo_win32_font_map_get_type (void) G_GNUC_CONST;
++GType pango_cairo_win32_font_map_get_type (void);
+ 
+ PangoFont *_pango_cairo_win32_font_new (PangoCairoWin32FontMap       *cwfontmap,
+ 					PangoContext                 *context,
+diff -rup pango-1.42.4/pango/pangocairo.h pango-1.42.4-const/pango/pangocairo.h
+--- pango-1.42.4/pango/pangocairo.h	2016-10-22 07:00:36.000000000 +0200
++++ pango-1.42.4-const/pango/pangocairo.h	2026-06-29 10:54:19.603445062 +0200
+@@ -78,7 +78,7 @@ typedef void (* PangoCairoShapeRendererF
+  * PangoCairoFontMap
+  */
+ PANGO_AVAILABLE_IN_1_10
+-GType         pango_cairo_font_map_get_type          (void) G_GNUC_CONST;
++GType         pango_cairo_font_map_get_type          (void);
+ 
+ PANGO_AVAILABLE_IN_1_10
+ PangoFontMap *pango_cairo_font_map_new               (void);
+@@ -105,7 +105,7 @@ PangoContext *pango_cairo_font_map_creat
+  * PangoCairoFont
+  */
+ PANGO_AVAILABLE_IN_1_18
+-GType         pango_cairo_font_get_type               (void) G_GNUC_CONST;
++GType         pango_cairo_font_get_type               (void);
+ 
+ PANGO_AVAILABLE_IN_1_18
+ cairo_scaled_font_t *pango_cairo_font_get_scaled_font (PangoCairoFont *font);
+diff -rup pango-1.42.4/pango/pangocoretext-private.h pango-1.42.4-const/pango/pangocoretext-private.h
+--- pango-1.42.4/pango/pangocoretext-private.h	2018-07-16 02:50:43.000000000 +0200
++++ pango-1.42.4-const/pango/pangocoretext-private.h	2026-06-29 10:54:19.603496893 +0200
+@@ -81,7 +81,7 @@ struct _PangoCoreTextFontMapClass
+ 
+ 
+ _PANGO_EXTERN
+-GType                 pango_core_text_font_map_get_type          (void) G_GNUC_CONST;
++GType                 pango_core_text_font_map_get_type          (void);
+ 
+ void                  _pango_core_text_font_set_font_map         (PangoCoreTextFont    *afont,
+                                                                   PangoCoreTextFontMap *fontmap);
+diff -rup pango-1.42.4/pango/pangocoretext.h pango-1.42.4-const/pango/pangocoretext.h
+--- pango-1.42.4/pango/pangocoretext.h	2016-10-22 07:00:39.000000000 +0200
++++ pango-1.42.4-const/pango/pangocoretext.h	2026-06-29 10:54:19.603538670 +0200
+@@ -80,7 +80,7 @@ CTFontRef  pango_core_text_font_get_ctfo
+ #endif /* PANGO_ENABLE_ENGINE || PANGO_ENABLE_BACKEND */
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType      pango_core_text_font_get_type         (void) G_GNUC_CONST;
++GType      pango_core_text_font_get_type         (void);
+ 
+ G_END_DECLS
+ 
+diff -rup pango-1.42.4/pango/pangofc-decoder.h pango-1.42.4-const/pango/pangofc-decoder.h
+--- pango-1.42.4/pango/pangofc-decoder.h	2016-10-22 07:00:39.000000000 +0200
++++ pango-1.42.4-const/pango/pangofc-decoder.h	2026-06-29 10:54:19.603573521 +0200
+@@ -96,7 +96,7 @@ struct _PangoFcDecoderClass
+ };
+ 
+ PANGO_AVAILABLE_IN_1_6
+-GType      pango_fc_decoder_get_type    (void) G_GNUC_CONST;
++GType      pango_fc_decoder_get_type    (void);
+ 
+ PANGO_AVAILABLE_IN_1_6
+ FcCharSet *pango_fc_decoder_get_charset (PangoFcDecoder *decoder,
+diff -rup pango-1.42.4/pango/pangofc-font.h pango-1.42.4-const/pango/pangofc-font.h
+--- pango-1.42.4/pango/pangofc-font.h	2017-06-30 12:05:54.000000000 +0200
++++ pango-1.42.4-const/pango/pangofc-font.h	2026-06-29 10:54:19.603605806 +0200
+@@ -155,7 +155,7 @@ void       pango_fc_font_kern_glyphs
+ #endif /* PANGO_ENABLE_ENGINE || PANGO_ENABLE_BACKEND */
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType      pango_fc_font_get_type (void) G_GNUC_CONST;
++GType      pango_fc_font_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_1_4
+ FT_Face    pango_fc_font_lock_face         (PangoFcFont      *font);
+diff -rup pango-1.42.4/pango/pangofc-fontmap.h pango-1.42.4-const/pango/pangofc-fontmap.h
+--- pango-1.42.4/pango/pangofc-fontmap.h	2018-01-03 18:48:10.000000000 +0100
++++ pango-1.42.4-const/pango/pangofc-fontmap.h	2026-06-29 10:54:19.603650856 +0200
+@@ -206,7 +206,7 @@ void           pango_fc_font_map_shutdow
+ #endif
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_fc_font_map_get_type (void) G_GNUC_CONST;
++GType pango_fc_font_map_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_1_4
+ void           pango_fc_font_map_cache_clear    (PangoFcFontMap *fcfontmap);
+diff -rup pango-1.42.4/pango/pangoft2-private.h pango-1.42.4-const/pango/pangoft2-private.h
+--- pango-1.42.4/pango/pangoft2-private.h	2018-01-03 18:48:10.000000000 +0100
++++ pango-1.42.4-const/pango/pangoft2-private.h	2026-06-29 10:54:19.603752960 +0200
+@@ -78,7 +78,7 @@ struct _PangoFT2GlyphInfo
+ #define PANGO_FT2_IS_FONT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FT2_FONT))
+ 
+ _PANGO_EXTERN
+-GType pango_ft2_font_get_type (void) G_GNUC_CONST;
++GType pango_ft2_font_get_type (void);
+ 
+ PangoFT2Font * _pango_ft2_font_new                (PangoFT2FontMap   *ft2fontmap,
+ 						   FcPattern         *pattern);
+@@ -99,7 +99,7 @@ void  _pango_ft2_font_set_glyph_cache_de
+ #define PANGO_IS_FT2_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FT2_RENDERER))
+ 
+ _PANGO_EXTERN
+-GType pango_ft2_renderer_get_type    (void) G_GNUC_CONST;
++GType pango_ft2_renderer_get_type    (void);
+ 
+ PangoRenderer *_pango_ft2_font_map_get_renderer (PangoFT2FontMap *ft2fontmap);
+ 
+diff -rup pango-1.42.4/pango/pangoft2.h pango-1.42.4-const/pango/pangoft2.h
+--- pango-1.42.4/pango/pangoft2.h	2016-10-22 07:00:47.000000000 +0200
++++ pango-1.42.4-const/pango/pangoft2.h	2026-06-29 10:54:19.603787486 +0200
+@@ -94,7 +94,7 @@ void pango_ft2_render_layout_subpixel
+ 					    int               y);
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_ft2_font_map_get_type (void) G_GNUC_CONST;
++GType pango_ft2_font_map_get_type (void);
+ 
+ PANGO_AVAILABLE_IN_1_2
+ PangoFontMap *pango_ft2_font_map_new                    (void);
+diff -rup pango-1.42.4/pango/pangowin32-private.h pango-1.42.4-const/pango/pangowin32-private.h
+--- pango-1.42.4/pango/pangowin32-private.h	2016-10-22 07:00:47.000000000 +0200
++++ pango-1.42.4-const/pango/pangowin32-private.h	2026-06-29 10:54:19.603838041 +0200
+@@ -255,7 +255,7 @@ struct name_record
+ };
+ 
+ _PANGO_EXTERN
+-GType           _pango_win32_font_get_type          (void) G_GNUC_CONST;
++GType           _pango_win32_font_get_type          (void);
+ 
+ _PANGO_EXTERN
+ void            _pango_win32_make_matching_logfontw (PangoFontMap   *fontmap,
+@@ -264,7 +264,7 @@ void            _pango_win32_make_matchi
+ 						     LOGFONTW       *out);
+ 
+ _PANGO_EXTERN
+-GType           _pango_win32_font_map_get_type      (void) G_GNUC_CONST;
++GType           _pango_win32_font_map_get_type      (void);
+ 
+ _PANGO_EXTERN
+ void            _pango_win32_fontmap_cache_remove   (PangoFontMap   *fontmap,
+diff -rup pango-1.42.4/pango/pangoxft-render.h pango-1.42.4-const/pango/pangoxft-render.h
+--- pango-1.42.4/pango/pangoxft-render.h	2016-10-22 07:00:41.000000000 +0200
++++ pango-1.42.4-const/pango/pangoxft-render.h	2026-06-29 10:54:19.603980864 +0200
+@@ -96,7 +96,7 @@ struct _PangoXftRendererClass
+ };
+ 
+ PANGO_AVAILABLE_IN_1_8
+-GType pango_xft_renderer_get_type    (void) G_GNUC_CONST;
++GType pango_xft_renderer_get_type    (void);
+ 
+ PANGO_AVAILABLE_IN_1_8
+ PangoRenderer *pango_xft_renderer_new                 (Display          *display,
+diff -rup pango-1.42.4/pango/pangoxft.h pango-1.42.4-const/pango/pangoxft.h
+--- pango-1.42.4/pango/pangoxft.h	2016-10-22 07:00:40.000000000 +0200
++++ pango-1.42.4-const/pango/pangoxft.h	2026-06-29 10:54:19.604024535 +0200
+@@ -97,14 +97,14 @@ void pango_xft_substitute_changed     (D
+ 				       int                     screen);
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType pango_xft_font_map_get_type (void) G_GNUC_CONST;
++GType pango_xft_font_map_get_type (void);
+ 
+ #define PANGO_XFT_FONT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), PANGO_TYPE_XFT_FONT, PangoXftFont))
+ #define PANGO_TYPE_XFT_FONT              (pango_xft_font_get_type ())
+ #define PANGO_XFT_IS_FONT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_XFT_FONT))
+ 
+ PANGO_AVAILABLE_IN_ALL
+-GType      pango_xft_font_get_type (void) G_GNUC_CONST;
++GType      pango_xft_font_get_type (void);
+ 
+ /* For shape engines
+  */
