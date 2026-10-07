@@ -19,7 +19,7 @@ COMMON_DEPEND="acct-group/blackbox_exporter
 DEPEND="${COMMON_DEPEND}"
 RDEPEND="${COMMON_DEPEND}"
 BDEPEND="
-	>=dev-lang/go-1.25.0
+	>=dev-lang/go-1.26.0
 	dev-util/promu
 "
 
@@ -30,7 +30,7 @@ FILECAPS=(
 # tests require the network
 RESTRICT+=" test "
 
-PATCHES=( "${FILESDIR}/0.28.0-promu-config.patch" )
+PATCHES=( "${FILESDIR}/0.29.0-promu-config.patch" )
 
 src_compile() {
 	promu build -v --prefix bin || die

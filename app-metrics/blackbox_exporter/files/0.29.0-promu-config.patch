@@ -2,8 +2,8 @@
 +++ b/.promu.yml
 @@ -1,6 +1,7 @@
  go:
-     # Whenever the Go version is updated here, .circle/config.yml should also be updated.
-     version: 1.25
+     # This must match .github/workflows/ci.yml.
+     version: 1.27
 +    cgo: true
  repository:
      path: github.com/prometheus/blackbox_exporter
