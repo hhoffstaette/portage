@@ -23,7 +23,7 @@ else
 fi
 
 MY_P=${PN}-${MY_PV}
-SRC_URI_VENDOR="https://nhorus.no-ip.biz/sharables/${MY_P}-vendor.tar.xz"
+SRC_URI_VENDOR="https://www.applied-asynchrony.com/distfiles/${MY_P}-deps.tar.xz"
 
 UPSTREAM_PATCHES=(
 )
@@ -43,12 +43,12 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 BDEPEND="
-	>=dev-lang/go-1.25.0
+	>=dev-lang/go-1.27.0
 	dev-util/promu
 "
 RDEPEND="sys-apps/smartmontools"
 
-PATCHES=( "${FILESDIR}/0.14.0-promu-config.patch" )
+PATCHES=( "${FILESDIR}/0.15.0-promu-config.patch" )
 
 src_prepare() {
 	default

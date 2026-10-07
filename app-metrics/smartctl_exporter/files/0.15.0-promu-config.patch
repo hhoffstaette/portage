@@ -2,8 +2,8 @@
 +++ b/.promu.yml
 @@ -1,6 +1,7 @@
  go:
-     # This must match .circle/config.yml.
-     version: 1.23
+     # This must match .github/workflows/ci.yml.
+     version: 1.27
 +    cgo: true
  repository:
      path: github.com/prometheus-community/smartctl_exporter
