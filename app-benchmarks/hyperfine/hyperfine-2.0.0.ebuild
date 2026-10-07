@@ -47,6 +47,7 @@ CRATES="
 	getrandom@0.3.4
 	getrandom@0.4.3
 	hashbrown@0.17.1
+	humantime@2.4.0
 	indexmap@2.14.2
 	indicatif@0.17.4
 	insta-cmd@0.7.0
@@ -63,6 +64,8 @@ CRATES="
 	number_prefix@0.4.0
 	once_cell@1.21.4
 	once_cell_polyfill@1.70.2
+	perf-event-open-sys@6.0.0
+	platform-info@2.2.0
 	portable-atomic@1.15.0
 	ppv-lite86@0.2.21
 	predicates-core@1.0.10
