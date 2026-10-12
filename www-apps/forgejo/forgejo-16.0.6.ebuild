@@ -25,7 +25,7 @@ DEPEND="
 RDEPEND="${DEPEND}
 	>=dev-vcs/git-2.34.1"
 
-BDEPEND=">=dev-lang/go-1.26.0"
+BDEPEND=">=dev-lang/go-1.26.9"
 
 DOCS=(
 	custom/conf/app.example.ini CONTRIBUTING.md README.md
