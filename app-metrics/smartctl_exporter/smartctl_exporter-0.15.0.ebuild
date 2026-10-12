@@ -23,7 +23,7 @@ else
 fi
 
 MY_P=${PN}-${MY_PV}
-SRC_URI_VENDOR="https://www.applied-asynchrony.com/distfiles/${MY_P}-deps.tar.xz"
+SRC_URI_VENDOR="https://github.com/gentoo-golang-dist/smartctl_exporter/releases/download/v0.15.0/${MY_P}-vendor.tar.xz"
 
 UPSTREAM_PATCHES=(
 )
