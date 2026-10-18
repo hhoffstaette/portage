@@ -35,6 +35,11 @@ DEPEND="${RDEPEND}"
 DOCS=( README.md doc/syntax.txt )
 HTML_DOCS=( doc/syntax.html )
 
+PATCHES=(
+	"${FILESDIR}"/20251105-remove-unnecessary-reference.patch
+	"${FILESDIR}"/20251105-fix-abseil-deprecations.patch
+)
+
 multilib_src_configure() {
 	local mycmakeargs=(
 		-DBUILD_SHARED_LIBS=ON
