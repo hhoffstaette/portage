@@ -19,11 +19,11 @@ DEPEND="acct-group/chrony_exporter
 		acct-user/chrony_exporter"
 
 BDEPEND="
-	>=dev-lang/go-1.25.0
+	>=dev-lang/go-1.26.0
 	dev-util/promu
 "
 
-PATCHES=( "${FILESDIR}/0.13.3-promu-config.patch" )
+PATCHES=( "${FILESDIR}/0.15.0-promu-config.patch" )
 
 src_prepare() {
 	default

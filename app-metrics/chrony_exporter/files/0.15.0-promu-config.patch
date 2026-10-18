@@ -1,9 +1,9 @@
 --- a/.promu.yml
 +++ b/.promu.yml
-@@ -2,15 +2,19 @@ go:
-   # Whenever the Go version is updated here,
-   # .circleci/config.yml should also be updated.
-   version: 1.26
+@@ -1,15 +1,19 @@
+ go:
+   # This must match .github/workflows/ci.yml.
+   version: 1.27
 +  cgo: true
  repository:
    path: github.com/superq/chrony_exporter
