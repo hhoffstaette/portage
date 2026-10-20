@@ -1,0 +1,14 @@
+Minimal backport of commit: https://github.com/falcosecurity/libs/commit/fd77846d4920bfea2211ac229d3b2a814d4835da
+Bug: https://bugs.gentoo.org/984560
+
+--- a/driver/ppm_fillers.c
++++ b/driver/ppm_fillers.c
+@@ -8001,7 +8001,7 @@ int f_sched_prog_fork(struct event_fille
+ 	long swap = 0;
+ 	int available = STR_STORAGE_SIZE;
+ 	uint32_t flags = 0;
+-	uint32_t euid = task_euid(child).val;
++	uint32_t euid = task_cred_xxx(child, euid).val;
+ 	uint32_t egid = child->cred->egid.val;
+ 	struct pid_namespace *pidns = task_active_pid_ns(child);
+ 	uint64_t pidns_init_start_time = 0;
