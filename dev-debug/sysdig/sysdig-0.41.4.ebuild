@@ -14,13 +14,16 @@ HOMEPAGE="https://www.sysdig.com/"
 LIBS_VERSION="0.21.0"
 LIBS="falcosecurity-libs-${LIBS_VERSION}"
 
-# The version of the container plugin binary
+# The version of the container plugin binary:
+# https://github.com/falcosecurity/plugins/tree/main/plugins/container
+# https://download.falco.org/?prefix=plugins/stable
 CONTAINER_VERSION="0.6.0"
 
 SRC_URI="
 	https://github.com/draios/sysdig/archive/${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/falcosecurity/libs/archive/${LIBS_VERSION}.tar.gz -> ${LIBS}.tar.gz
-	https://download.falco.org/plugins/stable/container-${CONTAINER_VERSION}-linux-x86_64.tar.gz
+	amd64? ( https://download.falco.org/plugins/stable/container-${CONTAINER_VERSION}-linux-x86_64.tar.gz )
+	arm64? ( https://download.falco.org/plugins/stable/container-${CONTAINER_VERSION}-linux-aarch64.tar.gz )
 "
 
 # The driver version as found in cmake/modules/driver.cmake or alternatively
@@ -29,7 +32,7 @@ DRIVER_VERSION="8.1.0+driver"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64"
 IUSE="bpf +modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
