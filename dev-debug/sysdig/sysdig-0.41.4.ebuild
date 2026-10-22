@@ -37,7 +37,6 @@ IUSE="bpf +modules"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 RDEPEND="${LUA_DEPS}
-	dev-cpp/abseil-cpp:=
 	dev-cpp/tbb:=
 	dev-cpp/yaml-cpp:=
 	dev-libs/jsoncpp:=
