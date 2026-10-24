@@ -5,7 +5,7 @@ EAPI=8
 
 inherit shell-completion toolchain-funcs
 
-VIM_VERSION="9.2.0245"
+VIM_VERSION="9.2.1125"
 
 DESCRIPTION="Standalone version of Vim's xxd"
 HOMEPAGE="
