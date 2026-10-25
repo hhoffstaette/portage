@@ -25,6 +25,8 @@ DEPEND="${RDEPEND}"
 
 DOCS=( AUTHORS NEWS README samples/. )
 
+PATCHES=( "${FILESDIR}"/2.8.5-openssl4.patch )
+
 src_prepare() {
 	default
 	sed -i -e "/^PREFIX/s:/usr/local:${EPREFIX}/usr:" \
