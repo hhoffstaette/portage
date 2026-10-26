@@ -45,12 +45,12 @@ IUSE="caps +clang llvm"
 REQUIRED_USE="llvm? ( ${LLVM_REQUIRED_USE} )"
 
 RDEPEND="
-	caps? ( sys-libs/libcap:= )
-	llvm? ( $(llvm_gen_dep 'llvm-core/llvm:${LLVM_SLOT}') )
-	!llvm? ( sys-libs/binutils-libs:= )
 	dev-libs/openssl:=
 	virtual/zlib:=
 	virtual/libelf:=
+	caps? ( sys-libs/libcap:= )
+	llvm? ( $(llvm_gen_dep 'llvm-core/llvm:${LLVM_SLOT}') )
+	!llvm? ( sys-libs/binutils-libs:= )
 "
 DEPEND="
 	${RDEPEND}
