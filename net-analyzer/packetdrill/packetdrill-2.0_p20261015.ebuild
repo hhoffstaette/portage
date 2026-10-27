@@ -9,7 +9,7 @@ DESCRIPTION="Tool for quick, precise testing of entire TCP/UDP/IPv4/IPv6 network
 HOMEPAGE="https://github.com/google/packetdrill"
 
 # no up-to-date releases or tags
-COMMIT="83f72d3f9085d0e26eb4d206fe4d7cfab5b6d872"
+COMMIT="2a8b4d80459e157d5bb7a99fe620c83e5ce036bb"
 SRC_URI="https://github.com/google/packetdrill/archive/${COMMIT}.tar.gz -> packetdrill-${PV}.tar.gz"
 S="${WORKDIR}/${PN}-${COMMIT}/gtests/net/packetdrill"
 
@@ -26,8 +26,6 @@ BDEPEND="
 "
 
 DOCS=( README.md syntax.md )
-
-PATCHES=( "${FILESDIR}"/20260922-accecn-defines.patch )
 
 src_compile() {
 	# remove homegrown duplicate
