@@ -20,7 +20,7 @@ KEYWORDS="~amd64 ~arm64"
 RESTRICT+=" test"
 
 BDEPEND="
-	>=dev-lang/go-1.25.0
+	>=dev-lang/go-1.26.0
 	dev-util/promu
 "
 DEPEND="
