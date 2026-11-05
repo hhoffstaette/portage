@@ -5,7 +5,7 @@ EAPI=8
 
 inherit systemd
 
-DESCRIPTION="prometheus monitoring system and time series database"
+DESCRIPTION="Prometheus monitoring system and time series database"
 HOMEPAGE="https://prometheus.io"
 MY_PN=${PN%%-bin}
 MY_P=${MY_PN}-${PV}
