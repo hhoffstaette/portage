@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {19..23} )
+LLVM_COMPAT=( {20..23} )
 LLVM_OPTIONAL=1
 PYTHON_COMPAT=( python3_{12..15} )
 
