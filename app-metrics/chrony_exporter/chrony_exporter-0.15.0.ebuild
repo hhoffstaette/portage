@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit go-module
+inherit go-module systemd
 
 DESCRIPTION="Chrony NTP exporter for Prometheus"
 HOMEPAGE="https://github.com/SuperQ/chrony_exporter"
@@ -19,10 +19,12 @@ DEPEND="acct-group/chrony_exporter
 		acct-user/chrony_exporter"
 
 BDEPEND="
-	>=dev-lang/go-1.26.0
+	>=dev-lang/go-1.27.0
 	dev-util/promu
 "
 
+# Applies these changes:
+# yq '.go.cgo=true | .build.static=false |  .build.binaries[0].name="chrony_exporter"' .promu.yml
 PATCHES=( "${FILESDIR}/0.15.0-promu-config.patch" )
 
 src_prepare() {
@@ -40,4 +42,7 @@ src_install() {
 	dobin ${PN}
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
+	insinto /etc/sysconfig
+	doins "${FILESDIR}"/${PN}.sysconfig # See https://wiki.gentoo.org/wiki/Project:Systemd/conf.d_files
+	systemd_dounit "${FILESDIR}"/chrony_exporter-0.15.0.{service,socket}
 }
