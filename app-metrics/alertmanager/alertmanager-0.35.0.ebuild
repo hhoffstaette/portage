@@ -29,7 +29,7 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 
-PATCHES=( "${FILESDIR}/0.33.0-promu-config.patch" )
+PATCHES=( "${FILESDIR}/0.35.0-promu-config.patch" )
 
 src_prepare() {
 	default
