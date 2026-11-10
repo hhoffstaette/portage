@@ -6,7 +6,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{12..14} )
+PYTHON_COMPAT=( python3_{12..15} )
 inherit meson pam pax-utils python-any-r1 systemd tmpfiles xdg-utils
 
 DESCRIPTION="Policy framework for controlling privileges for system-wide services"
@@ -77,7 +77,7 @@ PDEPEND="
 	kde? ( kde-plasma/polkit-kde-agent )
 "
 
-DOCS=( docs/TODO HACKING.md NEWS.md README.md )
+DOCS=( docs/TODO docs/HACKING.md AGENTS.md NEWS.md README.md )
 
 QA_MULTILIB_PATHS="
 	usr/lib/polkit-1/polkit-agent-helper-1
@@ -85,7 +85,7 @@ QA_MULTILIB_PATHS="
 "
 
 PATCHES=(
-	"${FILESDIR}/${P}-pkexec-realpath-fallback.patch"
+	"${FILESDIR}/127-pkexec-realpath-fallback.patch"
 )
 
 python_check_deps() {
