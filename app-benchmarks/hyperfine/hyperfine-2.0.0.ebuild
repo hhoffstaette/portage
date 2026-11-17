@@ -159,6 +159,8 @@ KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv"
 
 QA_FLAGS_IGNORED="usr/bin/${PN}"
 
+PATCHES=( "${FILESDIR}"/2.0-ignore-forced-color.patch )
+
 src_prepare() {
 	default
 
@@ -166,7 +168,6 @@ src_prepare() {
 }
 
 src_test() {
-	local -x CLICOLOR_FORCE=
 	cargo_src_test
 }
 
