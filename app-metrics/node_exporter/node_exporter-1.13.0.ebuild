@@ -31,7 +31,7 @@ DEPEND="
 	selinux? ( sec-policy/selinux-node_exporter )
 "
 RDEPEND="${DEPEND}"
-BDEPEND=">=dev-lang/go-1.25.0"
+BDEPEND=">=dev-lang/go-1.26.0"
 
 src_unpack() {
 	if [[ ${PV} == 9999* ]]; then
